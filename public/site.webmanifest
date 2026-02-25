@@ -1,11 +1,11 @@
 {
-  "name": "Your Site Name",
-  "short_name": "Site",
+  "name": "Ingenieria Simple",
+  "short_name": "IngSimple",
   "description": "A modern, accessible landing page template built with Next.js, Tailwind CSS, and TypeScript.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#0066FF",
+  "theme_color": "#00B864",
   "icons": [
     {
       "src": "/icon-192.png",
