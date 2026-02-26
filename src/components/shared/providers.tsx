@@ -1,7 +1,7 @@
 "use client"
 
-import { SmoothScroll } from "@/components/smooth-scroll"
 import { ReducedMotionProvider } from "@/lib/motion"
+import { SmoothScroll } from "./smooth-scroll"
 import { ThemeProvider } from "next-themes"
 
 import type { ReactNode } from "react"

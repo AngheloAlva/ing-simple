@@ -1,11 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google"
 
-import { SkipToContent } from "@/components/skip-to-content"
-import { ThemeSwitch } from "@/components/theme-switch"
-import { Providers } from "@/components/providers"
+import { SkipToContent } from "@/components/shared/skip-to-content"
+import { ThemeSwitch } from "@/components/shared/theme-switch"
+import { Providers } from "@/components/shared/providers"
 import { baseMetadata } from "@/lib/metadata"
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 
 import type { Metadata, Viewport } from "next"
 import type { ReactNode } from "react"
@@ -48,10 +46,8 @@ export default function RootLayout({
 			>
 				<Providers>
 					<SkipToContent />
-					<Header />
 					<ThemeSwitch />
 					{children}
-					<Footer />
 				</Providers>
 			</body>
 		</html>

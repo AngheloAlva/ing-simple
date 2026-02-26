@@ -9,7 +9,7 @@ import RotatingCards, { type Card } from "./rotating-cards"
 // import DitherCursor from "./dither-cursor"
 
 const easeOut = [0.16, 1, 0.3, 1] as const
-const headlineText = "Transformación Digital Simple y Efectiva"
+const headlineText = "Soluciones Simples para un Mundo Digital Complejo"
 
 const cardData = [
 	{ label: "Chrome Extension", image: "/img/chrome-extension.webp" },
@@ -106,7 +106,7 @@ export function Hero(): ReactNode {
 		>
 			{/*{!isMobile && shouldRender && <DitherCursor opacity={opacity} />}*/}
 			<div ref={headlineRef} className="relative z-10 mx-auto md:text-center">
-				<h1 className="mb-8 text-5xl font-medium tracking-tighter md:text-8xl lg:text-8xl">
+				<h1 className="mb-8 max-w-325 text-5xl font-medium tracking-tighter md:text-8xl lg:text-8xl">
 					{headlineText.split("").map((char, index) => (
 						<motion.span
 							key={index}
@@ -134,9 +134,9 @@ export function Hero(): ReactNode {
 					}}
 					className="text-muted-foreground mx-auto mt-6 max-w-2xl text-2xl leading-12 tracking-tight md:text-3xl"
 				>
-					{/*Acompañamos a tu organización con*/}
+					Acompañamos a tu organización con{" "}
 					<span className="text-foreground bg-ring/10 dark:bg-ring/25 inline-block rounded-md px-2 py-0.5 leading-10">
-						Tecnología
+						tecnología
 					</span>{" "}
 					,{" "}
 					<span className="text-foreground bg-ring/10 dark:bg-ring/25 inline-block rounded-full px-4 py-0.5 leading-10">
@@ -185,8 +185,8 @@ export function Hero(): ReactNode {
 				transition={{ duration: 0.8, ease: easeOut }}
 			>
 				<h2 className="max-w-3xl text-3xl font-medium tracking-tight md:text-5xl lg:text-6xl">
-					Transforma Horas de Trabajo <br />
-					en Mejor Productividad
+					Transforma tu Negocio <br />
+					con Soluciones Digitales a tu Medida
 				</h2>
 				<motion.a
 					href="#"
