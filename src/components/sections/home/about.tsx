@@ -146,7 +146,7 @@ function Header() {
 			transition={{ duration: 0.5 }}
 			className="mb-8 sm:mb-12"
 		>
-			<h1 className="text-4xl font-medium tracking-tight text-neutral-900 sm:text-5xl md:text-6xl dark:text-white">
+			<h1 className="text-foreground text-4xl font-medium tracking-tight sm:text-5xl md:text-6xl">
 				Nuestra Historia
 			</h1>
 		</motion.div>
@@ -155,7 +155,7 @@ function Header() {
 
 function ContentCard({ entry }: { entry: TimelineEntry | undefined }) {
 	return (
-		<div className="relative overflow-hidden rounded-3xl bg-neutral-50 p-6 dark:bg-neutral-900">
+		<div className="bg-foreground relative overflow-hidden rounded-3xl p-6">
 			<div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-12">
 				{/* Left Content */}
 				<div className="flex h-full flex-col justify-between">
@@ -182,12 +182,12 @@ function ContentCard({ entry }: { entry: TimelineEntry | undefined }) {
 							className="space-y-2"
 						>
 							{/* Title */}
-							<h2 className="text-3xl font-medium tracking-tight text-neutral-900 dark:text-white">
+							<h2 className="text-background text-3xl font-medium tracking-tight">
 								{entry?.title}
 							</h2>
 
 							{/* Description */}
-							<p className="max-w-xl text-base leading-relaxed tracking-tight text-neutral-600 dark:text-neutral-400">
+							<p className="text-muted-foreground max-w-xl text-base leading-relaxed tracking-tight">
 								{entry?.description}
 							</p>
 						</motion.div>
@@ -205,7 +205,7 @@ function ContentCard({ entry }: { entry: TimelineEntry | undefined }) {
 							transition={{ duration: 0.3 }}
 							className="relative mx-auto aspect-square max-h-75 w-full lg:mx-0 lg:ml-auto lg:max-w-xs"
 						>
-							<div className="flex h-full w-full items-center justify-center overflow-hidden rounded-md bg-neutral-200 dark:bg-neutral-800">
+							<div className="flex h-full w-full items-center justify-center overflow-hidden rounded-md">
 								<Image
 									width={300}
 									height={300}
@@ -259,9 +259,7 @@ function Timeline({
 							>
 								<div
 									className={`text-xs font-medium transition-colors duration-200 sm:text-sm ${
-										index === activeIndex
-											? "text-neutral-900 dark:text-white"
-											: "text-neutral-400 dark:text-neutral-600"
+										index === activeIndex ? "text-foreground" : "text-muted-foreground"
 									}`}
 								>
 									{entry.title}
@@ -273,11 +271,11 @@ function Timeline({
 					{/* Timeline Bar */}
 					<div className="relative">
 						{/* Background Line */}
-						<div className="absolute top-1/2 right-0 left-0 h-0.5 -translate-y-1/2 bg-neutral-200 dark:bg-neutral-800" />
+						<div className="bg-foreground absolute top-1/2 right-0 left-0 h-0.5 -translate-y-1/2" />
 
 						{/* Progress Line */}
 						<motion.div
-							className="absolute top-1/2 left-0 h-0.5 -translate-y-1/2 bg-neutral-900 dark:bg-white"
+							className="bg-muted absolute top-1/2 left-0 h-0.5 -translate-y-1/2"
 							initial={false}
 							animate={{
 								width:
@@ -292,7 +290,7 @@ function Timeline({
 						<div className="relative grid grid-cols-4 gap-8">
 							{TIMELINE_DATA.map((entry, index) => {
 								const isActive = index === activeIndex
-								const isPassed = index <= activeIndex
+								const isPassed = index < activeIndex
 
 								return (
 									<button
@@ -303,9 +301,7 @@ function Timeline({
 										<div className="relative flex w-full justify-start">
 											<motion.div
 												className={`h-3 w-3 rounded-full border-2 transition-colors duration-200 ${
-													isPassed
-														? "border-neutral-900 bg-neutral-900 dark:border-white dark:bg-white"
-														: "border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950"
+													isPassed ? "border-muted bg-muted" : "border-foreground bg-foreground"
 												}`}
 												animate={{
 													scale: isActive ? 1.4 : 1,
@@ -329,9 +325,7 @@ function Timeline({
 							>
 								<div
 									className={`text-xs transition-colors duration-200 sm:text-sm ${
-										index === activeIndex
-											? "font-medium text-neutral-900 dark:text-white"
-											: "text-neutral-400 dark:text-neutral-600"
+										index === activeIndex ? "text-foreground font-medium" : "text-muted-foreground"
 									}`}
 								>
 									{entry.date}
@@ -348,18 +342,18 @@ function Timeline({
 					<button
 						onClick={onPrevious}
 						disabled={activeIndex === 0}
-						className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-300 transition-colors duration-200 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-30 dark:border-neutral-700 dark:hover:bg-neutral-900"
+						className="border-muted-foreground hover:text-background hover:bg-foreground flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-30"
 						aria-label="Previous"
 					>
-						<ChevronLeft className="h-5 w-5 text-neutral-900 dark:text-white" />
+						<ChevronLeft className="h-5 w-5" />
 					</button>
 					<button
 						onClick={onNext}
 						disabled={activeIndex === TIMELINE_DATA.length - 1}
-						className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-300 transition-colors duration-200 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-30 dark:border-neutral-700 dark:hover:bg-neutral-900"
+						className="border-muted-foreground hover:text-background hover:bg-foreground flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-30"
 						aria-label="Next"
 					>
-						<ChevronRight className="h-5 w-5 text-neutral-900 dark:text-white" />
+						<ChevronRight className="h-5 w-5" />
 					</button>
 				</div>
 			)}
@@ -372,9 +366,7 @@ function Timeline({
 						<button key={entry.id} onClick={() => onIndexChange(index)} className="text-left">
 							<div
 								className={`text-xs font-medium transition-colors duration-200 sm:text-sm ${
-									index === activeIndex
-										? "text-neutral-900 dark:text-white"
-										: "text-neutral-400 dark:text-neutral-600"
+									index === activeIndex ? "text-foreground" : "text-muted-foreground"
 								}`}
 							>
 								{entry.title}
@@ -386,11 +378,11 @@ function Timeline({
 				{/* Timeline Bar */}
 				<div className="relative">
 					{/* Background Line */}
-					<div className="absolute top-1/2 right-0 left-0 h-0.5 -translate-y-1/2 bg-neutral-200 dark:bg-neutral-800" />
+					<div className="bg-foreground absolute top-1/2 right-0 left-0 h-0.5 -translate-y-1/2" />
 
 					{/* Progress Line */}
 					<motion.div
-						className="absolute top-1/2 left-0 h-0.5 -translate-y-1/2 bg-neutral-900 sm:hidden dark:bg-white"
+						className="bg-foreground absolute top-1/2 left-0 h-0.5 -translate-y-1/2 sm:hidden"
 						initial={false}
 						animate={{
 							width:
@@ -403,7 +395,7 @@ function Timeline({
 
 					{/* Progress Line - Tablet/Desktop */}
 					<motion.div
-						className="absolute top-1/2 left-0 hidden h-0.5 -translate-y-1/2 bg-neutral-900 sm:block dark:bg-white"
+						className="bg-muted absolute top-1/2 left-0 hidden h-0.5 -translate-y-1/2 sm:block"
 						initial={false}
 						animate={{
 							width:
@@ -418,7 +410,7 @@ function Timeline({
 					<div className="relative grid grid-cols-4 gap-2 sm:gap-4">
 						{TIMELINE_DATA.map((entry, index) => {
 							const isActive = index === activeIndex
-							const isPassed = index <= activeIndex
+							const isPassed = index < activeIndex
 
 							return (
 								<button
@@ -430,9 +422,7 @@ function Timeline({
 									<div className="relative flex w-full justify-start">
 										<motion.div
 											className={`h-3 w-3 rounded-full border-2 transition-colors duration-200 ${
-												isPassed
-													? "border-neutral-900 bg-neutral-900 dark:border-white dark:bg-white"
-													: "border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950"
+												isPassed ? "border-muted bg-muted" : "border-foreground bg-foreground"
 											}`}
 											animate={{
 												scale: isActive ? 1.4 : 1,
@@ -453,8 +443,8 @@ function Timeline({
 							<div
 								className={`w-fit rounded-full border px-2 py-1 text-xs transition-colors duration-200 ${
 									index === activeIndex
-										? "border-neutral-500/20 bg-neutral-900 text-white"
-										: "border-transparent text-neutral-400 dark:text-neutral-600"
+										? "bg-foreground border-foreground/20 text-background"
+										: "text-muted-foreground border-transparent"
 								}`}
 							>
 								{entry.date}
@@ -469,18 +459,18 @@ function Timeline({
 						<button
 							onClick={onPrevious}
 							disabled={activeIndex === 0}
-							className="flex h-8 w-8 items-center justify-center rounded-md border border-neutral-300 transition-colors duration-200 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-30 dark:border-neutral-700 dark:hover:bg-neutral-900"
+							className="border-muted-foreground hover:bg-foreground hover:text-background flex h-8 w-8 items-center justify-center rounded-md border transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-30"
 							aria-label="Previous"
 						>
-							<ChevronLeft className="h-4 w-4 text-neutral-900 dark:text-white" />
+							<ChevronLeft className="h-4 w-4" />
 						</button>
 						<button
 							onClick={onNext}
 							disabled={activeIndex === TIMELINE_DATA.length - 1}
-							className="flex h-8 w-8 items-center justify-center rounded-md border border-neutral-300 transition-colors duration-200 hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-30 dark:border-neutral-700 dark:hover:bg-neutral-900"
+							className="border-muted-foreground hover:bg-foreground hover:text-background flex h-8 w-8 items-center justify-center rounded-md border transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-30"
 							aria-label="Next"
 						>
-							<ChevronRight className="h-4 w-4 text-neutral-900 dark:text-white" />
+							<ChevronRight className="h-4 w-4" />
 						</button>
 					</div>
 				)}

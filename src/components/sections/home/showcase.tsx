@@ -11,28 +11,28 @@ const SHOWCASE_ITEMS = [
 		image:
 			"https://cdn.dribbble.com/userupload/46030284/file/8dfdc9a8b09fdbd99b010c1dcb279841.jpg?resize=1024x1693&vertical=center",
 		height: "h-[400px]",
-		bgColor: "bg-rose-200 dark:bg-rose-900/30",
+		bgColor: "bg-rose-500/30",
 	},
 	{
 		id: 2,
 		image:
 			"https://cdn.dribbble.com/userupload/46029941/file/f3b0e906d38980bf48e008f5542a58b5.jpg?resize=1024x1693&vertical=center",
 		height: "h-[450px]",
-		bgColor: "bg-lime-200 dark:bg-lime-900/30",
+		bgColor: "bg-lime-500/30",
 	},
 	{
 		id: 3,
 		image:
 			"https://cdn.dribbble.com/userupload/45777759/file/acf14657b38cd25e64bb16b4f201bef8.jpg?resize=1024x1529&vertical=center",
 		height: "h-[420px]",
-		bgColor: "bg-blue-200 dark:bg-blue-900/30",
+		bgColor: "bg-blue-500/30",
 	},
 	{
 		id: 4,
 		image:
 			"https://cdn.dribbble.com/userupload/46068721/file/3910087a60fe6f781ddae7c14daf1804.jpg?resize=1024x1589&vertical=center",
 		height: "h-[380px]",
-		bgColor: "bg-neutral-200 dark:bg-neutral-800",
+		bgColor: "bg-neutral-500",
 	},
 ]
 
@@ -99,16 +99,14 @@ export function Showcase() {
 					transition={{ duration: 0.6 }}
 				>
 					<div className="max-w-xl">
-						<p className="mb-4 text-sm text-neutral-600 sm:text-base dark:text-neutral-400">
-							Portafolio
-						</p>
-						<h2 className="mb-8 text-3xl leading-[1.15] font-medium tracking-tight text-neutral-900 sm:mb-10 sm:text-4xl md:text-5xl dark:text-white">
+						<p className="text-muted-foreground mb-2 text-sm sm:text-base">Portafolio</p>
+						<h2 className="text-feature mb-8 text-3xl leading-[1.15] font-medium tracking-tight sm:mb-10 sm:text-4xl md:text-5xl">
 							Proyectos que transforman negocios y equipos.
 						</h2>
 
 						<motion.a
-							href="#"
-							className="group inline-flex w-full items-center justify-center gap-3 rounded-md bg-black py-3 pr-3 pl-5 font-medium text-white transition-all duration-500 ease-out hover:rounded-[50px] hover:shadow-lg sm:w-auto dark:bg-white dark:text-black"
+							href="/portafolio"
+							className="group bg-foreground text-background inline-flex w-full items-center justify-center gap-3 rounded-md py-3 pr-3 pl-5 font-medium transition-all duration-500 ease-out hover:rounded-[50px] hover:shadow-lg sm:w-auto"
 							initial={{ opacity: 0, y: 20 }}
 							whileInView={{ opacity: 1, y: 0 }}
 							whileHover={{ scale: 1.02 }}
@@ -116,7 +114,7 @@ export function Showcase() {
 							transition={{ duration: 0.6, delay: 0.3, ease: easeOut }}
 						>
 							<span>Ver Portafolio Completo</span>
-							<span className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-black transition-all duration-300 group-hover:scale-110 dark:bg-black dark:text-white">
+							<span className="bg-background text-foreground flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 group-hover:scale-110">
 								<ChevronRightIcon className="relative left-px h-4 w-4" />
 							</span>
 						</motion.a>

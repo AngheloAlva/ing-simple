@@ -1,6 +1,6 @@
 "use client"
 
-import { Download, MousePointer, Sparkles } from "lucide-react"
+import { BrainCog, Download, HandPlatter, MousePointer, ScanSearch, Sparkles } from "lucide-react"
 import { motion, useInView } from "motion/react"
 import { useRef } from "react"
 
@@ -10,19 +10,19 @@ const easeOut = [0.16, 1, 0.3, 1] as const
 
 const steps = [
 	{
-		icon: Download,
+		icon: ScanSearch,
 		title: "Diagnóstico",
 		description:
 			"Analizamos tus procesos actuales para identificar oportunidades de mejora y digitalización.",
 	},
 	{
-		icon: MousePointer,
+		icon: HandPlatter,
 		title: "Propuesta",
 		description:
 			"Diseñamos una solución a medida adaptada a tus necesidades, presupuesto y objetivos.",
 	},
 	{
-		icon: Sparkles,
+		icon: BrainCog,
 		title: "Implementación",
 		description:
 			"Desarrollamos e implementamos la solución con acompañamiento continuo hasta lograr resultados.",

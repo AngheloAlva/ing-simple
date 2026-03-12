@@ -1,8 +1,9 @@
 "use client"
 
+import { useEffect, useState, type ReactNode } from "react"
 import { ChevronRightIcon } from "lucide-react"
 import { motion } from "motion/react"
-import { useEffect, useState, type ReactNode } from "react"
+
 import DitherCursor from "../../shared/dither-cursor"
 
 const easeOut = [0.16, 1, 0.3, 1] as const
@@ -56,7 +57,7 @@ export function FinalCTA(): ReactNode {
 					</motion.p>
 
 					<motion.a
-						href="#"
+						href="/contacto"
 						className="group inline-flex w-full items-center justify-center gap-3 rounded-md bg-white py-3 pr-3 pl-5 font-medium text-black transition-all duration-500 ease-out hover:rounded-[50px] hover:shadow-lg sm:w-auto"
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
