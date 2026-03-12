@@ -15,18 +15,17 @@ const fadeInUp = {
 	transition: { duration: 0.8, ease: easeOut },
 }
 
-const productLinks = [
-	{ label: "Chrome Extension", href: "#" },
-	{ label: "Safari Extension", href: "#" },
-	{ label: "API Access", href: "#" },
-	{ label: "Enterprise", href: "#" },
+const servicioLinks = [
+	{ label: "Reportabilidad & Analítica", href: "/servicios/reportabilidad" },
+	{ label: "Capacitaciones", href: "/servicios/capacitaciones" },
+	{ label: "Soluciones Web", href: "/servicios/desarrollo-web" },
+	{ label: "Power Platform", href: "/servicios/power-platform" },
 ]
 
-const companyLinks = [
-	{ label: "About", href: "#" },
-	{ label: "Blog", href: "#" },
-	{ label: "Careers", href: "#" },
-	{ label: "Contact", href: "#" },
+const empresaLinks = [
+	{ label: "Sobre Nosotros", href: "/sobre-nosotros" },
+	{ label: "Portafolio", href: "/portafolio" },
+	{ label: "Contacto", href: "/contacto" },
 ]
 
 const socialLinks = [
@@ -63,17 +62,18 @@ export function Footer(): ReactNode {
 	return (
 		<footer className="bg-accent rounded-tl-4xl rounded-tr-4xl px-6 py-16 text-black md:px-12 lg:px-20">
 			<div className="mx-auto max-w-6xl">
+				{/* Top: Description + Links */}
 				<div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
 					<motion.div className="max-w-md" {...fadeInUp}>
 						<p className="text-lg leading-relaxed text-black/80">
-							Ready to read smarter? TLDR transforms any article into a concise summary, helping you
-							stay informed without the time commitment.
+							Acompañamos a organizaciones en su transformación digital con soluciones simples y
+							efectivas. Tecnología, análisis, desarrollo y capacitación al servicio de tu negocio.
 						</p>
 						<Link
-							href="#"
+							href="/contacto"
 							className="group mt-8 inline-flex items-center gap-3 rounded-md bg-white py-3 pr-3 pl-4 font-medium shadow-lg shadow-black/10 transition-all duration-500 ease-out hover:rounded-[50px] hover:bg-white/90 hover:shadow-xl hover:shadow-black/20"
 						>
-							<span>Get Started Free</span>
+							<span>Conversemos</span>
 							<span className="bg-accent flex h-10 w-10 items-center justify-center rounded-full text-black transition-all duration-300 group-hover:scale-110">
 								<ChevronRightIcon className="relative left-px h-4 w-4" />
 							</span>
@@ -83,10 +83,10 @@ export function Footer(): ReactNode {
 					<div className="grid grid-cols-2 gap-8 lg:justify-items-end">
 						<motion.div {...fadeInUp} transition={{ ...fadeInUp.transition, delay: 0.1 }}>
 							<h4 className="mb-4 text-sm font-semibold tracking-wider text-black/50 uppercase">
-								Product
+								Servicios
 							</h4>
 							<ul className="space-y-3">
-								{productLinks.map((link) => (
+								{servicioLinks.map((link) => (
 									<li key={link.label}>
 										<Link
 											href={link.href}
@@ -100,10 +100,10 @@ export function Footer(): ReactNode {
 						</motion.div>
 						<motion.div {...fadeInUp} transition={{ ...fadeInUp.transition, delay: 0.2 }}>
 							<h4 className="mb-4 text-sm font-semibold tracking-wider text-black/50 uppercase">
-								Company
+								Empresa
 							</h4>
 							<ul className="space-y-3">
-								{companyLinks.map((link) => (
+								{empresaLinks.map((link) => (
 									<li key={link.label}>
 										<Link
 											href={link.href}
@@ -120,15 +120,16 @@ export function Footer(): ReactNode {
 
 				<div className="my-16 h-px bg-black/10" />
 
+				{/* Bottom: Brand + Contact + Social */}
 				<div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
 					<motion.div {...fadeInUp}>
 						<h2 className="text-6xl leading-none font-medium tracking-tight md:text-7xl lg:text-8xl">
-							Reach
+							Ing
 							<br />
-							Out To Us
+							Simple
 						</h2>
 						<p className="mt-8 text-sm text-black/50">
-							© {new Date().getFullYear()} TLDR Technologies Inc.
+							© {new Date().getFullYear()} Ingeniería Simple. Todos los derechos reservados.
 						</p>
 					</motion.div>
 
@@ -139,20 +140,14 @@ export function Footer(): ReactNode {
 							transition={{ ...fadeInUp.transition, delay: 0.1 }}
 						>
 							<div>
-								<h4 className="mb-1 font-semibold">San Francisco</h4>
-								<p className="text-black/70">
-									548 Market St, Suite 95000
-									<br />
-									San Francisco, CA 94104
-									<br />
-									Mon-Fri 9:00 am - 6:00 pm (PST)
-								</p>
+								<h4 className="mb-1 font-semibold">Santiago, Chile</h4>
+								<p className="text-black/70">Lun-Vie 9:00 - 18:00 (CLT)</p>
 							</div>
 							<a
-								href="mailto:hello@tldr.app"
+								href="mailto:contacto@ingsimple.cl"
 								className="inline-block text-lg font-medium underline underline-offset-4 transition-opacity hover:opacity-70"
 							>
-								hello@tldr.app
+								contacto@ingsimple.cl
 							</a>
 						</motion.div>
 

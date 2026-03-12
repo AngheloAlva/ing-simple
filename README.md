@@ -85,7 +85,7 @@ export const siteConfig = {
   tagline: "Your Tagline",
   description: "Your description",
   // ...
-};
+}
 
 export const heroConfig = {
   headline: {
@@ -94,7 +94,7 @@ export const heroConfig = {
     suffix: "Here",
   },
   // ...
-};
+}
 ```
 
 ### Step 2: Update Theme Colors
@@ -103,23 +103,23 @@ Edit `app/globals.css` to change your brand colors:
 
 ```css
 :root {
-  --accent: #ffd900;        /* Your primary brand color */
-  --background: #fafafa;    /* Light mode background */
-  --foreground: #0a0a0a;    /* Light mode text */
+  --accent: #ffd900; /* Your primary brand color */
+  --background: #fafafa; /* Light mode background */
+  --foreground: #0a0a0a; /* Light mode text */
 }
 
 .dark {
-  --background: #0a0a0a;    /* Dark mode background */
-  --foreground: #fafafa;    /* Dark mode text */
+  --background: #0a0a0a; /* Dark mode background */
+  --foreground: #fafafa; /* Dark mode text */
 }
 ```
 
 ### Step 3: Replace Assets
 
-| File | Purpose | Dimensions |
-|------|---------|------------|
-| `app/icon.svg` | Favicon | 32×32 |
-| `app/apple-icon.svg` | Apple touch icon | 180×180 |
+| File                 | Purpose          | Dimensions |
+| -------------------- | ---------------- | ---------- |
+| `app/icon.svg`       | Favicon          | 32×32      |
+| `app/apple-icon.svg` | Apple touch icon | 180×180    |
 
 ### Step 4: Toggle Features
 
@@ -127,34 +127,35 @@ In `lib/config.ts`, enable/disable features:
 
 ```ts
 export const features = {
-  smoothScroll: true,    // Lenis smooth scrolling
-  darkMode: true,        // Dark mode toggle
-  ditherCursor: true,    // WebGL cursor effect
-  statsSection: true,    // Stats/metrics section
-};
+  smoothScroll: true, // Lenis smooth scrolling
+  darkMode: true, // Dark mode toggle
+  ditherCursor: true, // WebGL cursor effect
+  statsSection: true, // Stats/metrics section
+}
 ```
 
 ## 🎯 Section Components
 
 Each section is a standalone component you can customize or remove:
 
-| Component | Description |
-|-----------|-------------|
-| `Hero` | Full-height hero with animated headline & rotating cards |
-| `HowItWorks` | Three-step process with animated cards |
-| `Features` | Feature grid with Lucide icons |
-| `Stats` | Animated counter statistics |
-| `Testimonials` | Horizontal carousel with fade edge |
-| `Pricing` | Two-tier comparison layout |
-| `FAQ` | Accordion with smooth expand/collapse |
-| `FinalCTA` | Full-width CTA with dither cursor effect |
-| `Footer` | Links, contact info, social icons |
+| Component      | Description                                              |
+| -------------- | -------------------------------------------------------- |
+| `Hero`         | Full-height hero with animated headline & rotating cards |
+| `HowItWorks`   | Three-step process with animated cards                   |
+| `Features`     | Feature grid with Lucide icons                           |
+| `Stats`        | Animated counter statistics                              |
+| `Testimonials` | Horizontal carousel with fade edge                       |
+| `Pricing`      | Two-tier comparison layout                               |
+| `FAQ`          | Accordion with smooth expand/collapse                    |
+| `FinalCTA`     | Full-width CTA with dither cursor effect                 |
+| `Footer`       | Links, contact info, social icons                        |
 
 ## ✨ Special Features
 
 ### WebGL Dither Cursor
 
 The template includes a unique WebGL shader-based cursor effect that creates a dithered trail following mouse movement. It's:
+
 - GPU-accelerated for smooth 60fps performance
 - Automatically disabled on mobile devices
 - Configurable colors, size, and intensity
@@ -192,15 +193,15 @@ npm run build
 
 ## 📜 Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run start` | Start production server |
-| `npm run lint` | Run ESLint |
-| `npm run lint:fix` | Fix ESLint errors |
-| `npm run format` | Format with Prettier |
-| `npm run typecheck` | Run TypeScript checks |
+| Command             | Description              |
+| ------------------- | ------------------------ |
+| `npm run dev`       | Start development server |
+| `npm run build`     | Build for production     |
+| `npm run start`     | Start production server  |
+| `npm run lint`      | Run ESLint               |
+| `npm run lint:fix`  | Fix ESLint errors        |
+| `npm run format`    | Format with Prettier     |
+| `npm run typecheck` | Run TypeScript checks    |
 
 ## 📄 License
 

@@ -1,10 +1,17 @@
 "use client"
 
-import React, { useState, useSyncExternalStore, type ReactNode } from "react"
 import { AnimatePresence, motion } from "motion/react"
 import { ArrowUpRight } from "lucide-react"
-import Link from "next/link"
 import Image from "next/image"
+import Link from "next/link"
+import React, {
+	Dispatch,
+	useState,
+	SetStateAction,
+	useSyncExternalStore,
+	type ReactNode,
+} from "react"
+import Logo from "../shared/logo"
 
 const easeOut = [0.16, 1, 0.3, 1] as const
 const easeInOut = [0.65, 0, 0.35, 1] as const
@@ -34,18 +41,18 @@ const menuCards = [
 		id: "services",
 		title: "SERVICIOS",
 		links: [
-			{ label: "Reportabilidad & Analítica", href: "/repotabilidad-analitica", badge: null },
-			{ label: "Capacitaciones", href: "/capacitaciones", badge: null },
-			{ label: "Soluciones Web", href: "/soluciones-web", badge: null },
-			{ label: "Power Platform", href: "/power-platform", badge: null },
+			{ label: "Reportabilidad & Analítica", href: "/servicios/reportabilidad", badge: null },
+			{ label: "Capacitaciones", href: "/servicios/capacitaciones", badge: null },
+			{ label: "Soluciones Web", href: "/servicios/soluciones-web", badge: null },
+			{ label: "Power Platform", href: "/servicios/power-platform", badge: null },
 		],
 	},
 	{
 		id: "resources",
 		title: "RECURSOS",
 		links: [
-			{ label: "Sobre Nosotros", href: "#", badge: null },
-			{ label: "Portafolio", href: "#", badge: null },
+			{ label: "Sobre Nosotros", href: "/sobre-nosotros", badge: null },
+			{ label: "Portafolio", href: "/portafolio", badge: null },
 		],
 	},
 	{
@@ -96,7 +103,13 @@ function GitHubIcon({ className }: { className?: string }): ReactNode {
 	)
 }
 
-function MenuCard({ card }: { card: (typeof menuCards)[number] }): ReactNode {
+function MenuCard({
+	card,
+	setIsMenuOpen,
+}: {
+	card: (typeof menuCards)[number]
+	setIsMenuOpen: Dispatch<SetStateAction<boolean>>
+}): ReactNode {
 	return (
 		<motion.div
 			className="bg-menu-card min-h-50 rounded-2xl p-6 min-[1080px]:min-h-80"
@@ -142,6 +155,7 @@ function MenuCard({ card }: { card: (typeof menuCards)[number] }): ReactNode {
 						<li key={link.label}>
 							<Link
 								href={link.href}
+								onClick={() => setIsMenuOpen(false)}
 								className="group text-background hover:text-background/70 flex items-center justify-between py-4 text-xl font-semibold transition-all duration-300 md:text-2xl"
 							>
 								<span className="flex items-center gap-3 transition-transform duration-300 group-hover:translate-x-1">
@@ -163,7 +177,11 @@ function MenuCard({ card }: { card: (typeof menuCards)[number] }): ReactNode {
 	)
 }
 
-function MobileSignUpButton(): ReactNode {
+function MobileSignUpButton({
+	setIsMenuOpen,
+}: {
+	setIsMenuOpen: Dispatch<SetStateAction<boolean>>
+}): ReactNode {
 	return (
 		<motion.div
 			className="col-span-full flex items-center justify-center gap-2 pt-2"
@@ -177,7 +195,8 @@ function MobileSignUpButton(): ReactNode {
 			}}
 		>
 			<Link
-				href="#"
+				href="/contacto"
+				onClick={() => setIsMenuOpen(false)}
 				className="group bg-accent relative rounded-[3.5px] px-6 py-3 text-xl font-medium tracking-tight text-black transition-all duration-500 hover:rounded-[50px]"
 			>
 				<span
@@ -270,7 +289,9 @@ export function Header(): ReactNode {
 							{/*<span className="text-background text-4xl font-extrabold -tracking-widest">
 								IngSimple
 							</span>*/}
-							<Image src="/logo.svg" alt="Logo IngSimple" width={110} height={50} />
+
+							<Logo className="h-12" classNameIcon="text-accent" classNameText="text-background " />
+							{/*<Image src="/logo.svg" alt="Logo IngSimple" width={110} height={50} />*/}
 						</Link>
 
 						<button
@@ -326,9 +347,9 @@ export function Header(): ReactNode {
 										}}
 									>
 										{menuCards.map((card) => (
-											<MenuCard key={card.id} card={card} />
+											<MenuCard key={card.id} card={card} setIsMenuOpen={setIsMenuOpen} />
 										))}
-										<MobileSignUpButton />
+										<MobileSignUpButton setIsMenuOpen={setIsMenuOpen} />
 									</motion.div>
 								</div>
 							</motion.div>
