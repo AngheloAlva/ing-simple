@@ -305,14 +305,14 @@ const CenterFlow: React.FC<CenterFlowProps> = ({
 				segments.push({
 					id: pulse.id,
 					d:
-						`M ${points[0].x} ${points[0].y}` +
+						`M ${points[0]?.x} ${points[0]?.y}` +
 						points
 							.slice(1)
 							.map((p) => ` L ${p.x} ${p.y}`)
 							.join(""),
 					opacity,
-					startPoint: points[0],
-					endPoint: points[points.length - 1],
+					startPoint: points[0] || { x: 0, y: 0 },
+					endPoint: points[points.length - 1] || { x: 0, y: 0 },
 				})
 			}
 

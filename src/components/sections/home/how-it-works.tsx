@@ -1,6 +1,6 @@
 "use client"
 
-import { BrainCog, Download, HandPlatter, MousePointer, ScanSearch, Sparkles } from "lucide-react"
+import { BrainCog, HandPlatter, ScanSearch } from "lucide-react"
 import { motion, useInView } from "motion/react"
 import { useRef } from "react"
 

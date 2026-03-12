@@ -1,13 +1,7 @@
 "use client"
 
+import { ChevronRightIcon, CodeIcon, GlobeIcon, MonitorSmartphoneIcon } from "lucide-react"
 import { easeOut, motion } from "motion/react"
-import {
-	ArrowRight,
-	ChevronRightIcon,
-	CodeIcon,
-	GlobeIcon,
-	MonitorSmartphoneIcon,
-} from "lucide-react"
 import type { ComponentType } from "react"
 
 const cards: {

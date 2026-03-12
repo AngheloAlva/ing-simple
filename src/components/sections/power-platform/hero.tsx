@@ -179,10 +179,10 @@ function GlowBar() {
 	)
 
 	useFrame((state) => {
-		if (materialRef.current) {
+		if (materialRef.current?.uniforms.uTime) {
 			materialRef.current.uniforms.uTime.value = state.clock.elapsedTime
 		}
-		if (bgMaterialRef.current) {
+		if (bgMaterialRef.current?.uniforms.uTime) {
 			bgMaterialRef.current.uniforms.uTime.value = state.clock.elapsedTime
 		}
 	})
@@ -311,13 +311,15 @@ function GlowParticles() {
 
 		const positionAttr = particlesRef.current.geometry.attributes.position
 		const opacityAttr = particlesRef.current.geometry.attributes.aOpacity
-		const posArray = positionAttr?.array as Float32Array
-		const opacityArray = opacityAttr?.array as Float32Array
+		if (!positionAttr || !opacityAttr) return
+
+		const posArray = positionAttr.array as Float32Array
+		const opacityArray = opacityAttr.array as Float32Array
 		const velocities = velocitiesRef.current
 		const lifetimes = lifetimesRef.current
 
 		for (let i = 0; i < particleCount; i++) {
-			const currentLifetime = lifetimes[i] || 0 + 0.012
+			const currentLifetime = (lifetimes[i] ?? 0) + 0.012
 			const newLifetime = currentLifetime > 1 ? 0 : currentLifetime
 			lifetimes[i] = newLifetime
 
@@ -333,12 +335,14 @@ function GlowParticles() {
 				velocities[i * 3 + 1] = ((((i + state.clock.elapsedTime) * 0.786) % 1.0) - 0.4) * 0.006
 			}
 
-			posArray[i * 3] += velocities[i * 3]
-			posArray[i * 3 + 1] +=
-				velocities[i * 3 + 1] + Math.sin(state.clock.elapsedTime * 2 + i * 0.5) * 0.0008
-			posArray[i * 3 + 2] += velocities[i * 3 + 2]
+			posArray[i * 3] = (posArray[i * 3] ?? 0) + velocities[i * 3]!
+			posArray[i * 3 + 1] =
+				(posArray[i * 3 + 1] ?? 0) +
+				velocities[i * 3 + 1]! +
+				Math.sin(state.clock.elapsedTime * 2 + i * 0.5) * 0.0008
+			posArray[i * 3 + 2] = (posArray[i * 3 + 2] ?? 0) + velocities[i * 3 + 2]!
 
-			const dist = Math.abs(posArray[i * 3])
+			const dist = Math.abs(posArray[i * 3]!)
 			opacityArray[i] = Math.max(0, 1.0 - dist / fadeDistance)
 		}
 
