@@ -429,7 +429,8 @@ const ModalCards = ({
 												<div className="mt-6 flex gap-3">
 													{selectedCard.liveUrl && (
 														<motion.a
-															href="#"
+															target="_blank"
+															href={selectedCard.liveUrl}
 															className="group bg-foreground shadow-foreground/25 hover:shadow-foreground/40 text-background inline-flex w-fit items-center justify-center gap-3 rounded-md py-1.5 pr-3 pl-5 font-medium shadow-md transition-all duration-500 ease-out hover:rounded-[50px] sm:w-auto"
 															initial={{ opacity: 0, y: 5 }}
 															whileInView={{ opacity: 1, y: 0 }}
@@ -457,7 +458,8 @@ const ModalCards = ({
 													)}
 													{selectedCard.githubUrl && (
 														<motion.a
-															href="#"
+															target="_blank"
+															href={selectedCard.githubUrl}
 															className="group bg-background shadow-background/25 hover:shadow-background/40 text-foreground border-foreground inline-flex w-fit items-center justify-center gap-3 rounded-md border py-1.5 pr-3 pl-5 font-medium shadow-md transition-all duration-500 ease-out hover:rounded-[50px] sm:w-auto"
 															initial={{ opacity: 0, y: 5 }}
 															whileInView={{ opacity: 1, y: 0 }}
