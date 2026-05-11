@@ -28,7 +28,7 @@ const TIMELINE_DATA: TimelineEntry[] = [
 		year: "2023",
 		description:
 			"Comenzamos transformando datos en decisiones. Nuestros primeros dashboards y reportes en Power BI ayudaron a empresas a visualizar su información de forma clara y accionable.",
-		image: "/svg/placeholder.svg",
+		image: "/img/about/power-bi.png",
 	},
 	{
 		id: 2,
@@ -38,7 +38,7 @@ const TIMELINE_DATA: TimelineEntry[] = [
 		year: "2024",
 		description:
 			"Escalamos hacia Power Apps, Power Automate y SharePoint. Empezamos a digitalizar formularios, automatizar flujos y reemplazar procesos manuales con soluciones rápidas y escalables.",
-		image: "/svg/placeholder.svg",
+		image: "/img/about/power-platform.png",
 	},
 	{
 		id: 3,
@@ -48,7 +48,7 @@ const TIMELINE_DATA: TimelineEntry[] = [
 		year: "2024",
 		description:
 			"Abrimos nuestra línea de formación. Cursos prácticos de Power BI, Power Apps y Excel avanzado adaptados al nivel de cada equipo, con ejercicios reales y acompañamiento continuo.",
-		image: "/svg/placeholder.svg",
+		image: "/img/about/training.png",
 	},
 	{
 		id: 4,
@@ -58,7 +58,7 @@ const TIMELINE_DATA: TimelineEntry[] = [
 		year: "2025",
 		description:
 			"Incorporamos el desarrollo de sitios web modernos y funcionales. Landing pages, sitios corporativos y portales enfocados en experiencia de usuario y resultados concretos.",
-		image: "/svg/placeholder.svg",
+		image: "/img/about/web.png",
 	},
 ]
 
@@ -168,7 +168,7 @@ function ContentCard({ entry }: { entry: TimelineEntry | undefined }) {
 							transition={{ duration: 0.3 }}
 						>
 							{/* Year */}
-							<div className="text-sm font-medium text-purple-500 sm:text-base">{entry?.year}</div>
+							<div className="text-accent text-sm font-medium sm:text-base">{entry?.year}</div>
 						</motion.div>
 					</AnimatePresence>
 
@@ -203,16 +203,27 @@ function ContentCard({ entry }: { entry: TimelineEntry | undefined }) {
 							animate={{ opacity: 1, scale: 1 }}
 							exit={{ opacity: 0, scale: 0.9 }}
 							transition={{ duration: 0.3 }}
-							className="relative mx-auto aspect-square max-h-75 w-full lg:mx-0 lg:ml-auto lg:max-w-xs"
+							className="relative mx-auto aspect-square max-h-120 w-full lg:mx-0 lg:ml-auto lg:max-w-sm"
 						>
-							<div className="flex h-full w-full items-center justify-center overflow-hidden rounded-md">
+							<div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-2xl">
 								<Image
-									width={300}
+									width={320}
 									height={300}
 									src={entry?.image || ""}
 									alt={entry?.title || ""}
-									className="h-3/4 w-3/4 object-contain"
+									className="h-full w-full object-cover grayscale-75"
 								/>
+								<svg className="pointer-events-none absolute inset-0 z-10 h-full w-full opacity-40">
+									<filter id={`about-noise-${entry?.id}`}>
+										<feTurbulence
+											type="fractalNoise"
+											baseFrequency="0.65"
+											numOctaves="3"
+											stitchTiles="stitch"
+										/>
+									</filter>
+									<rect width="100%" height="100%" filter={`url(#about-noise-${entry?.id})`} />
+								</svg>
 							</div>
 						</motion.div>
 					</AnimatePresence>
@@ -259,7 +270,7 @@ function Timeline({
 							>
 								<div
 									className={`text-xs font-medium transition-colors duration-200 sm:text-sm ${
-										index === activeIndex ? "text-foreground" : "text-muted-foreground"
+										index === activeIndex ? "text-accent" : "text-muted-accent"
 									}`}
 								>
 									{entry.title}
@@ -271,7 +282,7 @@ function Timeline({
 					{/* Timeline Bar */}
 					<div className="relative">
 						{/* Background Line */}
-						<div className="bg-foreground absolute top-1/2 right-0 left-0 h-0.5 -translate-y-1/2" />
+						<div className="bg-accent absolute top-1/2 right-0 left-0 h-0.5 -translate-y-1/2" />
 
 						{/* Progress Line */}
 						<motion.div
@@ -301,7 +312,7 @@ function Timeline({
 										<div className="relative flex w-full justify-start">
 											<motion.div
 												className={`h-3 w-3 rounded-full border-2 transition-colors duration-200 ${
-													isPassed ? "border-muted bg-muted" : "border-foreground bg-foreground"
+													isPassed ? "border-muted bg-muted" : "border-accent bg-accent"
 												}`}
 												animate={{
 													scale: isActive ? 1.4 : 1,
@@ -325,7 +336,7 @@ function Timeline({
 							>
 								<div
 									className={`text-xs transition-colors duration-200 sm:text-sm ${
-										index === activeIndex ? "text-foreground font-medium" : "text-muted-foreground"
+										index === activeIndex ? "text-accent font-medium" : "text-muted-accent"
 									}`}
 								>
 									{entry.date}
@@ -342,7 +353,7 @@ function Timeline({
 					<button
 						onClick={onPrevious}
 						disabled={activeIndex === 0}
-						className="border-muted-foreground hover:text-background hover:bg-foreground flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-30"
+						className="border-muted-accent hover:text-background hover:bg-accent flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-30"
 						aria-label="Previous"
 					>
 						<ChevronLeft className="h-5 w-5" />
@@ -350,7 +361,7 @@ function Timeline({
 					<button
 						onClick={onNext}
 						disabled={activeIndex === TIMELINE_DATA.length - 1}
-						className="border-muted-foreground hover:text-background hover:bg-foreground flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-30"
+						className="border-muted-accent hover:text-background hover:bg-accent flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-30"
 						aria-label="Next"
 					>
 						<ChevronRight className="h-5 w-5" />
@@ -366,7 +377,7 @@ function Timeline({
 						<button key={entry.id} onClick={() => onIndexChange(index)} className="text-left">
 							<div
 								className={`text-xs font-medium transition-colors duration-200 sm:text-sm ${
-									index === activeIndex ? "text-foreground" : "text-muted-foreground"
+									index === activeIndex ? "text-accent" : "text-muted-accent"
 								}`}
 							>
 								{entry.title}
@@ -378,11 +389,11 @@ function Timeline({
 				{/* Timeline Bar */}
 				<div className="relative">
 					{/* Background Line */}
-					<div className="bg-foreground absolute top-1/2 right-0 left-0 h-0.5 -translate-y-1/2" />
+					<div className="bg-accent absolute top-1/2 right-0 left-0 h-0.5 -translate-y-1/2" />
 
 					{/* Progress Line */}
 					<motion.div
-						className="bg-foreground absolute top-1/2 left-0 h-0.5 -translate-y-1/2 sm:hidden"
+						className="bg-accent absolute top-1/2 left-0 h-0.5 -translate-y-1/2 sm:hidden"
 						initial={false}
 						animate={{
 							width:
@@ -422,7 +433,7 @@ function Timeline({
 									<div className="relative flex w-full justify-start">
 										<motion.div
 											className={`h-3 w-3 rounded-full border-2 transition-colors duration-200 ${
-												isPassed ? "border-muted bg-muted" : "border-foreground bg-foreground"
+												isPassed ? "border-muted bg-muted" : "border-accent bg-accent"
 											}`}
 											animate={{
 												scale: isActive ? 1.4 : 1,
@@ -443,8 +454,8 @@ function Timeline({
 							<div
 								className={`w-fit rounded-full border px-2 py-1 text-xs transition-colors duration-200 ${
 									index === activeIndex
-										? "bg-foreground border-foreground/20 text-background"
-										: "text-muted-foreground border-transparent"
+										? "bg-accent border-accent/20 text-background"
+										: "text-muted-accent border-transparent"
 								}`}
 							>
 								{entry.date}
@@ -459,7 +470,7 @@ function Timeline({
 						<button
 							onClick={onPrevious}
 							disabled={activeIndex === 0}
-							className="border-muted-foreground hover:bg-foreground hover:text-background flex h-8 w-8 items-center justify-center rounded-md border transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-30"
+							className="border-muted-accent hover:bg-accent hover:text-background flex h-8 w-8 items-center justify-center rounded-md border transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-30"
 							aria-label="Previous"
 						>
 							<ChevronLeft className="h-4 w-4" />
@@ -467,7 +478,7 @@ function Timeline({
 						<button
 							onClick={onNext}
 							disabled={activeIndex === TIMELINE_DATA.length - 1}
-							className="border-muted-foreground hover:bg-foreground hover:text-background flex h-8 w-8 items-center justify-center rounded-md border transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-30"
+							className="border-muted-accent hover:bg-accent hover:text-background flex h-8 w-8 items-center justify-center rounded-md border transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-30"
 							aria-label="Next"
 						>
 							<ChevronRight className="h-4 w-4" />

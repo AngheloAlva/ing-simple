@@ -1,7 +1,7 @@
 "use client"
 
-import { ChevronDown, ChevronRightIcon } from "lucide-react"
 import { AnimatePresence, motion, useInView } from "motion/react"
+import { ChevronDown, ChevronRightIcon } from "lucide-react"
 import { useRef, useState, type ReactNode } from "react"
 
 const easeOut = [0.16, 1, 0.3, 1] as const
@@ -137,10 +137,10 @@ export function FAQ(): ReactNode {
 					</p>
 					<a
 						href="mailto:contacto@ingsimple.cl"
-						className="group bg-background text-foreground inline-flex items-center gap-3 rounded-md py-3 pr-3 pl-5 font-medium shadow-lg transition-all duration-500 ease-out hover:rounded-[50px]"
+						className="group bg-ring inline-flex items-center gap-3 rounded-md py-3 pr-3 pl-5 font-medium text-white shadow-lg transition-all duration-500 ease-out hover:rounded-[50px]"
 					>
 						<span>Contáctanos</span>
-						<span className="bg-foreground text-background flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 group-hover:scale-110">
+						<span className="text-ring flex h-10 w-10 items-center justify-center rounded-full bg-white transition-all duration-300 group-hover:scale-110">
 							<ChevronRightIcon className="relative left-px h-4 w-4" />
 						</span>
 					</a>

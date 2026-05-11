@@ -10,6 +10,7 @@ import React, {
 	useSyncExternalStore,
 	type ReactNode,
 } from "react"
+
 import Logo from "../shared/logo"
 
 const easeOut = [0.16, 1, 0.3, 1] as const
@@ -111,7 +112,7 @@ function MenuCard({
 }): ReactNode {
 	return (
 		<motion.div
-			className="bg-menu-card min-h-50 rounded-2xl p-6 min-[1080px]:min-h-80"
+			className="min-h-50 rounded-2xl bg-white p-6 min-[1080px]:min-h-80"
 			variants={{
 				hidden: { opacity: 0, y: 30 },
 				visible: {
@@ -121,7 +122,7 @@ function MenuCard({
 				},
 			}}
 		>
-			<span className="text-background/50 text-xs font-medium tracking-widest uppercase">
+			<span className="text-xs font-medium tracking-widest text-black/50 uppercase">
 				{card.title}
 			</span>
 
@@ -129,7 +130,7 @@ function MenuCard({
 				<div className="mt-6 flex h-[calc(100%-2rem)] flex-col justify-between pb-4">
 					<Link
 						href="mailto:contacto@ingsimple.cl"
-						className="text-background hover:text-background/70 text-xl font-semibold transition-colors md:text-2xl"
+						className="text-xl font-semibold text-black transition-colors hover:text-black/70 md:text-2xl"
 					>
 						contacto@ingsimple.cl
 					</Link>
@@ -139,7 +140,7 @@ function MenuCard({
 								key={label}
 								href={href}
 								aria-label={label}
-								className="bg-background/10 text-background hover:bg-background/20 flex h-12 w-12 items-center justify-center rounded-full transition-all duration-300 hover:scale-110"
+								className="flex h-12 w-12 items-center justify-center rounded-full bg-black/10 text-black transition-all duration-300 hover:scale-110 hover:bg-black/20"
 							>
 								<Icon className="h-5 w-5" />
 							</a>
@@ -155,7 +156,7 @@ function MenuCard({
 							<Link
 								href={link.href}
 								onClick={() => setIsMenuOpen(false)}
-								className="group text-background hover:text-background/70 flex items-center justify-between py-4 text-xl font-semibold transition-all duration-300 md:text-2xl"
+								className="group flex items-center justify-between py-4 text-xl font-semibold text-black transition-all duration-300 hover:text-black/70 md:text-2xl"
 							>
 								<span className="flex items-center gap-3 transition-transform duration-300 group-hover:translate-x-1">
 									{link.label}
@@ -167,7 +168,7 @@ function MenuCard({
 								</span>
 								<ArrowUpRight className="h-5 w-5 opacity-50 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" />
 							</Link>
-							{index < card.links.length - 1 && <div className="bg-background/10 h-px" />}
+							{index < card.links.length - 1 && <div className="h-px bg-black/10" />}
 						</li>
 					))}
 				</ul>
@@ -276,7 +277,7 @@ export function Header(): ReactNode {
 				}}
 			>
 				<motion.nav
-					className="bg-foreground flex max-w-6xl flex-col overflow-hidden rounded-md border border-neutral-200/10 shadow-2xl/20"
+					className="bg-ring flex max-w-6xl flex-col overflow-hidden rounded-md border border-neutral-200/10 shadow-2xl/20"
 					initial={false}
 					animate={{
 						width: isMenuOpen ? "100%" : hasScrolled ? "56rem" : "42rem",
@@ -285,16 +286,11 @@ export function Header(): ReactNode {
 				>
 					<div className="flex w-full items-center justify-between py-1 pr-2 pl-4">
 						<Link href="/">
-							{/*<span className="text-background text-4xl font-extrabold -tracking-widest">
-								IngSimple
-							</span>*/}
-
-							<Logo className="h-12" classNameIcon="text-accent" classNameText="text-background " />
-							{/*<Image src="/logo.svg" alt="Logo IngSimple" width={110} height={50} />*/}
+							<Logo className="h-12" classNameIcon="text-accent" classNameText="text-white " />
 						</Link>
 
 						<button
-							className="text-background/80 hover:text-background flex h-full cursor-pointer items-center gap-2 rounded-[3.5px] px-2 transition-colors hover:bg-white/10"
+							className="flex h-full cursor-pointer items-center gap-2 rounded-[3.5px] px-2 text-white/80 transition-colors hover:bg-white/10 hover:text-white"
 							onClick={() => setIsMenuOpen(!isMenuOpen)}
 						>
 							<HamburgerIcon isOpen={isMenuOpen} />

@@ -4,6 +4,7 @@ import { MissionVision } from "@/components/sections/nosotros/mission-vision"
 import { NosotrosHero } from "@/components/sections/nosotros/hero"
 import { NosotrosCta } from "@/components/sections/nosotros/cta"
 import { Values } from "@/components/sections/nosotros/values"
+import { Team } from "@/components/sections/nosotros/team"
 import About from "@/components/sections/home/about"
 
 import type { ReactNode } from "react"
@@ -22,6 +23,7 @@ export default function SobreNosotrosPage(): ReactNode {
 			<NosotrosHero />
 			<MissionVision />
 			<Values />
+			<Team />
 			<About displayNavigation={true} />
 			<NosotrosCta />
 		</main>

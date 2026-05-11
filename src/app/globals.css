@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
 	--background: #ffffff;
@@ -124,4 +125,22 @@ body {
 
 .scrollbar-hide::-webkit-scrollbar {
 	display: none;
+}
+
+@keyframes halo-cw {
+	from {
+		rotate: 0deg;
+	}
+	to {
+		rotate: 360deg;
+	}
+}
+
+@keyframes halo-ccw {
+	from {
+		rotate: 0deg;
+	}
+	to {
+		rotate: -360deg;
+	}
 }

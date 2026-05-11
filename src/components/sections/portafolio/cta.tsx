@@ -56,7 +56,6 @@ export function PortfolioCTA() {
 						className="group inline-flex w-full items-center justify-center gap-3 rounded-md bg-white py-3 pr-3 pl-5 font-medium text-black transition-all duration-500 ease-out hover:rounded-[50px] hover:shadow-lg sm:w-auto"
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
-						whileHover={{ scale: 1.02 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6, delay: 0.3, ease: easeOut }}
 					>
