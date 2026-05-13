@@ -3,6 +3,7 @@
 import { AnimatePresence } from "motion/react"
 
 import { FilterBar } from "./filter-bar"
+import { FlagshipProjectCard } from "./flagship-project-card"
 import { GridHeader } from "./grid-header"
 import { LoadMoreButton } from "./load-more-button"
 import { ProjectCard } from "./project-card"
@@ -23,9 +24,13 @@ export function PortfolioProjectGrid() {
 
 				<div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
 					<AnimatePresence mode="popLayout" initial={false}>
-						{visible.map((p) => (
-							<ProjectCard key={p.id} project={p} onSelect={open} />
-						))}
+						{visible.map((p) =>
+							p.isFlagship && p.caseStudy ? (
+								<FlagshipProjectCard key={p.id} project={p} />
+							) : (
+								<ProjectCard key={p.id} project={p} onSelect={open} />
+							)
+						)}
 					</AnimatePresence>
 				</div>
 

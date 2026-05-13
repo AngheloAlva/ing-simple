@@ -4,6 +4,56 @@ export type ProjectCategory =
 	| "capacitaciones"
 	| "reportabilidad"
 
+export interface CaseStudyMetric {
+	value: string
+	label: string
+	caption?: string
+}
+
+export interface CaseStudyTechItem {
+	name: string
+	reason: string
+}
+
+export interface CaseStudyFeature {
+	title: string
+	description: string
+}
+
+export interface CaseStudyTestimonial {
+	quote: string
+	author: string
+	role: string
+	company: string
+}
+
+export type CaseStudyMilestoneIcon = "kickoff" | "build" | "beta" | "launch" | "current"
+
+export interface CaseStudyMilestone {
+	date: string
+	title: string
+	description: string
+	icon: CaseStudyMilestoneIcon
+	isCurrent?: boolean
+}
+
+export interface CaseStudy {
+	pitch: string
+	role: string
+	duration: string
+	inProductionSince: string
+	clientName: string
+	clientIndustry: string
+	problem: string[]
+	solution: string[]
+	architectureDescription: string
+	techStackDetailed: CaseStudyTechItem[]
+	features: CaseStudyFeature[]
+	metrics: CaseStudyMetric[]
+	timeline?: CaseStudyMilestone[]
+	testimonial?: CaseStudyTestimonial
+}
+
 export interface ProjectData {
 	id: string
 	imageUrl: string
@@ -15,6 +65,8 @@ export interface ProjectData {
 	liveUrl?: string
 	githubUrl?: string
 	gradientColor?: string
+	isFlagship?: boolean
+	caseStudy?: CaseStudy
 }
 
 export const CATEGORY_LABELS: Record<"todos" | ProjectCategory, string> = {
@@ -50,7 +102,163 @@ export const portfolioProjects: ProjectData[] = [
 			"Zod",
 		],
 		liveUrl: "https://otc360.cl",
-		gradientColor: "#6366f1",
+		gradientColor: "#0f766e",
+		isFlagship: true,
+		caseStudy: {
+			pitch:
+				"Plataforma de control operacional que reemplazó papel, correos y Excel por un único sistema para gestionar órdenes de trabajo, permisos, planes de mantenimiento y carpetas de contratistas, con indicadores en vivo.",
+			role: "Diseño, frontend, backend, infraestructura y soporte continuo",
+			duration: "≈3 meses de desarrollo, con visitas en planta en Concepción",
+			inProductionSince: "Abril 2025",
+			clientName: "OTC — Oleoducto Trasandino Chile",
+			clientIndustry: "Recepción, almacenamiento y transporte de petróleo",
+			problem: [
+				"OTC opera la recepción, almacenamiento y transporte de petróleo a través de un oleoducto transandino entre Chile y Argentina, atendiendo a clientes como ENAP. En planta conviven el equipo interno y múltiples empresas contratistas trabajando cada día.",
+				"Antes de OTC 360, el control operacional vivía repartido en tres lugares: papel para libros de obra y permisos de trabajo, correo para coordinar requerimientos, y Excel para el resto. Las carpetas de arranque con documentación de contratistas no tenían un repositorio único; los equipos y las OTs se gestionaban en MP10; los indicadores se armaban a mano cada vez que alguien los pedía.",
+				"El resultado: trazabilidad débil de quién trabajó, qué se hizo, con qué permiso y en qué fecha, y prácticamente nula visibilidad consolidada para gerencia.",
+			],
+			solution: [
+				"OTC 360 unifica el ciclo completo de trabajo en una sola plataforma web, accesible tanto para el equipo interno como para las empresas contratistas externas. Cada solicitud, orden, permiso y plan de mantenimiento vive en el mismo sistema, con la documentación de respaldo asociada y los actores correctamente identificados.",
+				"La plataforma integra cerca de 20 módulos que cubren toda la operación end-to-end: gestión de equipos y ubicaciones con jerarquía, órdenes de trabajo, permisos, planes de mantenimiento preventivo, programación visual tipo Gantt, control de contratistas, indicadores y reportería, auditoría y trazabilidad, entre otros. Todo conectado nativamente — sin integraciones frágiles, sin planillas paralelas, sin exportar datos para analizarlos afuera.",
+				"Hoy la plataforma la usan en promedio decenas de personas al día, con peaks de ~80 usuarios en una jornada alta, mezclando staff de OTC y contratistas externos en el mismo flujo.",
+			],
+			architectureDescription:
+				"Frontend en Next.js con TypeScript estricto, autenticación por sesión con Better Auth, persistencia en PostgreSQL vía Prisma, almacenamiento de documentos en Azure Blob Storage —aprovechando el tenant Microsoft que el cliente ya tenía— y generación de PDFs server-side para reportes y permisos. El módulo de indicadores se construye con Recharts a partir de queries SQL que cruzan OTs, planes y solicitudes en vivo.",
+			techStackDetailed: [
+				{
+					name: "Next.js + TypeScript",
+					reason:
+						"App Router para mezclar páginas server-rendered (listados grandes, dashboards) con interacciones cliente, y tipos estrictos en cada capa para reducir bugs en una operación crítica.",
+				},
+				{
+					name: "Prisma + PostgreSQL",
+					reason:
+						"Modelo relacional limpio para entidades fuertemente vinculadas (OTs ↔ permisos ↔ planes ↔ usuarios) y migraciones versionadas para iterar sin romper datos en producción.",
+				},
+				{
+					name: "Better Auth",
+					reason:
+						"Sesiones server-side con control completo del flujo de invitaciones a contratistas externos, sin lock-in a un proveedor SaaS de identidad.",
+				},
+				{
+					name: "Azure Blob Storage",
+					reason:
+						"OTC ya operaba sobre tenant Microsoft, así que la documentación de carpetas de arranque queda dentro del mismo dominio de seguridad y respaldo del cliente.",
+				},
+				{
+					name: "TanStack Query",
+					reason:
+						"Cache, revalidación e invalidaciones quirúrgicas para tablas grandes de OTs y permisos que se editan concurrentemente entre internos y contratistas.",
+				},
+				{
+					name: "Recharts",
+					reason:
+						"Gráficos componibles para el módulo de indicadores, que se arma dinámicamente cruzando OTs, planes de mantenimiento y solicitudes.",
+				},
+				{
+					name: "React PDF + Zod",
+					reason:
+						"Permisos y reportes oficiales generados server-side a partir de datos validados extremo a extremo, listos para imprimir o adjuntar.",
+				},
+				{
+					name: "Zustand",
+					reason:
+						"Estado UI ligero (filtros activos, vistas, drawers) sin acoplar a la capa de datos remota.",
+				},
+			],
+			features: [
+				{
+					title: "Órdenes de Trabajo",
+					description:
+						"Ciclo completo de creación, asignación, ejecución y cierre, con la documentación y permisos asociados en el mismo registro.",
+				},
+				{
+					title: "Carpetas de Arranque",
+					description:
+						"Repositorio único de documentación de contratistas, trabajadores y equipos, accesible para auditoría antes de habilitar trabajos en planta.",
+				},
+				{
+					title: "Permisos de Trabajo",
+					description:
+						"Reemplazo digital del libro de obras en papel, con generación de PDF firmable y vinculación directa a la OT que lo origina.",
+				},
+				{
+					title: "Planes de Mantenimiento",
+					description:
+						"Programación recurrente de mantenciones preventivas, con derivación automática a OTs cuando corresponde ejecutar.",
+				},
+				{
+					title: "Solicitudes de Trabajo",
+					description:
+						"Canal único para que internos y contratistas levanten requerimientos, con seguimiento de estado y conversión a OT.",
+				},
+				{
+					title: "Indicadores",
+					description:
+						"Dashboard tipo Power BI alimentado en tiempo real por OTs, planes de mantenimiento y solicitudes, sin extracciones manuales.",
+				},
+			],
+			metrics: [
+				{
+					value: "~80",
+					label: "usuarios en día pico",
+					caption: "Equipo interno + contratistas externos",
+				},
+				{
+					value: "100+",
+					label: "OTs por mes",
+					caption: "Promedio reciente (enero–abril 2026)",
+				},
+				{
+					value: "20",
+					label: "módulos integrados",
+					caption: "OTs, carpetas, permisos, planes, solicitudes, indicadores",
+				},
+				{
+					value: "13+ meses",
+					label: "en producción continua",
+					caption: "Operación desde abril 2025",
+				},
+			],
+			timeline: [
+				{
+					date: "Enero 2025",
+					title: "Kickoff & discovery",
+					description:
+						"Primeras reuniones con OTC en Concepción para mapear procesos, dolores actuales y entender la operación en planta.",
+					icon: "kickoff",
+				},
+				{
+					date: "Feb – Mar 2025",
+					title: "Desarrollo y visitas en planta",
+					description:
+						"Construcción de los módulos centrales con iteraciones quincenales y visitas presenciales al sitio.",
+					icon: "build",
+				},
+				{
+					date: "Marzo 2025",
+					title: "Beta interna",
+					description:
+						"Validación del flujo completo de OTs, permisos y planes con usuarios piloto del equipo OTC.",
+					icon: "beta",
+				},
+				{
+					date: "Abril 2025",
+					title: "Lanzamiento a producción",
+					description:
+						"Despliegue público, onboarding de contratistas externos y activación del módulo de indicadores.",
+					icon: "launch",
+				},
+				{
+					date: "Hoy",
+					title: "13+ meses en operación",
+					description:
+						"Soporte continuo, iteración de funcionalidades y crecimiento gradual de usuarios y módulos en uso.",
+					icon: "current",
+					isCurrent: true,
+				},
+			],
+		},
 	},
 	{
 		id: "busanc",
