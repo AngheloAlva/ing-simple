@@ -1,19 +1,23 @@
 import { BetterAuthIcon } from "@/components/icons/better-auth"
+import CloudinaryIcon from "@/components/icons/cloudinary"
+import TypeScriptIcon from "@/components/icons/typescript"
 import PostgreSQLIcon from "@/components/icons/postgresql"
 import TurborepoIcon from "@/components/icons/turborepo"
 import ShadcnuiIcon from "@/components/icons/shadcn-ui"
 import NextIntlIcon from "@/components/icons/next-intl"
 import { NestJSIcon } from "@/components/icons/nest-js"
+import DrizzleORMIcon from "@/components/icons/drizzle"
 import TanStackIcon from "@/components/icons/tanstack"
 import RechartsIcon from "@/components/icons/recharts"
 import ZustandIcon from "@/components/icons/zustand"
 import NextjsIcon from "@/components/icons/next-js"
 import PrismaIcon from "@/components/icons/prisma"
 import ResendIcon from "@/components/icons/resend"
+import VercelIcon from "@/components/icons/vercel"
 import AzureIcon from "@/components/icons/azure"
+import MoneyIcon from "@/components/icons/money"
 import GsapIcon from "@/components/icons/gsap"
 import PDFIcon from "@/components/icons/pdf"
-import VercelIcon from "@/components/icons/vercel"
 
 interface TechBrand {
 	icon: (props: React.SVGProps<SVGSVGElement>) => React.ReactElement
@@ -82,6 +86,22 @@ const TECH_BRANDS: { match: string[]; brand: TechBrand }[] = [
 		brand: {
 			icon: (props: React.SVGProps<SVGSVGElement>) => <TanStackIcon {...props} />,
 			background: "#6bf363",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["transbank"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <MoneyIcon {...props} />,
+			background: "#6bf363",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["drizzle"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <DrizzleORMIcon {...props} />,
+			background: "#000000",
 			foreground: "#FFFFFF",
 		},
 	},
@@ -157,6 +177,14 @@ const TECH_BRANDS: { match: string[]; brand: TechBrand }[] = [
 			foreground: "#FFFFFF",
 		},
 	},
+	{
+		match: ["cloudinary"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <CloudinaryIcon {...props} />,
+			background: "#FFFFFF",
+			foreground: "#FFFFFF",
+		},
+	},
 ]
 
 function resolveBrand(name: string): TechBrand {
@@ -166,8 +194,8 @@ function resolveBrand(name: string): TechBrand {
 	return match
 		? match.brand
 		: {
-				icon: (props: React.SVGProps<SVGSVGElement>) => <NextjsIcon {...props} />,
-				background: "#B5651D",
+				icon: (props: React.SVGProps<SVGSVGElement>) => <TypeScriptIcon {...props} />,
+				background: "#FFFFFF",
 				foreground: "#FFFFFF",
 			}
 }

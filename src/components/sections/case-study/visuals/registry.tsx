@@ -53,11 +53,13 @@ export interface CaseStudyVisuals {
 import { otcVisuals } from "./otc"
 import { busancVisuals } from "./busanc"
 import { turismoChileToursVisuals } from "./turismochiletours"
+import { tourSanPedroAtacamaVisuals } from "./toursanpedroatacama"
 
 const REGISTRY: Record<string, CaseStudyVisuals> = {
 	"otc-360": otcVisuals,
 	"busanc": busancVisuals,
 	"turismochiletours": turismoChileToursVisuals,
+	"toursanpedroatacama": tourSanPedroAtacamaVisuals,
 }
 
 export function getCaseStudyVisuals(projectId: string): CaseStudyVisuals | null {

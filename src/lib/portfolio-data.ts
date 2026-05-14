@@ -614,6 +614,187 @@ export const portfolioProjects: ProjectData[] = [
 		},
 	},
 	{
+		id: "toursanpedroatacama",
+		imageUrl: "/img/portfolio/toursanpedroatacama/portrait.png",
+		title: "San Pedro de Atacama",
+		shortDescription:
+			"Ecommerce multilingüe para reservar excursiones en San Pedro de Atacama, con tres pasarelas de pago, conversión CLP/USD y panel administrativo completo.",
+		fullDescription:
+			"Plataforma de ecommerce para venta directa de excursiones y programas turísticos en San Pedro de Atacama. Permite a turistas internacionales reservar y pagar online en CLP o USD con conversión automática, vía Webpay, PayPal o Flow. Incluye un panel administrativo completo para gestionar el catálogo, traducciones, reservas y blog.",
+		category: "desarrollo-web",
+		technologies: [
+			"Next.js 15",
+			"React 19",
+			"TypeScript",
+			"Tailwind v4",
+			"Drizzle ORM",
+			"Turso (libSQL)",
+			"TanStack Query",
+			"TanStack Table",
+			"next-intl",
+			"Transbank/Webpay",
+			"PayPal",
+			"Flow",
+			"Cloudinary",
+			"React PDF",
+			"Recharts",
+			"Zustand",
+			"Resend",
+			"Vercel",
+		],
+		liveUrl: "https://toursanpedroatacama.com/",
+		gradientColor: "#D97706",
+		isFlagship: true,
+		caseStudy: {
+			pitch:
+				"Ecommerce multilingüe para que TurismoChileTours venda directamente excursiones y programas en San Pedro de Atacama, con tres pasarelas de pago, conversión automática CLP↔USD y un panel administrativo completo para gestionar catálogo, reservas y traducciones a cuatro idiomas.",
+			duration: "≈2 meses de desarrollo (octubre–diciembre 2024). Coordinación 100% remota.",
+			inProductionSince:
+				"Diciembre 2024 — en producción desde el lanzamiento, sin soporte continuo posterior.",
+			clientName: "TurismoChileTours",
+			clientIndustry: "Turismo · Tour operador en San Pedro de Atacama",
+			problem: [
+				"Tras consolidar el sitio corporativo, TurismoChileTours quería sumar un canal de venta online directo. La operación seguía (y sigue) ocurriendo mayoritariamente por WhatsApp, lo que funciona con clientes habituales pero deja afuera al turista internacional que prefiere reservar y pagar antes de aterrizar, con su tarjeta y en su moneda.",
+				"El catálogo combinaba excursiones individuales y programas multi-día, agrupados por zonas y subzonas, con fotos pesadas y descripciones extensas en cuatro idiomas. Manejar ese contenido a mano o desde el código ya no era viable.",
+				"El cliente necesitaba operar la plataforma sin tocar código: dar de alta excursiones, gestionar reservas, escribir entradas de blog y ver estadísticas básicas. Eso obligaba a construir un panel administrativo completo, no solo una vitrina pública.",
+			],
+			solution: [
+				"Una tienda online donde el turista navega excursiones por zona y subzona, las agrega al carrito, completa el checkout y paga en CLP o USD —con conversión automática vía OpenExchangeRates— usando una de tres pasarelas: Webpay/Transbank, PayPal o Flow, según prefiera. Tras el pago se emite un voucher PDF y se notifica por correo, manteniendo el branding del sitio.",
+				"Un panel administrativo separado gestiona todo el catálogo (zonas, subzonas, excursiones, programas), el blog, las reservas y las monedas, con tablas filtrables, dashboards y autenticación propia. Cada entidad tiene su tabla de traducciones, así el cliente edita el contenido en los cuatro idiomas desde el mismo lugar.",
+				"La stack completa se eligió pensando en costo operacional bajo: Vercel para hosting, Turso (libSQL) para la base de datos y Cloudinary para imágenes, manteniendo costos fijos cercanos a cero hasta tener tracción.",
+			],
+			architectureDescription:
+				"Aplicación Next.js 15 (App Router, Turbopack) con React 19, desplegada en Vercel. Persistencia en Turso (libSQL distribuido) accedida con Drizzle ORM; el esquema separa cada entidad de sus traducciones para soportar i18n a nivel de contenido (zona/subzona/excursión/programa/blog × 4 idiomas). Tres integraciones de pago — Transbank/Webpay, PayPal y Flow — abstraídas en Server Actions, cada una con su flujo de create/confirm y manejo idempotente del estado de la reserva. Imágenes en Cloudinary, vouchers generados con @react-pdf/renderer, correos transaccionales con Resend, y conversión de divisas vía OpenExchangeRates. Panel admin protegido con auth custom basado en JWT (jose), UI sobre TanStack Query + TanStack Table y dashboards en Recharts. Estado del carrito en Zustand.",
+			techStackDetailed: [
+				{
+					name: "Next.js 15 + React 19",
+					reason:
+						"App Router con Server Actions cubre todo el flujo transaccional (crear reserva, iniciar pago, confirmar) sin levantar un backend aparte. Turbopack acorta los ciclos de iteración en local.",
+				},
+				{
+					name: "Drizzle ORM + Turso (libSQL)",
+					reason:
+						"Decisión costo-primero: Turso ofrece SQLite distribuido con free tier muy generoso, suficiente para la carga esperada. Drizzle tipa el schema en TypeScript y genera queries de bajo overhead. También fue una apuesta por probar la combinación en producción.",
+				},
+				{
+					name: "Transbank/Webpay + PayPal + Flow",
+					reason:
+						"Tres pasarelas elegidas por el cliente: Webpay cubre tarjetas chilenas, PayPal capta al turista internacional y Flow agrega métodos locales adicionales. Reducir la fricción del pago era prioridad.",
+				},
+				{
+					name: "next-intl + traducciones a nivel DB",
+					reason:
+						"Los textos de UI viven en next-intl, pero el contenido del catálogo (nombres, descripciones, itinerarios) vive en tablas dedicadas por idioma. Así el admin edita las cuatro versiones sin tocar archivos de mensajes.",
+				},
+				{
+					name: "TanStack Query + Table",
+					reason:
+						"El panel admin tiene mucho CRUD con filtros, paginación y mutaciones. Query maneja caché y estado de servidor sin boilerplate; Table cubre las grillas grandes (excursiones, reservas, blog).",
+				},
+				{
+					name: "Cloudinary",
+					reason:
+						"Las excursiones tienen galerías pesadas. Cloudinary entrega transformaciones (formato, tamaño, calidad) on-the-fly sin procesar imágenes en el deploy.",
+				},
+				{
+					name: "@react-pdf/renderer",
+					reason:
+						"Los vouchers se generan como PDF desde el mismo runtime, sin servicios externos, manteniendo el branding del sitio en el comprobante.",
+				},
+				{
+					name: "Jose (JWT) + middleware",
+					reason:
+						"Auth admin propio y simple — sin terceros, sin costos extra, suficiente para un panel de un solo equipo.",
+				},
+			],
+			features: [
+				{
+					title: "Catálogo navegable por días recomendados",
+					description:
+						"Excursiones agrupadas por días sugeridos de estadía, con filtros y páginas dedicadas para cada item.",
+				},
+				{
+					title: "Panel administrativo completo",
+					description:
+						"CRUD de zonas, subzonas, excursiones, programas, blog, monedas y reservas, con tablas, filtros, dashboards y autenticación propia.",
+				},
+				{
+					title: "Checkout en CLP o USD",
+					description:
+						"Conversión automática de divisas vía OpenExchangeRates; el turista elige moneda y método de pago.",
+				},
+				{
+					title: "Tres pasarelas de pago",
+					description:
+						"Transbank/Webpay (tarjetas chilenas), PayPal (internacional) y Flow (métodos locales adicionales), con manejo idempotente del estado de la reserva.",
+				},
+				{
+					title: "Contenido multilingüe a nivel DB",
+					description:
+						"Cada entidad del catálogo tiene su tabla de traducciones (ES/EN/FR/PT-BR) editable desde el panel.",
+				},
+				{
+					title: "Vouchers PDF y notificaciones",
+					description:
+						"Generación de comprobantes PDF con branding propio y emails transaccionales vía Resend.",
+				},
+			],
+			metrics: [
+				{
+					value: "3",
+					label: "pasarelas de pago integradas",
+					caption: "Webpay, PayPal y Flow.",
+				},
+				{
+					value: "4",
+					label: "idiomas con traducción a nivel DB",
+					caption: "Español, inglés, francés y portugués brasilero.",
+				},
+				{
+					value: "17",
+					label: "excursiones publicadas",
+					caption: "Cifra de catálogo actual.",
+				},
+				{
+					value: "2",
+					label: "monedas con conversión automática",
+					caption: "CLP y USD vía OpenExchangeRates.",
+				},
+			],
+			timeline: [
+				{
+					date: "Octubre 2024",
+					title: "Kickoff",
+					description:
+						"Definición de scope: catálogo jerárquico, pagos múltiples, panel admin y soporte multilingüe a nivel de datos.",
+					icon: "kickoff",
+				},
+				{
+					date: "Oct – Dic 2024",
+					title: "Desarrollo",
+					description:
+						"Modelado del schema con traducciones, panel admin, integración de las tres pasarelas, checkout, vouchers PDF y conversión de divisas.",
+					icon: "build",
+				},
+				{
+					date: "Diciembre 2024",
+					title: "Lanzamiento",
+					description:
+						"Salida a producción en toursanpedroatacama.com, desplegado en Vercel + Turso.",
+					icon: "launch",
+				},
+				{
+					date: "Hoy",
+					title: "En producción",
+					description:
+						"Plataforma operativa con catálogo en crecimiento; venta directa activa.",
+					icon: "current",
+					isCurrent: true,
+				},
+			],
+		},
+	},
+	{
 		id: "caemp",
 		imageUrl: "/img/portfolio/placeholder.jpg",
 		title: "CAEMP",
