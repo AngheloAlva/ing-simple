@@ -22,19 +22,8 @@ function getShortName(title: string) {
 export function CaseStudyContext({ project, caseStudy }: CaseStudyContextProps) {
 	const visuals = getCaseStudyVisuals(project.id)
 	const shortName = getShortName(project.title)
-
-	const config = visuals?.context ?? {
-		modules: [
-			{ id: "m1", label: "Módulo 1", color: "#1e3a8a", textColor: "#ffffff" },
-			{ id: "m2", label: "Módulo 2", color: "#1e40af", textColor: "#ffffff" },
-		],
-		bannerLeft: `Antes → ${shortName}`,
-		bannerRight: "una sola plataforma",
-		footerText: `Procesos fragmentados entran por la izquierda. Ingeniería Simple los convierte en ${shortName}.`,
-		axisColor: project.gradientColor ?? "#1e40af",
-	}
-
-	const centerContent = config.centerContent ?? (
+	const config = visuals?.context
+	const centerContent = config?.centerContent ?? (
 		<Logo className="h-10 w-auto" classNameIcon="text-accent" classNameText="text-foreground" />
 	)
 
@@ -81,42 +70,44 @@ export function CaseStudyContext({ project, caseStudy }: CaseStudyContextProps) 
 					</div>
 				</div>
 
-				<motion.div
-					initial={{ opacity: 0, y: 24 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					viewport={{ once: true, amount: 0.15 }}
-					transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-					className="border-border bg-muted/40 mt-14 overflow-hidden rounded-2xl border"
-				>
-					<div className="border-border bg-background/60 flex items-center justify-between border-b px-5 py-3">
-						<span className="text-muted-foreground text-[10px] font-medium tracking-[0.18em] uppercase">
-							{config.bannerLeft}
-						</span>
-						<span className="text-muted-foreground text-[10px] font-medium tracking-[0.18em] uppercase">
-							{config.bannerRight}
-						</span>
-					</div>
+				{config && (
+					<motion.div
+						initial={{ opacity: 0, y: 24 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true, amount: 0.15 }}
+						transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+						className="border-border bg-muted/40 mt-14 overflow-hidden rounded-2xl border"
+					>
+						<div className="border-border bg-background/60 flex items-center justify-between border-b px-5 py-3">
+							<span className="text-muted-foreground text-[10px] font-medium tracking-[0.18em] uppercase">
+								{config.bannerLeft}
+							</span>
+							<span className="text-muted-foreground text-[10px] font-medium tracking-[0.18em] uppercase">
+								{config.bannerRight}
+							</span>
+						</div>
 
-					<div className="px-2 py-4 sm:px-4 sm:py-6">
-						<MagicTransform
-							height={520}
-							axisColor={config.axisColor}
-							centerSize={92}
-							documentDuration={5}
-							documentWidth={200}
-							documentHeight={280}
-							particleCount={22}
-							results={config.modules}
-							centerContent={centerContent}
-						/>
-					</div>
+						<div className="px-2 py-4 sm:px-4 sm:py-6">
+							<MagicTransform
+								height={520}
+								axisColor={config.axisColor}
+								centerSize={92}
+								documentDuration={5}
+								documentWidth={200}
+								documentHeight={280}
+								particleCount={22}
+								results={config.modules}
+								centerContent={centerContent}
+							/>
+						</div>
 
-					<div className="border-border border-t px-5 py-3">
-						<p className="text-muted-foreground text-center text-xs sm:text-sm">
-							{config.footerText}
-						</p>
-					</div>
-				</motion.div>
+						<div className="border-border border-t px-5 py-3">
+							<p className="text-muted-foreground text-center text-xs sm:text-sm">
+								{config.footerText}
+							</p>
+						</div>
+					</motion.div>
+				)}
 			</div>
 		</section>
 	)

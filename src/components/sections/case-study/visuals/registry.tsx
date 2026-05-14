@@ -44,17 +44,20 @@ export interface ArchitectureConfig {
 
 export interface CaseStudyVisuals {
 	HeroMockup: ComponentType<{ label?: string }>
-	context: ContextConfig
+	/** Optional. When omitted, section 01 renders only the problem copy (no magic-transform block). */
+	context?: ContextConfig
 	architecture: ArchitectureConfig
 	features: Record<string, FeatureVisual>
 }
 
 import { otcVisuals } from "./otc"
 import { busancVisuals } from "./busanc"
+import { turismoChileToursVisuals } from "./turismochiletours"
 
 const REGISTRY: Record<string, CaseStudyVisuals> = {
 	"otc-360": otcVisuals,
 	"busanc": busancVisuals,
+	"turismochiletours": turismoChileToursVisuals,
 }
 
 export function getCaseStudyVisuals(projectId: string): CaseStudyVisuals | null {

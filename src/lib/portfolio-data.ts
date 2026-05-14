@@ -446,6 +446,174 @@ export const portfolioProjects: ProjectData[] = [
 		},
 	},
 	{
+		id: "turismochiletours",
+		imageUrl: "/img/portfolio/turismochiletours/portrait.png",
+		title: "TurismoChileTours",
+		shortDescription:
+			"Sitio corporativo multilingüe para tour operador en San Pedro de Atacama, con catálogo de programas y solicitud de tours privados.",
+		fullDescription:
+			"Sitio institucional para TurismoChileTours, operador turístico especializado en San Pedro de Atacama. Construido con Next.js 14 y traducido a cuatro idiomas, presenta el catálogo de programas y excursiones, fichas de destinos y contenido institucional, canalizando solicitudes de tours privados y postulaciones laborales mediante formularios validados con notificación por correo.",
+		category: "desarrollo-web",
+		technologies: [
+			"Next.js 14",
+			"React 18",
+			"TypeScript",
+			"Tailwind CSS",
+			"Radix UI",
+			"next-intl",
+			"React Hook Form",
+			"Zod",
+			"Resend",
+			"GSAP",
+			"Vercel",
+		],
+		liveUrl: "https://turismochiletours.com/es",
+		gradientColor: "#D97706",
+		isFlagship: true,
+		caseStudy: {
+			pitch:
+				"Sitio institucional multilingüe para TurismoChileTours, tour operador en San Pedro de Atacama. Presenta el catálogo de programas y destinos y canaliza solicitudes de tours privados y postulaciones laborales, sumando un canal corporativo en español, inglés, francés y portugués brasilero.",
+			duration: "≈3 meses de desarrollo (agosto–noviembre 2024). Coordinación 100% remota.",
+			inProductionSince:
+				"Noviembre 2024 — en producción desde el lanzamiento, sin soporte continuo posterior.",
+			clientName: "TurismoChileTours",
+			clientIndustry: "Turismo · Tour operador en San Pedro de Atacama",
+			problem: [
+				"TurismoChileTours opera como tour operador consolidado en San Pedro de Atacama, con una base de clientes que reservaba mayoritariamente por WhatsApp y referidos. El proyecto no nació de un dolor operativo, sino de la decisión estratégica de proyectar una presencia digital sólida y profesional para captar nuevos segmentos.",
+				"Su público objetivo es mayoritariamente turista internacional, lo que exigía un sitio multilingüe desde el día uno (español, inglés, francés y portugués brasilero) y una narrativa institucional consistente: historia, equipo, políticas y sustentabilidad.",
+				"La pieza específica que faltaba era un canal serio para tours privados y grupos corporativos, donde la propuesta requiere interacción uno-a-uno y un formulario calificado antes de cotizar.",
+			],
+			solution: [
+				"El sitio funciona como vitrina institucional y como filtro de leads calificados. Presenta los programas (3 días, 4 días, 5 días, luna de miel), las excursiones individuales y las fichas de destinos (San Pedro, Uyuni, Patagonia y festividades regionales), junto con el contenido de marca: historia, equipo, políticas y certificaciones de sustentabilidad.",
+				'Los formularios de tours privados y de "Trabaja con nosotros" capturan los datos necesarios, se validan en cliente y servidor con un mismo schema Zod, y disparan un correo formateado al equipo comercial vía Resend, manteniendo el branding del sitio en cada notificación.',
+			],
+			architectureDescription:
+				"Aplicación Next.js 14 con App Router, pre-renderizada donde es posible y desplegada en Vercel. Internacionalización con next-intl en cuatro locales y URLs traducidas. Componentes accesibles construidos sobre Radix UI siguiendo la convención de shadcn/ui; animaciones con GSAP y carruseles con Embla. Sin base de datos: el contenido vive en el repositorio (más rápido de iterar para un sitio institucional) y los formularios se procesan en Server Actions / API routes que delegan en Resend para el correo transaccional. Validación end-to-end con Zod compartida entre cliente (react-hook-form) y servidor.",
+			techStackDetailed: [
+				{
+					name: "Next.js 14 + App Router",
+					reason:
+						"Renderizado híbrido (estático para páginas institucionales, Server Actions para formularios), SEO sólido y deploy de un clic en Vercel; ideal para un sitio cuyo contenido cambia poco y rinde mejor pre-renderizado.",
+				},
+				{
+					name: "next-intl",
+					reason:
+						"El cliente atiende cuatro mercados idiomáticos. Maneja routing localizado, mensajes y formatos en una sola fuente de verdad, evitando duplicar páginas por idioma.",
+				},
+				{
+					name: "Radix UI + Tailwind (patrón shadcn/ui)",
+					reason:
+						"Componentes accesibles por defecto (foco, ARIA, teclado) sin atarse a una librería de UI completa; estilo 100% propio con Tailwind y reuso directo en el ecommerce hermano.",
+				},
+				{
+					name: "React Hook Form + Zod",
+					reason:
+						"Un único schema valida cliente y servidor, eliminando la duplicación típica entre validación frontend y backend.",
+				},
+				{
+					name: "Resend + React Email",
+					reason:
+						"Correos transaccionales bien renderizados sin montar SMTP propio. Las plantillas se escriben como componentes React, así que los emails comparten estilo con el sitio.",
+				},
+				{
+					name: "GSAP + Embla Carousel",
+					reason:
+						"Animaciones de scroll y carruseles performantes en móvil, controlados finamente desde React con @gsap/react.",
+				},
+				{
+					name: "Vercel",
+					reason:
+						"Despliegue inmediato, edge cache para audiencia internacional repartida y previews por PR; barato y suficiente para una web institucional sin backend pesado.",
+				},
+			],
+			features: [
+				{
+					title: "Catálogo de programas y excursiones",
+					description:
+						"Páginas dedicadas para programas multi-día (3/4/5 días y luna de miel) y excursiones individuales, con fichas para cada destino.",
+				},
+				{
+					title: "Fichas de destinos",
+					description:
+						"Páginas individuales para San Pedro, Uyuni, Patagonia y festividades/eventos regionales, con guías de cómo llegar y qué esperar.",
+				},
+				{
+					title: "Sitio multilingüe (4 idiomas)",
+					description:
+						"Español, inglés, francés y portugués brasilero con routing localizado vía next-intl y URLs traducidas por locale.",
+				},
+				{
+					title: "Solicitud de tours privados",
+					description:
+						"Formulario calificado con validación Zod end-to-end que dispara correo branded al equipo comercial mediante Resend.",
+				},
+				{
+					title: "Postulaciones laborales",
+					description:
+						'Sección "Trabaja con nosotros" con formulario propio y plantilla de email dedicada para captar talento.',
+				},
+				{
+					title: "Páginas institucionales completas",
+					description:
+						"Historia, equipo, políticas, FAQ y sustentabilidad, gestionadas desde el repo para iteración rápida sin CMS.",
+				},
+			],
+			metrics: [
+				{
+					value: "4",
+					label: "idiomas soportados",
+					caption: "Español, inglés, francés y portugués brasilero.",
+				},
+				{
+					value: "4",
+					label: "programas multi-día publicados",
+					caption: "3 días, 4 días, 5 días y luna de miel.",
+				},
+				{
+					value: "2",
+					label: "formularios calificados",
+					caption: "Tours privados y postulación laboral, con notificación por correo.",
+				},
+				{
+					value: "100%",
+					label: "páginas pre-renderizadas",
+					caption: "Sin base de datos. Tiempos de carga óptimos en edge.",
+				},
+			],
+			timeline: [
+				{
+					date: "Agosto 2024",
+					title: "Kickoff",
+					description:
+						"Primer contacto con TurismoChileTours, definición de scope, idiomas objetivo y arquitectura.",
+					icon: "kickoff",
+				},
+				{
+					date: "Ago – Nov 2024",
+					title: "Desarrollo",
+					description:
+						"Diseño UI, páginas institucionales, catálogo de programas y destinos, formularios e internacionalización.",
+					icon: "build",
+				},
+				{
+					date: "Noviembre 2024",
+					title: "Lanzamiento",
+					description:
+						"Despliegue a producción en Vercel y publicación en turismochiletours.com en los cuatro idiomas.",
+					icon: "launch",
+				},
+				{
+					date: "Hoy",
+					title: "En producción",
+					description:
+						"Sitio operativo desde el lanzamiento; canal vigente de captación corporativa y de tours privados.",
+					icon: "current",
+					isCurrent: true,
+				},
+			],
+		},
+	},
+	{
 		id: "caemp",
 		imageUrl: "/img/portfolio/placeholder.jpg",
 		title: "CAEMP",

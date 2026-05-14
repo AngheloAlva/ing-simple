@@ -1,15 +1,19 @@
-import PostgreSQLIcon from "@/components/icons/postgresql"
-import NextjsIcon from "@/components/icons/next-js"
-import PrismaIcon from "@/components/icons/prisma"
-import AzureIcon from "@/components/icons/azure"
 import { BetterAuthIcon } from "@/components/icons/better-auth"
-import TanStackIcon from "@/components/icons/tanstack"
-import RechartsIcon from "@/components/icons/recharts"
-import PDFIcon from "@/components/icons/pdf"
-import ZustandIcon from "@/components/icons/zustand"
-import { NestJSIcon } from "@/components/icons/nest-js"
+import PostgreSQLIcon from "@/components/icons/postgresql"
 import TurborepoIcon from "@/components/icons/turborepo"
 import ShadcnuiIcon from "@/components/icons/shadcn-ui"
+import NextIntlIcon from "@/components/icons/next-intl"
+import { NestJSIcon } from "@/components/icons/nest-js"
+import TanStackIcon from "@/components/icons/tanstack"
+import RechartsIcon from "@/components/icons/recharts"
+import ZustandIcon from "@/components/icons/zustand"
+import NextjsIcon from "@/components/icons/next-js"
+import PrismaIcon from "@/components/icons/prisma"
+import ResendIcon from "@/components/icons/resend"
+import AzureIcon from "@/components/icons/azure"
+import GsapIcon from "@/components/icons/gsap"
+import PDFIcon from "@/components/icons/pdf"
+import VercelIcon from "@/components/icons/vercel"
 
 interface TechBrand {
 	icon: (props: React.SVGProps<SVGSVGElement>) => React.ReactElement
@@ -27,6 +31,15 @@ const TECH_BRANDS: { match: string[]; brand: TechBrand }[] = [
 		match: ["next.js", "nextjs"],
 		brand: {
 			icon: (props: React.SVGProps<SVGSVGElement>) => <NextjsIcon {...props} />,
+			background: "#000000",
+			foreground: "#FFFFFF",
+			iconFill: true,
+		},
+	},
+	{
+		match: ["vercel"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <VercelIcon {...props} />,
 			background: "#000000",
 			foreground: "#FFFFFF",
 			iconFill: true,
@@ -117,6 +130,30 @@ const TECH_BRANDS: { match: string[]; brand: TechBrand }[] = [
 		brand: {
 			icon: (props: React.SVGProps<SVGSVGElement>) => <ShadcnuiIcon {...props} />,
 			background: "#000000",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["resend"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <ResendIcon {...props} />,
+			background: "#000000",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["gsap"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <GsapIcon {...props} />,
+			background: "#000000",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["next-intl"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <NextIntlIcon {...props} />,
+			background: "#FFFFFF",
 			foreground: "#FFFFFF",
 		},
 	},
