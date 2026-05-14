@@ -39,7 +39,6 @@ export interface CaseStudyMilestone {
 
 export interface CaseStudy {
 	pitch: string
-	role: string
 	duration: string
 	inProductionSince: string
 	clientName: string
@@ -107,7 +106,6 @@ export const portfolioProjects: ProjectData[] = [
 		caseStudy: {
 			pitch:
 				"Plataforma de control operacional que reemplazó papel, correos y Excel por un único sistema para gestionar órdenes de trabajo, permisos, planes de mantenimiento y carpetas de contratistas, con indicadores en vivo.",
-			role: "Diseño, frontend, backend, infraestructura y soporte continuo",
 			duration: "≈3 meses de desarrollo, con visitas en planta en Concepción",
 			inProductionSince: "Abril 2025",
 			clientName: "OTC — Oleoducto Trasandino Chile",
@@ -263,14 +261,189 @@ export const portfolioProjects: ProjectData[] = [
 	{
 		id: "busanc",
 		imageUrl: "/img/portfolio/placeholder.jpg",
-		title: "Busanc",
-		shortDescription: "Plataforma de gestión empresarial y administración de edificios",
+		title: "Busanc — Plataforma de Gestión Comercial e Industrial",
+		shortDescription:
+			"ERP a medida para gestionar el flujo comercial, ingeniería y producción de una empresa de productos antidesgaste para minería.",
 		fullDescription:
-			"Sistema completo de gestión empresarial con frontend en Next.js y backend en NestJS. Portal de acceso para empleados con sistema de autenticación, gestión de operaciones de edificios y módulos administrativos.",
+			"Plataforma full-stack que reemplaza un flujo basado en Excel, correos e intranet legada por un sistema único que cubre desde la Solicitud Comercial hasta el despacho. Implementa un modelo componente-céntrico con trabajo en paralelo entre Ingeniería, Hispana y Evaluación & Costos, trazabilidad completa de cada acción y planificación productiva por etapas.",
 		category: "desarrollo-web",
-		technologies: ["Next.js", "NestJS", "TypeScript", "Tailwind CSS", "Node.js"],
-		liveUrl: "https://busanc-frontend.vercel.app",
-		gradientColor: "#14b8a6",
+		technologies: [
+			"Next.js 16",
+			"React 19",
+			"NestJS 11",
+			"TypeScript",
+			"PostgreSQL",
+			"Drizzle ORM",
+			"Tailwind CSS 4",
+			"shadcn/ui",
+			"TanStack Query",
+			"TanStack Form",
+			"Zod",
+			"Turborepo",
+			"Azure Blob Storage",
+			"JWT + RBAC",
+		],
+		gradientColor: "#1447e6",
+		isFlagship: true,
+		caseStudy: {
+			pitch:
+				"Busanc es una plataforma a medida que digitaliza y orquesta el flujo end-to-end de una empresa industrial: desde que Comercial recibe el requerimiento del cliente hasta que Despacho genera la guía. Reemplaza un ecosistema fragmentado de Excel, correos y una intranet legada por un único sistema con trazabilidad, paralelismo entre áreas y visibilidad operativa real.",
+			duration:
+				"≈8 meses de desarrollo activo (kickoff octubre 2025 → marcha blanca abril 2026), con levantamiento en terreno en las instalaciones de Busanc en Chile durante toda la fase de descubrimiento.",
+			inProductionSince:
+				"En marcha blanca desde abril 2026 (segundo mes) con un usuario activo por área validando flujos. Salida a producción real estimada: junio 2026.",
+			clientName: "Busanc",
+			clientIndustry:
+				"Industria minera — fabricación de productos antidesgaste para procesos de extracción y obtención de minerales. Opera en Chile.",
+			problem: [
+				"Antes de Busanc, el flujo comercial e industrial vivía repartido entre Excel, correos electrónicos y una intranet legada construida a medida que solo servía para crear la Solicitud Comercial inicial. Una vez generada la SC, todo el seguimiento —aprobaciones, asignaciones de ingenieros, cotizaciones, órdenes de compra, planificación productiva— se coordinaba por correo, sin un sistema único que reflejara el estado real del proyecto.",
+				'El dolor más nombrado por el equipo fue lo que ellos mismos llamaron "comentarios de pasillo": información crítica del proyecto (decisiones técnicas, cambios de alcance, observaciones de Ingeniería) que nunca quedaba escrita. Si la persona que tomó la decisión no estaba, esa información se perdía. Sumado a esto, los formularios de SC tenían campos opcionales que en la práctica nunca se completaban, obligando al Jefe de Ingeniería a inferir o preguntar verbalmente lo que faltaba, con el costo de tiempo y errores que eso implica.',
+				"Comercial no tenía visibilidad del avance una vez que la SC pasaba a Ingeniería: no sabía si estaba en revisión, en costos, esperando a Hispana, ni cuándo esperar respuesta. No había forma de estimar tiempos de entrega al cliente porque no había forma de saber la carga real de cada área. Las cotizaciones llegaban como planillas Excel que Comercial debía rearmar manualmente antes de enviarlas al cliente, con riesgo de error y reproceso. Las cotizaciones tienen vigencia legal de 30 días, así que cualquier demora se traducía en negocios perdidos.",
+				"A nivel productivo, la Orden de Compra del cliente llegaba a Comercial y se distribuía por correo a Planificación y a Evaluación & Costos, generando duplicaciones, intermediarios innecesarios y cero trazabilidad de quién recibió qué y cuándo. Los proyectos repetitivos —que técnicamente no requieren pasar por Ingeniería— igual seguían el flujo completo por inercia. Todo esto en un contexto de crecimiento sostenido, donde el equipo sentía que el método actual ya no escalaba.",
+			],
+			solution: [
+				"Busanc unifica el flujo completo en una única plataforma con un modelo componente-céntrico: cada componente comprado de un proyecto avanza independientemente por sus etapas productivas, con su propia Orden de Trabajo, plantilla de proceso y métricas de tiempo. Esto reemplaza el flujo lineal antiguo que obligaba a esperar a que todo el proyecto pasara de un área a otra.",
+				'El cambio estructural más importante es el trabajo en paralelo entre Ingeniería, Hispana (proveedor metálico interno) y Evaluación & Costos: a medida que Ingeniería va guardando componentes, las áreas siguientes pueden ir trabajando sobre ellos sin esperar el cierre completo de la etapa anterior. Cada área tiene acciones explícitas de "Guardar" (avance parcial) y "Cerrar" (etapa terminada), con reglas de dependencia que impiden cierres prematuros. Esto reduce dramáticamente los tiempos de cotización y permite a Comercial dar fechas estimadas reales al cliente.',
+				'El sistema cubre 24+ módulos de negocio: SC y Solicitudes de Levantamiento, proyectos jerárquicos con códigos correlativos y versionamiento (R1, R2, …), catálogo de materiales y productos comerciales reutilizables, cotizaciones con descuentos y multimoneda (CLP/UF/USD), revisión de Orden de Compra en dos pasos, planificación con plantillas de proceso configurables, dashboard de capacidad por área, módulos productivos dedicados (Metálico, Goma, Pintura, Calidad, Bodega), guías de despacho con soporte parcial/consolidado e historial de proyectos para recotización. Una capa transversal de Activity Log inmutable registra cada acción del sistema — la regla operativa del proyecto es "lo que no está en el sistema, no existe".',
+				"Está dimensionado para escalar de los ~6 usuarios actuales en marcha blanca a ~32 usuarios concurrentes una vez en producción plena, con potencial de crecimiento conforme se integren más áreas operativas y dashboards gerenciales.",
+			],
+			architectureDescription:
+				"Monorepo Turborepo con dos aplicaciones principales: frontend Next.js 16 (App Router, React 19) y backend NestJS 11 con arquitectura modular por dominio (cada módulo posee su propio schema.ts de Drizzle, service.ts, controller.ts y DTOs). Base de datos PostgreSQL en Azure, almacenamiento de planos y documentos en Azure Blob Storage (con planos en modo solo-visualización para prevenir fugas), autenticación JWT con Passport y triple guarda global a nivel backend: JwtAuthGuard + RolesGuard + PermissionsGuard para RBAC granular. Todas las fechas se persisten y muestran en horario de Chile (GMT-3). El frontend usa TanStack Query para estado servidor, TanStack Form + Zod para validación, TanStack Table para grids complejos, Jotai/Zustand para estado local atómico y @react-pdf/renderer para generar cotizaciones, guías y reportes en el navegador.",
+			techStackDetailed: [
+				{
+					name: "Next.js 16 (App Router)",
+					reason:
+						"Necesitábamos un framework que escalara a 24+ módulos manteniendo navegación rápida y server components donde tuviera sentido. App Router nos dio layouts anidados naturales para una app con sidebar persistente y muchos sub-flujos.",
+				},
+				{
+					name: "NestJS 11",
+					reason:
+						"La aplicación es claramente dominio-por-dominio (Comercial, Ingeniería, Hispana, Producción…). NestJS forzó una estructura modular limpia desde el día uno, con DTOs validados, guards globales y módulos auto-contenidos — muy difícil de degradar con el tiempo.",
+				},
+				{
+					name: "Drizzle ORM + PostgreSQL",
+					reason:
+						"Drizzle nos dio tipado de extremo a extremo sin la pesadez de Prisma ni perder cercanía al SQL real. Cada módulo del backend define su propio schema.ts y Drizzle los glob-colecta — coherente con la arquitectura por dominio.",
+				},
+				{
+					name: "TanStack Query v5",
+					reason:
+						"El flujo entre áreas implica que el mismo dato cambia desde muchas pantallas (Comercial guarda, Ingeniería invalida, Hispana refetcha). El cache invalidation declarativo nos ahorró mucha gimnasia.",
+				},
+				{
+					name: "TanStack Form + Zod",
+					reason:
+						"Los formularios son largos (proyectos con componentes, materiales, costos, documentos…). Necesitábamos validación tipada compartida entre front y back y soporte real para arrays anidados sin reventar la performance.",
+				},
+				{
+					name: "Turborepo",
+					reason:
+						"Compartir tipos entre frontend y backend sin duplicar contratos. Los paquetes shared-types, eslint-config y typescript-config mantienen consistencia entre apps y aceleran CI con caché incremental.",
+				},
+				{
+					name: "Azure (Postgres + Blob Storage)",
+					reason:
+						"Recomendación nuestra para consolidar toda la app en un solo cloud y simplificar facturación, seguridad y soporte. Blob Storage encaja perfecto para planos pesados con control de acceso por URL firmada. El despliegue definitivo aún se está evaluando — podría quedar 100% en Azure o partir el frontend en Vercel.",
+				},
+				{
+					name: "shadcn/ui + Tailwind CSS 4",
+					reason:
+						"Necesitábamos un sistema de componentes accesible (Radix) que pudiéramos modificar sin pelear con una librería opinada. shadcn nos dio velocidad de partida y control total del diseño industrial sobrio que pide el rubro.",
+				},
+			],
+			features: [
+				{
+					title: "Flujo Comercial Unificado",
+					description:
+						"Solicitudes Comerciales con múltiples proyectos por SC, Solicitudes de Levantamiento independientes con calendario de visitas, vinculación SL→SC y PDF de respaldo. Reemplaza la intranet vieja y los correos.",
+				},
+				{
+					title: "Trabajo en Paralelo entre Áreas",
+					description:
+						'Ingeniería, Hispana y Evaluación & Costos trabajan simultáneamente sobre los componentes a medida que se crean, con acciones de "Guardar" y "Cerrar" y reglas de dependencia que impiden cierres prematuros.',
+				},
+				{
+					title: "Modelo Componente-Céntrico de Producción",
+					description:
+						"Cada componente comprado tiene su propia OT con plantilla de proceso configurable (Metálico → Goma → Pintura → Calidad → Despacho, con áreas repetibles), avanzando independientemente del resto del proyecto.",
+				},
+				{
+					title: "Activity Log y Trazabilidad End-to-End",
+					description:
+						"Cada acción genera un registro inmutable (entityType, action, previousValue, newValue, userId, metadata). Timeline por proyecto, vista de admin global y dashboards de tiempos por etapa.",
+				},
+				{
+					title: "Dashboard de Capacidad por Área",
+					description:
+						"Visualiza la carga planificada vs capacidad configurada (trabajadores × horas/día) por área productiva, con detección de sobrecarga, heatmap calendario y tarjetas de utilización.",
+				},
+				{
+					title: "Guía de Despacho Enriquecida",
+					description:
+						"Genera guías con info del proyecto, accesorios con cantidad restante validada, BOM de referencia, planos del componente y etiqueta Zebra. Soporta despacho parcial, total y consolidación multi-proyecto.",
+				},
+			],
+			metrics: [
+				{
+					value: "~32",
+					label: "usuarios concurrentes proyectados",
+					caption: "Producción plena (~6 activos hoy en marcha blanca). Estimado del cliente.",
+				},
+				{
+					value: "24+",
+					label: "módulos de negocio integrados",
+					caption: "Cubren desde SC hasta despacho y almacenamiento.",
+				},
+				{
+					value: "10",
+					label: "roles con RBAC granular",
+					caption: "Permisos por rol + por usuario, con guards globales en backend.",
+				},
+				{
+					value: "100%",
+					label: "trazabilidad de acciones",
+					caption: "Activity Log inmutable cubre cada cambio de estado, edición y transición.",
+				},
+			],
+			timeline: [
+				{
+					date: "Octubre 2025",
+					title: "Kickoff y levantamiento",
+					description:
+						"Reuniones de descubrimiento con Comercial, Ingeniería y Evaluación & Costos. Visitas en sitio a las instalaciones de Busanc en Chile para mapear el flujo end-to-end.",
+					icon: "kickoff",
+				},
+				{
+					date: "Noviembre 2025",
+					title: "Arranque del build",
+					description:
+						"Setup del monorepo Turborepo, autenticación, RBAC, esquema de base de datos y primeros módulos (SC, proyectos, materiales).",
+					icon: "build",
+				},
+				{
+					date: "Dic 2025 – Mar 2026",
+					title: "Desarrollo del núcleo",
+					description:
+						"Trabajo en paralelo entre áreas, modelo componente-céntrico, cotizaciones con multimoneda, revisión de OC, módulos productivos, Activity Log y dashboards.",
+					icon: "build",
+				},
+				{
+					date: "Abril 2026",
+					title: "Marcha blanca",
+					description:
+						"Plataforma en uso por un usuario activo de cada área (~6 personas), validando flujos reales contra operación cotidiana. Iteración basada en feedback.",
+					icon: "beta",
+					isCurrent: true,
+				},
+				{
+					date: "Junio 2026",
+					title: "Salida a producción",
+					description:
+						"Onboarding de los ~32 usuarios productivos y operación plena del sistema como reemplazo del flujo de Excel + correos. Estimado.",
+					icon: "launch",
+				},
+			],
+		},
 	},
 	{
 		id: "caemp",

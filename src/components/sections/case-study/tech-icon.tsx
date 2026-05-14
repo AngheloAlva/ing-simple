@@ -7,6 +7,9 @@ import TanStackIcon from "@/components/icons/tanstack"
 import RechartsIcon from "@/components/icons/recharts"
 import PDFIcon from "@/components/icons/pdf"
 import ZustandIcon from "@/components/icons/zustand"
+import { NestJSIcon } from "@/components/icons/nest-js"
+import TurborepoIcon from "@/components/icons/turborepo"
+import ShadcnuiIcon from "@/components/icons/shadcn-ui"
 
 interface TechBrand {
 	icon: (props: React.SVGProps<SVGSVGElement>) => React.ReactElement
@@ -38,6 +41,14 @@ const TECH_BRANDS: { match: string[]; brand: TechBrand }[] = [
 		},
 	},
 	{
+		match: ["azure"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <AzureIcon {...props} />,
+			background: "#5aa7e6",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
 		match: ["postgres"],
 		brand: {
 			icon: (props: React.SVGProps<SVGSVGElement>) => <PostgreSQLIcon {...props} />,
@@ -50,14 +61,6 @@ const TECH_BRANDS: { match: string[]; brand: TechBrand }[] = [
 		brand: {
 			icon: (props: React.SVGProps<SVGSVGElement>) => <BetterAuthIcon {...props} />,
 			background: "#1F2937",
-			foreground: "#FFFFFF",
-		},
-	},
-	{
-		match: ["azure"],
-		brand: {
-			icon: (props: React.SVGProps<SVGSVGElement>) => <AzureIcon {...props} />,
-			background: "#5aa7e6",
 			foreground: "#FFFFFF",
 		},
 	},
@@ -90,6 +93,30 @@ const TECH_BRANDS: { match: string[]; brand: TechBrand }[] = [
 		brand: {
 			icon: (props: React.SVGProps<SVGSVGElement>) => <ZustandIcon {...props} />,
 			background: "#B5651D",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["nestjs", "nest", "nest-js"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <NestJSIcon {...props} />,
+			background: "#000000",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["turborepo"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <TurborepoIcon {...props} />,
+			background: "#000000",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["shadcn-ui", "shadcn", "shadcnui"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <ShadcnuiIcon {...props} />,
+			background: "#000000",
 			foreground: "#FFFFFF",
 		},
 	},

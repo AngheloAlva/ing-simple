@@ -3,26 +3,41 @@
 import { motion } from "motion/react"
 
 import Logo from "@/components/shared/logo"
-import MagicTransform, {
-	type MagicTransformResult,
-} from "@/components/sections/case-study/magic-transformation"
+import MagicTransform from "@/components/sections/case-study/magic-transformation"
 
-import type { CaseStudy } from "@/lib/portfolio-data"
+import type { CaseStudy, ProjectData } from "@/lib/portfolio-data"
+
+import { getCaseStudyVisuals } from "./visuals/registry"
 
 interface CaseStudyContextProps {
+	project: ProjectData
 	caseStudy: CaseStudy
 }
 
-const MODULES: MagicTransformResult[] = [
-	{ id: "ots", label: "OTs", color: "#0f766e", textColor: "#ffffff" },
-	{ id: "carpetas", label: "Carpetas", color: "#1e3a8a", textColor: "#ffffff" },
-	{ id: "permisos", label: "Permisos", color: "#14b8a6", textColor: "#0a0a0a" },
-	{ id: "indicadores", label: "Indicadores", color: "#1e40af", textColor: "#ffffff" },
-]
+function getShortName(title: string) {
+	const dash = title.indexOf(" — ")
+	return dash > 0 ? title.slice(0, dash) : title
+}
 
-const BRAND_AXIS = "#0f766e"
+export function CaseStudyContext({ project, caseStudy }: CaseStudyContextProps) {
+	const visuals = getCaseStudyVisuals(project.id)
+	const shortName = getShortName(project.title)
 
-export function CaseStudyContext({ caseStudy }: CaseStudyContextProps) {
+	const config = visuals?.context ?? {
+		modules: [
+			{ id: "m1", label: "Módulo 1", color: "#1e3a8a", textColor: "#ffffff" },
+			{ id: "m2", label: "Módulo 2", color: "#1e40af", textColor: "#ffffff" },
+		],
+		bannerLeft: `Antes → ${shortName}`,
+		bannerRight: "una sola plataforma",
+		footerText: `Procesos fragmentados entran por la izquierda. Ingeniería Simple los convierte en ${shortName}.`,
+		axisColor: project.gradientColor ?? "#1e40af",
+	}
+
+	const centerContent = config.centerContent ?? (
+		<Logo className="h-10 w-auto" classNameIcon="text-accent" classNameText="text-foreground" />
+	)
+
 	return (
 		<section className="bg-background w-full px-4 py-16 sm:px-6 sm:py-20 md:py-24 lg:px-8 lg:py-28">
 			<div className="mx-auto w-full max-w-6xl">
@@ -44,7 +59,7 @@ export function CaseStudyContext({ caseStudy }: CaseStudyContextProps) {
 							transition={{ duration: 0.5, delay: 0.05 }}
 							className="text-foreground mt-3 text-3xl font-medium tracking-tight sm:text-4xl"
 						>
-							El problema antes de OTC 360
+							El problema antes de {shortName}
 						</motion.h2>
 					</div>
 
@@ -75,37 +90,30 @@ export function CaseStudyContext({ caseStudy }: CaseStudyContextProps) {
 				>
 					<div className="border-border bg-background/60 flex items-center justify-between border-b px-5 py-3">
 						<span className="text-muted-foreground text-[10px] font-medium tracking-[0.18em] uppercase">
-							Papel, correos y planillas → OTC 360
+							{config.bannerLeft}
 						</span>
 						<span className="text-muted-foreground text-[10px] font-medium tracking-[0.18em] uppercase">
-							una sola plataforma
+							{config.bannerRight}
 						</span>
 					</div>
 
 					<div className="px-2 py-4 sm:px-4 sm:py-6">
 						<MagicTransform
 							height={520}
-							axisColor={BRAND_AXIS}
+							axisColor={config.axisColor}
 							centerSize={92}
 							documentDuration={5}
 							documentWidth={200}
 							documentHeight={280}
 							particleCount={22}
-							results={MODULES}
-							centerContent={
-								<Logo
-									className="h-10 w-auto"
-									classNameIcon="text-accent"
-									classNameText="text-foreground"
-								/>
-							}
+							results={config.modules}
+							centerContent={centerContent}
 						/>
 					</div>
 
 					<div className="border-border border-t px-5 py-3">
 						<p className="text-muted-foreground text-center text-xs sm:text-sm">
-							Papel, correos y Excel entran por la izquierda. Ingeniería Simple los procesa y los
-							convierte en los seis módulos operativos de OTC 360.
+							{config.footerText}
 						</p>
 					</div>
 				</motion.div>

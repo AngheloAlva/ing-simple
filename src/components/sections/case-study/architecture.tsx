@@ -2,130 +2,33 @@
 
 import { motion } from "motion/react"
 
-import type { CaseStudy } from "@/lib/portfolio-data"
+import type { CaseStudy, ProjectData } from "@/lib/portfolio-data"
+
+import { getCaseStudyVisuals, type ArchNode } from "./visuals/registry"
 
 interface CaseStudyArchitectureProps {
+	project: ProjectData
 	caseStudy: CaseStudy
 	accent?: string
 }
 
-interface DiagramNode {
-	id: string
-	x: number
-	y: number
-	w: number
-	h: number
-	label: string
-	sub?: string
-	tone: "primary" | "neutral" | "accent"
+const FALLBACK = {
+	viewBox: { width: 800, height: 200 },
+	ariaLabel: "Diagrama de arquitectura",
+	nodes: [] as ArchNode[],
+	edges: [] as { from: string; to: string }[],
 }
-
-interface DiagramEdge {
-	from: string
-	to: string
-	label?: string
-}
-
-const NODES: DiagramNode[] = [
-	{
-		id: "clients",
-		x: 20,
-		y: 20,
-		w: 760,
-		h: 64,
-		label: "Clientes",
-		sub: "Equipo OTC interno + empresas contratistas",
-		tone: "neutral",
-	},
-	{
-		id: "next",
-		x: 20,
-		y: 120,
-		w: 760,
-		h: 72,
-		label: "Next.js · App Router",
-		sub: "TypeScript · SSR · RSC · Cliente",
-		tone: "primary",
-	},
-	{
-		id: "api",
-		x: 20,
-		y: 228,
-		w: 760,
-		h: 64,
-		label: "Server Actions + API Routes",
-		sub: "Validación end-to-end con Zod · TanStack Query en cliente",
-		tone: "primary",
-	},
-	{
-		id: "auth",
-		x: 20,
-		y: 328,
-		w: 240,
-		h: 80,
-		label: "Better Auth",
-		sub: "Sesiones server-side · invitaciones a contratistas",
-		tone: "accent",
-	},
-	{
-		id: "prisma",
-		x: 280,
-		y: 328,
-		w: 240,
-		h: 80,
-		label: "Prisma ORM",
-		sub: "Migraciones versionadas · tipos generados",
-		tone: "accent",
-	},
-	{
-		id: "pdf",
-		x: 540,
-		y: 328,
-		w: 240,
-		h: 80,
-		label: "React PDF",
-		sub: "Permisos y reportes server-side",
-		tone: "accent",
-	},
-	{
-		id: "postgres",
-		x: 280,
-		y: 432,
-		w: 240,
-		h: 80,
-		label: "PostgreSQL",
-		sub: "OTs · permisos · planes · usuarios",
-		tone: "neutral",
-	},
-	{
-		id: "azure",
-		x: 540,
-		y: 432,
-		w: 240,
-		h: 80,
-		label: "Azure Blob Storage",
-		sub: "Documentación · carpetas de arranque",
-		tone: "neutral",
-	},
-]
-
-const EDGES: DiagramEdge[] = [
-	{ from: "clients", to: "next" },
-	{ from: "next", to: "api" },
-	{ from: "api", to: "auth" },
-	{ from: "api", to: "prisma" },
-	{ from: "api", to: "pdf" },
-	{ from: "prisma", to: "postgres" },
-	{ from: "api", to: "azure" },
-]
 
 export function CaseStudyArchitecture({
+	project,
 	caseStudy,
 	accent = "#6366f1",
 }: CaseStudyArchitectureProps) {
-	const byId: Record<string, DiagramNode> = Object.fromEntries(NODES.map((n) => [n.id, n]))
+	const visuals = getCaseStudyVisuals(project.id)
+	const { nodes, edges, viewBox, ariaLabel } = visuals?.architecture ?? FALLBACK
+	const byId: Record<string, ArchNode> = Object.fromEntries(nodes.map((n) => [n.id, n]))
 
-	const getAnchor = (n: DiagramNode, side: "top" | "bottom") => ({
+	const getAnchor = (n: ArchNode, side: "top" | "bottom") => ({
 		x: n.x + n.w / 2,
 		y: side === "top" ? n.y : n.y + n.h,
 	})
@@ -173,10 +76,10 @@ export function CaseStudyArchitecture({
 							className="border-border bg-muted/40 rounded-2xl border p-4 sm:p-6"
 						>
 							<svg
-								viewBox="0 0 800 528"
+								viewBox={`0 0 ${viewBox.width} ${viewBox.height}`}
 								className="h-auto w-full"
 								role="img"
-								aria-label="Diagrama de arquitectura de OTC 360"
+								aria-label={ariaLabel}
 							>
 								<defs>
 									<marker
@@ -192,7 +95,6 @@ export function CaseStudyArchitecture({
 									</marker>
 								</defs>
 
-								{/* Edges */}
 								<g
 									className="text-muted-foreground"
 									stroke="currentColor"
@@ -200,9 +102,12 @@ export function CaseStudyArchitecture({
 									strokeWidth="1.2"
 									fill="none"
 								>
-									{EDGES.map((e, i) => {
-										const a = getAnchor(byId[e.from]!, "bottom")
-										const b = getAnchor(byId[e.to]!, "top")
+									{edges.map((e, i) => {
+										const from = byId[e.from]
+										const to = byId[e.to]
+										if (!from || !to) return null
+										const a = getAnchor(from, "bottom")
+										const b = getAnchor(to, "top")
 										const midY = (a.y + b.y) / 2
 										return (
 											<path
@@ -214,9 +119,8 @@ export function CaseStudyArchitecture({
 									})}
 								</g>
 
-								{/* Nodes */}
 								<g>
-									{NODES.map((n) => {
+									{nodes.map((n) => {
 										const isPrimary = n.tone === "primary"
 										const isAccent = n.tone === "accent"
 										const fill = isPrimary

@@ -12,6 +12,7 @@ import {
 	type ProjectCategory,
 } from "@/lib/portfolio-data"
 
+import { getCaseStudyVisuals } from "./visuals/registry"
 import { VisualMockup } from "./visual-mockup"
 
 interface CaseStudyHeroProps {
@@ -21,11 +22,12 @@ interface CaseStudyHeroProps {
 
 export function CaseStudyHero({ project, caseStudy }: CaseStudyHeroProps) {
 	const accent = project.gradientColor ?? "#6366f1"
+	const visuals = getCaseStudyVisuals(project.id)
+	const HeroMockup = visuals?.HeroMockup ?? VisualMockup
 
 	const meta: { label: string; value: string }[] = [
 		{ label: "Cliente", value: caseStudy.clientName },
 		{ label: "Industria", value: caseStudy.clientIndustry },
-		{ label: "Rol", value: caseStudy.role },
 		{ label: "Duración", value: caseStudy.duration },
 		{ label: "En producción", value: caseStudy.inProductionSince },
 	]
@@ -118,7 +120,7 @@ export function CaseStudyHero({ project, caseStudy }: CaseStudyHeroProps) {
 
 					{/* Right: visual mockup */}
 					<div>
-						<VisualMockup accent={accent} label={`Vista de ${project.title}`} />
+						<HeroMockup label={`Vista de ${project.title}`} />
 					</div>
 				</div>
 
@@ -127,7 +129,7 @@ export function CaseStudyHero({ project, caseStudy }: CaseStudyHeroProps) {
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, delay: 0.4 }}
-					className="border-border mt-14 grid grid-cols-2 gap-x-6 gap-y-6 border-t pt-8 sm:grid-cols-3 lg:grid-cols-5"
+					className="border-border mt-14 grid grid-cols-2 gap-x-6 gap-y-6 border-t pt-8 sm:grid-cols-4"
 				>
 					{meta.map((item) => (
 						<div key={item.label}>

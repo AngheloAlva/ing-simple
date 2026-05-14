@@ -57,11 +57,11 @@ export default async function CaseStudyPage({ params }: PageProps): Promise<Reac
 	return (
 		<main id="main-content" className="flex-1">
 			<CaseStudyHero project={project} caseStudy={caseStudy} />
-			<CaseStudyContext caseStudy={caseStudy} />
+			<CaseStudyContext project={project} caseStudy={caseStudy} />
 			<CaseStudySolution caseStudy={caseStudy} accent={accent} />
-			<CaseStudyArchitecture caseStudy={caseStudy} accent={accent} />
+			<CaseStudyArchitecture project={project} caseStudy={caseStudy} accent={accent} />
 			<CaseStudyTechStack caseStudy={caseStudy} />
-			<CaseStudyFeatures caseStudy={caseStudy} />
+			<CaseStudyFeatures project={project} caseStudy={caseStudy} />
 			<CaseStudyTimeline caseStudy={caseStudy} />
 			<CaseStudyMetrics caseStudy={caseStudy} />
 			<CaseStudyRelatedCta currentId={project.id} />
