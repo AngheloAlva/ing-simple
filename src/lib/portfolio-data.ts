@@ -786,10 +786,218 @@ export const portfolioProjects: ProjectData[] = [
 				{
 					date: "Hoy",
 					title: "En producción",
-					description:
-						"Plataforma operativa con catálogo en crecimiento; venta directa activa.",
+					description: "Plataforma operativa con catálogo en crecimiento; venta directa activa.",
 					icon: "current",
 					isCurrent: true,
+				},
+			],
+		},
+	},
+	{
+		id: "dashboard-turismo",
+		imageUrl: "/img/portfolio/placeholder.jpg",
+		title: "Dashboard TurismoChileTours",
+		shortDescription:
+			"Dashboard interno multi-rol para gestionar ventas, eventos, pasajeros, caja y proveedores de una operadora turística en San Pedro de Atacama.",
+		fullDescription:
+			"Plataforma web interna que reemplaza una aplicación Power Apps heredada y centraliza toda la operación de TurismoChileTours: ventas multicanal, calendario de eventos, asignación de proveedores, control de caja diaria, facturación mayorista y comisiones. Está pensada para el equipo de ventas, operaciones, administración y dirección, con permisos granulares por módulo. Es la tercera pieza del ecosistema digital del cliente, complementando el sitio corporativo y el ecommerce de tours en San Pedro.",
+		category: "desarrollo-web",
+		technologies: [
+			"Next.js 16",
+			"React 19",
+			"TypeScript 5.9",
+			"Tailwind CSS 4",
+			"shadcn/ui",
+			"Radix UI",
+			"Prisma 7",
+			"PostgreSQL (Neon)",
+			"Better Auth 1.4",
+			"TanStack Query",
+			"TanStack Table",
+			"TanStack Form",
+			"TanStack Virtual",
+			"Zod 4",
+			"Zustand 5",
+			"@react-pdf/renderer",
+			"ExcelJS",
+			"DnD Kit",
+			"MapLibre GL",
+			"Recharts",
+			"Motion 12",
+			"Resend",
+			"React Email",
+			"Vercel Blob",
+			"Vercel",
+		],
+		gradientColor: "#e75219",
+		isFlagship: true,
+		caseStudy: {
+			pitch:
+				"Una sola herramienta para correr toda la operación diaria de una agencia de turismo en pleno desierto de Atacama. Migra los flujos atrapados en Power Apps a una web moderna, suma módulos que antes vivían en Excel y WhatsApp, y le da al equipo una fuente de verdad común. Diseñado para que ventas, operaciones, guías y administración trabajen sobre los mismos datos — con permisos, auditoría y exportes pensados para el día a día real, no para una demo.",
+			duration:
+				"≈7 meses, octubre 2025 – mayo 2026, con scope creciente: surgieron mejoras durante el camino que extendieron el cronograma original.",
+			inProductionSince:
+				"Junio 2026 (previsto) — actualmente en UAT con el jefe y operadoras como usuarios reales.",
+			clientName: "TurismoChileTours",
+			clientIndustry: "Turismo · Tour operador en San Pedro de Atacama, Chile",
+			problem: [
+				"La empresa operaba sobre una Power Apps heredada usada por el jefe y las operadoras: cubría lo básico (ventas, cotizaciones, traspasos, pasajeros y tours), pero con controles nativos pensados para uso casual, no para un equipo que pasa horas adentro. La UX y la búsqueda eran tediosas, las validaciones débiles, sin auditoría real y con poca garantía de integridad referencial.",
+				"Encima, faltaban módulos clave que la operación ya necesitaba pero no tenía dónde vivir: calendario operativo visual, recepciones de pasajeros en hoteles, validaciones estrictas con auditoría, búsqueda y edición rápida con filtros server-side, permisos granulares por módulo y exportes operativos (hoja de ruta diaria, planillas administrativas).",
+				"La Power Apps además era 11 años de operación (2015–2026) viviendo sobre Microsoft Lists, con esquema inconsistente, columnas agregadas y renombradas a lo largo del tiempo, y referencias entre listas mantenidas a mano. Migrar al dominio normalizado de Postgres no era un volcado directo: requería un proceso explícito de extracción, limpieza y normalización por períodos.",
+			],
+			solution: [
+				"La nueva web cubre todos los flujos que estaban atrapados (ventas, pasajeros, traspasos, tours, asignación de operadores) con UX moderna, tablas virtualizadas, filtros server-side y formularios reactivos con validación Zod compartida cliente/servidor.",
+				"Suma flujos nuevos que la Power Apps no soportaba: calendario de eventos con drag-and-drop y validación de conflictos en servidor, módulo de recepciones, facturación mayorista, comisiones, flujo de caja con múltiples divisas (CLP/USD), analytics y alertas, aprobaciones y exportes PDF/Excel por día / rango / selección.",
+				"El dashboard es un sistema independiente del sitio corporativo y del ecommerce de San Pedro: repos y bases de datos completamente separados. Es la tercera pieza del ecosistema digital del cliente, pero no comparte modelo de datos con las otras dos — cada plataforma tiene su propia responsabilidad y su propio ciclo de vida.",
+				"Sistema de roles con permisos por módulo (RoleModulePermission). Perfiles típicos: administración (jefe), operadoras (ventas, cotizaciones, recepciones, traspasos, asignación de operadores). Cada rol ve solo los módulos que necesita.",
+				"Migración de 11 años de data en tres pasos: extracción de las Microsoft Lists conectadas a la Power Apps a un Excel maestro, limpieza y normalización en un segundo Excel derivado (tipos, referencias reconciliadas, mapeo a Prisma) e importación por períodos con un script Node que validó cada lote contra el schema Zod compartido.",
+			],
+			architectureDescription:
+				'Aplicación Next.js 16 con App Router, Server Actions como capa de mutación (sin API routes salvo casos puntuales) y React Server Components por defecto. La organización sigue clean architecture por feature ("screaming architecture"): cada dominio vive en src/project/{domain}/ con su actions/, components/, schemas/, types/ y columns/. 22 módulos de dominio (ventas, eventos, calendario, caja, comisiones, proveedores, etc.) y 40+ modelos Prisma con 49+ migraciones. Persistencia en PostgreSQL (Neon) vía Prisma 7. Auth con Better Auth 1.4 (email + password) y permisos granulares por módulo modelados en DB. Tablas y filtros server-side con TanStack Table + paginación cursor-based; formularios con TanStack Form + Zod; estado de servidor con TanStack Query. Archivos (vouchers, PDFs, imágenes) en Vercel Blob; emails transaccionales con Resend + React Email. Exportes generados client-side con @react-pdf/renderer y ExcelJS, importados dinámicamente para no inflar el bundle. Deploy en Vercel con Turbopack y React Compiler. Workflow de desarrollo con SDD (Spec-Driven Development).',
+			techStackDetailed: [
+				{
+					name: "Next.js 16 (App Router + Server Actions)",
+					reason:
+						"Necesitábamos formularios pesados con validación server-side y mutaciones transaccionales (venta + pasajeros + eventos en un solo flujo). Server Actions evitan armar una API REST paralela y mantienen todo type-safe end-to-end.",
+				},
+				{
+					name: "React 19 + React Compiler",
+					reason:
+						"El dashboard tiene tablas grandes y filtros reactivos; el compiler memoiza automáticamente sin tener que ensuciar el código con useMemo/useCallback en cada handler.",
+				},
+				{
+					name: "Prisma 7 + PostgreSQL (Neon)",
+					reason:
+						"El modelo de dominio tiene relaciones densas (venta → pasajeros → evento → proveedor → comisión) que no perdonan tipos vagos. Prisma da migraciones versionadas y type-safety end-to-end; Neon suma branching de DB para previews de Vercel.",
+				},
+				{
+					name: "Better Auth 1.4",
+					reason:
+						"Necesitaba permisos por módulo, no solo roles. Better Auth es lo bastante flexible para modelar RoleModulePermission sin pelearse con un provider rígido tipo NextAuth.",
+				},
+				{
+					name: "TanStack Table + Virtual",
+					reason:
+						"Listados de ventas/pasajeros con cientos de filas y filtros combinados. Virtualización + columnas tipadas + paginación server-side fueron requisito desde el día uno.",
+				},
+				{
+					name: "TanStack Form + Zod 4",
+					reason:
+						"Formularios largos (venta multicanal, evento con N pasajeros) con validación compartida cliente/servidor. Un solo schema Zod corre en ambos lados.",
+				},
+				{
+					name: "shadcn/ui + Tailwind 4 + Radix",
+					reason:
+						"Control total sobre los componentes (los copiamos al repo), accesibilidad de Radix y Tailwind 4 con theming vía CSS vars para soporte oscuro/claro sin librería de themes.",
+				},
+				{
+					name: "DnD Kit",
+					reason:
+						"Calendario de eventos con drag-and-drop accesible por teclado y un único DndContext compartido entre las vistas mes / semana / día.",
+				},
+				{
+					name: "@react-pdf/renderer + ExcelJS",
+					reason:
+						"Exportes operativos (hojas de ruta del día, planillas para administración) generados client-side y descargables al toque. Dynamic import para no cargar las libs hasta que el usuario abre el menú de exportar.",
+				},
+				{
+					name: "MapLibre GL",
+					reason:
+						"Visualización geográfica de rutas/tours sin lock-in con Mapbox ni costos por load.",
+				},
+				{
+					name: "Resend + React Email",
+					reason:
+						"Emails transaccionales (vouchers, confirmaciones) con templates en JSX, deliverability decente y SDK Node simple.",
+				},
+				{
+					name: "Vercel Blob + Vercel hosting",
+					reason:
+						"Vouchers PDF y fotos de tours sin infra extra; deploys por PR con preview URLs e integración nativa con Neon branching.",
+				},
+			],
+			features: [
+				{
+					title: "Calendario operativo con drag-and-drop",
+					description:
+						"Tres vistas (mes / semana / día) sobre un único DndContext de DnD Kit. Cada drop dispara un Server Action que valida en transacción conflictos de disponibilidad de proveedores y pasajeros, y exige motivo obligatorio del cambio para auditoría. Si hay conflicto, el evento vuelve a su lugar con un toast explicando qué chocó.",
+				},
+				{
+					title: "Análisis y reportes con filtros",
+					description:
+						"Analytics con Recharts (ventas, ocupación, voucher promedio, países atendidos) sobre filtros server-side, sumado a exportes operativos: PDF (hoja de ruta diaria, voucher de pasajero, detalle de venta) y Excel (planillas operativas y administrativas) en alcances día / rango / selección, con branding consistente.",
+				},
+				{
+					title: "Facturación mayorista con exportes",
+					description:
+						"El módulo de Facturación permite seleccionar ventas de un mayorista (Ekatours, Despegar, etc.) dentro de un rango de fechas, marcar varias con multiselect, y generar un PDF de cobro consolidado con el detalle de cada venta (voucher, pasajero, fechas, monto) listo para mandarle al mayorista. El mismo flujo soporta exporte a Excel para conciliación administrativa. Antes era una operación manual mensual repartida entre la Power Apps, planillas Excel y correo; ahora una operadora arma el cobro en menos de un minuto con totales calculados y registro en sistema.",
+				},
+				{
+					title: "Permisos granulares por módulo",
+					description:
+						"Autorización en el modelo RoleModulePermission: cada rol tiene permisos por módulo (ver / crear / editar / eliminar / aprobar) configurables desde la UI sin tocar código. La sidebar, las acciones de las tablas y los Server Actions chequean el permiso del lado del servidor — la UI nunca es la fuente de verdad de seguridad.",
+				},
+				{
+					title: "Recepciones y traspasos entre agencias",
+					description:
+						"San Pedro funciona como un ecosistema chico de agencias que se pasan pasajeros entre sí. Dos módulos hermanos resuelven el flujo: Recepciones registra pasajeros recibidos de otras agencias y los inserta en el calendario operativo como cualquier venta (voucher, evento, hoja de ruta); Traspasos manda pasajeros propios a otra agencia con voucher de traspaso, dejando rastro de qué venta original derivó qué pasajero a qué destino. Antes vivía en WhatsApp y Excel — ahora es un canal B2B operable con auditoría.",
+				},
+				{
+					title: "Migración de 11 años de data",
+					description:
+						"Extracción de Microsoft Lists (2015–2026) a Excel maestro, normalización y reconciliación de referencias en un Excel derivado, y carga por períodos con un script Node que valida cada lote contra el schema Zod compartido con la app antes de tocar producción.",
+				},
+			],
+			metrics: [
+				{
+					value: "22",
+					label: "módulos de dominio",
+					caption: "Carpetas en src/project/ (ventas, eventos, caja, comisiones, …).",
+				},
+				{
+					value: "11 años",
+					label: "de data histórica migrada",
+					caption: "2015–2026 desde Microsoft Lists a Postgres por períodos.",
+				},
+				{
+					value: "~3 min → ~45 s",
+					label: "registrar una venta multicanal",
+					caption: "Estimación UAT vs Power Apps — menos pantallazos, validación inline.",
+				},
+				{
+					value: "3 → 1",
+					label: "fuentes de verdad",
+					caption: "Power Apps + Excel + WhatsApp → un solo Postgres con auditoría.",
+				},
+			],
+			timeline: [
+				{
+					date: "Octubre 2025",
+					title: "Kickoff",
+					description:
+						"Primer contacto con TurismoChileTours, definición de scope y decisión de migrar la Power Apps a una web propia. Primeras carpetas de dominio (auth, agency).",
+					icon: "kickoff",
+				},
+				{
+					date: "Oct 2025 – May 2026",
+					title: "Desarrollo iterativo",
+					description:
+						"≈7 meses con scope creciente. Hitos internos: receptions/transfers/providers (nov 2025), billing/departures/analytics (ene 2026), roles + permisos / alerts / commissions / approvals (feb 2026), calendar (mar 2026), drag-and-drop + exportes PDF/Excel (abr 2026), multiselect facturación + hover cards + sale detail accordions (may 2026).",
+					icon: "build",
+				},
+				{
+					date: "Mayo 2026",
+					title: "UAT con usuarios reales",
+					description:
+						"En curso con el jefe y operadoras. Migración de data histórica 2015–2026 desde Microsoft Lists corriendo en paralelo.",
+					icon: "current",
+					isCurrent: true,
+				},
+				{
+					date: "Junio 2026",
+					title: "Lanzamiento previsto",
+					description: "Salida a producción tras cierre de UAT y carga final de data histórica.",
+					icon: "launch",
 				},
 			],
 		},

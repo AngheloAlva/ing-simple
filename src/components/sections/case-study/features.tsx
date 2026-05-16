@@ -19,12 +19,15 @@ interface FeatureWithVisual {
 	description: string
 	icon: LucideIcon
 	visual: ReactNode
-	span: "wide" | "narrow"
+	span: "full" | "wide" | "narrow"
 }
 
 function buildFeatures(
 	features: CaseStudyFeature[],
-	registry: Record<string, { visual: ReactNode; span: "wide" | "narrow"; icon?: LucideIcon }>,
+	registry: Record<
+		string,
+		{ visual: ReactNode; span: "full" | "wide" | "narrow"; icon?: LucideIcon }
+	>,
 ): FeatureWithVisual[] {
 	return features.map((f) => {
 		const entry = registry[f.title]
@@ -51,6 +54,7 @@ const narrowGridByCount: Record<number, string> = {
 export function CaseStudyFeatures({ project, caseStudy }: CaseStudyFeaturesProps) {
 	const visuals = getCaseStudyVisuals(project.id)
 	const features = buildFeatures(caseStudy.features, visuals?.features ?? {})
+	const full = features.filter((f) => f.span === "full")
 	const wide = features.filter((f) => f.span === "wide")
 	const narrow = features.filter((f) => f.span === "narrow")
 	const narrowCols = narrowGridByCount[narrow.length] ?? "lg:grid-cols-4"
@@ -79,8 +83,18 @@ export function CaseStudyFeatures({ project, caseStudy }: CaseStudyFeaturesProps
 					</motion.h2>
 				</div>
 
+				{full.length > 0 && (
+					<div className="grid grid-cols-1 gap-4 md:gap-5">
+						{full.map((f, i) => (
+							<BentoCard key={f.key} feature={f} index={i} large />
+						))}
+					</div>
+				)}
+
 				{wide.length > 0 && (
-					<div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+					<div
+						className={`grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 ${full.length > 0 ? "mt-4 md:mt-5" : ""}`}
+					>
 						{wide.map((f, i) => (
 							<BentoCard key={f.key} feature={f} index={i} large />
 						))}

@@ -22,7 +22,7 @@ export interface ArchEdge {
 
 export interface FeatureVisual {
 	visual: ReactNode
-	span: "wide" | "narrow"
+	span: "full" | "wide" | "narrow"
 	icon?: LucideIcon
 }
 
@@ -54,12 +54,14 @@ import { otcVisuals } from "./otc"
 import { busancVisuals } from "./busanc"
 import { turismoChileToursVisuals } from "./turismochiletours"
 import { tourSanPedroAtacamaVisuals } from "./toursanpedroatacama"
+import { dashboardTurismoVisuals } from "./dashboard-turismo"
 
 const REGISTRY: Record<string, CaseStudyVisuals> = {
 	"otc-360": otcVisuals,
 	"busanc": busancVisuals,
 	"turismochiletours": turismoChileToursVisuals,
 	"toursanpedroatacama": tourSanPedroAtacamaVisuals,
+	"dashboard-turismo": dashboardTurismoVisuals,
 }
 
 export function getCaseStudyVisuals(projectId: string): CaseStudyVisuals | null {
