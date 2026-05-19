@@ -259,6 +259,177 @@ export const portfolioProjects: ProjectData[] = [
 		},
 	},
 	{
+		id: "gestion-cuadrillas-tareas-planta",
+		imageUrl: "/img/portfolio/placeholder.jpg",
+		title: "Plataforma de Gestión de Cuadrillas y Tareas en Planta",
+		shortDescription:
+			"Sistema multi-rol para coordinar cuadrillas, tareas y trazabilidad operacional en planta, reemplazando Teams y WhatsApp.",
+		fullDescription:
+			"Plataforma interna de gestión operacional que centraliza la coordinación de cuadrillas, asignación de tareas, seguimiento de avance y trazabilidad completa de cambios. Reemplaza la coordinación informal por Teams/WhatsApp y planillas sueltas con un sistema multi-rol, con carga masiva vía Excel, calendario operativo y auditoría de cada acción.",
+		category: "desarrollo-web",
+		technologies: [
+			"Next.js",
+			"React",
+			"TypeScript",
+			"Prisma",
+			"PostgreSQL",
+			"Better Auth",
+			"Zod",
+			"TanStack Table",
+			"Tailwind CSS",
+			"shadcn/ui",
+			"Ably",
+			"Vercel Blob",
+			"ExcelJS",
+		],
+		gradientColor: "#0f766e",
+		isFlagship: true,
+		caseStudy: {
+			pitch:
+				"Plataforma multi-rol que reemplazó la coordinación por Teams y WhatsApp por un único sistema para asignar cuadrillas, gestionar tareas en planta y mantener trazabilidad total de cada cambio.",
+			// TODO(review): campos redactados de forma conservadora/anonimizada — validar con el cliente antes de merge a main
+			duration: "≈4 meses de desarrollo, con relevamiento en planta",
+			inProductionSince: "Mayo 2026",
+			clientName: "Cliente industrial (operación en planta)",
+			clientIndustry: "Mantenimiento industrial y gestión de cuadrillas en planta",
+			problem: [
+				"La coordinación de cuadrillas y tareas en planta se manejaba a través de Teams y WhatsApp, sin un registro estructurado de quién hacía qué, cuándo ni con qué prioridad. La información operativa vivía dispersa en chats y planillas paralelas.",
+				"No existía un dueño claro de cada tarea: las asignaciones se daban verbalmente o por mensaje, sin estado, sin responsable formal y sin forma de auditar después qué pasó realmente.",
+				"Las tareas se acumulaban sin visibilidad consolidada. Supervisión y gerencia no tenían una foto operativa única, y reconstruir el historial de un trabajo dependía de scrollear conversaciones.",
+			],
+			solution: [
+				"La plataforma centraliza el ciclo completo en un único sistema multi-rol: cada cuadrilla, tarea y cambio queda registrado, con responsable, estado y prioridad explícitos, accesible según el rol de cada usuario.",
+				"Cada acción relevante deja rastro: la auditoría y trazabilidad permiten reconstruir qué se hizo, quién lo hizo y cuándo, sin depender de chats ni memoria de las personas.",
+				"Supervisión y gerencia obtienen una foto operativa consolidada en tiempo real, con vistas por rol y un calendario operativo que reemplaza la coordinación informal previa.",
+				"El sistema sigue creciendo: la carga masiva vía Excel y el calendario son la base sobre la que se incorporan nuevas capacidades operativas de forma incremental.",
+			],
+			architectureDescription:
+				"Frontend en Next.js con React Server Components para listados y vistas pesadas, autenticación por sesión con Better Auth, persistencia en PostgreSQL vía Prisma con driver adapter de pg, y validación extremo a extremo con Zod. La numeración concurrente de tareas usa advisory locks de PostgreSQL para evitar colisiones bajo carga simultánea. El tiempo real (estados y notificaciones) se resuelve con Ably, los adjuntos se almacenan en Vercel Blob, y la carga masiva se procesa con un wizard sobre ExcelJS que confirma de forma transaccional.",
+			techStackDetailed: [
+				{
+					name: "Next.js + React + TypeScript",
+					reason:
+						"App Router con React Server Components para listados y vistas operativas pesadas, y tipos estrictos en cada capa para reducir bugs en un sistema crítico de coordinación.",
+				},
+				{
+					name: "Prisma + PostgreSQL",
+					reason:
+						"Modelo relacional para entidades fuertemente vinculadas (cuadrillas ↔ tareas ↔ usuarios ↔ roles), con advisory locks para numeración concurrente de tareas sin colisiones.",
+				},
+				{
+					name: "Better Auth",
+					reason:
+						"Sesiones server-side con control completo del esquema multi-rol, sin lock-in a un proveedor SaaS de identidad externo.",
+				},
+				{
+					name: "Zod",
+					reason:
+						"Validación de datos extremo a extremo: el mismo esquema valida en el cliente, en el server y en la carga masiva por Excel.",
+				},
+				{
+					name: "Ably",
+					reason:
+						"Sincronización en tiempo real de estados de tareas y notificaciones entre roles, sin sostener infraestructura de WebSockets propia.",
+				},
+				{
+					name: "TanStack Table + ExcelJS + Vercel Blob",
+					reason:
+						"Tablas operativas grandes con orden y filtros, carga masiva transaccional desde Excel, y almacenamiento de adjuntos sin acoplar al filesystem del runtime.",
+				},
+			],
+			features: [
+				{
+					title: "Asignación de Cuadrillas y Tareas",
+					description:
+						"Asignación formal con responsable, estado y prioridad explícitos, reemplazando la coordinación verbal por Teams y WhatsApp.",
+				},
+				{
+					title: "Numeración Concurrente de Tareas",
+					description:
+						"Numeración correlativa garantizada bajo carga simultánea mediante advisory locks de PostgreSQL, sin colisiones ni huecos.",
+				},
+				{
+					title: "Carga Masiva por Excel",
+					description:
+						"Wizard de importación sobre ExcelJS que valida y confirma de forma transaccional, evitando estados parciales.",
+				},
+				{
+					title: "Calendario Operativo",
+					description:
+						"Vista de calendario para planificar y visualizar tareas y cuadrillas, reemplazando la planificación informal previa.",
+				},
+				{
+					title: "Vistas por Rol",
+					description:
+						"Cada perfil ve y opera solo lo que le corresponde, con un esquema multi-rol configurable.",
+				},
+				{
+					title: "Auditoría y Trazabilidad",
+					description:
+						"Registro completo de cambios: quién hizo qué y cuándo, reconstruible sin depender de chats ni memoria.",
+				},
+				{
+					title: "Tiempo Real",
+					description:
+						"Estados y notificaciones sincronizados en vivo entre roles mediante Ably.",
+				},
+			],
+			metrics: [
+				{
+					value: "~60",
+					label: "usuarios activos",
+					caption: "Equipo operativo y supervisión en planta",
+				},
+				{
+					value: "30",
+					label: "proyectos gestionados",
+					caption: "Trabajos coordinados en la plataforma",
+				},
+				{
+					value: "4+",
+					label: "roles configurables",
+					caption: "Esquema multi-rol según perfil operativo",
+				},
+				{
+					value: "100%",
+					label: "trazabilidad de cambios",
+					caption: "Cada acción relevante queda auditada",
+				},
+			],
+			timeline: [
+				{
+					date: "Febrero 2026",
+					title: "Kickoff & relevamiento",
+					description:
+						"Relevamiento en planta para mapear la coordinación actual por Teams/WhatsApp y los dolores operativos.",
+					icon: "kickoff",
+				},
+				{
+					date: "Feb – Abr 2026",
+					title: "Desarrollo",
+					description:
+						"Construcción del esquema multi-rol, asignación de tareas, carga masiva por Excel y trazabilidad.",
+					icon: "build",
+				},
+				{
+					date: "Mayo 2026",
+					title: "Lanzamiento a producción",
+					description:
+						"Despliegue interno, onboarding de roles operativos y reemplazo de la coordinación informal previa.",
+					icon: "launch",
+				},
+				{
+					date: "Hoy",
+					title: "En operación y crecimiento",
+					description:
+						"Soporte continuo e incorporación incremental de nuevas capacidades operativas sobre la base de calendario y carga masiva.",
+					icon: "current",
+					isCurrent: true,
+				},
+			],
+		},
+	},
+	{
 		id: "busanc",
 		imageUrl: "/img/portfolio/placeholder.jpg",
 		title: "Busanc — Plataforma de Gestión Comercial e Industrial",
