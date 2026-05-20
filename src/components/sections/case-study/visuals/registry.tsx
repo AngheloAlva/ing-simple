@@ -40,6 +40,7 @@ export interface ArchitectureConfig {
 	edges: ArchEdge[]
 	viewBox: { width: number; height: number }
 	ariaLabel: string
+	diagramTitle?: string
 }
 
 export interface CaseStudyVisuals {
@@ -55,6 +56,7 @@ import { busancVisuals } from "./busanc"
 import { turismoChileToursVisuals } from "./turismochiletours"
 import { tourSanPedroAtacamaVisuals } from "./toursanpedroatacama"
 import { dashboardTurismoVisuals } from "./dashboard-turismo"
+import { cuadrillasVisuals } from "./cuadrillas"
 
 const REGISTRY: Record<string, CaseStudyVisuals> = {
 	"otc-360": otcVisuals,
@@ -62,6 +64,7 @@ const REGISTRY: Record<string, CaseStudyVisuals> = {
 	"turismochiletours": turismoChileToursVisuals,
 	"toursanpedroatacama": tourSanPedroAtacamaVisuals,
 	"dashboard-turismo": dashboardTurismoVisuals,
+	"obralink": cuadrillasVisuals,
 }
 
 export function getCaseStudyVisuals(projectId: string): CaseStudyVisuals | null {

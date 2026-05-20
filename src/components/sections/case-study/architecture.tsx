@@ -17,6 +17,7 @@ const FALLBACK = {
 	ariaLabel: "Diagrama de arquitectura",
 	nodes: [] as ArchNode[],
 	edges: [] as { from: string; to: string }[],
+	diagramTitle: undefined as string | undefined,
 }
 
 export function CaseStudyArchitecture({
@@ -25,7 +26,7 @@ export function CaseStudyArchitecture({
 	accent = "#6366f1",
 }: CaseStudyArchitectureProps) {
 	const visuals = getCaseStudyVisuals(project.id)
-	const { nodes, edges, viewBox, ariaLabel } = visuals?.architecture ?? FALLBACK
+	const { nodes, edges, viewBox, ariaLabel, diagramTitle } = visuals?.architecture ?? FALLBACK
 	const byId: Record<string, ArchNode> = Object.fromEntries(nodes.map((n) => [n.id, n]))
 
 	const getAnchor = (n: ArchNode, side: "top" | "bottom") => ({
@@ -75,6 +76,11 @@ export function CaseStudyArchitecture({
 							transition={{ duration: 0.6 }}
 							className="border-border bg-muted/40 rounded-2xl border p-4 sm:p-6"
 						>
+							{diagramTitle && (
+								<h3 className="text-foreground mb-3 text-sm font-semibold tracking-tight">
+									{diagramTitle}
+								</h3>
+							)}
 							<svg
 								viewBox={`0 0 ${viewBox.width} ${viewBox.height}`}
 								className="h-auto w-full"

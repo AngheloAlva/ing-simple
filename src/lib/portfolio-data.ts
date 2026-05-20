@@ -10,9 +10,17 @@ export interface CaseStudyMetric {
 	caption?: string
 }
 
+export interface CaseStudyTechItemDetail {
+	constraint: string
+	decision: string
+	outcome: string
+}
+
 export interface CaseStudyTechItem {
 	name: string
 	reason: string
+	tag?: string
+	detail?: CaseStudyTechItemDetail
 }
 
 export interface CaseStudyFeature {
@@ -37,20 +45,26 @@ export interface CaseStudyMilestone {
 	isCurrent?: boolean
 }
 
+export type ParagraphBlock = string | { headline: string; body: string }
+
 export interface CaseStudy {
 	pitch: string
 	duration: string
 	inProductionSince: string
 	clientName: string
 	clientIndustry: string
-	problem: string[]
-	solution: string[]
+	team?: string
+	userBreakdown?: string
+	problem: ParagraphBlock[]
+	solution: ParagraphBlock[]
 	architectureDescription: string
 	techStackDetailed: CaseStudyTechItem[]
+	techStackIntro?: string
 	features: CaseStudyFeature[]
 	metrics: CaseStudyMetric[]
 	timeline?: CaseStudyMilestone[]
 	testimonial?: CaseStudyTestimonial
+	beforeAfter?: Array<{ before: string; after: string }>
 }
 
 export interface ProjectData {
@@ -259,9 +273,9 @@ export const portfolioProjects: ProjectData[] = [
 		},
 	},
 	{
-		id: "gestion-cuadrillas-tareas-planta",
+		id: "obralink",
 		imageUrl: "/img/portfolio/placeholder.jpg",
-		title: "Plataforma de Gestión de Cuadrillas y Tareas en Planta",
+		title: "ObraLink",
 		shortDescription:
 			"Sistema multi-rol para coordinar cuadrillas, tareas y trazabilidad operacional en planta, reemplazando Teams y WhatsApp.",
 		fullDescription:
@@ -286,57 +300,133 @@ export const portfolioProjects: ProjectData[] = [
 		isFlagship: true,
 		caseStudy: {
 			pitch:
-				"Plataforma multi-rol que reemplazó la coordinación por Teams y WhatsApp por un único sistema para asignar cuadrillas, gestionar tareas en planta y mantener trazabilidad total de cada cambio.",
-			// TODO(review): campos redactados de forma conservadora/anonimizada — validar con el cliente antes de merge a main
-			duration: "≈4 meses de desarrollo, con relevamiento en planta",
-			inProductionSince: "Mayo 2026",
-			clientName: "Cliente industrial (operación en planta)",
-			clientIndustry: "Mantenimiento industrial y gestión de cuadrillas en planta",
+				"Plataforma multi-rol que reemplaza la coordinación por Teams y WhatsApp con un único sistema para asignar cuadrillas, gestionar tareas en planta y auditar cada cambio. Sin chats perdidos, sin planillas paralelas, sin \"¿quién dijo qué?\".",
+			duration: "~4 meses, desde relevamiento hasta producción",
+			inProductionSince: "En producción desde Mayo 2026",
+			clientName: "Operación industrial en planta",
+			clientIndustry: "Mantenimiento industrial · Gestión de cuadrillas",
+			team: "Desarrollo end-to-end + relevamiento en planta",
+			userBreakdown: "Multi-rol: Administradores · Ingenieros · Operarios",
 			problem: [
-				"La coordinación de cuadrillas y tareas en planta se manejaba a través de Teams y WhatsApp, sin un registro estructurado de quién hacía qué, cuándo ni con qué prioridad. La información operativa vivía dispersa en chats y planillas paralelas.",
-				"No existía un dueño claro de cada tarea: las asignaciones se daban verbalmente o por mensaje, sin estado, sin responsable formal y sin forma de auditar después qué pasó realmente.",
-				"Las tareas se acumulaban sin visibilidad consolidada. Supervisión y gerencia no tenían una foto operativa única, y reconstruir el historial de un trabajo dependía de scrollear conversaciones.",
-			],
-			solution: [
-				"La plataforma centraliza el ciclo completo en un único sistema multi-rol: cada cuadrilla, tarea y cambio queda registrado, con responsable, estado y prioridad explícitos, accesible según el rol de cada usuario.",
-				"Cada acción relevante deja rastro: la auditoría y trazabilidad permiten reconstruir qué se hizo, quién lo hizo y cuándo, sin depender de chats ni memoria de las personas.",
-				"Supervisión y gerencia obtienen una foto operativa consolidada en tiempo real, con vistas por rol y un calendario operativo que reemplaza la coordinación informal previa.",
-				"El sistema sigue creciendo: la carga masiva vía Excel y el calendario son la base sobre la que se incorporan nuevas capacidades operativas de forma incremental.",
-			],
-			architectureDescription:
-				"Frontend en Next.js con React Server Components para listados y vistas pesadas, autenticación por sesión con Better Auth, persistencia en PostgreSQL vía Prisma con driver adapter de pg, y validación extremo a extremo con Zod. La numeración concurrente de tareas usa advisory locks de PostgreSQL para evitar colisiones bajo carga simultánea. El tiempo real (estados y notificaciones) se resuelve con Ably, los adjuntos se almacenan en Vercel Blob, y la carga masiva se procesa con un wizard sobre ExcelJS que confirma de forma transaccional.",
-			techStackDetailed: [
 				{
-					name: "Next.js + React + TypeScript",
-					reason:
-						"App Router con React Server Components para listados y vistas operativas pesadas, y tipos estrictos en cada capa para reducir bugs en un sistema crítico de coordinación.",
+					headline: "La operación vivía en chats.",
+					body: "La coordinación de cuadrillas y tareas en planta se manejaba entre Teams, WhatsApp y planillas sueltas. Cada conversación importante terminaba enterrada bajo cientos de mensajes nuevos al día siguiente.",
 				},
 				{
+					headline: "Nadie era dueño formal de nada.",
+					body: "Las asignaciones se daban verbalmente o por mensaje: sin estado, sin prioridad explícita, sin responsable formal. Cuando algo fallaba, reconstruir qué pasó dependía de scrollear chats o de la memoria de quien estuvo ahí.",
+				},
+				{
+					headline: "Supervisión y gerencia volaban a ciegas.",
+					body: "No existía una foto operativa única: para saber el estado real de la planta había que preguntar, llamar, esperar. La información existía, pero estaba fragmentada en 10 lugares distintos.",
+				},
+			],
+			solution: [
+				{
+					headline: "Un sistema, un origen de verdad.",
+					body: "ObraLink centraliza el ciclo completo de operación en una única plataforma multi-rol. Cada cuadrilla, tarea y cambio queda registrado con responsable, estado y prioridad explícitos — accesibles según el rol de cada usuario.",
+				},
+				{
+					headline: "Trazabilidad sin esfuerzo.",
+					body: "Cada acción relevante deja rastro automático. La auditoría permite reconstruir qué se hizo, quién lo hizo y cuándo, sin depender de chats ni de la memoria de las personas. Ideal para inspecciones, reportes y revisiones post-incidente.",
+				},
+				{
+					headline: "Visibilidad operativa en tiempo real.",
+					body: "Supervisión y gerencia acceden a una foto consolidada de la planta, con vistas adaptadas a cada rol y un calendario operativo que reemplaza la coordinación informal. Lo que antes requería tres llamadas y dos mensajes, ahora es una pantalla.",
+				},
+				{
+					headline: "Una base que escala con la operación.",
+					body: "La carga masiva vía Excel y el calendario son la columna vertebral sobre la que el sistema sigue incorporando capacidades — sin reescribir lo existente, sin romper lo que ya funciona.",
+				},
+			],
+			architectureDescription:
+				"Stack pensado para coordinación industrial crítica. Frontend en Next.js (App Router) con React Server Components para listados y vistas operativas pesadas. Autenticación propia con Better Auth (sesiones server-side, sin lock-in a SaaS de identidad). Persistencia en PostgreSQL vía Prisma con driver adapter de pg, y validación extremo a extremo con Zod: el mismo esquema valida en cliente, server y carga masiva. La numeración concurrente de tareas usa advisory locks de PostgreSQL para evitar colisiones cuando múltiples capataces operan en simultáneo. El tiempo real (estados y notificaciones) corre sobre Ably — sin sostener infraestructura propia de WebSockets. Los adjuntos (fotos de campo, planos, evidencia) viven en Vercel Blob, desacoplados del runtime. La carga masiva se procesa con un wizard sobre ExcelJS que valida fila por fila y confirma de forma transaccional: o entra todo, o no entra nada.",
+			techStackDetailed: [
+				{
 					name: "Prisma + PostgreSQL",
+					tag: "Integridad",
 					reason:
-						"Modelo relacional para entidades fuertemente vinculadas (cuadrillas ↔ tareas ↔ usuarios ↔ roles), con advisory locks para numeración concurrente de tareas sin colisiones.",
+						"Modelo relacional para entidades fuertemente vinculadas (cuadrillas ↔ tareas ↔ usuarios ↔ roles), con advisory locks de PostgreSQL para numeración concurrente de tareas sin colisiones.",
+					detail: {
+						constraint:
+							"Las entidades del dominio (cuadrillas, tareas, usuarios, roles) están fuertemente vinculadas y se modifican en simultáneo desde múltiples roles.",
+						decision:
+							"Postgres por su modelo relacional probado y sus garantías ACID. Prisma como capa de tipos sobre el schema, para que el modelo de datos y el código TypeScript nunca se desincronicen. Advisory locks de Postgres resuelven la numeración concurrente de tareas: aunque dos capataces creen una tarea en el mismo milisegundo, no hay colisiones ni números duplicados.",
+						outcome: "Integridad de datos garantizada por la base, no por la aplicación.",
+					},
+				},
+				{
+					name: "Next.js + React + TypeScript",
+					tag: "Performance",
+					reason:
+						"App Router con React Server Components para listados y vistas operativas pesadas, y tipos estrictos en cada capa para reducir bugs en un sistema crítico de coordinación.",
+					detail: {
+						constraint:
+							"Vistas operativas con cientos de tareas tenían que cargar rápido y sin bugs de tipos en flujos críticos.",
+						decision:
+							"App Router con React Server Components mueve el render pesado al servidor — el navegador del operario en planta no sufre. TypeScript estricto en cada capa atrapa errores de coordinación (un status mal escrito, un roleId cruzado) antes de llegar a producción.",
+						outcome:
+							"Listados que escalan a miles de filas sin trabarse y un sistema donde el compilador es la primera línea de defensa.",
+					},
 				},
 				{
 					name: "Better Auth",
+					tag: "Soberanía de datos",
 					reason:
 						"Sesiones server-side con control completo del esquema multi-rol, sin lock-in a un proveedor SaaS de identidad externo.",
+					detail: {
+						constraint: "Sistema multi-rol crítico que no podía depender de un proveedor externo de identidad.",
+						decision:
+							"Better Auth corre server-side con control total del esquema de roles y permisos. Sin redirecciones a dominios de terceros, sin lock-in a un SaaS que pueda cambiar precios o políticas, sin enviar datos de usuarios industriales fuera de la infraestructura del proyecto.",
+						outcome:
+							"Autenticación con sesiones propias, esquema de roles a medida, y soberanía completa sobre los datos de identidad.",
+					},
 				},
 				{
 					name: "Zod",
+					tag: "Validación",
 					reason:
 						"Validación de datos extremo a extremo: el mismo esquema valida en el cliente, en el server y en la carga masiva por Excel.",
+					detail: {
+						constraint:
+							"La carga masiva por Excel podía romper la base con un solo registro inválido en una de 500 filas.",
+						decision:
+							"Zod define el esquema UNA vez y lo reusa en tres lugares: formularios del cliente, endpoints del servidor y el pipeline de importación de Excel. Lo que pasa la validación es estructuralmente correcto antes de tocar la base de datos.",
+						outcome:
+							"Errores detectados fila por fila antes del commit, sin estados inconsistentes ni rollbacks parciales.",
+					},
 				},
 				{
 					name: "Ably",
+					tag: "Real-time",
 					reason:
 						"Sincronización en tiempo real de estados de tareas y notificaciones entre roles, sin sostener infraestructura de WebSockets propia.",
+					detail: {
+						constraint:
+							"Estados de tareas y notificaciones tenían que propagarse entre roles en tiempo real, sin sostener un servidor de WebSockets propio.",
+						decision:
+							"Ably maneja la capa de pub/sub con reconexión automática, ordering garantizado y entrega \"at-least-once\". El backend solo publica eventos — la infraestructura de tiempo real es responsabilidad del proveedor, no del equipo.",
+						outcome:
+							"Cuando un operario marca una tarea como terminada, el supervisor lo ve al instante. Sin polling, sin recargar, sin infraestructura adicional que mantener.",
+					},
 				},
 				{
 					name: "TanStack Table + ExcelJS + Vercel Blob",
+					tag: "Escalabilidad",
 					reason:
 						"Tablas operativas grandes con orden y filtros, carga masiva transaccional desde Excel, y almacenamiento de adjuntos sin acoplar al filesystem del runtime.",
+					detail: {
+						constraint:
+							"Tres restricciones distintas del mismo dominio: visualizar miles de tareas, importarlas masivamente, y guardar adjuntos pesados (fotos de campo, planos).",
+						decision:
+							"TanStack Table para tablas operativas con ordering, filtros y selección que escalan sin perder fluidez. ExcelJS para procesar planillas reales del cliente (con merges, formatos, hojas múltiples) en un wizard transaccional. Vercel Blob para adjuntos, separados del filesystem del runtime — los archivos no compiten por espacio con el código.",
+						outcome:
+							"El cliente sigue trabajando con sus Excels de siempre, pero la información termina estructurada, auditable y consultable.",
+					},
 				},
 			],
+			techStackIntro:
+				"Cada elección técnica respondió a una restricción real del proyecto. No usamos nada por moda — esto es el por qué de cada herramienta.",
 			features: [
 				{
 					title: "Asignación de Cuadrillas y Tareas",
@@ -425,6 +515,28 @@ export const portfolioProjects: ProjectData[] = [
 						"Soporte continuo e incorporación incremental de nuevas capacidades operativas sobre la base de calendario y carga masiva.",
 					icon: "current",
 					isCurrent: true,
+				},
+			],
+			beforeAfter: [
+				{
+					before: "Coordinación en Teams + WhatsApp + planillas",
+					after: "Un sistema único, con responsable y estado por tarea",
+				},
+				{
+					before: "\"¿Quién hacía esa tarea?\" → scrollear chats",
+					after: "Historial completo en 2 clicks",
+				},
+				{
+					before: "Reportes manuales armados desde mensajes",
+					after: "Reportes automáticos desde datos estructurados",
+				},
+				{
+					before: "Sin foto operativa consolidada",
+					after: "Dashboard en tiempo real por rol",
+				},
+				{
+					before: "Errores de coordinación detectados tarde",
+					after: "Visibilidad inmediata + auditoría completa",
 				},
 			],
 		},

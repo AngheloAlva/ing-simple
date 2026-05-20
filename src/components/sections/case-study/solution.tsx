@@ -42,7 +42,7 @@ export function CaseStudySolution({ caseStudy, accent = "#6366f1" }: CaseStudySo
 
 				<div className="lg:col-span-8">
 					<div className="flex flex-col gap-6">
-						{caseStudy.solution.map((paragraph, i) => (
+						{caseStudy.solution.map((item, i) => (
 							<motion.p
 								key={i}
 								initial={{ opacity: 0, y: 20 }}
@@ -51,7 +51,14 @@ export function CaseStudySolution({ caseStudy, accent = "#6366f1" }: CaseStudySo
 								transition={{ duration: 0.5, delay: i * 0.08 }}
 								className="text-foreground text-base leading-relaxed sm:text-lg"
 							>
-								{paragraph}
+								{typeof item === "string" ? (
+									item
+								) : (
+									<>
+										<strong className="text-foreground font-semibold">{item.headline}</strong>{" "}
+										<span className="text-muted-foreground">{item.body}</span>
+									</>
+								)}
 							</motion.p>
 						))}
 					</div>

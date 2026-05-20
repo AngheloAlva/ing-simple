@@ -151,7 +151,7 @@ function BentoCard({
 				{feature.description}
 			</p>
 			{feature.visual && (
-				<div className={`mt-auto pt-6 ${large ? "sm:pt-8" : "pt-4"}`}>{feature.visual}</div>
+				<div className={`pt-6 ${large ? "sm:pt-8" : "pt-4"}`}>{feature.visual}</div>
 			)}
 		</motion.article>
 	)

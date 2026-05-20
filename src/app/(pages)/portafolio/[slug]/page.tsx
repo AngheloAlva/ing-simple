@@ -10,6 +10,7 @@ import { CaseStudySolution } from "@/components/sections/case-study/solution"
 import { CaseStudyFeatures } from "@/components/sections/case-study/features"
 import { CaseStudyTimeline } from "@/components/sections/case-study/timeline"
 import { CaseStudyMetrics } from "@/components/sections/case-study/metrics"
+import { CaseStudyBeforeAfter } from "@/components/sections/case-study/before-after"
 import { CaseStudyContext } from "@/components/sections/case-study/context"
 import { CaseStudyHero } from "@/components/sections/case-study/hero"
 
@@ -60,10 +61,11 @@ export default async function CaseStudyPage({ params }: PageProps): Promise<Reac
 			<CaseStudyContext project={project} caseStudy={caseStudy} />
 			<CaseStudySolution caseStudy={caseStudy} accent={accent} />
 			<CaseStudyArchitecture project={project} caseStudy={caseStudy} accent={accent} />
-			<CaseStudyTechStack caseStudy={caseStudy} />
+			<CaseStudyTechStack caseStudy={caseStudy} accent={accent} />
 			<CaseStudyFeatures project={project} caseStudy={caseStudy} />
 			<CaseStudyTimeline caseStudy={caseStudy} />
 			<CaseStudyMetrics caseStudy={caseStudy} />
+			<CaseStudyBeforeAfter caseStudy={caseStudy} accent={accent} />
 			<CaseStudyRelatedCta currentId={project.id} />
 		</main>
 	)

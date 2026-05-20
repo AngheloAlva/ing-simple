@@ -28,9 +28,14 @@ export function CaseStudyHero({ project, caseStudy }: CaseStudyHeroProps) {
 	const meta: { label: string; value: string }[] = [
 		{ label: "Cliente", value: caseStudy.clientName },
 		{ label: "Industria", value: caseStudy.clientIndustry },
+		...(caseStudy.team ? [{ label: "Equipo", value: caseStudy.team }] : []),
 		{ label: "Duración", value: caseStudy.duration },
-		{ label: "En producción", value: caseStudy.inProductionSince },
+		{ label: "Estado", value: caseStudy.inProductionSince },
+		...(caseStudy.userBreakdown ? [{ label: "Usuarios", value: caseStudy.userBreakdown }] : []),
 	]
+
+	const metaGridCols =
+		meta.length === 6 ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-6" : "grid-cols-2 sm:grid-cols-4"
 
 	return (
 		<section className="bg-background relative w-full overflow-hidden px-4 pt-28 pb-16 sm:px-6 sm:pt-32 sm:pb-24 lg:px-8 lg:pt-36 lg:pb-32">
@@ -129,7 +134,7 @@ export function CaseStudyHero({ project, caseStudy }: CaseStudyHeroProps) {
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, delay: 0.4 }}
-					className="border-border mt-14 grid grid-cols-2 gap-x-6 gap-y-6 border-t pt-8 sm:grid-cols-4"
+					className={`border-border mt-14 grid gap-x-6 gap-y-6 border-t pt-8 ${metaGridCols}`}
 				>
 					{meta.map((item) => (
 						<div key={item.label}>

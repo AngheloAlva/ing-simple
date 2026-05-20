@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "motion/react"
+import { ArrowRight } from "lucide-react"
 
 import { TechIcon } from "./tech-icon"
 
@@ -8,9 +9,14 @@ import type { CaseStudy } from "@/lib/portfolio-data"
 
 interface CaseStudyTechStackProps {
 	caseStudy: CaseStudy
+	accent?: string
 }
 
 export function CaseStudyTechStack({ caseStudy }: CaseStudyTechStackProps) {
+	const introText =
+		caseStudy.techStackIntro ??
+		"Cada pieza del stack responde a una restricción concreta del proyecto. Esto es lo que pensamos al elegir."
+
 	return (
 		<section className="bg-muted/40 w-full px-4 py-16 sm:px-6 sm:py-20 md:py-24 lg:px-8 lg:py-28">
 			<div className="mx-auto w-full max-w-6xl">
@@ -43,13 +49,12 @@ export function CaseStudyTechStack({ caseStudy }: CaseStudyTechStackProps) {
 							transition={{ duration: 0.5, delay: 0.15 }}
 							className="text-muted-foreground text-base leading-relaxed lg:mt-10"
 						>
-							Cada pieza del stack responde a una restricción concreta del proyecto. Esto es lo que
-							pensamos al elegir.
+							{introText}
 						</motion.p>
 					</div>
 				</div>
 
-				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+				<div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2">
 					{caseStudy.techStackDetailed.map((item, i) => (
 						<motion.div
 							key={item.name}
@@ -59,11 +64,48 @@ export function CaseStudyTechStack({ caseStudy }: CaseStudyTechStackProps) {
 							transition={{ duration: 0.4, delay: (i % 4) * 0.05 }}
 							className="border-border bg-background flex flex-col gap-3 rounded-2xl border p-6"
 						>
-							<div className="flex items-center gap-3">
-								<TechIcon name={item.name} />
-								<h3 className="text-foreground text-lg font-semibold">{item.name}</h3>
-							</div>
-							<p className="text-muted-foreground text-sm leading-relaxed">{item.reason}</p>
+							{item.detail ? (
+								<>
+									{/* Card header: icon + name + tag chip */}
+									<div className="flex items-start justify-between gap-3">
+										<div className="flex items-center gap-3">
+											<TechIcon name={item.name} />
+											<h3 className="text-foreground text-lg font-semibold">{item.name}</h3>
+										</div>
+										{item.tag && (
+											<span className="bg-accent/10 text-accent shrink-0 self-start rounded-full px-2 py-0.5 text-[10px] font-medium tracking-wide uppercase">
+												{item.tag}
+											</span>
+										)}
+									</div>
+
+									{/* Constraint — muted italic lead-in */}
+									<p className="text-muted-foreground text-sm italic leading-relaxed">
+										{item.detail.constraint}
+									</p>
+
+									{/* Decision — main body */}
+									<p className="text-foreground/80 text-sm leading-relaxed">{item.detail.decision}</p>
+
+									{/* Outcome — accented with label */}
+									<p className="text-accent flex items-start gap-1.5 text-sm leading-relaxed">
+										<ArrowRight className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
+										<span>
+											<strong className="font-semibold">Resultado:</strong>{" "}
+											{item.detail.outcome}
+										</span>
+									</p>
+								</>
+							) : (
+								<>
+									{/* Fallback: original layout — name + reason */}
+									<div className="flex items-center gap-3">
+										<TechIcon name={item.name} />
+										<h3 className="text-foreground text-lg font-semibold">{item.name}</h3>
+									</div>
+									<p className="text-muted-foreground text-sm leading-relaxed">{item.reason}</p>
+								</>
+							)}
 						</motion.div>
 					))}
 				</div>
