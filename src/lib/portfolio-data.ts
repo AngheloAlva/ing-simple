@@ -47,12 +47,15 @@ export interface CaseStudyMilestone {
 
 export type ParagraphBlock = string | { headline: string; body: string }
 
+export type CaseStudyVisualPrivacy = "public" | "confidential-ui"
+
 export interface CaseStudy {
 	pitch: string
 	duration: string
 	inProductionSince: string
 	clientName: string
 	clientIndustry: string
+	visualPrivacy: CaseStudyVisualPrivacy
 	team?: string
 	userBreakdown?: string
 	problem: ParagraphBlock[]
@@ -79,6 +82,8 @@ export interface ProjectData {
 	githubUrl?: string
 	gradientColor?: string
 	isFlagship?: boolean
+	isProduction?: boolean
+	clientLogo?: string
 	caseStudy?: CaseStudy
 }
 
@@ -117,7 +122,10 @@ export const portfolioProjects: ProjectData[] = [
 		liveUrl: "https://otc360.cl",
 		gradientColor: "#0f766e",
 		isFlagship: true,
+		isProduction: true,
+		clientLogo: "/img/logos/otc.svg",
 		caseStudy: {
+			visualPrivacy: "confidential-ui",
 			pitch:
 				"Plataforma de control operacional que reemplazó papel, correos y Excel por un único sistema para gestionar órdenes de trabajo, permisos, planes de mantenimiento y carpetas de contratistas, con indicadores en vivo.",
 			duration: "≈3 meses de desarrollo, con visitas en planta en Concepción",
@@ -273,9 +281,9 @@ export const portfolioProjects: ProjectData[] = [
 		},
 	},
 	{
-		id: "obralink",
+		id: "bimakers",
 		imageUrl: "/img/portfolio/placeholder.jpg",
-		title: "ObraLink",
+		title: "Bimakers",
 		shortDescription:
 			"Sistema multi-rol para coordinar cuadrillas, tareas y trazabilidad operacional en planta, reemplazando Teams y WhatsApp.",
 		fullDescription:
@@ -298,9 +306,12 @@ export const portfolioProjects: ProjectData[] = [
 		],
 		gradientColor: "#0f766e",
 		isFlagship: true,
+		isProduction: true,
+		clientLogo: "/img/logos/bimakers.avif",
 		caseStudy: {
+			visualPrivacy: "confidential-ui",
 			pitch:
-				"Plataforma multi-rol que reemplaza la coordinación por Teams y WhatsApp con un único sistema para asignar cuadrillas, gestionar tareas en planta y auditar cada cambio. Sin chats perdidos, sin planillas paralelas, sin \"¿quién dijo qué?\".",
+				'Plataforma multi-rol que reemplaza la coordinación por Teams y WhatsApp con un único sistema para asignar cuadrillas, gestionar tareas en planta y auditar cada cambio. Sin chats perdidos, sin planillas paralelas, sin "¿quién dijo qué?".',
 			duration: "~4 meses, desde relevamiento hasta producción",
 			inProductionSince: "En producción desde Mayo 2026",
 			clientName: "Operación industrial en planta",
@@ -324,7 +335,7 @@ export const portfolioProjects: ProjectData[] = [
 			solution: [
 				{
 					headline: "Un sistema, un origen de verdad.",
-					body: "ObraLink centraliza el ciclo completo de operación en una única plataforma multi-rol. Cada cuadrilla, tarea y cambio queda registrado con responsable, estado y prioridad explícitos — accesibles según el rol de cada usuario.",
+					body: "Bimakers centraliza el ciclo completo de operación en una única plataforma multi-rol. Cada cuadrilla, tarea y cambio queda registrado con responsable, estado y prioridad explícitos — accesibles según el rol de cada usuario.",
 				},
 				{
 					headline: "Trazabilidad sin esfuerzo.",
@@ -375,7 +386,8 @@ export const portfolioProjects: ProjectData[] = [
 					reason:
 						"Sesiones server-side con control completo del esquema multi-rol, sin lock-in a un proveedor SaaS de identidad externo.",
 					detail: {
-						constraint: "Sistema multi-rol crítico que no podía depender de un proveedor externo de identidad.",
+						constraint:
+							"Sistema multi-rol crítico que no podía depender de un proveedor externo de identidad.",
 						decision:
 							"Better Auth corre server-side con control total del esquema de roles y permisos. Sin redirecciones a dominios de terceros, sin lock-in a un SaaS que pueda cambiar precios o políticas, sin enviar datos de usuarios industriales fuera de la infraestructura del proyecto.",
 						outcome:
@@ -405,7 +417,7 @@ export const portfolioProjects: ProjectData[] = [
 						constraint:
 							"Estados de tareas y notificaciones tenían que propagarse entre roles en tiempo real, sin sostener un servidor de WebSockets propio.",
 						decision:
-							"Ably maneja la capa de pub/sub con reconexión automática, ordering garantizado y entrega \"at-least-once\". El backend solo publica eventos — la infraestructura de tiempo real es responsabilidad del proveedor, no del equipo.",
+							'Ably maneja la capa de pub/sub con reconexión automática, ordering garantizado y entrega "at-least-once". El backend solo publica eventos — la infraestructura de tiempo real es responsabilidad del proveedor, no del equipo.',
 						outcome:
 							"Cuando un operario marca una tarea como terminada, el supervisor lo ve al instante. Sin polling, sin recargar, sin infraestructura adicional que mantener.",
 					},
@@ -460,8 +472,7 @@ export const portfolioProjects: ProjectData[] = [
 				},
 				{
 					title: "Tiempo Real",
-					description:
-						"Estados y notificaciones sincronizados en vivo entre roles mediante Ably.",
+					description: "Estados y notificaciones sincronizados en vivo entre roles mediante Ably.",
 				},
 			],
 			metrics: [
@@ -523,7 +534,7 @@ export const portfolioProjects: ProjectData[] = [
 					after: "Un sistema único, con responsable y estado por tarea",
 				},
 				{
-					before: "\"¿Quién hacía esa tarea?\" → scrollear chats",
+					before: '"¿Quién hacía esa tarea?" → scrollear chats',
 					after: "Historial completo en 2 clicks",
 				},
 				{
@@ -568,7 +579,10 @@ export const portfolioProjects: ProjectData[] = [
 		],
 		gradientColor: "#1447e6",
 		isFlagship: true,
+		isProduction: true,
+		clientLogo: "/img/logos/busanc.avif",
 		caseStudy: {
+			visualPrivacy: "confidential-ui",
 			pitch:
 				"Busanc es una plataforma a medida que digitaliza y orquesta el flujo end-to-end de una empresa industrial: desde que Comercial recibe el requerimiento del cliente hasta que Despacho genera la guía. Reemplaza un ecosistema fragmentado de Excel, correos y una intranet legada por un único sistema con trazabilidad, paralelismo entre áreas y visibilidad operativa real.",
 			duration:
@@ -753,7 +767,10 @@ export const portfolioProjects: ProjectData[] = [
 		liveUrl: "https://turismochiletours.com/es",
 		gradientColor: "#D97706",
 		isFlagship: true,
+		isProduction: true,
+		clientLogo: "/img/logos/turismochiletours.svg",
 		caseStudy: {
+			visualPrivacy: "public",
 			pitch:
 				"Sitio institucional multilingüe para TurismoChileTours, tour operador en San Pedro de Atacama. Presenta el catálogo de programas y destinos y canaliza solicitudes de tours privados y postulaciones laborales, sumando un canal corporativo en español, inglés, francés y portugués brasilero.",
 			duration: "≈3 meses de desarrollo (agosto–noviembre 2024). Coordinación 100% remota.",
@@ -928,7 +945,10 @@ export const portfolioProjects: ProjectData[] = [
 		liveUrl: "https://toursanpedroatacama.com/",
 		gradientColor: "#D97706",
 		isFlagship: true,
+		isProduction: true,
+		clientLogo: "/img/logos/turismochiletours.svg",
 		caseStudy: {
+			visualPrivacy: "public",
 			pitch:
 				"Ecommerce multilingüe para que TurismoChileTours venda directamente excursiones y programas en San Pedro de Atacama, con tres pasarelas de pago, conversión automática CLP↔USD y un panel administrativo completo para gestionar catálogo, reservas y traducciones a cuatro idiomas.",
 			duration: "≈2 meses de desarrollo (octubre–diciembre 2024). Coordinación 100% remota.",
@@ -1114,7 +1134,10 @@ export const portfolioProjects: ProjectData[] = [
 		],
 		gradientColor: "#e75219",
 		isFlagship: true,
+		isProduction: true,
+		clientLogo: "/img/logos/turismochiletours.svg",
 		caseStudy: {
+			visualPrivacy: "confidential-ui",
 			pitch:
 				"Una sola herramienta para correr toda la operación diaria de una agencia de turismo en pleno desierto de Atacama. Migra los flujos atrapados en Power Apps a una web moderna, suma módulos que antes vivían en Excel y WhatsApp, y le da al equipo una fuente de verdad común. Diseñado para que ventas, operaciones, guías y administración trabajen sobre los mismos datos — con permisos, auditoría y exportes pensados para el día a día real, no para una demo.",
 			duration:
@@ -1284,6 +1307,21 @@ export const portfolioProjects: ProjectData[] = [
 				},
 			],
 		},
+	},
+	{
+		id: "bz-consulting",
+		imageUrl: "/img/portfolio/placeholder.jpg",
+		title: "BZ Consulting",
+		shortDescription:
+			"Proyecto en producción con BZ Consulting. Caso de estudio en preparación.",
+		fullDescription:
+			"Proyecto desarrollado para BZ Consulting actualmente en producción. El caso de estudio completo con problema, solución, métricas y stack será publicado próximamente.",
+		category: "desarrollo-web",
+		technologies: [],
+		gradientColor: "#0ea5e9",
+		isFlagship: true,
+		isProduction: true,
+		clientLogo: "/img/logos/bzconsulting.png",
 	},
 	{
 		id: "caemp",

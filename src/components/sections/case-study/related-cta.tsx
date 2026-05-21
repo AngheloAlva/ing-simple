@@ -26,7 +26,7 @@ export function CaseStudyRelatedCta({ currentId }: CaseStudyRelatedCtaProps) {
 	}, [])
 
 	const related = portfolioProjects
-		.filter((p) => p.category === "desarrollo-web" && p.id !== currentId)
+		.filter((p) => p.isProduction && p.caseStudy && p.id !== currentId)
 		.slice(0, 3)
 
 	return (
@@ -50,15 +50,15 @@ export function CaseStudyRelatedCta({ currentId }: CaseStudyRelatedCtaProps) {
 							transition={{ duration: 0.5, delay: 0.05 }}
 							className="text-foreground mt-2 text-2xl font-medium tracking-tight sm:text-3xl"
 						>
-							Más trabajo en desarrollo web
+							Otros casos en producción
 						</motion.h2>
 					</div>
 
 					<Link
-						href="/portafolio"
+						href="/casos"
 						className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm transition-colors"
 					>
-						Ver portafolio completo
+						Ver todos los casos
 						<ArrowUpRight className="h-3.5 w-3.5" />
 					</Link>
 				</div>

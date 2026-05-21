@@ -64,7 +64,7 @@ const REGISTRY: Record<string, CaseStudyVisuals> = {
 	"turismochiletours": turismoChileToursVisuals,
 	"toursanpedroatacama": tourSanPedroAtacamaVisuals,
 	"dashboard-turismo": dashboardTurismoVisuals,
-	"obralink": cuadrillasVisuals,
+	"bimakers": cuadrillasVisuals,
 }
 
 export function getCaseStudyVisuals(projectId: string): CaseStudyVisuals | null {

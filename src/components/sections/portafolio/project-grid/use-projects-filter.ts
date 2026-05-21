@@ -6,15 +6,15 @@ import { portfolioProjects } from "@/lib/portfolio-data"
 
 import { PAGE_SIZE, type FilterValue } from "./constants"
 
+const portfolioBase = portfolioProjects.filter((p) => !p.isProduction)
+
 export function useProjectsFilter() {
 	const [active, setActive] = useState<FilterValue>("todos")
 	const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
 
 	const filtered = useMemo(
 		() =>
-			active === "todos"
-				? portfolioProjects
-				: portfolioProjects.filter((p) => p.category === active),
+			active === "todos" ? portfolioBase : portfolioBase.filter((p) => p.category === active),
 		[active]
 	)
 

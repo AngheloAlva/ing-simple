@@ -9,10 +9,7 @@ interface CaseStudyBeforeAfterProps {
 	accent?: string
 }
 
-export function CaseStudyBeforeAfter({
-	caseStudy,
-	accent = "#6366f1",
-}: CaseStudyBeforeAfterProps) {
+export function CaseStudyBeforeAfter({ caseStudy, accent = "#6366f1" }: CaseStudyBeforeAfterProps) {
 	if (!caseStudy.beforeAfter || caseStudy.beforeAfter.length === 0) return null
 
 	return (
@@ -56,14 +53,14 @@ export function CaseStudyBeforeAfter({
 					transition={{ duration: 0.4, delay: 0.15 }}
 					className="mb-3 grid grid-cols-1 gap-3 md:grid-cols-2"
 				>
-					<div className="rounded-lg px-4 py-2 text-sm font-semibold text-red-400/80 bg-red-500/5 border border-red-500/10">
+					<div className="rounded-lg border border-red-500/10 bg-red-500/5 px-4 py-2 text-sm font-semibold text-red-400/80">
 						Antes
 					</div>
 					<div
-						className="rounded-lg px-4 py-2 text-sm font-semibold border"
+						className="rounded-lg border px-4 py-2 text-sm font-semibold"
 						style={{ color: accent, background: `${accent}0d`, borderColor: `${accent}1a` }}
 					>
-						Con ObraLink
+						Con Bimakers
 					</div>
 				</motion.div>
 
@@ -79,19 +76,18 @@ export function CaseStudyBeforeAfter({
 							className="grid grid-cols-1 gap-3 md:grid-cols-2"
 						>
 							{/* Before cell */}
-							<div className="flex items-start gap-3 rounded-xl border border-border bg-card/40 p-4">
+							<div className="border-border bg-card/40 flex items-start gap-3 rounded-xl border p-4">
 								<span className="mt-0.5 shrink-0 text-sm font-bold text-red-400/60">✕</span>
 								<span className="text-muted-foreground text-sm leading-relaxed">{row.before}</span>
 							</div>
 							{/* After cell */}
-							<div className="flex items-start gap-3 rounded-xl border border-border bg-card/40 p-4">
-								<span
-									className="mt-0.5 shrink-0 text-sm font-bold"
-									style={{ color: accent }}
-								>
+							<div className="border-border bg-card/40 flex items-start gap-3 rounded-xl border p-4">
+								<span className="mt-0.5 shrink-0 text-sm font-bold" style={{ color: accent }}>
 									✓
 								</span>
-								<span className="text-foreground font-medium text-sm leading-relaxed">{row.after}</span>
+								<span className="text-foreground text-sm leading-relaxed font-medium">
+									{row.after}
+								</span>
 							</div>
 						</motion.div>
 					))}

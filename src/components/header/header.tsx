@@ -53,6 +53,7 @@ const menuCards = [
 		links: [
 			{ label: "Sobre Nosotros", href: "/sobre-nosotros", badge: null },
 			{ label: "Portafolio", href: "/portafolio", badge: null },
+			{ label: "Casos", href: "/casos", badge: null },
 		],
 	},
 	{

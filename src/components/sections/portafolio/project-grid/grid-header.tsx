@@ -12,10 +12,10 @@ export function GridHeader() {
 			className="mb-10 flex flex-col gap-6 sm:mb-14"
 		>
 			<span className="text-muted-foreground text-xs font-medium tracking-[0.2em] uppercase">
-				Trabajo Seleccionado · 2023–2025
+				Maquetas y exploraciones · 2023–2025
 			</span>
 			<h2 className="text-foreground max-w-3xl text-3xl leading-[1.05] font-semibold tracking-tight sm:text-5xl md:text-6xl">
-				Soluciones a medida, entregadas a clientes que ya las usan a diario.
+				Conceptos, prototipos y demos de lo que podemos construir.
 			</h2>
 		</motion.div>
 	)

@@ -40,7 +40,7 @@ export function CaseStudyHero({ project, caseStudy }: CaseStudyHeroProps) {
 	return (
 		<section className="bg-background relative w-full overflow-hidden px-4 pt-28 pb-16 sm:px-6 sm:pt-32 sm:pb-24 lg:px-8 lg:pt-36 lg:pb-32">
 			<div
-				className="pointer-events-none absolute inset-x-0 top-0 -z-0 h-[60vh] opacity-25"
+				className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[60vh] opacity-25"
 				style={{
 					background: `radial-gradient(60% 60% at 50% 0%, ${accent} 0%, transparent 70%)`,
 				}}
@@ -54,11 +54,11 @@ export function CaseStudyHero({ project, caseStudy }: CaseStudyHeroProps) {
 					transition={{ duration: 0.4 }}
 				>
 					<Link
-						href="/portafolio"
+						href="/casos"
 						className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm transition-colors"
 					>
 						<ArrowLeft className="h-3.5 w-3.5" />
-						Volver al portafolio
+						Volver a casos
 					</Link>
 				</motion.div>
 

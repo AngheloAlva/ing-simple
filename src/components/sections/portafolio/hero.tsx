@@ -14,11 +14,11 @@ export function PortfolioHero() {
 					transition={{ duration: 0.6, ease: easeOut }}
 				>
 					<h1 className="text-4xl font-medium tracking-tight sm:text-5xl md:text-6xl">
-						Nuestro Trabajo
+						Maquetas y exploraciones
 					</h1>
 					<p className="text-muted-foreground mt-4 max-w-2xl text-xl">
-						Proyectos reales que transforman la manera en que las organizaciones trabajan con
-						tecnología y datos.
+						Conceptos, prototipos y demos que muestran nuestras capacidades técnicas. ¿Buscás
+						proyectos en producción? Mirá la sección de casos.
 					</p>
 				</motion.div>
 			</div>
