@@ -37,6 +37,8 @@ import {
 	type LucideIcon,
 } from "lucide-react"
 
+import Logo from "@/components/shared/logo"
+
 import type { CaseStudyVisuals } from "./registry"
 
 // ── Hero mockup ──────────────────────────────────────────────────────────
@@ -174,7 +176,7 @@ function CuadrillasHeroMockup({ label = "Vista de Bimakers" }: { label?: string 
 			aria-label={label}
 		>
 			{/* Browser chrome */}
-			<div className="flex items-center gap-2 border-b border-black/[0.08] bg-zinc-100/90 px-3 py-2 backdrop-blur dark:border-white/10 dark:bg-zinc-900/90">
+			<div className="flex items-center gap-2 border-b border-black/8 bg-zinc-100/90 px-3 py-2 backdrop-blur dark:border-white/10 dark:bg-zinc-900/90">
 				<div className="flex gap-1">
 					<span className="block h-2 w-2 rounded-full bg-red-400/70" />
 					<span className="block h-2 w-2 rounded-full bg-yellow-400/70" />
@@ -186,15 +188,17 @@ function CuadrillasHeroMockup({ label = "Vista de Bimakers" }: { label?: string 
 			</div>
 
 			{/* App body */}
-			<div className="flex h-[calc(100%-1.75rem)] flex-row bg-background text-[8px] dark:bg-zinc-950">
+			<div className="bg-background flex h-[calc(100%-1.75rem)] flex-row text-[8px] dark:bg-zinc-950">
 				{/* Sidebar */}
-				<aside className="flex w-[22%] flex-col border-r border-black/[0.06] bg-background p-1.5 dark:border-white/[0.06] dark:bg-zinc-950">
+				<aside className="bg-background flex w-[22%] flex-col border-r border-black/6 p-1.5 dark:border-white/6 dark:bg-zinc-950">
 					{/* Logo row */}
-					<div className="mb-1.5 flex items-center gap-1 border-b border-black/[0.06] pb-1.5 dark:border-white/[0.06]">
-						<div className="flex h-4 w-4 items-center justify-center rounded-[4px] bg-gradient-to-br from-blue-500 to-blue-700">
+					<div className="mb-1.5 flex items-center gap-1 border-b border-black/6 pb-1.5 dark:border-white/6">
+						<div className="flex h-4 w-4 items-center justify-center rounded-sm bg-linear-to-br from-blue-500 to-blue-700">
 							<Box className="h-2.5 w-2.5 text-white" />
 						</div>
-						<span className="text-[8px] font-medium tracking-wide text-zinc-900 dark:text-zinc-100">IngSimple</span>
+						<span className="text-[8px] font-medium tracking-wide text-zinc-900 dark:text-zinc-100">
+							IngSimple
+						</span>
 						<Bell className="ml-auto h-2.5 w-2.5 text-zinc-500" />
 					</div>
 
@@ -252,12 +256,14 @@ function CuadrillasHeroMockup({ label = "Vista de Bimakers" }: { label?: string 
 					</div>
 
 					{/* Footer user */}
-					<div className="mt-auto flex items-center gap-1 border-t border-black/[0.06] pt-1.5 dark:border-white/[0.06]">
+					<div className="mt-auto flex items-center gap-1 border-t border-black/6 pt-1.5 dark:border-white/6">
 						<div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-blue-500 text-[6px] font-semibold text-white">
 							C
 						</div>
 						<div className="min-w-0 flex-1">
-							<div className="truncate text-[7px] font-medium text-zinc-900 dark:text-zinc-100">Charly</div>
+							<div className="truncate text-[7px] font-medium text-zinc-900 dark:text-zinc-100">
+								Charly
+							</div>
 							<div className="truncate text-[6px] text-zinc-500">Ing. Dev</div>
 						</div>
 						<LogOut className="h-2 w-2 shrink-0 text-zinc-500" />
@@ -265,7 +271,7 @@ function CuadrillasHeroMockup({ label = "Vista de Bimakers" }: { label?: string 
 				</aside>
 
 				{/* Main content */}
-				<main className="relative flex flex-1 flex-col overflow-hidden bg-background p-1.5 dark:bg-zinc-950">
+				<main className="bg-background relative flex flex-1 flex-col overflow-hidden p-1.5 dark:bg-zinc-950">
 					{/* Subtle radial glow */}
 					<div
 						className="pointer-events-none absolute inset-0"
@@ -276,15 +282,19 @@ function CuadrillasHeroMockup({ label = "Vista de Bimakers" }: { label?: string 
 					/>
 
 					{/* Header card */}
-					<div className="relative mb-1.5 flex items-center gap-1.5 rounded-lg border border-black/[0.08] bg-zinc-50/90 px-2 py-1.5 dark:border-white/[0.08] dark:bg-zinc-900/90">
+					<div className="relative mb-1.5 flex items-center gap-1.5 rounded-lg border border-black/8 bg-zinc-50/90 px-2 py-1.5 dark:border-white/8 dark:bg-zinc-900/90">
 						<div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-[5px] border border-blue-500/30 bg-blue-500/15">
 							<ListChecks className="h-3 w-3 text-blue-400" />
 						</div>
 						<div className="flex-1">
-							<div className="text-[9px] leading-tight font-semibold text-zinc-900 dark:text-zinc-100">Tareas</div>
-							<div className="text-[7px] text-zinc-600 dark:text-zinc-400">Vista global de todas las tareas</div>
+							<div className="text-[9px] leading-tight font-semibold text-zinc-900 dark:text-zinc-100">
+								Tareas
+							</div>
+							<div className="text-[7px] text-zinc-600 dark:text-zinc-400">
+								Vista global de todas las tareas
+							</div>
 						</div>
-						<div className="flex items-center gap-1 rounded-md bg-gradient-to-r from-blue-500 to-blue-700 px-1.5 py-0.5 text-[7px] font-medium text-white">
+						<div className="flex items-center gap-1 rounded-md bg-linear-to-r from-blue-500 to-blue-700 px-1.5 py-0.5 text-[7px] font-medium text-white">
 							<Plus className="h-2 w-2" />
 							Nueva Tarea
 						</div>
@@ -326,11 +336,13 @@ function CuadrillasHeroMockup({ label = "Vista de Bimakers" }: { label?: string 
 
 					{/* Search / filter row */}
 					<div className="relative mb-1.5 flex items-center gap-1">
-						<div className="flex flex-1 items-center gap-1 rounded-md border border-black/[0.08] bg-black/[0.02] px-1.5 py-0.5 dark:border-white/[0.08] dark:bg-white/[0.03]">
+						<div className="flex flex-1 items-center gap-1 rounded-md border border-black/8 bg-black/2 px-1.5 py-0.5 dark:border-white/8 dark:bg-white/3">
 							<Search className="h-2 w-2 text-zinc-500" />
-							<span className="text-[7px] text-zinc-500 dark:text-zinc-600">Buscar tarea, proyecto o ID...</span>
+							<span className="text-[7px] text-zinc-500 dark:text-zinc-600">
+								Buscar tarea, proyecto o ID...
+							</span>
 						</div>
-						<div className="flex items-center gap-0.5 rounded-md border border-black/[0.08] bg-black/[0.02] px-1.5 py-0.5 text-[7px] text-zinc-600 dark:border-white/[0.08] dark:bg-white/[0.03] dark:text-zinc-400">
+						<div className="flex items-center gap-0.5 rounded-md border border-black/8 bg-black/2 px-1.5 py-0.5 text-[7px] text-zinc-600 dark:border-white/8 dark:bg-white/3 dark:text-zinc-400">
 							Soporte IngSimple
 							<ChevronDown className="h-2 w-2" />
 						</div>
@@ -341,9 +353,9 @@ function CuadrillasHeroMockup({ label = "Vista de Bimakers" }: { label?: string 
 					</div>
 
 					{/* Tasks table */}
-					<div className="relative flex-1 overflow-hidden rounded-lg border border-black/[0.08] bg-black/[0.02] dark:border-white/[0.08] dark:bg-white/[0.02]">
+					<div className="relative flex-1 overflow-hidden rounded-lg border border-black/8 bg-black/2 dark:border-white/8 dark:bg-white/2">
 						{/* Table header */}
-						<div className="grid grid-cols-[28px_1fr_36px_54px_46px_36px] gap-1 border-b border-black/[0.06] bg-black/[0.02] px-2 py-1 dark:border-white/[0.06] dark:bg-white/[0.02]">
+						<div className="grid grid-cols-[28px_1fr_36px_54px_46px_36px] gap-1 border-b border-black/6 bg-black/2 px-2 py-1 dark:border-white/6 dark:bg-white/2">
 							{["#", "TAREA", "FECHA", "PROYECTO", "ESTADO", ""].map((h) => (
 								<span key={h} className="text-[6px] font-semibold tracking-wider text-zinc-500">
 									{h}
@@ -358,11 +370,13 @@ function CuadrillasHeroMockup({ label = "Vista de Bimakers" }: { label?: string 
 								initial={{ opacity: 0, x: -6 }}
 								animate={{ opacity: 1, x: 0 }}
 								transition={{ duration: 0.35, delay: 0.2 + i * 0.07 }}
-								className="grid grid-cols-[28px_1fr_36px_54px_46px_36px] items-center gap-1 border-b border-black/[0.04] px-2 py-1 dark:border-white/[0.04]"
+								className="grid grid-cols-[28px_1fr_36px_54px_46px_36px] items-center gap-1 border-b border-black/4 px-2 py-1 dark:border-white/4"
 								style={{ borderLeft: `2px solid ${row.accentColor}` }}
 							>
 								<span className="text-[7px] text-zinc-500">{row.id}</span>
-								<span className="truncate text-[7px] font-medium text-zinc-900 dark:text-zinc-100">{row.title}</span>
+								<span className="truncate text-[7px] font-medium text-zinc-900 dark:text-zinc-100">
+									{row.title}
+								</span>
 								<span className="text-[7px] text-zinc-500">{row.date}</span>
 								<div className="flex items-center gap-0.5 text-[7px] text-zinc-500">
 									<Folder className="h-1.5 w-1.5 shrink-0" />
@@ -424,7 +438,9 @@ function RoleChip({ role }: { role: RoleCard }) {
 			>
 				{role.initials}
 			</span>
-			<span className="truncate text-[8px] font-medium text-zinc-900 dark:text-zinc-100">{role.name}</span>
+			<span className="truncate text-[8px] font-medium text-zinc-900 dark:text-zinc-100">
+				{role.name}
+			</span>
 			<span className="shrink-0 text-[6px] text-zinc-500">· {role.title}</span>
 		</div>
 	)
@@ -500,7 +516,9 @@ function NumeracionMockup() {
 		<div className="flex h-full flex-col gap-2 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-950">
 			<div className="flex items-center gap-1.5">
 				<ListChecks className="h-3 w-3 text-teal-400" />
-				<span className="text-[10px] font-semibold text-zinc-900 dark:text-zinc-100">Numeración Concurrente</span>
+				<span className="text-[10px] font-semibold text-zinc-900 dark:text-zinc-100">
+					Numeración Concurrente
+				</span>
 			</div>
 			<div className="flex flex-col gap-1">
 				{tasks.map((t, i) => (
@@ -515,7 +533,9 @@ function NumeracionMockup() {
 						<span className="shrink-0 rounded bg-zinc-200 px-1 py-0.5 text-[8px] font-bold text-teal-700 tabular-nums dark:bg-zinc-800 dark:text-teal-300">
 							{t.num}
 						</span>
-						<span className="flex-1 truncate text-[8px] text-zinc-700 dark:text-zinc-300">{t.label}</span>
+						<span className="flex-1 truncate text-[8px] text-zinc-700 dark:text-zinc-300">
+							{t.label}
+						</span>
 						<span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: t.color }} />
 					</motion.div>
 				))}
@@ -532,13 +552,17 @@ function CargaMasivaMockup() {
 		<div className="flex h-full flex-col gap-2 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-950">
 			<div className="flex items-center gap-1.5">
 				<FileSpreadsheet className="h-3 w-3 text-teal-400" />
-				<span className="text-[10px] font-semibold text-zinc-900 dark:text-zinc-100">Carga Masiva por Excel</span>
+				<span className="text-[10px] font-semibold text-zinc-900 dark:text-zinc-100">
+					Carga Masiva por Excel
+				</span>
 			</div>
 			<div className="flex flex-col gap-1.5">
 				<div className="flex items-center gap-2 rounded-md border border-dashed border-zinc-300 bg-zinc-100/60 px-2 py-2 dark:border-zinc-700 dark:bg-zinc-900/60">
 					<FileSpreadsheet className="h-4 w-4 text-emerald-500" />
 					<div>
-						<div className="text-[8px] font-medium text-zinc-800 dark:text-zinc-200">tareas_planta_mayo.xlsx</div>
+						<div className="text-[8px] font-medium text-zinc-800 dark:text-zinc-200">
+							tareas_planta_mayo.xlsx
+						</div>
 						<div className="text-[7px] text-zinc-500">248 KB · listo para importar</div>
 					</div>
 				</div>
@@ -565,7 +589,7 @@ function CargaMasivaMockup() {
 								whileInView={{ width: "96%" }}
 								viewport={{ once: true }}
 								transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-								className="h-full rounded-full bg-gradient-to-r from-teal-500 to-emerald-500"
+								className="h-full rounded-full bg-linear-to-r from-teal-500 to-emerald-500"
 							/>
 						</div>
 						<span className="text-[7px] text-zinc-500">81 de 84 importadas</span>
@@ -584,12 +608,17 @@ function CalendarioMockup() {
 		<div className="flex h-full flex-col gap-2 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-950">
 			<div className="flex items-center gap-1.5">
 				<Calendar className="h-3 w-3 text-teal-400" />
-				<span className="text-[10px] font-semibold text-zinc-900 dark:text-zinc-100">Calendario Operativo</span>
+				<span className="text-[10px] font-semibold text-zinc-900 dark:text-zinc-100">
+					Calendario Operativo
+				</span>
 				<span className="ml-auto text-[8px] text-zinc-500">Mayo 2025</span>
 			</div>
 			<div className="grid grid-cols-7 gap-0.5">
 				{["L", "M", "X", "J", "V", "S", "D"].map((d) => (
-					<span key={d} className="text-center text-[7px] font-semibold text-zinc-400 dark:text-zinc-600">
+					<span
+						key={d}
+						className="text-center text-[7px] font-semibold text-zinc-400 dark:text-zinc-600"
+					>
 						{d}
 					</span>
 				))}
@@ -641,7 +670,9 @@ function VistaRolesMockup() {
 		<div className="flex h-full flex-col gap-2 rounded-xl border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-800 dark:bg-zinc-950">
 			<div className="flex items-center gap-1.5">
 				<ShieldCheck className="h-3 w-3 text-teal-400" />
-				<span className="text-[10px] font-semibold text-zinc-900 dark:text-zinc-100">Vistas por Rol</span>
+				<span className="text-[10px] font-semibold text-zinc-900 dark:text-zinc-100">
+					Vistas por Rol
+				</span>
 			</div>
 			<div className="flex flex-col gap-1.5">
 				{roles.map((r, i) => (
@@ -659,7 +690,10 @@ function VistaRolesMockup() {
 						</div>
 						<div className="flex flex-wrap gap-0.5">
 							{r.perms.map((p) => (
-								<span key={p} className="rounded bg-zinc-200 px-1 py-0.5 text-[6px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
+								<span
+									key={p}
+									className="rounded bg-zinc-200 px-1 py-0.5 text-[6px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
+								>
 									{p}
 								</span>
 							))}
@@ -761,7 +795,9 @@ function AuditoriaMockup() {
 									{AUDIT_ACTOR.initials}
 								</span>
 								<span className="truncate text-[8px] text-zinc-700 dark:text-zinc-200">
-									<span className="font-medium text-zinc-900 dark:text-zinc-100">{AUDIT_ACTOR.name}</span>{" "}
+									<span className="font-medium text-zinc-900 dark:text-zinc-100">
+										{AUDIT_ACTOR.name}
+									</span>{" "}
 									<span className="text-zinc-500 dark:text-zinc-400">{ev.verb}</span>
 								</span>
 							</div>
@@ -865,7 +901,9 @@ function TiempoRealMockup() {
 				<div className="flex items-center gap-1.5">
 					<Wifi className="h-3 w-3 text-teal-400" />
 					<span className="font-bold text-zinc-900 dark:text-zinc-100">Tiempo Real con Ably</span>
-					<span className="rounded bg-zinc-200 px-1 py-0.5 text-[8px] text-zinc-500 dark:bg-zinc-800">Pub/Sub</span>
+					<span className="rounded bg-zinc-200 px-1 py-0.5 text-[8px] text-zinc-500 dark:bg-zinc-800">
+						Pub/Sub
+					</span>
 				</div>
 				<div className="flex items-center gap-1 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[8px] font-medium text-emerald-400">
 					<motion.span
@@ -880,11 +918,13 @@ function TiempoRealMockup() {
 			{/* Two-column body */}
 			<div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
 				{/* Left — Notifications panel */}
-				<div className="overflow-hidden rounded-lg border border-black/[0.08] bg-zinc-100 shadow-lg dark:border-white/15 dark:bg-zinc-900">
+				<div className="overflow-hidden rounded-lg border border-black/8 bg-zinc-100 shadow-lg dark:border-white/15 dark:bg-zinc-900">
 					{/* Header */}
-					<div className="flex items-center justify-between border-b border-black/[0.08] px-2.5 py-1.5 dark:border-white/[0.08]">
+					<div className="flex items-center justify-between border-b border-black/8 px-2.5 py-1.5 dark:border-white/8">
 						<div>
-							<span className="text-[9px] font-bold text-zinc-900 dark:text-zinc-100">Notificaciones</span>
+							<span className="text-[9px] font-bold text-zinc-900 dark:text-zinc-100">
+								Notificaciones
+							</span>
 							<span className="ml-1.5 text-[8px] text-zinc-500">Todo al día</span>
 						</div>
 						<div className="flex items-center gap-0.5 text-[8px] text-blue-400">
@@ -899,7 +939,7 @@ function TiempoRealMockup() {
 						return (
 							<div
 								key={i}
-								className={`flex items-start gap-2 px-2.5 py-1.5 ${n.unread ? "bg-blue-500/[0.06]" : ""}`}
+								className={`flex items-start gap-2 px-2.5 py-1.5 ${n.unread ? "bg-blue-500/6" : ""}`}
 							>
 								{/* Avatar with badge */}
 								<div className="relative mt-0.5 shrink-0">
@@ -940,16 +980,18 @@ function TiempoRealMockup() {
 					})}
 
 					{/* Footer */}
-					<div className="border-t border-black/[0.08] px-2.5 py-1.5 text-center text-[8px] text-blue-600 dark:border-white/[0.08] dark:text-blue-400">
+					<div className="border-t border-black/8 px-2.5 py-1.5 text-center text-[8px] text-blue-600 dark:border-white/8 dark:text-blue-400">
 						Ver todas las notificaciones
 					</div>
 				</div>
 
 				{/* Right — Live activity stream */}
-				<div className="overflow-hidden rounded-lg border border-black/[0.08] bg-zinc-100 dark:border-white/15 dark:bg-zinc-900">
+				<div className="overflow-hidden rounded-lg border border-black/8 bg-zinc-100 dark:border-white/15 dark:bg-zinc-900">
 					{/* Header */}
-					<div className="flex items-center justify-between border-b border-black/[0.08] px-2.5 py-1.5 dark:border-white/[0.08]">
-						<span className="text-[9px] font-bold text-zinc-900 dark:text-zinc-100">Actividad en vivo</span>
+					<div className="flex items-center justify-between border-b border-black/8 px-2.5 py-1.5 dark:border-white/8">
+						<span className="text-[9px] font-bold text-zinc-900 dark:text-zinc-100">
+							Actividad en vivo
+						</span>
 						<span className="text-[7px] text-zinc-500 dark:text-zinc-600">via Ably channel</span>
 					</div>
 
@@ -971,21 +1013,25 @@ function TiempoRealMockup() {
 								<span className="shrink-0 rounded bg-zinc-200 px-1 py-0.5 text-[7px] font-bold text-zinc-600 tabular-nums dark:bg-zinc-800 dark:text-zinc-400">
 									{ev.id}
 								</span>
-								<span className="flex-1 truncate text-[8px] text-zinc-700 dark:text-zinc-300">{ev.text}</span>
-								<span className="shrink-0 text-[7px] text-zinc-500 dark:text-zinc-600">{ev.time}</span>
+								<span className="flex-1 truncate text-[8px] text-zinc-700 dark:text-zinc-300">
+									{ev.text}
+								</span>
+								<span className="shrink-0 text-[7px] text-zinc-500 dark:text-zinc-600">
+									{ev.time}
+								</span>
 							</motion.div>
 						))}
 					</div>
 
 					{/* Footer hint */}
-					<div className="border-t border-black/[0.06] px-2.5 py-1.5 text-center text-[7px] text-zinc-500 dark:border-white/[0.06] dark:text-zinc-600">
+					<div className="border-t border-black/6 px-2.5 py-1.5 text-center text-[7px] text-zinc-500 dark:border-white/6 dark:text-zinc-600">
 						Pub/Sub bidireccional · sin polling, sin recargas.
 					</div>
 				</div>
 			</div>
 
 			{/* Footer band */}
-			<div className="mt-3 flex items-center justify-between border-t border-black/[0.06] pt-2 text-[8px] text-zinc-500 dark:border-white/[0.06]">
+			<div className="mt-3 flex items-center justify-between border-t border-black/6 pt-2 text-[8px] text-zinc-500 dark:border-white/6">
 				<div className="flex items-center gap-1">
 					<motion.span
 						animate={{ opacity: [1, 0.2, 1] }}
@@ -1004,6 +1050,22 @@ function TiempoRealMockup() {
 
 export const cuadrillasVisuals: CaseStudyVisuals = {
 	HeroMockup: CuadrillasHeroMockup,
+	context: {
+		modules: [
+			{ id: "tareas", label: "Tareas", color: "#0f766e", textColor: "#ffffff" },
+			{ id: "cuadrillas", label: "Cuadrillas", color: "#1e3a8a", textColor: "#ffffff" },
+			{ id: "tiempo-real", label: "Tiempo Real", color: "#14b8a6", textColor: "#0a0a0a" },
+			{ id: "auditoria", label: "Auditoría", color: "#1e40af", textColor: "#ffffff" },
+		],
+		bannerLeft: "WhatsApp, planillas y radio → Bimakers",
+		bannerRight: "una sola plataforma",
+		footerText:
+			"Pedidos por WhatsApp, planillas de turnos y reportes de campo entran por la izquierda. Ingeniería Simple los procesa y los convierte en los módulos operativos de Bimakers.",
+		axisColor: "#0f766e",
+		centerContent: (
+			<Logo className="h-10 w-auto" classNameIcon="text-accent" classNameText="text-foreground" />
+		),
+	},
 	architecture: {
 		viewBox: { width: 800, height: 528 },
 		ariaLabel: "Diagrama de arquitectura de Bimakers",

@@ -165,7 +165,7 @@ function OtcHeroMockup({ label = "Vista de OTC 360" }: { label?: string }) {
 			<div className="flex h-[calc(100%-1.75rem)] flex-row text-[8px]">
 				<div className="bg-background/80 border-border flex w-1/4 flex-col gap-1 border-r p-2">
 					<div className="flex items-center gap-1.5 pb-1">
-						<div className="from-accent to-ring h-4 w-4 rounded-[3px] bg-gradient-to-br" />
+						<div className="from-accent to-ring h-4 w-4 rounded-[3px] bg-linear-to-br" />
 						<div className="flex flex-col leading-tight">
 							<span className="text-foreground text-[9px] font-bold">OTC</span>
 							<span className="text-muted-foreground text-[7px]">360 ERP</span>
@@ -196,7 +196,7 @@ function OtcHeroMockup({ label = "Vista de OTC 360" }: { label?: string }) {
 
 				<div className="flex flex-1 flex-col gap-1.5 p-2">
 					<div className="relative h-12 overflow-hidden rounded-md">
-						<div className="absolute inset-0 bg-gradient-to-br from-emerald-700 via-emerald-900 to-slate-900" />
+						<div className="absolute inset-0 bg-linear-to-br from-emerald-700 via-emerald-900 to-slate-900" />
 						<div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_60%,rgba(255,255,255,0.08),transparent_60%)]" />
 						<div className="relative flex h-full items-end justify-end p-2 text-right">
 							<div className="text-white">
@@ -649,11 +649,7 @@ export const otcVisuals: CaseStudyVisuals = {
 			"Papel, correos y Excel entran por la izquierda. Ingeniería Simple los procesa y los convierte en los seis módulos operativos de OTC 360.",
 		axisColor: "#0f766e",
 		centerContent: (
-			<Logo
-				className="h-10 w-auto"
-				classNameIcon="text-accent"
-				classNameText="text-foreground"
-			/>
+			<Logo className="h-10 w-auto" classNameIcon="text-accent" classNameText="text-foreground" />
 		),
 	},
 	architecture: {
