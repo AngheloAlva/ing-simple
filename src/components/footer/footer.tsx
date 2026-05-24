@@ -25,6 +25,7 @@ const servicioLinks = [
 const empresaLinks = [
 	{ label: "Sobre Nosotros", href: "/sobre-nosotros" },
 	{ label: "Portafolio", href: "/portafolio" },
+	{ label: "Casos", href: "/casos" },
 	{ label: "Contacto", href: "/contacto" },
 ]
 
@@ -129,8 +130,14 @@ export function Footer(): ReactNode {
 							Simple
 						</h2>
 						<p className="mt-8 text-sm text-black/50">
-							© {new Date().getFullYear()} Ingeniería Simple. Todos los derechos reservados.
+							© {new Date().getFullYear()} Ingeniería Simple SpA. Todos los derechos reservados.
 						</p>
+						<Link
+							href="/privacidad"
+							className="mt-2 inline-block text-sm text-black/60 underline underline-offset-4 hover:text-black"
+						>
+							Política de privacidad
+						</Link>
 					</motion.div>
 
 					<div className="flex flex-col justify-between gap-8 lg:items-end lg:text-right">
