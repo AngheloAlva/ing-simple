@@ -57,6 +57,8 @@ import { turismoChileToursVisuals } from "./turismochiletours"
 import { tourSanPedroAtacamaVisuals } from "./toursanpedroatacama"
 import { dashboardTurismoVisuals } from "./dashboard-turismo"
 import { cuadrillasVisuals } from "./cuadrillas"
+import { bzConsultingVisuals } from "./bzconsulting"
+import { aiepPeiVisuals } from "./aiep-pei"
 
 const REGISTRY: Record<string, CaseStudyVisuals> = {
 	"otc-360": otcVisuals,
@@ -65,6 +67,8 @@ const REGISTRY: Record<string, CaseStudyVisuals> = {
 	"toursanpedroatacama": tourSanPedroAtacamaVisuals,
 	"dashboard-turismo": dashboardTurismoVisuals,
 	"bimakers": cuadrillasVisuals,
+	"bz-consulting": bzConsultingVisuals,
+	"aiep-pei": aiepPeiVisuals,
 }
 
 export function getCaseStudyVisuals(projectId: string): CaseStudyVisuals | null {

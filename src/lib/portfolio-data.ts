@@ -1310,18 +1310,183 @@ export const portfolioProjects: ProjectData[] = [
 	},
 	{
 		id: "bz-consulting",
-		imageUrl: "/img/portfolio/placeholder.jpg",
+		imageUrl: "/img/portfolio/bzconsulting/hero.png",
 		title: "BZ Consulting",
 		shortDescription:
-			"Proyecto en producción con BZ Consulting. Caso de estudio en preparación.",
+			"Sitio institucional multilingüe con publicación de noticias semanales para empresa de inspección y calibración de tanques de almacenamiento.",
 		fullDescription:
-			"Proyecto desarrollado para BZ Consulting actualmente en producción. El caso de estudio completo con problema, solución, métricas y stack será publicado próximamente.",
+			"Sitio corporativo bilingüe (ES/EN) para BZ Consulting, organismo de inspección certificado ISO 17020 especializado en calibración de estanques de almacenamiento y medición de graneles líquidos para el sector petróleo y gas. Construido con Astro como sitio estático puro, con un flujo de publicación de noticias semanales gestionado vía content collections MDX, sin CMS de por medio. Primer proyecto web entregado por IngSimple, en producción y mantenimiento continuo desde 2024.",
 		category: "desarrollo-web",
-		technologies: [],
-		gradientColor: "#0ea5e9",
+		technologies: [
+			"Astro 4",
+			"React 18",
+			"TypeScript",
+			"Tailwind CSS",
+			"Radix UI",
+			"MDX",
+			"@astrolicious/i18n",
+			"Embla Carousel",
+			"Cloudflare Pages",
+			"Cloudflare Workers",
+			"Resend",
+		],
+		liveUrl: "https://bzconsulting.cl",
+		gradientColor: "#ea580c",
 		isFlagship: true,
 		isProduction: true,
 		clientLogo: "/img/logos/bzconsulting.png",
+		caseStudy: {
+			visualPrivacy: "public",
+			pitch:
+				"Primer proyecto web entregado por IngSimple, hoy con más de dos años en producción. Un sitio institucional bilingüe ultra-liviano sobre Astro, con un flujo de publicación de noticias semanales que el equipo de BZ usa para sostener su presencia digital sin depender de un CMS ni de un developer cada vez que sale una novedad.",
+			duration:
+				"≈4 semanas de desarrollo inicial (abril–mayo 2024). Mantenimiento continuo desde el lanzamiento.",
+			inProductionSince:
+				"Mayo 2024 — en producción y mantenimiento activo, con publicación de noticias semanal sostenida hace más de 2 años.",
+			clientName: "BZ Consulting",
+			clientIndustry:
+				"Inspección, calibración y medición de tanques de almacenamiento · Petróleo & Gas (ISO 17020) · Chile y Uruguay",
+			problem: [
+				"BZ Consulting es un organismo de inspección certificado ISO 17020 con clientes pesados del sector petróleo y gas (ENAP, ENEX, SONACOL, ANCAP, operadores portuarios) y presencia en Chile —Quintero, Talcahuano, San Vicente— y Uruguay. A pesar del peso técnico de la operación, no tenían un canal digital institucional que reflejara ni la trayectoria del equipo ni el nivel de los proyectos que ejecutan.",
+				"El requerimiento se planteó simple en superficie pero exigente en práctica: un sitio bilingüe (español e inglés), rápido, sobrio, que comunicara servicios, certificaciones y centro de operaciones, con un canal de contacto operativo para clientes corporativos. Y, sobre todo, una sección de noticias que el equipo de BZ pudiera alimentar con frecuencia para mantener al sitio vivo — sin necesidad de aprender un CMS ni pagar uno.",
+				"Era además el PRIMER proyecto web de IngSimple, así que las decisiones técnicas tenían que envejecer bien: stack mantenible por una sola persona, costos operativos cercanos a cero y un flujo de publicación que sobreviviera dos años sin reescribir nada.",
+			],
+			solution: [
+				"Sitio construido en Astro como SSG puro: cada página se precompila a HTML estático, React solo se hidrata en las islas que lo necesitan (formulario de contacto, selector de idioma, carrusel). El resultado es un sitio que rinde como un sitio del 2010 y se ve como uno del 2026.",
+				"La sección de noticias se modela como content collection de Astro con esquema Zod (título, cover, lang, fecha): cada noticia es un archivo MDX dentro del repo. Para publicar, basta con sumar un par de archivos (uno en ES, uno en EN), commitear, y Cloudflare Pages dispara el deploy automático. Sin CMS, sin login, sin costos extra — y con todo el historial editorial versionado en git.",
+				"El formulario de contacto va a un Cloudflare Worker que reenvía vía Resend, manteniendo el modelo 100% serverless y permitiendo hostear todo el sitio en el tier gratuito de Cloudflare Pages. El multilenguaje (ES/EN) se resuelve con @astrolicious/i18n, con URLs traducidas por idioma (/empresa ↔ /company, /noticias ↔ /news, etc.) para SEO limpio en ambos mercados.",
+				"Dos años después, el flujo sigue intacto: BZ pide la noticia, IngSimple agrega los dos MDX, push a main, y Cloudflare Pages publica. Más de 190 artículos publicados de esta forma — sin tocar una línea de código.",
+			],
+			architectureDescription:
+				"Astro 4 en modo Static Site Generation puro, sin adapter SSR. React 18 solo en las islas interactivas (formulario de contacto, selector de idioma, carruseles con Embla). Tailwind CSS + Radix UI siguiendo el patrón shadcn (componentes accesibles, estilo propio). Multilenguaje con @astrolicious/i18n y URLs traducidas por locale. Las noticias viven como content collections MDX con validación Zod en el frontmatter — el bilingüismo se modela como dos archivos por noticia (uno con lang: es, otro con lang: en). Sitemap generado con @astrojs/sitemap, robots.txt dinámico, ViewTransitions nativas de Astro para navegación sin recargar. Hosting en Cloudflare Pages con auto-deploy desde main; el formulario de contacto delega en un Cloudflare Worker que reenvía a Resend, manteniendo el costo operativo cercano a cero. Imágenes servidas en AVIF + WebP con fallback.",
+			techStackDetailed: [
+				{
+					name: "Astro 4 (SSG)",
+					reason:
+						"Para un sitio institucional con noticias, Astro es la decisión obvia: HTML estático prerenderizado, JavaScript opcional, y un modelo mental simple. Cero runtime overhead, deploys que caben en el tier gratuito de cualquier hosting estático, y un Lighthouse alto sin tener que pelearlo. Para el primer proyecto de IngSimple, era la apuesta más conservadora y a la vez la más correcta.",
+				},
+				{
+					name: "Content Collections + MDX",
+					reason:
+						"Cada noticia es un archivo MDX con frontmatter validado por Zod. El cliente no necesita un CMS: para publicar, se commitea un par de archivos y Cloudflare Pages despliega solo. Dos años después, el historial editorial completo vive en git, sin migraciones de base de datos ni dependencia de un proveedor de CMS.",
+				},
+				{
+					name: "@astrolicious/i18n",
+					reason:
+						"Multilenguaje con URLs traducidas por locale (/empresa ↔ /company, /noticias ↔ /news), routing transparente y soporte para contenido bilingüe a nivel collection. SEO limpio en ambos idiomas sin duplicar páginas a mano.",
+				},
+				{
+					name: "React 18 (solo en islas)",
+					reason:
+						"Astro permite hidratar React solo donde hace falta. En este sitio, React se carga únicamente para el formulario de contacto, el selector de idioma y el carrusel — el resto es HTML puro. Menos JS shipped, mejor performance.",
+				},
+				{
+					name: "Tailwind CSS + Radix UI",
+					reason:
+						"Patrón shadcn-like: Radix aporta accesibilidad por defecto (foco, ARIA, teclado) y Tailwind da control total del estilo. Sistema reutilizable que después aplicamos en proyectos posteriores de IngSimple.",
+				},
+				{
+					name: "Cloudflare Pages",
+					reason:
+						"Hosting estático con CDN global, auto-deploy desde main y tier gratuito generoso. Cada commit dispara una build y un nuevo deploy con preview URL. Para un sitio con publicación semanal, el flujo git → deploy automático es la mitad del producto.",
+				},
+				{
+					name: "Cloudflare Worker + Resend",
+					reason:
+						"El formulario de contacto reenvía a un Worker que hace el POST a Resend. Sin servidor propio, sin SMTP, sin costos fijos. Resend maneja deliverability y el Worker queda como capa fina de validación y CORS.",
+				},
+				{
+					name: "Embla Carousel",
+					reason:
+						"Carrusel headless, accesible por teclado y muy liviano. Control completo del markup y los estilos, sin la carga de una librería opinada.",
+				},
+				{
+					name: "Imágenes AVIF + WebP",
+					reason:
+						"Refactor de imágenes a formatos modernos con fallback. Esto explica buena parte del LCP en P75 de 872ms — el LCP suele ser una imagen, y entregarla en AVIF la achica a una fracción del peso.",
+				},
+			],
+			features: [
+				{
+					title: "Sitio bilingüe (ES/EN) con URLs traducidas",
+					description:
+						"Cada ruta tiene su versión traducida por locale (/empresa ↔ /company, /noticias ↔ /news, /contacto ↔ /contact). Resuelto con @astrolicious/i18n a nivel de routing, sin duplicar páginas.",
+				},
+				{
+					title: "Publicación semanal de noticias sin CMS",
+					description:
+						"Cada noticia es un par de archivos MDX (uno ES, uno EN) en el repo. Commit + push a main = deploy automático en Cloudflare Pages. Más de 190 artículos publicados con este flujo en 2 años.",
+				},
+				{
+					title: "Formulario de contacto serverless",
+					description:
+						"Validación en cliente con React, envío a un Cloudflare Worker que reenvía vía Resend al equipo comercial de BZ. Sin backend propio, sin SMTP, dentro del tier gratuito.",
+				},
+				{
+					title: "Performance medida y validada",
+					description:
+						"100% de las URLs en zona verde de Core Web Vitals según Cloudflare Web Analytics. LCP en P75 = 872ms, tiempo de carga promedio = 1025ms. SSG + AVIF + CDN de Cloudflare hacen el trabajo.",
+				},
+				{
+					title: "SEO técnico cuidado",
+					description:
+						"Sitemap automático, robots.txt, OG tags, favicon webp, ViewTransitions para navegación SPA-like, y URLs traducidas por idioma. Base limpia para cualquier estrategia de posicionamiento futura.",
+				},
+			],
+			metrics: [
+				{
+					value: "190+",
+					label: "noticias publicadas",
+					caption: "95 ES + 95 EN — pareadas, publicadas semanalmente durante 2 años.",
+				},
+				{
+					value: "100%",
+					label: "Core Web Vitals en verde",
+					caption: "LCP P75 = 872ms según Cloudflare Web Analytics (últimos 30 días).",
+				},
+				{
+					value: "2+ años",
+					label: "en producción",
+					caption: "Desde mayo 2024, con mantenimiento y publicación semanal sostenida.",
+				},
+				{
+					value: "2",
+					label: "idiomas con URLs traducidas",
+					caption: "Español e inglés vía @astrolicious/i18n, SEO limpio en ambos.",
+				},
+			],
+			timeline: [
+				{
+					date: "Abril 2024",
+					title: "Kickoff",
+					description:
+						"Primer proyecto web de IngSimple. Definición de scope, arquitectura sobre Astro y configuración multilenguaje en los primeros días.",
+					icon: "kickoff",
+				},
+				{
+					date: "Abr – May 2024",
+					title: "Desarrollo",
+					description:
+						"≈4 semanas de build: páginas institucionales, sección de noticias con content collections, formulario de contacto vía Cloudflare Worker, multilenguaje y optimización de imágenes.",
+					icon: "build",
+				},
+				{
+					date: "Mayo 2024",
+					title: "Lanzamiento a producción",
+					description:
+						"Deploy en Cloudflare Pages, publicación en bzconsulting.cl y arranque del flujo de publicación semanal de noticias.",
+					icon: "launch",
+				},
+				{
+					date: "Hoy",
+					title: "2+ años de mantenimiento activo",
+					description:
+						"Más de 190 noticias publicadas, performance Core Web Vitals 100% en verde, sin un solo cambio de stack desde el lanzamiento original.",
+					icon: "current",
+					isCurrent: true,
+				},
+			],
+		},
 	},
 	{
 		id: "caemp",
@@ -1557,5 +1722,261 @@ export const portfolioProjects: ProjectData[] = [
 		technologies: ["Next.js", "TypeScript", "Tailwind CSS", "MapLibre GL", "Recharts", "shadcn/ui"],
 		liveUrl: "https://report-dashboard-eta.vercel.app",
 		gradientColor: "#dc2626",
+	},
+	{
+		id: "aiep-pei",
+		imageUrl: "/img/portfolio/placeholder.jpg",
+		title: "Desafío PEI — AIEP",
+		shortDescription:
+			"Juego de preguntas tipo Kahoot en tiempo real para evaluar el nuevo Plan Educativo Institucional de AIEP en un evento en vivo a nivel nacional.",
+		fullDescription:
+			"Plataforma de quiz interactivo desarrollada para AIEP (institución de educación superior chilena con 26 sedes) para evaluar el entendimiento de su nuevo Plan Educativo Institucional 2025-2029. Diseñada para un evento corporativo en vivo con hasta 1.000 participantes simultáneos distribuidos en todo Chile, con admin que controla el flujo de preguntas y dashboard de estadísticas por sede en tiempo real. Stack Next.js 15 + Postgres + polling, deliberadamente sin WebSockets para mantener simplicidad operativa.",
+		category: "desarrollo-web",
+		technologies: [
+			"Next.js 15",
+			"React 19",
+			"TypeScript",
+			"Tailwind CSS 4",
+			"shadcn/ui",
+			"Prisma 7",
+			"PostgreSQL",
+			"Better Auth",
+			"TanStack Form",
+			"Zod 4",
+			"Motion",
+			"Recharts",
+			"React Confetti",
+			"Sonner",
+			"k6 (load testing)",
+			"Vercel",
+		],
+		gradientColor: "#b40000",
+		isFlagship: true,
+		isProduction: true,
+		clientLogo: "/img/logos/aiep.svg",
+		caseStudy: {
+			visualPrivacy: "confidential-ui",
+			pitch:
+				'"Desafío PEI" es un juego tipo Kahoot construido a medida para que AIEP evaluara —en vivo, simultáneamente y en todo Chile— el entendimiento de su nuevo Plan Educativo Institucional. Soportó 600-700 trabajadores conectados desde 26 sedes en un único evento, sin caídas, sin WebSockets, y con un admin que orquestaba el flujo desde una pantalla.',
+			duration:
+				"≈2 meses entre kickoff y evento oficial (octubre–diciembre 2025), con teaser previo de validación en noviembre. Proyecto cerrado tras el evento.",
+			inProductionSince:
+				"17 de diciembre 2025 — fecha del evento oficial nacional, con dos sesiones (mañana y tarde) y sets de preguntas distintos para cada una.",
+			clientName: "AIEP — Instituto Profesional",
+			clientIndustry:
+				"Educación superior técnico-profesional · 26 sedes en Chile · ~6.000 trabajadores y miles de estudiantes",
+			team: "Desarrollo end-to-end + acompañamiento durante el evento en vivo",
+			userBreakdown:
+				"Multi-rol: Participantes (trabajadores AIEP) + Administrador del evento (control central)",
+			problem: [
+				{
+					headline: "Comunicar un PEI a 6.000 personas no es lo mismo que enviar un PDF.",
+					body: "AIEP estaba lanzando su nuevo Plan Educativo Institucional 2025-2029 y necesitaba que todos sus trabajadores —repartidos en 26 sedes a lo largo de Chile— lo conocieran y, sobre todo, lo entendieran. Mandar un correo con un adjunto y rezar no era opción: necesitaban un mecanismo que generara atención real y permitiera medir el entendimiento.",
+				},
+				{
+					headline: "Un evento corporativo nacional pide una sola toma sin segunda oportunidad.",
+					body: "La activación se planeó como un evento en vivo único, transmitido a todas las sedes en paralelo, en dos sesiones (mañana y tarde). Sin retries: si el sistema fallaba durante el evento, no había ventana para arreglarlo. La capacidad esperada era de 600 a 700 personas concurrentes, pero el techo había que dejarlo más alto.",
+				},
+				{
+					headline: "Kahoot resolvía el formato, pero no el control.",
+					body: "Los productos genéricos de quiz en vivo (Kahoot, Mentimeter) cubrían el formato base, pero no permitían el grado de control narrativo, branding, segmentación por sede ni el flujo específico que AIEP necesitaba: pausas de revisión, ranking por sede, sets distintos por sesión, sorteo con criterios propios y exportes para RRHH posteriores.",
+				},
+				{
+					headline: "Y el tiempo era el tiempo.",
+					body: "Desde la decisión hasta el evento había ≈2 meses. Suficiente para construir bien, pero no para experimentar con infraestructura cara o riesgosa. La decisión técnica tenía que privilegiar lo que más probabilidades tenía de funcionar el día D.",
+				},
+			],
+			solution: [
+				{
+					headline: "Un Kahoot a medida, con la operación que el cliente realmente necesitaba.",
+					body: "Construimos una plataforma propia con dos roles: Participante (vista de juego) y Administrador (control central). El admin orquesta el evento en vivo desde un dashboard: activa cada pregunta cuando corresponde, ve la distribución de respuestas en tiempo real, muestra el ranking por sede en las pausas y dispara el sorteo final entre quienes obtuvieron 10/10.",
+				},
+				{
+					headline: "Polling cada 2-4 segundos en lugar de WebSockets — y funcionó.",
+					body: "La decisión técnica más importante del proyecto fue NO usar WebSockets ni Ably. Para una trivia con preguntas de 60 segundos, una latencia de sincronización de 2-4 segundos es invisible para el usuario, y reduce drásticamente la complejidad operativa: cero infraestructura adicional, menos puntos de falla, costo cercano a cero, debugging trivial. Lo validamos con un load test de k6 simulando 1.000 usuarios concurrentes antes del evento.",
+				},
+				{
+					headline: "UX pensada para evento corporativo real, no para una demo.",
+					body: "Tres decisiones de UX deliberadas: (1) Sin feedback inmediato — el participante no sabe si acertó hasta el final, evitando el abandono temprano que mata el engagement; (2) Entrada tardía permitida — quienes se conectan en la pregunta 5 pueden responder de la 1 a la 5 y sincronizarse, sin penalizar atrasos típicos de eventos corporativos; (3) Pregunta bonus para los que no llegaron a 10/10, manteniendo el juego activo hasta el final para todos.",
+				},
+				{
+					headline: "Dos sets de preguntas, dos sesiones, mismo sistema.",
+					body: "El evento se hizo en dos turnos (mañana y tarde) con sets de preguntas distintos para evitar contaminación entre sesiones. El sistema soporta múltiples GameSession activas en paralelo, cada una con su questionSet (AM/PM) y su propio flujo de control, sin lógica especial.",
+				},
+				{
+					headline: "El día del evento: cero incidentes técnicos.",
+					body: "El 17 de diciembre 2025 corrieron las dos sesiones con 600-700 conectados cada una. El sistema operó sin caídas, sin glitches de sincronización, sin tener que tocar el código en vivo. El admin manejó todo el evento desde un único panel.",
+				},
+			],
+			architectureDescription:
+				"Aplicación Next.js 15 (App Router, Turbopack) con React 19 y TypeScript estricto, desplegada en Vercel. Persistencia en PostgreSQL vía Prisma 7 con el driver adapter de pg. Autenticación con Better Auth (validación de correos @aiep.cl). La sincronización de estado de juego se hace por polling: cada cliente consulta `getActiveGameSession()` cada 2-4 segundos vía Server Actions, recuperando la pregunta activa, el tiempo restante y el estado de la sesión. El admin tiene acciones server-side dedicadas (`activateQuestion`, `moveToNextQuestion`, `resumeFromReview`, `moveToRaffle`) que actualizan la GameSession y disparan la actualización implícita en todos los clientes via su próximo poll. Validación end-to-end con Zod compartida entre cliente y server. Stats por sede calculadas server-side con queries Prisma agregadas y renderizadas con Recharts. Carga validada con k6 antes del evento: 1.000 VUs, p(95) bajo 500ms.",
+			techStackDetailed: [
+				{
+					name: "Next.js 15 + Server Actions",
+					tag: "Backend liviano",
+					reason:
+						"Sin API REST separada: cada acción del admin (activar pregunta, mover al siguiente, sortear) y del participante (responder, refetchar estado) corre como Server Action tipada end-to-end. Para un evento puntual es lo más simple posible — sin servicio aparte, sin contratos duplicados.",
+					detail: {
+						constraint:
+							"Necesitábamos lógica server-side robusta pero sin la sobrecarga de mantener una API REST aparte para un evento puntual.",
+						decision:
+							"Server Actions de Next.js para todo lo transaccional: control del juego, registro de respuestas, cálculo de stats. La validación corre con Zod en el mismo schema que usa el formulario del cliente.",
+						outcome:
+							"Una sola base de código, tipos compartidos sin esfuerzo, deploy atómico de cliente + server en cada push.",
+					},
+				},
+				{
+					name: "Polling 2-4s en lugar de WebSockets",
+					tag: "Pragmatismo",
+					reason:
+						"La decisión técnica más importante del proyecto. Para un quiz con preguntas de 60s, una latencia de 2-4s es invisible. WebSockets habría sumado infraestructura, costo y puntos de falla sin beneficio perceptible.",
+					detail: {
+						constraint:
+							"Sincronizar el estado del juego entre admin y 600-1.000 participantes en un evento de una sola toma, sin margen para fallas.",
+						decision:
+							"Polling con `setInterval` cada 2-4 segundos contra Server Actions. Cero servidores de WebSockets, cero servicio de tiempo real externo, cero estado en memoria que pueda perderse.",
+						outcome:
+							"Sistema operó sin caídas durante las dos sesiones del evento. Costo operacional cercano a cero. Validado bajo carga con k6 antes del evento.",
+					},
+				},
+				{
+					name: "Prisma 7 + PostgreSQL",
+					tag: "Integridad",
+					reason:
+						"Las respuestas no podían duplicarse ni perderse. Constraints únicos en (sessionId, userId, questionId) garantizan en base que una persona no responde dos veces la misma pregunta — la app no tiene que adivinar.",
+					detail: {
+						constraint:
+							"Bajo carga concurrente, dos clics rápidos del mismo usuario, doble submit por reconexión, o respuestas tardías post-cierre podían contaminar las stats.",
+						decision:
+							"Modelo relacional en Postgres con UNIQUE constraint en (sessionId, userId, questionId) para OfficialAnswer y en (sessionId, questionId) para QuestionActivation. La integridad la garantiza la DB, no el código de aplicación.",
+						outcome:
+							"Stats limpias en tiempo real durante el evento, sin necesidad de deduplicar a posteriori.",
+					},
+				},
+				{
+					name: "Better Auth",
+					tag: "Identidad propia",
+					reason:
+						"Validación de correos institucionales @aiep.cl + esquema de roles propio sin lock-in a un SaaS de identidad. Para un cliente educativo grande, los datos de usuarios no se mandan a terceros.",
+				},
+				{
+					name: "k6 load testing",
+					tag: "Validación previa",
+					reason:
+						"Antes del evento corrimos un load test simulando 1.000 VUs durante 10 minutos contra los endpoints críticos. Validó que el polling escalaba sin sobrecargar Postgres y que el p(95) quedaba bajo 500ms. Sin ese test, el polling era una apuesta — con ese test, fue una decisión informada.",
+				},
+				{
+					name: "TanStack Form + Zod 4",
+					tag: "Validación compartida",
+					reason:
+						"Mismo schema Zod en el formulario de registro del participante y en la Server Action que lo procesa. Nada llega a la DB sin validar dos veces con la misma fuente de verdad.",
+				},
+				{
+					name: "shadcn/ui + Tailwind 4 + Motion",
+					tag: "UI",
+					reason:
+						"Componentes accesibles con control total del estilo. Motion para transiciones entre estados (pregunta → pausa → resultados), React Confetti para el momento del ganador. UX cuidada en cada transición — esto se proyectaba en vivo a 26 sedes.",
+				},
+				{
+					name: "Recharts",
+					tag: "Stats en vivo",
+					reason:
+						"Gráficos de barras con la distribución de respuestas por opción y el ranking de sedes, actualizados en el dashboard del admin durante las pausas de revisión.",
+				},
+				{
+					name: "Vercel",
+					tag: "Deploy",
+					reason:
+						"Auto-deploy desde main, preview por PR, integración nativa con Vercel Analytics. Para un evento con fecha fija, la tranquilidad de saber que cada push está deployado en segundos vale oro.",
+				},
+			],
+			techStackIntro:
+				"Cada elección técnica respondió al constraint dominante: el evento era una sola toma, sin segunda oportunidad. Privilegiamos lo conocido y validado sobre lo novedoso.",
+			features: [
+				{
+					title: "Polling vs WebSockets — y por qué ganó",
+					description:
+						"Sincronización del estado del juego mediante polling cada 2-4 segundos a Server Actions de Next.js. Sin infraestructura de WebSockets, sin servicio externo, sin estado en memoria. Validado con k6 hasta 1.000 usuarios concurrentes con p(95) bajo 500ms.",
+				},
+				{
+					title: "Admin con control narrativo del evento",
+					description:
+						"Dashboard que orquesta el evento en vivo: activa cada pregunta manualmente, ve la distribución de respuestas en tiempo real, controla las pausas de revisión (después de P4 y P8), muestra ranking por sede y dispara el sorteo final. Una sola persona maneja todo el evento desde una pantalla.",
+				},
+				{
+					title: "Sin feedback inmediato (anti-abandono)",
+					description:
+						"El participante no sabe si acertó hasta el final del juego. Decisión deliberada para evitar que las personas que fallan temprano se desconecten — todos llegan al final con la sensación de poder ganar. Aumenta el engagement de punta a punta.",
+				},
+				{
+					title: "Entrada tardía inteligente",
+					description:
+						"Quienes se conectan después del inicio pueden responder desde la pregunta 1 hasta la que está activa. El sistema los sincroniza automáticamente. En eventos corporativos las llegadas tarde son inevitables — penalizarlas era penalizar la participación.",
+				},
+				{
+					title: "Ranking por sede en pausas",
+					description:
+						"Después de las preguntas 4 y 8 el evento pausa para mostrar el ranking de las 26 sedes según % de respuestas correctas. Genera competencia interna entre campus y mantiene la atención cuando podría caer.",
+				},
+				{
+					title: "Sorteo final + pregunta bonus",
+					description:
+						"Quienes obtienen 10/10 entran al sorteo aleatorio del premio principal. Quienes no llegaron a 10/10 acceden a una pregunta bonus de consolación, evitando que el juego termine como derrota para la mayoría.",
+				},
+			],
+			metrics: [
+				{
+					value: "600-700",
+					label: "participantes en vivo",
+					caption: "Conectados simultáneamente en cada sesión, desde 26 sedes en todo Chile.",
+				},
+				{
+					value: "1.000 VUs",
+					label: "validados con load test",
+					caption: "k6 simuló 1.000 usuarios concurrentes con p(95) < 500ms antes del evento.",
+				},
+				{
+					value: "0",
+					label: "incidentes durante el evento",
+					caption: "Las dos sesiones del 17/dic/2025 corrieron sin caídas ni glitches.",
+				},
+				{
+					value: "2 + 2",
+					label: "sesiones / sets de preguntas",
+					caption: "Mañana y tarde con preguntas distintas, mismo sistema, sin lógica especial.",
+				},
+			],
+			timeline: [
+				{
+					date: "Octubre 2025",
+					title: "Kickoff",
+					description:
+						"Definición de scope, arquitectura sobre Next.js + Postgres y decisión clave de polling vs WebSockets. Primeras vistas y modelo de datos.",
+					icon: "kickoff",
+				},
+				{
+					date: "Noviembre 2025",
+					title: "Teaser de validación",
+					description:
+						"Lanzamiento de un teaser previo con 3 preguntas y reintentos para validar UX, copy y comportamiento bajo concurrencia real antes del evento oficial.",
+					icon: "build",
+				},
+				{
+					date: "Diciembre 2025",
+					title: "Sprint final + load testing",
+					description:
+						"Admin dashboard completo, ranking por sede, sistema de sorteo, dos sets de preguntas. Load test con k6 simulando 1.000 usuarios concurrentes.",
+					icon: "build",
+				},
+				{
+					date: "17 Dic 2025",
+					title: "Evento oficial — dos sesiones",
+					description:
+						"Sesiones 11:00 y 16:00 con 600-700 trabajadores conectados desde 26 sedes. Sistema operó sin caídas durante el evento en vivo.",
+					icon: "launch",
+					isCurrent: true,
+				},
+			],
+		},
 	},
 ]

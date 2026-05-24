@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils"
 
 const easeOut = [0.16, 1, 0.3, 1] as const
 
-type Industry = "turismo" | "industria" | "consultoria"
+type Industry = "turismo" | "industria" | "consultoria" | "educacion"
 
 const INDUSTRY_BY_PROJECT: Record<string, Industry> = {
 	"otc-360": "industria",
@@ -20,6 +20,7 @@ const INDUSTRY_BY_PROJECT: Record<string, Industry> = {
 	"toursanpedroatacama": "turismo",
 	"dashboard-turismo": "turismo",
 	"bz-consulting": "consultoria",
+	"aiep-pei": "educacion",
 }
 
 const AREA_BY_PROJECT: Record<string, string> = {
@@ -30,6 +31,7 @@ const AREA_BY_PROJECT: Record<string, string> = {
 	"toursanpedroatacama": "Ecommerce",
 	"dashboard-turismo": "Plataforma operativa",
 	"bz-consulting": "Consultoría",
+	"aiep-pei": "Evento en vivo",
 }
 
 const INDUSTRY_GROUPS: { key: Industry; label: string; description: string }[] = [
@@ -50,6 +52,12 @@ const INDUSTRY_GROUPS: { key: Industry; label: string; description: string }[] =
 		label: "Consultoría y servicios",
 		description:
 			"Soluciones a medida para empresas de consultoría y servicios profesionales.",
+	},
+	{
+		key: "educacion",
+		label: "Educación",
+		description:
+			"Plataformas para instituciones educativas: eventos en vivo, evaluaciones interactivas y experiencias de aprendizaje.",
 	},
 ]
 
