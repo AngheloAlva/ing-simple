@@ -80,16 +80,14 @@ function Node({
 	)
 }
 
-function Card({ milestone, side }: { milestone: CaseStudyMilestone; side: "left" | "right" }) {
+function Card({ milestone }: { milestone: CaseStudyMilestone }) {
 	return (
 		<motion.article
 			initial={{ opacity: 0, y: 24 }}
 			whileInView={{ opacity: 1, y: 0 }}
 			viewport={{ once: true, margin: "-20%" }}
 			transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-			className={`border-border bg-background w-full overflow-hidden rounded-2xl border p-5 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.08)] sm:p-6 md:w-[44%] ${
-				side === "left" ? "md:mr-auto" : "md:ml-auto"
-			}`}
+			className="border-border bg-background w-full overflow-hidden rounded-2xl border p-5 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.08)] sm:p-6"
 		>
 			<span className="text-muted-foreground text-[10px] font-medium tracking-[0.18em] uppercase">
 				{milestone.date}
@@ -206,11 +204,14 @@ export function CaseStudyTimeline({ caseStudy }: CaseStudyTimelineProps) {
 							return (
 								<div
 									key={`${milestone.date}-${milestone.title}`}
-									className="relative flex flex-col items-center"
+									className="relative flex flex-col items-center md:grid md:grid-cols-[1fr_auto_1fr] md:items-center md:gap-x-8 lg:gap-x-12"
 								>
+									<div className="hidden md:col-start-1 md:block">
+										{side === "left" && <Card milestone={milestone} />}
+									</div>
 									<div
 										ref={isFirst ? firstNodeRef : isLast ? lastNodeRef : undefined}
-										className="relative z-10"
+										className="relative z-10 md:col-start-2"
 									>
 										<Node
 											progress={scrollYProgress}
@@ -219,8 +220,11 @@ export function CaseStudyTimeline({ caseStudy }: CaseStudyTimelineProps) {
 											isCurrent={!!milestone.isCurrent}
 										/>
 									</div>
-									<div className="mt-6 flex w-full">
-										<Card milestone={milestone} side={side} />
+									<div className="hidden md:col-start-3 md:block">
+										{side === "right" && <Card milestone={milestone} />}
+									</div>
+									<div className="mt-6 w-full md:hidden">
+										<Card milestone={milestone} />
 									</div>
 								</div>
 							)
