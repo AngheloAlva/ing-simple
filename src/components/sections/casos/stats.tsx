@@ -32,7 +32,7 @@ export function CasosStats() {
 				{stats.map((stat) => (
 					<li
 						key={stat.label}
-						className="flex flex-col items-center gap-1 text-center sm:border-l sm:border-border/60 sm:first:border-l-0 sm:px-4"
+						className="sm:border-border/60 flex flex-col items-center gap-1 text-center sm:border-l sm:px-4 sm:first:border-l-0"
 					>
 						<span className="text-foreground text-4xl font-medium tracking-tight sm:text-5xl">
 							{stat.value}

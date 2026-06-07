@@ -59,10 +59,38 @@ interface BusancKpi {
 }
 
 const KPIS_TOP: BusancKpi[] = [
-	{ label: "Solicitudes", sub: "en total", value: "1", icon: ClipboardList, tint: "#fee2e2", iconColor: "#dc2626" },
-	{ label: "Proyectos", sub: "en total", value: "0", icon: Package, tint: "#ede9fe", iconColor: "#7c3aed" },
-	{ label: "Cotizaciones", sub: "en total", value: "0", icon: Receipt, tint: "#fce7f3", iconColor: "#db2777" },
-	{ label: "Clientes", sub: "activos", value: "1", icon: Building2, tint: "#fee2e2", iconColor: "#dc2626" },
+	{
+		label: "Solicitudes",
+		sub: "en total",
+		value: "1",
+		icon: ClipboardList,
+		tint: "#fee2e2",
+		iconColor: "#dc2626",
+	},
+	{
+		label: "Proyectos",
+		sub: "en total",
+		value: "0",
+		icon: Package,
+		tint: "#ede9fe",
+		iconColor: "#7c3aed",
+	},
+	{
+		label: "Cotizaciones",
+		sub: "en total",
+		value: "0",
+		icon: Receipt,
+		tint: "#fce7f3",
+		iconColor: "#db2777",
+	},
+	{
+		label: "Clientes",
+		sub: "activos",
+		value: "1",
+		icon: Building2,
+		tint: "#fee2e2",
+		iconColor: "#dc2626",
+	},
 ]
 
 const KPIS_BOTTOM: BusancKpi[] = [
@@ -106,7 +134,7 @@ function BusancHeroMockup({ label = "Vista de Busanc" }: { label?: string }) {
 				{/* Sidebar */}
 				<div className="bg-background border-border flex w-[30%] flex-col gap-1 border-r p-2">
 					<div className="flex items-center gap-1.5 px-1 pb-1">
-						<div className="flex h-4 w-4 items-center justify-center rounded-[3px] bg-[#1447e6] text-white text-[7px] font-bold">
+						<div className="flex h-4 w-4 items-center justify-center rounded-[3px] bg-[#1447e6] text-[7px] font-bold text-white">
 							S
 						</div>
 						<span className="text-foreground text-[9px] font-bold tracking-tight">BUSANC</span>
@@ -174,7 +202,9 @@ function BusancHeroMockup({ label = "Vista de Busanc" }: { label?: string }) {
 								AB
 							</div>
 							<div className="flex min-w-0 flex-col leading-tight">
-								<span className="text-foreground truncate text-[7px] font-medium">Admin Busanc</span>
+								<span className="text-foreground truncate text-[7px] font-medium">
+									Admin Busanc
+								</span>
 								<span className="text-muted-foreground truncate text-[6px]">admin@busanc.cl</span>
 							</div>
 						</div>
@@ -315,7 +345,13 @@ const scRows = [
 	{ id: "SC-0142", client: "Codelco Andina", projects: 3, status: "En Ingeniería", tone: "blue" },
 	{ id: "SC-0141", client: "Anglo American", projects: 2, status: "Cotizando", tone: "amber" },
 	{ id: "SC-0140", client: "BHP Spence", projects: 1, status: "OC aprobada", tone: "green" },
-	{ id: "SC-0139", client: "Codelco Andina", projects: 4, status: "Levantamiento", tone: "neutral" },
+	{
+		id: "SC-0139",
+		client: "Codelco Andina",
+		projects: 4,
+		status: "Levantamiento",
+		tone: "neutral",
+	},
 	{ id: "SC-0138", client: "Antofagasta Min.", projects: 2, status: "En Ingeniería", tone: "blue" },
 ]
 
@@ -419,9 +455,7 @@ function ComponenteCentricoMockup() {
 				<div className="flex items-start justify-between gap-2">
 					<div className="text-white">
 						<div className="text-[11px] leading-tight font-bold">Flujo Componente-Céntrico</div>
-						<div className="text-[8px] opacity-90">
-							Cada componente avanza por sus etapas
-						</div>
+						<div className="text-[8px] opacity-90">Cada componente avanza por sus etapas</div>
 					</div>
 					<span className="inline-flex items-center gap-1 rounded-md bg-white/95 px-1.5 py-0.5 text-[7px] font-medium text-[#1447e6]">
 						<GitBranch className="h-2 w-2" /> 3 en curso
@@ -470,9 +504,7 @@ function ComponenteCentricoMockup() {
 								</span>
 								<span className="text-foreground text-[7px] font-medium">{c.name}</span>
 							</div>
-							<span className="text-muted-foreground text-[6px]">
-								{stages[c.stage]?.label}
-							</span>
+							<span className="text-muted-foreground text-[6px]">{stages[c.stage]?.label}</span>
 						</div>
 						<div className="bg-muted relative mt-1 h-1 overflow-hidden rounded-full">
 							<motion.div
@@ -559,7 +591,7 @@ function ActivityLogMockup() {
 						transition={{ duration: 0.3, delay: 0.05 + i * 0.06 }}
 						className="relative flex items-center gap-1.5 pl-3"
 					>
-						<span className="bg-ring absolute left-[2px] h-1.5 w-1.5 rounded-full ring-2 ring-background" />
+						<span className="bg-ring ring-background absolute left-[2px] h-1.5 w-1.5 rounded-full ring-2" />
 						<div className="flex flex-1 flex-col leading-tight">
 							<span className="text-foreground text-[7px]">
 								<span className="font-semibold">{e.user}</span> {e.action}

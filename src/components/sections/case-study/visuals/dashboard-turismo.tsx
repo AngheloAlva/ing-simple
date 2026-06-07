@@ -148,7 +148,11 @@ function BrandMark({ size = 16 }: { size?: number }) {
 
 // ── Hero mockup — pantalla Inicio ────────────────────────────────────────
 
-function DashboardTurismoHeroMockup({ label = "Vista del dashboard TurismoChileTours" }: { label?: string }) {
+function DashboardTurismoHeroMockup({
+	label = "Vista del dashboard TurismoChileTours",
+}: {
+	label?: string
+}) {
 	return (
 		<motion.div
 			initial={{ opacity: 0, y: 24 }}
@@ -183,15 +187,9 @@ function DashboardTurismoHeroMockup({ label = "Vista del dashboard TurismoChileT
 								<div
 									key={item.label}
 									className="flex items-center gap-1.5 rounded-[3px] px-1.5 py-1"
-									style={
-										item.active
-											? { backgroundColor: BRAND, color: "#fff" }
-											: undefined
-									}
+									style={item.active ? { backgroundColor: BRAND, color: "#fff" } : undefined}
 								>
-									<Icon
-										className={item.active ? "h-2 w-2" : "text-muted-foreground h-2 w-2"}
-									/>
+									<Icon className={item.active ? "h-2 w-2" : "text-muted-foreground h-2 w-2"} />
 									<span
 										className={
 											item.active
@@ -330,9 +328,7 @@ function DashboardTurismoHeroMockup({ label = "Vista del dashboard TurismoChileT
 											<span className="text-foreground truncate text-[6px] font-medium">
 												{ev.label}
 											</span>
-											<span className="text-muted-foreground truncate text-[6px]">
-												{ev.meta}
-											</span>
+											<span className="text-muted-foreground truncate text-[6px]">{ev.meta}</span>
 										</div>
 									</div>
 								))}
@@ -484,7 +480,7 @@ function CalendarMockup() {
 				</div>
 				<span className="text-muted-foreground text-[7px]">Mes / Semana / Día</span>
 			</div>
-			<div className="grid grid-cols-7 gap-0.5 text-center text-[6px] text-muted-foreground">
+			<div className="text-muted-foreground grid grid-cols-7 gap-0.5 text-center text-[6px]">
 				{["L", "M", "M", "J", "V", "S", "D"].map((d, i) => (
 					<span key={i}>{d}</span>
 				))}
@@ -613,8 +609,8 @@ function PermissionsMockup() {
 				<ShieldCheck className="h-3 w-3" style={{ color: BRAND }} />
 				<span className="text-foreground text-[10px] font-semibold">Permisos por módulo</span>
 			</div>
-			<div className="overflow-hidden rounded-md border border-border">
-				<div className="bg-muted/50 grid grid-cols-[1fr_repeat(4,minmax(0,1fr))] gap-0.5 px-1.5 py-1 text-[6px] font-semibold text-muted-foreground">
+			<div className="border-border overflow-hidden rounded-md border">
+				<div className="bg-muted/50 text-muted-foreground grid grid-cols-[1fr_repeat(4,minmax(0,1fr))] gap-0.5 px-1.5 py-1 text-[6px] font-semibold">
 					<span>Rol</span>
 					{modules.map((m) => (
 						<span key={m} className="text-center">
@@ -640,7 +636,9 @@ function PermissionsMockup() {
 					</div>
 				))}
 			</div>
-			<span className="text-muted-foreground text-[6px]">RoleModulePermission · editable sin tocar código</span>
+			<span className="text-muted-foreground text-[6px]">
+				RoleModulePermission · editable sin tocar código
+			</span>
 		</div>
 	)
 }
@@ -703,11 +701,26 @@ function AnalyticsMockup() {
 
 function ReceptionsTransfersMockup() {
 	const receptions = [
-		{ label: "Hotel Atacama · 4 pax · 14:30", status: "Confirmada", tint: "#dcfce7", color: "#16a34a" },
-		{ label: "Hotel Tierra · 2 pax · 16:00", status: "Pendiente", tint: "#fef3c7", color: "#d97706" },
+		{
+			label: "Hotel Atacama · 4 pax · 14:30",
+			status: "Confirmada",
+			tint: "#dcfce7",
+			color: "#16a34a",
+		},
+		{
+			label: "Hotel Tierra · 2 pax · 16:00",
+			status: "Pendiente",
+			tint: "#fef3c7",
+			color: "#d97706",
+		},
 	]
 	const transfers = [
-		{ label: "→ Despegar · Valle de la Luna · 3 pax", status: "Aceptado", tint: "#dbeafe", color: "#2563eb" },
+		{
+			label: "→ Despegar · Valle de la Luna · 3 pax",
+			status: "Aceptado",
+			tint: "#dbeafe",
+			color: "#2563eb",
+		},
 	]
 	return (
 		<div className="border-border bg-background flex h-full flex-col gap-2 rounded-xl border p-3 text-[9px]">
@@ -805,9 +818,7 @@ function MigrationMockup() {
 								{i + 1}
 							</span>
 							<div className="flex min-w-0 flex-1 flex-col leading-tight">
-								<span className="text-foreground truncate text-[7px] font-semibold">
-									{s.label}
-								</span>
+								<span className="text-foreground truncate text-[7px] font-semibold">{s.label}</span>
 								<span className="text-muted-foreground truncate text-[6px]">{s.sub}</span>
 							</div>
 						</motion.div>

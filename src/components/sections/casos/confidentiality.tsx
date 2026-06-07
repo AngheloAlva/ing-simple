@@ -55,15 +55,9 @@ export function CasosConfidentiality() {
 							transition={{ duration: 0.5, ease: easeOut, delay: i * 0.1 }}
 							className="border-border bg-background rounded-2xl border p-6"
 						>
-							<item.icon
-								strokeWidth={1}
-								className="text-foreground mb-8 h-12 w-12"
-								aria-hidden
-							/>
+							<item.icon strokeWidth={1} className="text-foreground mb-8 h-12 w-12" aria-hidden />
 							<h3 className="text-foreground mb-2 text-lg font-semibold">{item.title}</h3>
-							<p className="text-muted-foreground text-sm leading-relaxed">
-								{item.description}
-							</p>
+							<p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
 						</motion.li>
 					))}
 				</ul>

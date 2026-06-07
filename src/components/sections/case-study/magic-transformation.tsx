@@ -217,9 +217,7 @@ const DocumentBody = memo(function DocumentBody({
 							<div
 								key={i}
 								className={
-									isHeader
-										? "bg-neutral-100 dark:bg-neutral-800"
-										: "bg-white dark:bg-neutral-900"
+									isHeader ? "bg-neutral-100 dark:bg-neutral-800" : "bg-white dark:bg-neutral-900"
 								}
 								style={{ height: rowH }}
 							>

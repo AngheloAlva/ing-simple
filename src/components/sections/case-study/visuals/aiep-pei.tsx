@@ -62,7 +62,7 @@ function AiepHeroMockup({ label = "Vista de Desafío PEI" }: { label?: string })
 					initial={{ opacity: 0, y: 6 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.4, duration: 0.4 }}
-					className="text-foreground max-w-md text-center text-sm font-semibold leading-snug sm:text-base"
+					className="text-foreground max-w-md text-center text-sm leading-snug font-semibold sm:text-base"
 				>
 					¿Cuáles son los valores institucionales que sostienen el nuevo PEI de AIEP?
 				</motion.h3>
@@ -181,7 +181,7 @@ function AdminMockup() {
 					{ label: "Responden", value: "548" },
 				].map((s) => (
 					<div key={s.label} className="border-border rounded-md border px-1.5 py-1">
-						<div className="text-muted-foreground text-[7px] uppercase tracking-wider">
+						<div className="text-muted-foreground text-[7px] tracking-wider uppercase">
 							{s.label}
 						</div>
 						<div className="text-foreground text-[11px] font-semibold">{s.value}</div>
@@ -263,10 +263,7 @@ function LateJoinMockup() {
 												? `${ACCENT}55`
 												: "transparent",
 									color: s.state === "future" ? "var(--muted-foreground)" : "white",
-									border:
-										s.state === "future"
-											? "1px dashed var(--border)"
-											: `1px solid ${ACCENT}`,
+									border: s.state === "future" ? "1px dashed var(--border)" : `1px solid ${ACCENT}`,
 								}}
 							>
 								{s.q}
@@ -327,9 +324,7 @@ function SedeRankingMockup() {
 								style={{ backgroundColor: i === 0 ? ACCENT : `${ACCENT}88` }}
 							/>
 						</div>
-						<span className="text-foreground w-7 text-right font-mono font-semibold">
-							{s.pct}%
-						</span>
+						<span className="text-foreground w-7 text-right font-mono font-semibold">{s.pct}%</span>
 					</motion.div>
 				))}
 			</div>
@@ -349,9 +344,7 @@ function RaffleMockup() {
 				style={{ backgroundColor: ACCENT_SOFT }}
 			>
 				<Gift className="h-5 w-5" style={{ color: ACCENT }} />
-				<div className="text-muted-foreground text-[8px] uppercase tracking-wider">
-					Ganador
-				</div>
+				<div className="text-muted-foreground text-[8px] tracking-wider uppercase">Ganador</div>
 				<div className="text-foreground text-[11px] font-semibold">M. Hernández</div>
 				<div className="text-muted-foreground text-[8px]">Sede Antofagasta</div>
 			</div>

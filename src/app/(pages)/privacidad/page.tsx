@@ -24,9 +24,7 @@ export default function PrivacidadPage(): ReactNode {
 						<h1 className="text-foreground text-4xl leading-[1.05] font-bold tracking-tight sm:text-5xl">
 							Política de Privacidad
 						</h1>
-						<p className="text-muted-foreground mt-4 text-sm">
-							Última actualización: {VIGENCIA}
-						</p>
+						<p className="text-muted-foreground mt-4 text-sm">Última actualización: {VIGENCIA}</p>
 					</header>
 
 					<div className="text-foreground/90 space-y-10 text-base leading-relaxed">
@@ -172,14 +170,14 @@ export default function PrivacidadPage(): ReactNode {
 
 						<Section title="8. Seguridad">
 							<p>
-								Aplicamos medidas técnicas y organizativas razonables para proteger tus datos
-								contra accesos no autorizados, pérdida o alteración. Las comunicaciones con este
-								sitio viajan cifradas mediante HTTPS/TLS y los emails se transmiten a través de
+								Aplicamos medidas técnicas y organizativas razonables para proteger tus datos contra
+								accesos no autorizados, pérdida o alteración. Las comunicaciones con este sitio
+								viajan cifradas mediante HTTPS/TLS y los emails se transmiten a través de
 								proveedores con autenticación SPF/DKIM.
 							</p>
 							<p>
-								Ningún sistema es 100% inviolable. En caso de incidente de seguridad que afecte
-								tus datos personales, te lo notificaremos sin dilación indebida.
+								Ningún sistema es 100% inviolable. En caso de incidente de seguridad que afecte tus
+								datos personales, te lo notificaremos sin dilación indebida.
 							</p>
 						</Section>
 
@@ -218,9 +216,7 @@ export default function PrivacidadPage(): ReactNode {
 function Section({ title, children }: { title: string; children: ReactNode }): ReactNode {
 	return (
 		<section className="space-y-3">
-			<h2 className="text-foreground text-xl font-semibold tracking-tight sm:text-2xl">
-				{title}
-			</h2>
+			<h2 className="text-foreground text-xl font-semibold tracking-tight sm:text-2xl">{title}</h2>
 			{children}
 		</section>
 	)

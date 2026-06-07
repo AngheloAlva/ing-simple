@@ -132,8 +132,8 @@ export function ContactSection(): ReactNode {
 								transition={transition}
 								className="text-muted-foreground mt-5 max-w-md text-lg"
 							>
-								Contanos qué necesitás y armamos juntos la solución más simple y efectiva para
-								tu organización.
+								Contanos qué necesitás y armamos juntos la solución más simple y efectiva para tu
+								organización.
 							</motion.p>
 						</div>
 
@@ -147,7 +147,9 @@ export function ContactSection(): ReactNode {
 										key={item}
 										variants={variants}
 										transition={
-											prefersReducedMotion ? { duration: 0.01 } : { ...defaultTransition, delay: 0.08 * i }
+											prefersReducedMotion
+												? { duration: 0.01 }
+												: { ...defaultTransition, delay: 0.08 * i }
 										}
 										className="text-muted-foreground flex items-start gap-3 text-sm sm:text-base"
 									>
@@ -161,10 +163,7 @@ export function ContactSection(): ReactNode {
 						</motion.div>
 
 						<motion.div variants={variants} transition={transition} className="flex flex-col gap-5">
-							<a
-								href="mailto:contacto@ingsimple.cl"
-								className="group flex items-center gap-3"
-							>
+							<a href="mailto:contacto@ingsimple.cl" className="group flex items-center gap-3">
 								<span className="bg-foreground group-hover:bg-accent text-background flex h-12 w-12 items-center justify-center rounded-xl transition-colors duration-300">
 									<Mail className="h-6 w-6" strokeWidth={1.5} />
 								</span>
@@ -285,7 +284,7 @@ export function ContactSection(): ReactNode {
 								minLength={10}
 								rows={5}
 								placeholder="Contanos brevemente sobre tu proyecto o consulta *"
-								className="border-background/15 bg-background/5 text-background placeholder:text-background/50 focus:border-accent focus:bg-background/10 focus:ring-accent/40 w-full resize-none rounded-3xl border px-5 py-3 text-sm transition-colors focus:outline-none focus:ring-2"
+								className="border-background/15 bg-background/5 text-background placeholder:text-background/50 focus:border-accent focus:bg-background/10 focus:ring-accent/40 w-full resize-none rounded-3xl border px-5 py-3 text-sm transition-colors focus:ring-2 focus:outline-none"
 							/>
 						</div>
 

@@ -80,19 +80,20 @@ export function CaseStudyTechStack({ caseStudy }: CaseStudyTechStackProps) {
 									</div>
 
 									{/* Constraint — muted italic lead-in */}
-									<p className="text-muted-foreground text-sm italic leading-relaxed">
+									<p className="text-muted-foreground text-sm leading-relaxed italic">
 										{item.detail.constraint}
 									</p>
 
 									{/* Decision — main body */}
-									<p className="text-foreground/80 text-sm leading-relaxed">{item.detail.decision}</p>
+									<p className="text-foreground/80 text-sm leading-relaxed">
+										{item.detail.decision}
+									</p>
 
 									{/* Outcome — accented with label */}
 									<p className="text-accent flex items-start gap-1.5 text-sm leading-relaxed">
 										<ArrowRight className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
 										<span>
-											<strong className="font-semibold">Resultado:</strong>{" "}
-											{item.detail.outcome}
+											<strong className="font-semibold">Resultado:</strong> {item.detail.outcome}
 										</span>
 									</p>
 								</>

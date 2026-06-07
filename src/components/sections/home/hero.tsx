@@ -1,6 +1,12 @@
 "use client"
 
-import { motion, useAnimationFrame, useMotionValue, useTransform, type MotionValue } from "motion/react"
+import {
+	motion,
+	useAnimationFrame,
+	useMotionValue,
+	useTransform,
+	type MotionValue,
+} from "motion/react"
 import { ChevronRight as ChevronRightIcon } from "lucide-react"
 import { useRef, useState, type ReactNode } from "react"
 import Link from "next/link"

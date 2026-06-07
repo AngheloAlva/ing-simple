@@ -13,8 +13,7 @@ export function useProjectsFilter() {
 	const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
 
 	const filtered = useMemo(
-		() =>
-			active === "todos" ? portfolioBase : portfolioBase.filter((p) => p.category === active),
+		() => (active === "todos" ? portfolioBase : portfolioBase.filter((p) => p.category === active)),
 		[active]
 	)
 

@@ -27,7 +27,7 @@ function buildFeatures(
 	registry: Record<
 		string,
 		{ visual: ReactNode; span: "full" | "wide" | "narrow"; icon?: LucideIcon }
-	>,
+	>
 ): FeatureWithVisual[] {
 	return features.map((f) => {
 		const entry = registry[f.title]
