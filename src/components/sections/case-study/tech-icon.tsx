@@ -18,6 +18,7 @@ import AzureIcon from "@/components/icons/azure"
 import MoneyIcon from "@/components/icons/money"
 import GsapIcon from "@/components/icons/gsap"
 import PDFIcon from "@/components/icons/pdf"
+import TailwindCSSIcon from "@/components/icons/tailwindcss"
 
 interface TechBrand {
 	icon: (props: React.SVGProps<SVGSVGElement>) => React.ReactElement
@@ -49,6 +50,16 @@ const TECH_BRANDS: { match: string[]; brand: TechBrand }[] = [
 			iconFill: true,
 		},
 	},
+	{
+		match: ["tailwind", "tailwindcss"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <TailwindCSSIcon {...props} />,
+			background: "#FFFFFF",
+			foreground: "#FFFFFF",
+			iconFill: true,
+		},
+	},
+
 	{
 		match: ["prisma"],
 		brand: {
@@ -85,7 +96,7 @@ const TECH_BRANDS: { match: string[]; brand: TechBrand }[] = [
 		match: ["tanstack"],
 		brand: {
 			icon: (props: React.SVGProps<SVGSVGElement>) => <TanStackIcon {...props} />,
-			background: "#6bf363",
+			background: "#FFFFFF",
 			foreground: "#FFFFFF",
 		},
 	},

@@ -1490,76 +1490,208 @@ export const portfolioProjects: ProjectData[] = [
 	},
 	{
 		id: "caemp",
-		imageUrl: "/img/portfolio/placeholder.jpg",
-		title: "CAEMP",
-		shortDescription: "Plataforma de capacitación y seguridad laboral",
+		imageUrl: "/img/portfolio/caemp/portrait.png",
+		title: "Grupo CAEMP",
+		shortDescription:
+			"Tres marcas con identidad y dominio propios, servidas desde una única base de código y un solo despliegue mediante arquitectura multi-dominio.",
 		fullDescription:
-			"Aplicación web para CAEMP, especialistas en capacitación y seguridad laboral. Construida con TanStack Start y React, incluye formularios dinámicos, sistema de emails transaccionales con React Email y una interfaz moderna con animaciones.",
+			"Sitio web corporativo de Grupo CAEMP, holding chileno de seguridad y capacitación laboral que opera tres líneas de negocio. Cada línea (OTEC, PLUS y Crecimiento) tiene su propio dominio, color y logotipo, pero todas se sirven desde un mismo proyecto: el dominio de acceso determina, en cada request, qué marca y qué conjunto de rutas se renderiza. Construido con TanStack Start sobre React 19 y TypeScript estricto, resuelve el ruteo por dominio con un rewrite bidireccional a nivel de router, evitando mantener tres sitios separados.",
 		category: "desarrollo-web",
 		technologies: [
 			"TanStack Start",
-			"React",
+			"TanStack Router",
+			"React 19",
 			"TypeScript",
-			"Tailwind CSS",
+			"Tailwind CSS v4",
+			"Nitro v2",
 			"Vite",
-			"Radix UI",
-			"React Email",
+			"Vercel",
 			"Resend",
-			"Motion",
 			"Zod",
 		],
 		liveUrl: "https://grupocaemp.cl",
-		gradientColor: "#f59e0b",
-	},
-	{
-		id: "finance",
-		imageUrl: "/img/portfolio/placeholder.jpg",
-		title: "Finance",
-		shortDescription: "Aplicación de gestión financiera personal",
-		fullDescription:
-			"Aplicación web de finanzas personales con soporte multiidioma (next-intl), autenticación segura, gráficos interactivos de gastos e ingresos, y persistencia en PostgreSQL con Prisma. Interfaz moderna con componentes shadcn/ui.",
-		category: "desarrollo-web",
-		technologies: [
-			"Next.js",
-			"TypeScript",
-			"Tailwind CSS",
-			"Prisma",
-			"PostgreSQL",
-			"Better Auth",
-			"next-intl",
-			"Recharts",
-			"shadcn/ui",
-			"Zod",
-		],
-		liveUrl: "https://finance-olive-tau.vercel.app",
-		gradientColor: "#8b5cf6",
-	},
-	{
-		id: "habit-tracker",
-		imageUrl: "/img/portfolio/placeholder.jpg",
-		title: "Forma - Habit Tracker",
-		shortDescription: "PWA de seguimiento de hábitos diarios",
-		fullDescription:
-			"Aplicación progresiva (PWA) para el seguimiento de hábitos diarios con soporte offline gracias a Service Workers (Serwist). Permite crear, ordenar y monitorear hábitos con drag & drop, gráficos de progreso y tema claro/oscuro. Base de datos con Drizzle ORM y libSQL.",
-		category: "desarrollo-web",
-		technologies: [
-			"Next.js",
-			"TypeScript",
-			"Tailwind CSS",
-			"Drizzle ORM",
-			"libSQL",
-			"Better Auth",
-			"Serwist (PWA)",
-			"DnD Kit",
-			"Recharts",
-			"Zustand",
-		],
-		liveUrl: "https://habit-tracker-rouge-one.vercel.app",
-		gradientColor: "#10b981",
+		gradientColor: "#0066b3",
+		isFlagship: true,
+		isProduction: true,
+		clientLogo: "/img/logos/caemp.png",
+		caseStudy: {
+			pitch:
+				"Una sola base de código que se comporta como tres sitios distintos: cada marca de Grupo CAEMP vive en su propio dominio, con su color y su logo, pero comparte un único proyecto y un único despliegue.",
+			duration: "≈4 meses de desarrollo (noviembre 2025 – marzo 2026).",
+			inProductionSince: "Marzo 2026 — en producción en los cuatro dominios desde el lanzamiento.",
+			clientName: "Grupo CAEMP",
+			clientIndustry: "Seguridad laboral, capacitación y EPP",
+			visualPrivacy: "public",
+			team: "Desarrollo full-stack end-to-end",
+			problem: [
+				"Grupo CAEMP agrupa tres líneas de negocio claramente diferenciadas: CAEMP OTEC (capacitación certificada SENCE para minería, energía y telecomunicaciones), CAEMP PLUS (comercialización de equipos de protección personal) y Crecimiento (habilidades blandas, liderazgo y talleres vivenciales). Cada una se dirige a un público distinto y necesitaba presentarse con identidad propia —su color, su logotipo y su dominio— para no diluir su propuesta dentro de una marca paraguas genérica.",
+				"La salida intuitiva era levantar un sitio por marca. Esa decisión multiplica el costo: tres bases de código que mantener, tres pipelines de despliegue, tres veces el trabajo para corregir un bug transversal o publicar un componente compartido, y una deriva visual inevitable a medida que cada sitio evoluciona por su cuenta.",
+				"El desafío de negocio era sostener tres marcas con identidad fuerte y dominios independientes sin pagar el precio de mantener tres proyectos separados, y sin sacrificar el SEO propio de cada dominio.",
+			],
+			solution: [
+				"La solución es una arquitectura multi-dominio: un único proyecto TanStack Start que sirve cuatro dominios (grupocaemp.cl más los tres de marca) desde un solo despliegue. En cada request, el sistema lee el host y resuelve a qué línea de negocio pertenece mediante un match exacto de dominio —deliberadamente exacto para evitar falsos positivos como que grupocaemp.cl coincida con caemp.cl.",
+				"El corazón del mecanismo es un rewrite bidireccional a nivel de router. En la entrada, una visita a caempplus.cl/productos se reescribe internamente a la ruta /plus/productos; en la salida, los links que el router genera hacia /plus/productos se devuelven al usuario como /productos, de modo que la URL del dominio de marca permanece limpia y sin el prefijo interno.",
+				"Sobre esa resolución de tenant, cada marca compone su propia experiencia: su set de rutas, su configuración de header y footer, sus colores de Tailwind y sus datos de contenido. Los componentes de UI, el layout y la lógica de formularios y envío de correo se comparten; lo específico de cada negocio vive en módulos separados. El resultado son tres sitios con personalidad propia y un solo lugar donde corregir, mejorar y desplegar.",
+			],
+			architectureDescription:
+				"Frontend en TanStack Start con React 19 y TypeScript estricto, renderizado en servidor sobre Nitro v2 y empaquetado con Vite. El ruteo es file-based con TanStack Router, y la condición multi-dominio se resuelve en tres capas: un mapa de host→tenant (getTenantFromHost con match exacto), un rewrite bidireccional input/output en el router que traduce entre la URL pública por marca y el prefijo de ruta interno (/crecimiento, /plus, /otec), y un middleware de tenant que inyecta marca y prefijo en el contexto de cada request. El theming por marca se aplica con clases de Tailwind v4 condicionadas al prefijo activo; los componentes de UI usan Radix y shadcn con class-variance-authority. Los formularios se validan con TanStack Form y Zod, y las solicitudes de contacto y cotización se canalizan a través de API routes alojadas en el dominio del grupo (grupocaemp.cl) que envían correo transaccional con Resend y React Email. Todo se entrega como un único despliegue en Vercel, con los cuatro dominios apuntando al mismo build y una whitelist de CORS por origen.",
+			techStackIntro:
+				"Cada elección respondió a una restricción concreta del proyecto, no a una moda.",
+			techStackDetailed: [
+				{
+					name: "TanStack Start + TanStack Router",
+					reason:
+						"Framework full-stack con SSR sobre Nitro y ruteo file-based que expone un hook de rewrite a nivel de router.",
+					tag: "Multi-tenant",
+					detail: {
+						constraint:
+							"Servir tres marcas con dominios independientes desde un mismo proyecto, manteniendo URLs limpias por marca y SEO propio de cada dominio.",
+						decision:
+							"Resolver el tenant por host y aplicar un rewrite bidireccional en el router: la entrada agrega el prefijo de marca (/plus, /otec, /crecimiento) y la salida lo elimina de los links generados.",
+						outcome:
+							"Un solo despliegue atiende cuatro dominios; el dominio de acceso determina la marca renderizada sin duplicar bases de código ni romper la navegación interna.",
+					},
+				},
+				{
+					name: "Resolución de dominio por host (capa de tenant)",
+					reason:
+						"Mapa explícito host→marca con match exacto y middleware que inyecta marca y prefijo en el contexto de cada request.",
+					tag: "Multi-tenant",
+					detail: {
+						constraint:
+							"Distinguir dominios cuyos nombres son subcadenas unos de otros (grupocaemp.cl contiene caemp.cl), donde un includes ingenuo enrutaría al tenant equivocado.",
+						decision:
+							"Comparación exacta de hostname (con soporte de prefijo www y descarte de puerto) y un fallback explícito al dominio del grupo para cualquier host no reconocido.",
+						outcome:
+							"Enrutamiento por marca determinista y sin ambigüedad, con un único punto de verdad para agregar o cambiar dominios.",
+					},
+				},
+				{
+					name: "Tailwind CSS v4 + theming por marca",
+					reason:
+						"Tokens de color por línea de negocio (azul OTEC, verde PLUS, púrpura Crecimiento) aplicados según el prefijo activo.",
+					tag: "Branding",
+					detail: {
+						constraint:
+							"Cada marca debe verse distinta —color, logo, header y footer propios— sin fragmentar el sistema de componentes.",
+						decision:
+							"Componentes de UI compartidos (Radix + shadcn + class-variance-authority) y diferenciación visual mediante clases de Tailwind condicionadas al tenant resuelto.",
+						outcome:
+							"Identidad visual diferenciada por marca reutilizando un único design system, sin estilos duplicados por sitio.",
+					},
+				},
+				{
+					name: "Nitro v2 + Vercel",
+					reason:
+						"Servidor SSR universal que despliega los cuatro dominios como un único build en Vercel.",
+					tag: "Performance",
+				},
+				{
+					name: "TanStack Form + Zod",
+					reason:
+						"Formularios de contacto y cotización por marca con validación de esquema tipada de extremo a extremo.",
+				},
+				{
+					name: "Resend + React Email",
+					reason:
+						"Correo transaccional con plantillas en React, canalizado por API routes alojadas en el dominio del grupo.",
+				},
+				{
+					name: "TypeScript estricto",
+					reason:
+						"strict, noUnusedLocals y noUncheckedSideEffectImports activos para sostener la lógica de tenant sin regresiones.",
+				},
+			],
+			features: [
+				{
+					title: "Arquitectura multi-dominio de marca",
+					description:
+						"Un solo proyecto sirve cuatro dominios. El host de cada request resuelve la línea de negocio y un rewrite bidireccional traduce entre la URL pública de la marca y el prefijo de ruta interno, manteniendo URLs limpias por dominio.",
+				},
+				{
+					title: "Tres líneas de negocio diferenciadas",
+					description:
+						"CAEMP OTEC (capacitación certificada SENCE), CAEMP PLUS (equipos de protección personal) y Crecimiento (habilidades blandas y talleres), cada una con su catálogo, sus secciones y su contenido propios.",
+				},
+				{
+					title: "SEO independiente por dominio",
+					description:
+						"Cada dominio se presenta como un sitio propio con su metadata y locale es_CL, preservando la autoridad y el posicionamiento individual de cada marca.",
+				},
+				{
+					title: "Catálogos y detalle por negocio",
+					description:
+						"Cursos para OTEC y Crecimiento, productos EPP para PLUS, y talleres, programas y teatro aplicado para Crecimiento, con páginas de listado filtrable y de detalle.",
+				},
+				{
+					title: "Contenido compartido vs. específico",
+					description:
+						"UI, layout, navegación cross-tenant y lógica de formularios son comunes; las secciones, los datos y la identidad de cada marca viven en módulos separados.",
+				},
+				{
+					title: "Contacto y cotización con correo transaccional",
+					description:
+						"Formularios validados por marca cuyas solicitudes se centralizan en API routes del dominio del grupo y se envían por correo con plantillas en React Email.",
+				},
+			],
+			metrics: [
+				{
+					value: "4",
+					label: "dominios servidos",
+					caption: "grupocaemp.cl más las tres marcas, desde un mismo proyecto",
+				},
+				{
+					value: "1",
+					label: "base de código",
+					caption: "sin sitios separados que mantener en paralelo",
+				},
+				{
+					value: "3",
+					label: "marcas con identidad propia",
+					caption: "color, logo y dominio diferenciados por línea de negocio",
+				},
+				{
+					value: "1",
+					label: "despliegue único",
+					caption: "un solo build en Vercel atiende los cuatro dominios",
+				},
+			],
+			timeline: [
+				{
+					date: "Noviembre 2025",
+					title: "Kickoff",
+					description:
+						"Arranque del proyecto y definición de la arquitectura multi-dominio para las tres líneas de negocio del grupo.",
+					icon: "kickoff",
+				},
+				{
+					date: "Nov 2025 – Mar 2026",
+					title: "Desarrollo",
+					description:
+						"Implementación de la resolución de tenant por host, el rewrite bidireccional de rutas, el theming por marca sobre un design system compartido y la carga de contenido de cada línea de negocio.",
+					icon: "build",
+				},
+				{
+					date: "Marzo 2026",
+					title: "Lanzamiento en producción",
+					description:
+						"Publicación de los cuatro dominios apuntando a un único despliegue en Vercel.",
+					icon: "launch",
+				},
+				{
+					date: "Hoy",
+					title: "En producción",
+					description:
+						"Los cuatro dominios operan sobre una única base de código, con mejora continua de contenido y secciones de cada marca.",
+					icon: "current",
+					isCurrent: true,
+				},
+			],
+		},
 	},
 	{
 		id: "gis-test",
-		imageUrl: "/img/portfolio/placeholder.jpg",
+		imageUrl: "/img/portfolio/gis.png",
 		title: "Sistema GIS",
 		shortDescription: "Sistema de información geográfica con capas interactivas",
 		fullDescription:
@@ -1580,48 +1712,9 @@ export const portfolioProjects: ProjectData[] = [
 		gradientColor: "#06b6d4",
 	},
 	{
-		id: "pdf-viewer",
-		imageUrl: "/img/portfolio/placeholder.jpg",
-		title: "PDF Viewer",
-		shortDescription: "Visor de PDFs interactivo con efecto de libro",
-		fullDescription:
-			"Visor de documentos PDF con efecto de flip de páginas tipo libro (React Pageflip). Construido con TanStack Start para SSR/SSG, permite la visualización fluida de documentos con controles de navegación intuitivos.",
-		category: "desarrollo-web",
-		technologies: [
-			"TanStack Start",
-			"React",
-			"TypeScript",
-			"Tailwind CSS",
-			"React Pageflip",
-			"Vite",
-		],
-		liveUrl: "https://pdf-viewer-five-puce.vercel.app",
-		gradientColor: "#f43f5e",
-	},
-	{
-		id: "dbj-dashboard",
-		imageUrl: "/img/portfolio/placeholder.jpg",
-		title: "IS Dashboard",
-		shortDescription: "Sistema de gestión documental y asistencia",
-		fullDescription:
-			"Dashboard para gestión de archivos y sistemas de asistencia con autenticación. Incluye tablas interactivas con TanStack Table, drag & drop con DnD Kit y una interfaz limpia con componentes shadcn/ui.",
-		category: "desarrollo-web",
-		technologies: [
-			"Next.js",
-			"TypeScript",
-			"Tailwind CSS",
-			"TanStack Table",
-			"DnD Kit",
-			"shadcn/ui",
-			"date-fns",
-		],
-		liveUrl: "https://documents-dashboard.vercel.app",
-		gradientColor: "#059669",
-	},
-	{
-		id: "correos-chile-mockup",
-		imageUrl: "/img/portfolio/placeholder.jpg",
-		title: "CorreosChile - Seguimiento de Auditorías",
+		id: "auditoria-mockup",
+		imageUrl: "/img/portfolio/auditoria-mockup.png",
+		title: "Dashboard - Seguimiento de Auditorías",
 		shortDescription: "Maqueta de sistema de seguimiento de auditorías para CorreosChile",
 		fullDescription:
 			"Prototipo funcional de un sistema de seguimiento de auditorías para Correos de Chile. Incluye dashboards con gráficos Recharts, formularios con validación, componentes Radix UI y analíticas de Vercel. Maqueta interactiva para validación de requerimientos.",
@@ -1640,56 +1733,20 @@ export const portfolioProjects: ProjectData[] = [
 		gradientColor: "#dc2626",
 	},
 	{
-		id: "dbj-prototipo",
-		imageUrl: "/img/portfolio/placeholder.jpg",
-		title: "DBJ - Landing Page",
-		shortDescription: "Landing page para DBJ",
-		fullDescription:
-			"Versión prototipo del Desafío PEI AIEP. Quiz interactivo con registro de usuarios, 5 preguntas sobre el Plan Estratégico Institucional, sorteo de premios y componentes Lucide Icons. Iteración previa a la versión de producción.",
-		category: "desarrollo-web",
-		technologies: ["Vite", "React", "TypeScript", "Tailwind CSS", "Lucide Icons"],
-		liveUrl: "https://dbj-prototipe.vercel.app",
-		gradientColor: "#06b6d4",
-	},
-	{
-		id: "websil-test",
-		imageUrl: "/img/portfolio/placeholder.jpg",
-		title: "Websil - Test",
-		shortDescription: "Versión de prueba del sitio Websil con Astro",
-		fullDescription:
-			"Versión de testing del sitio web de Websil construida con Astro. Utilizada para validar el diseño y funcionalidad antes del despliegue final.",
-		category: "desarrollo-web",
-		technologies: ["Astro", "React", "TypeScript", "Tailwind CSS"],
-		liveUrl: "https://websil-test.vercel.app",
-		gradientColor: "#2563eb",
-	},
-	{
 		id: "inmobiliaria",
-		imageUrl: "/img/portfolio/placeholder.jpg",
-		title: "Inmobiliaria Ulloa Accardi",
-		shortDescription: "Prototipo de sitio web para proyecto inmobiliario andino",
+		imageUrl: "/img/portfolio/inmobiliaria.png",
+		title: "Prototipo Inmobiliaria",
+		shortDescription: "Prototipo de sitio web para proyecto inmobiliario",
 		fullDescription:
-			"Sitio web prototipo para la inmobiliaria Ulloa Accardi, presentando un proyecto de loteo de terrenos en la cordillera de los Andes con enfoque en biodiversidad. Diseño elegante con tipografías Montserrat e Inter.",
+			"Sitio web prototipo para una inmobiliaria, presentando un proyecto de loteo de terrenos con enfoque en biodiversidad. Diseño elegante con tipografías Montserrat e Inter.",
 		category: "desarrollo-web",
 		technologies: ["Vite", "React", "TypeScript", "Google Fonts"],
 		liveUrl: "https://prototipo-inmobiliaria.vercel.app",
 		gradientColor: "#ec4899",
 	},
 	{
-		id: "asm",
-		imageUrl: "/img/portfolio/placeholder.jpg",
-		title: "ASM - Sistema de Monitoreo Ambiental",
-		shortDescription: "Sistema de monitoreo ambiental con soporte multiidioma",
-		fullDescription:
-			"Plataforma de monitoreo ambiental construida con Astro y soporte de internacionalización (i18n). Permite visualizar y analizar datos ambientales en múltiples idiomas.",
-		category: "desarrollo-web",
-		technologies: ["Astro", "TypeScript", "i18n", "Tailwind CSS"],
-		liveUrl: "https://asm-six.vercel.app/es/",
-		gradientColor: "#059669",
-	},
-	{
 		id: "raspberry-pi-mockup",
-		imageUrl: "/img/portfolio/placeholder.jpg",
+		imageUrl: "/img/portfolio/monitoreo-ambiental.png",
 		title: "Monitoreo Ambiental - Raspberry Pi 5",
 		shortDescription: "Dashboard de monitoreo ambiental IoT con Raspberry Pi 5",
 		fullDescription:
@@ -1701,7 +1758,7 @@ export const portfolioProjects: ProjectData[] = [
 	},
 	{
 		id: "emprende-tu-vida",
-		imageUrl: "/img/portfolio/placeholder.jpg",
+		imageUrl: "/img/portfolio/emprende-tu-vida.png",
 		title: "Emprende tu Vida",
 		shortDescription: "Plataforma educativa de emprendimiento",
 		fullDescription:
@@ -1713,12 +1770,12 @@ export const portfolioProjects: ProjectData[] = [
 	},
 	{
 		id: "report-dashboard",
-		imageUrl: "/img/portfolio/placeholder.jpg",
+		imageUrl: "/img/portfolio/dashboard-reportes.png",
 		title: "Report Dashboard",
 		shortDescription: "Dashboard de reportes con visualización geoespacial",
 		fullDescription:
 			"Panel de control para gestión y visualización de reportes con integración de mapas MapLibre GL, gráficos Recharts y componentes shadcn/ui. Permite analizar datos de manera geoespacial y generar insights visuales.",
-		category: "reportabilidad",
+		category: "desarrollo-web",
 		technologies: ["Next.js", "TypeScript", "Tailwind CSS", "MapLibre GL", "Recharts", "shadcn/ui"],
 		liveUrl: "https://report-dashboard-eta.vercel.app",
 		gradientColor: "#dc2626",

@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils"
 
 const easeOut = [0.16, 1, 0.3, 1] as const
 
-type Industry = "turismo" | "industria" | "consultoria" | "educacion"
+type Industry = "turismo" | "industria" | "consultoria" | "educacion" | "seguridad-capacitacion"
 
 const INDUSTRY_BY_PROJECT: Record<string, Industry> = {
 	"otc-360": "industria",
@@ -21,6 +21,7 @@ const INDUSTRY_BY_PROJECT: Record<string, Industry> = {
 	"dashboard-turismo": "turismo",
 	"bz-consulting": "consultoria",
 	"aiep-pei": "educacion",
+	"caemp": "seguridad-capacitacion",
 }
 
 const AREA_BY_PROJECT: Record<string, string> = {
@@ -32,6 +33,7 @@ const AREA_BY_PROJECT: Record<string, string> = {
 	"dashboard-turismo": "Plataforma operativa",
 	"bz-consulting": "Consultoría",
 	"aiep-pei": "Evento en vivo",
+	"caemp": "Web multi-dominio",
 }
 
 const INDUSTRY_GROUPS: { key: Industry; label: string; description: string }[] = [
@@ -50,14 +52,19 @@ const INDUSTRY_GROUPS: { key: Industry; label: string; description: string }[] =
 	{
 		key: "consultoria",
 		label: "Consultoría y servicios",
-		description:
-			"Soluciones a medida para empresas de consultoría y servicios profesionales.",
+		description: "Soluciones a medida para empresas de consultoría y servicios profesionales.",
 	},
 	{
 		key: "educacion",
 		label: "Educación",
 		description:
 			"Plataformas para instituciones educativas: eventos en vivo, evaluaciones interactivas y experiencias de aprendizaje.",
+	},
+	{
+		key: "seguridad-capacitacion",
+		label: "Seguridad y capacitación",
+		description:
+			"Presencia digital para empresas de seguridad laboral, capacitación certificada y equipos de protección personal.",
 	},
 ]
 
@@ -88,8 +95,7 @@ export function CasosGrid() {
 										{group.label}
 									</span>
 									<h2 className="text-foreground text-2xl font-medium tracking-tight sm:text-3xl">
-										{groupCases.length}{" "}
-										{groupCases.length === 1 ? "proyecto" : "proyectos"}
+										{groupCases.length} {groupCases.length === 1 ? "proyecto" : "proyectos"}
 									</h2>
 								</div>
 								<p className="text-muted-foreground max-w-md text-sm sm:text-right">
@@ -187,7 +193,7 @@ function CaseCard({ project, index }: CaseCardProps) {
 					)}
 				</div>
 
-				<h3 className="text-foreground text-base font-semibold leading-snug sm:text-lg">
+				<h3 className="text-foreground text-base leading-snug font-semibold sm:text-lg">
 					{project.title}
 				</h3>
 				<p className="text-muted-foreground line-clamp-2 text-sm">
@@ -253,7 +259,7 @@ function ConfidentialVisual({ accentColor }: { accentColor: string }) {
 				className={cn(
 					"absolute inset-0 opacity-[0.12] dark:opacity-[0.06]",
 					"[background-image:radial-gradient(circle_at_1px_1px,_currentColor_1px,_transparent_0)]",
-					"[background-size:10px_10px] text-foreground"
+					"text-foreground [background-size:10px_10px]"
 				)}
 				aria-hidden
 			/>
@@ -286,10 +292,7 @@ function MockupDashboard({ accentColor }: { accentColor: string }) {
 						<div className="bg-foreground/15 h-1.5 w-1/3 rounded" />
 						<div className="grid grid-cols-3 gap-1.5">
 							{[0, 1, 2].map((i) => (
-								<div
-									key={i}
-									className="border-border/40 flex flex-col gap-1 rounded border p-1.5"
-								>
+								<div key={i} className="border-border/40 flex flex-col gap-1 rounded border p-1.5">
 									<div
 										className="h-1 w-2/3 rounded"
 										style={{ backgroundColor: `${accentColor}cc` }}

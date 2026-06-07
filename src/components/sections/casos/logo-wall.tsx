@@ -12,6 +12,7 @@ const UNIQUE_CLIENT_LOGOS = [
 	{ name: "Bimakers", src: "/img/logos/bimakers.avif", invertOnDark: false },
 	{ name: "BZ Consulting", src: "/img/logos/bzconsulting.png", invertOnDark: false },
 	{ name: "AIEP", src: "/img/logos/aiep.svg", invertOnDark: false },
+	{ name: "Grupo CAEMP", src: "/img/logos/caemp.png", invertOnDark: false },
 ]
 
 export function CasosLogoWall() {

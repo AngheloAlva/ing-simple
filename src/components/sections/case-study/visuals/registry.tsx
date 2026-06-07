@@ -59,6 +59,7 @@ import { dashboardTurismoVisuals } from "./dashboard-turismo"
 import { cuadrillasVisuals } from "./cuadrillas"
 import { bzConsultingVisuals } from "./bzconsulting"
 import { aiepPeiVisuals } from "./aiep-pei"
+import { caempVisuals } from "./caemp"
 
 const REGISTRY: Record<string, CaseStudyVisuals> = {
 	"otc-360": otcVisuals,
@@ -69,6 +70,7 @@ const REGISTRY: Record<string, CaseStudyVisuals> = {
 	"bimakers": cuadrillasVisuals,
 	"bz-consulting": bzConsultingVisuals,
 	"aiep-pei": aiepPeiVisuals,
+	"caemp": caempVisuals,
 }
 
 export function getCaseStudyVisuals(projectId: string): CaseStudyVisuals | null {
