@@ -29,7 +29,8 @@ export default function PrivacidadPage(): ReactNode {
 
 					<div className="text-foreground/90 space-y-10 text-base leading-relaxed">
 						<p>
-							En <strong>Ingeniería Simple SpA</strong> ("IngSimple", "nosotros") nos tomamos en
+							En <strong>Ingeniería Simple SpA</strong> (&ldquo;IngSimple&rdquo;, &ldquo;nosotros&rdquo;)
+							nos tomamos en
 							serio la privacidad de las personas que se contactan con nosotros. Esta política
 							explica qué datos recolectamos, con qué finalidad, durante cuánto tiempo los
 							conservamos y qué derechos tenés sobre ellos, de acuerdo con la Ley N° 19.628 sobre
