@@ -1095,7 +1095,6 @@ export const portfolioProjects: ProjectData[] = [
 				},
 			],
 		},
-		w,
 	},
 	{
 		id: "aula-girasoles",
