@@ -1095,6 +1095,28 @@ export const portfolioProjects: ProjectData[] = [
 				},
 			],
 		},
+		w,
+	},
+	{
+		id: "aula-girasoles",
+		imageUrl: "/img/portfolio/aula-girasoles.png",
+		title: "Aula — Jardín Girasoles",
+		shortDescription: "Plataforma de gestión para jardines infantiles, 100% en el navegador",
+		fullDescription:
+			"Demo navegable de una plataforma de gestión y comunicación para jardines infantiles. Corre íntegramente en el browser: Postgres vive en WASM vía PGlite con persistencia en IndexedDB, sin servidor. Incluye 9 pantallas con SQL real (joins, agregaciones), soporte multi-jardín, switcher de roles (directora, educadora, apoderado), notificaciones en vivo con pg_notify (LISTEN/NOTIFY) y generación de reportes PDF desde los datos del centro activo.",
+		category: "desarrollo-web",
+		technologies: [
+			"Next.js 16",
+			"React 19",
+			"TypeScript",
+			"Tailwind CSS 4",
+			"shadcn/ui",
+			"PGlite",
+			"react-pdf",
+			"Recharts",
+		],
+		liveUrl: "https://daily-agenda-mockup.vercel.app/login",
+		gradientColor: "#f59e0b",
 	},
 	{
 		id: "dashboard-turismo",
