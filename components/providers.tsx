@@ -1,5 +1,6 @@
 "use client";
 
+import { SmoothScroll } from "@/components/smooth-scroll";
 import { ReducedMotionProvider } from "@/lib/motion";
 import { ThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
@@ -12,7 +13,9 @@ export function Providers({ children }: { children: ReactNode }): ReactNode {
       enableSystem
       disableTransitionOnChange
     >
-      <ReducedMotionProvider>{children}</ReducedMotionProvider>
+      <ReducedMotionProvider>
+        <SmoothScroll>{children}</SmoothScroll>
+      </ReducedMotionProvider>
     </ThemeProvider>
   );
 }

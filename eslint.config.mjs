@@ -25,6 +25,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Throwaway reference folders (not part of the template).
+    "CodropsEmergingImages/**",
+    "codrops-sticky-grid-scroll/**",
   ]),
 ]);
 

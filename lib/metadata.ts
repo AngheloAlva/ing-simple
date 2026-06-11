@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const siteConfig = {
-  name: "Your Site Name",
+  name: "Security",
   description:
-    "A modern, accessible landing page template built with Next.js, Tailwind CSS, and TypeScript.",
+    "A premium, accessible security landing page template built with Next.js, Tailwind CSS, and TypeScript.",
   url: "https://example.com",
   ogImage: "/og-image.png",
   creator: "@yourhandle",
@@ -14,6 +14,8 @@ export const siteConfig = {
     },
   ],
   keywords: [
+    "security",
+    "cybersecurity",
     "landing page",
     "template",
     "Next.js",

@@ -86,6 +86,9 @@ export const defaultTransition = {
   ease: [0.4, 0, 0.2, 1] as const,
 };
 
+/** Soft "ease-out-quint" curve for entrance animations. */
+export const softEase = [0.22, 1, 0.36, 1] as const;
+
 export const springTransition = {
   type: "spring" as const,
   stiffness: 300,
@@ -188,6 +191,39 @@ export function StaggerItem({
   return (
     <motion.div
       variants={prefersReducedMotion ? reducedMotionVariants : fadeInUp}
+      className={className}
+      {...props}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/**
+ * Reveals its children once they scroll into view (animates a single time).
+ * Use for below-the-fold sections where an on-load animation would be unseen.
+ */
+export function InView({
+  variants = fadeInUp,
+  children,
+  className,
+  transition,
+  ...props
+}: MotionDivProps): ReactNode {
+  const prefersReducedMotion = useReducedMotion();
+
+  const activeVariants = prefersReducedMotion ? reducedMotionVariants : variants;
+  const activeTransition = prefersReducedMotion
+    ? { duration: 0.01 }
+    : (transition ?? { duration: 0.7, ease: softEase });
+
+  return (
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-80px" }}
+      variants={activeVariants}
+      transition={activeTransition}
       className={className}
       {...props}
     >
