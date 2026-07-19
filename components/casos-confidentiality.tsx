@@ -47,7 +47,7 @@ export function CasosConfidentiality(): ReactNode {
           </h2>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground sm:text-base">
             Cuando no podemos mostrar la pantalla real, la reconstruimos. Así
-            preservás la confidencialidad de tu operación sin perder la
+            preservas la confidencialidad de tu operación sin perder la
             fidelidad de lo que se construyó.
           </p>
         </div>

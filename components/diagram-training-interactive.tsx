@@ -36,7 +36,7 @@ export function DiagramTrainingInteractive(): ReactNode {
   return (
     <MockFrame
       title="Ruta de capacitación"
-      hint="Pasá el mouse para avanzar la ruta →"
+      hint="Pasa el mouse para avanzar la ruta →"
       anyBuilt={anyBuilt}
       onReset={reset}
       containerRef={containerRef}

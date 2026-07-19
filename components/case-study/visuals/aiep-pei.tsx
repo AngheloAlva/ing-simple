@@ -284,7 +284,7 @@ function LateJoinMockup() {
 				</div>
 			</div>
 			<p className="text-muted-foreground text-[8px] leading-tight">
-				Respondés P1–P4 ahora y te sincronizás con el resto.
+				Respondes P1–P4 ahora y te sincronizas con el resto.
 			</p>
 		</div>
 	)

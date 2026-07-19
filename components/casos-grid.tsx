@@ -211,7 +211,7 @@ export function CasosGrid(): ReactNode {
             </p>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">
               Estamos trabajando en proyectos de esta línea. Muy pronto vas a
-              verlos acá.
+              verlos aquí.
             </p>
           </motion.div>
         )}

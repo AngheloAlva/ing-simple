@@ -35,7 +35,7 @@ export function DiagramAutomationInteractive(): ReactNode {
   return (
     <MockFrame
       title="Flujo automatizado"
-      hint="Pasá el mouse para conectar el flujo →"
+      hint="Pasa el mouse para conectar el flujo →"
       anyBuilt={anyBuilt}
       onReset={reset}
       containerRef={containerRef}

@@ -40,7 +40,7 @@ export function DiagramReportabilityInteractive(): ReactNode {
   return (
     <MockFrame
       title="Dashboard operacional"
-      hint="Pasá el mouse para armar el dashboard →"
+      hint="Pasa el mouse para armar el dashboard →"
       anyBuilt={anyBuilt}
       onReset={reset}
       containerRef={containerRef}

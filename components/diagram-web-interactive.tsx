@@ -30,7 +30,7 @@ export function DiagramWebInteractive(): ReactNode {
 
   return (
     <MockFrame
-      hint="Pasá el mouse para construir el sitio →"
+      hint="Pasa el mouse para construir el sitio →"
       anyBuilt={anyBuilt}
       onReset={reset}
       containerRef={containerRef}

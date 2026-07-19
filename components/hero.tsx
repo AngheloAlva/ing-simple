@@ -73,7 +73,7 @@ export function Hero(): ReactNode {
               Explorar servicios
             </CutButton>
             <CutButton variant="outline" href="/contacto">
-              Contactanos
+              Contáctanos
             </CutButton>
           </motion.div>
         </motion.div>
