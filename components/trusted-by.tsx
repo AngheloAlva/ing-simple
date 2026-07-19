@@ -1,81 +1,83 @@
-import { UsersRound } from "lucide-react";
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react"
+import { LogoLoop, type LogoItem } from "@/components/LogoLoop"
 
-type Brand = { slug: string; name: string; width: number; height: number };
+/** Client logos live in `public/img/logos/` in mixed formats (svg/png/avif/jpeg),
+ *  so each entry carries its full filename. Names are used as the accessible
+ *  label for each logo. */
+type Client = { file: string; name: string }
 
-const BRANDS: Brand[] = [
-  { slug: "stripe_wordmark", name: "Stripe", width: 53, height: 22 },
-  { slug: "dropbox_wordmark", name: "Dropbox", width: 96, height: 26 },
-  { slug: "spotify_wordmark", name: "Spotify", width: 73, height: 22 },
-  { slug: "anthropic_black_wordmark", name: "Anthropic", width: 99, height: 13 },
-  { slug: "vercel_wordmark", name: "Vercel", width: 86, height: 17 },
-];
+const CLIENTS: Client[] = [
+	{ file: "otc.svg", name: "OTC" },
+	{ file: "turismochiletours.svg", name: "TurismoChileTours" },
+	{ file: "falabella.svg", name: "Falabella" },
+	{ file: "lider.png", name: "Líder" },
+	{ file: "clinica-alemana.svg", name: "Clínica Alemana" },
+	{ file: "busanc.avif", name: "Busanc" },
+	{ file: "bimakers.avif", name: "BiMakers" },
+	{ file: "bzconsulting.png", name: "BZ Consulting" },
+	{ file: "caemp.png", name: "Grupo CAEMP" },
+	{ file: "aiep.svg", name: "AIEP" },
+	{ file: "club-hipico.svg", name: "Club Hípico" },
+	{ file: "sgs.svg", name: "SGS" },
+	{ file: "generadora-metropolitana.png", name: "Generadora Metropolitana" },
+	{ file: "geobiota.png", name: "Geobiota" },
+	{ file: "gestion-global.png", name: "Gestión Global" },
+	{ file: "tecno-global.jpeg", name: "Tecno Global" },
+	{ file: "traza.svg", name: "Traza" },
+	{ file: "asicap.png", name: "Asicap" },
+]
+
+const LOGOS: LogoItem[] = CLIENTS.map((client) => ({
+	src: `/img/logos/${client.file}`,
+	alt: client.name,
+	title: client.name,
+}))
 
 function CornerPlus({ className }: { className: string }): ReactNode {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className={`pointer-events-none absolute h-3.5 w-3.5 text-blue-500 ${className}`}
-    >
-      <path
-        d="M12 4v16M4 12h16"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function BrandLogo({ brand }: { brand: Brand }): ReactNode {
-  const mask = `url(/logos/${brand.slug}.svg) center / contain no-repeat`;
-  return (
-    <span
-      role="img"
-      aria-label={brand.name}
-      style={
-        {
-          width: brand.width,
-          height: brand.height,
-          mask,
-          WebkitMask: mask,
-        } as CSSProperties
-      }
-      className="block bg-foreground opacity-60 transition-opacity duration-200 hover:opacity-100"
-    />
-  );
+	return (
+		<svg
+			aria-hidden="true"
+			viewBox="0 0 24 24"
+			className={`pointer-events-none absolute h-3.5 w-3.5 text-blue-500 ${className}`}
+		>
+			<path d="M12 4v16M4 12h16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+		</svg>
+	)
 }
 
 export function TrustedBy(): ReactNode {
-  return (
-    <section className="mx-auto max-w-[1440px] px-5 pb-24 sm:px-8 lg:px-10">
-      <div className="relative border border-border">
-        <CornerPlus className="left-0 top-0 -translate-x-1/2 -translate-y-1/2" />
-        <CornerPlus className="right-0 top-0 translate-x-1/2 -translate-y-1/2" />
-        <CornerPlus className="bottom-0 left-0 -translate-x-1/2 translate-y-1/2" />
-        <CornerPlus className="bottom-0 right-0 translate-x-1/2 translate-y-1/2" />
+	return (
+		<section className="mx-auto max-w-360 px-5 pb-24 sm:px-8 lg:px-10">
+			<div className="border-border relative border">
+				<CornerPlus className="top-0 left-0 -translate-x-1/2 -translate-y-1/2" />
+				<CornerPlus className="top-0 right-0 translate-x-1/2 -translate-y-1/2" />
+				<CornerPlus className="bottom-0 left-0 -translate-x-1/2 translate-y-1/2" />
+				<CornerPlus className="right-0 bottom-0 translate-x-1/2 translate-y-1/2" />
 
-        <div className="flex flex-col items-stretch md:flex-row">
-          {/* Label */}
-          <div className="flex shrink-0 items-center justify-center border-b border-border px-6 py-5 md:border-b-0 md:border-r md:py-7">
-            <span className="text-xs font-medium text-muted-foreground">
-              Protecting industry leaders
-            </span>
+				<div className="flex flex-col items-stretch md:flex-row">
+					<div className="border-border flex shrink-0 items-center justify-center border-b px-6 py-5 md:border-r md:border-b-0 md:py-7">
+						<span className="text-muted-foreground text-xs font-medium">
+							Empresas que confían en nosotros
+						</span>
           </div>
 
-          <div className="flex flex-1 flex-wrap items-center justify-evenly gap-x-8 gap-y-6 px-8 py-7">
-            {BRANDS.map((brand) => (
-              <BrandLogo key={brand.slug} brand={brand} />
-            ))}
-          </div>
-
-          <div className="flex shrink-0 items-center justify-center gap-2 border-t border-border px-6 py-5 text-muted-foreground md:border-l md:border-t-0 md:py-7">
-            <UsersRound className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
-            <span className="text-xs font-medium">And 10,000+ more</span>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+					<div className="min-w-0 flex-1 px-6 py-6 md:py-7">
+						<LogoLoop
+							logos={LOGOS}
+							speed={55}
+							direction="left"
+							logoHeight={40}
+							gap={72}
+							hoverSpeed={0}
+							scaleOnHover
+							fadeOut
+							fadeOutColor="var(--background)"
+							ariaLabel="Empresas que confían en IngSimple"
+							className="[&_img]:opacity-55 [&_img]:brightness-0 [&_img]:grayscale [&_img]:transition-opacity [&_img]:duration-200 dark:[&_img]:invert [&_li:hover_img]:opacity-100"
+						/>
+					</div>
+				</div>
+			</div>
+		</section>
+	)
 }

@@ -49,12 +49,10 @@ export function Hero(): ReactNode {
           <motion.h1
             variants={item}
             transition={itemTransition}
-            className="text-balance font-serif text-4xl font-normal leading-[1.1] tracking-[-0.01em] sm:text-5xl lg:text-[3.5rem]"
+            className="text-balance font-sans text-4xl font-normal leading-[1.1] tracking-tight sm:text-5xl lg:text-[3.5rem]"
           >
-            Secure your Enterprise Stack{" "}
-            <span className="font-sans font-medium tracking-tight">
-              at AI Speed
-            </span>
+            Soluciones Simples para un{" "}
+            <span className="font-medium">Mundo Digital Complejo</span>
           </motion.h1>
 
           <motion.p
@@ -62,9 +60,8 @@ export function Hero(): ReactNode {
             transition={itemTransition}
             className="mt-4 max-w-xl text-balance text-[15px] leading-relaxed text-muted-foreground sm:text-base"
           >
-            Sentinel gives security teams the building blocks for a unified
-            platform that meets complex compliance needs and adapts as fast as
-            threats evolve.
+            Acompañamos a tu organización con tecnología, análisis y
+            capacitación para optimizar procesos y tomar mejores decisiones.
           </motion.p>
 
           <motion.div
@@ -72,11 +69,11 @@ export function Hero(): ReactNode {
             transition={itemTransition}
             className="mt-7 flex items-center justify-center gap-3"
           >
-            <CutButton variant="solid" href="#get-started">
-              Get Started
+            <CutButton variant="solid" href="#servicios">
+              Explorar servicios
             </CutButton>
-            <CutButton variant="outline" href="#talk-to-us">
-              Talk to Us
+            <CutButton variant="outline" href="/contacto">
+              Contactanos
             </CutButton>
           </motion.div>
         </motion.div>

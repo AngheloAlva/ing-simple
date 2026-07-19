@@ -3,64 +3,34 @@
 import { CornerPlus } from "@/components/corner-plus";
 import { useReducedMotion } from "@/lib/motion";
 import { animate, useInView } from "motion/react";
-import {
-  useEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-  type ReactNode,
-} from "react";
-
-type Brand = { slug: string; name: string; width: number; height: number };
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 type Stat = {
   value: number;
   prefix?: string;
   suffix?: string;
   label: string;
-  brand: Brand;
 };
 
+// TODO: métricas placeholder — reemplazar por datos reales de IngSimple.
 const STATS: Stat[] = [
   {
-    value: 97,
+    value: 40,
+    prefix: "+",
+    label: "Proyectos entregados",
+  },
+  {
+    value: 30,
     suffix: "%",
-    label: "Reduction in alert noise",
-    brand: { slug: "stripe_wordmark", name: "Stripe", width: 62, height: 26 },
+    label: "Menos tiempo en tareas manuales",
   },
   {
-    value: 6,
-    label: "Tools replaced by one platform",
-    brand: { slug: "dropbox_wordmark", name: "Dropbox", width: 104, height: 28 },
-  },
-  {
-    value: 10,
-    suffix: "x",
-    label: "Faster mean time to respond",
-    brand: { slug: "vercel_wordmark", name: "Vercel", width: 92, height: 18 },
+    value: 4,
+    label: "Líneas de especialidad",
   },
 ];
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-
-function StatBrand({ brand }: { brand: Brand }): ReactNode {
-  const mask = `url(/logos/${brand.slug}.svg) center / contain no-repeat`;
-  return (
-    <span
-      role="img"
-      aria-label={brand.name}
-      style={
-        {
-          width: brand.width,
-          height: brand.height,
-          mask,
-          WebkitMask: mask,
-        } as CSSProperties
-      }
-      className="block shrink-0 bg-foreground opacity-50"
-    />
-  );
-}
 
 function StatNumber({
   value,
@@ -115,15 +85,15 @@ export function Stats(): ReactNode {
       <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
         <div className="lg:pt-6">
           <h2 className="text-balance font-serif text-3xl font-normal leading-[1.12] tracking-[-0.01em] sm:text-4xl lg:text-[2.75rem]">
-            Real outcomes from teams running{" "}
+            Resultados reales de empresas que trabajan con{" "}
             <span className="font-sans font-semibold tracking-tight">
-              Sentinel
+              IngSimple
             </span>
           </h2>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground sm:text-base">
-            From faster detection to a leaner stack, security leaders cut the
-            noise and consolidate tooling the moment Sentinel goes live — with
-            full governance from day one.
+            Desde reportes más claros hasta procesos automatizados, nuestros
+            clientes simplifican su operación y toman mejores decisiones desde el
+            primer proyecto.
           </p>
         </div>
 
@@ -136,7 +106,7 @@ export function Stats(): ReactNode {
           {STATS.map((stat, i) => (
             <div
               key={stat.label}
-              className={`relative flex items-center justify-between gap-6 px-6 py-9 sm:px-8 sm:py-11 ${
+              className={`relative px-6 py-9 sm:px-8 sm:py-11 ${
                 i > 0 ? "border-t border-border" : ""
               }`}
             >
@@ -159,7 +129,6 @@ export function Stats(): ReactNode {
                   {stat.label}
                 </p>
               </div>
-              <StatBrand brand={stat.brand} />
             </div>
           ))}
         </div>

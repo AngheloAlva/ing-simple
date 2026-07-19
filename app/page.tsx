@@ -3,16 +3,15 @@ import { CaseStudy } from "@/components/case-study";
 import { Hero } from "@/components/hero";
 import { HeroWaves } from "@/components/hero-waves";
 import { Faq } from "@/components/faq";
-import { Features } from "@/components/features";
+import { Services } from "@/components/services";
+import { HowItWorks } from "@/components/how-it-works";
 import { FinalCta } from "@/components/final-cta";
 import { Footer } from "@/components/footer";
 import { Nav } from "@/components/nav";
-import { Pricing } from "@/components/pricing";
 import { Stats } from "@/components/stats";
-import { Testimonials } from "@/components/testimonials";
 import { TrustedBy } from "@/components/trusted-by";
 import { ValueProp } from "@/components/value-prop";
-import { WindowMockup } from "@/components/window-mockup";
+import { HeroShowcase } from "@/components/hero-showcase";
 import { InView, MotionSection } from "@/lib/motion";
 import { createMetadata, siteConfig } from "@/lib/metadata";
 import type { Metadata } from "next";
@@ -24,7 +23,9 @@ export const metadata: Metadata = {
     description: `Welcome to ${siteConfig.name}. ${siteConfig.description}`,
     path: "/",
   }),
-  title: { absolute: "Security Template" },
+  title: {
+    absolute: "IngSimple — Soluciones simples para un mundo digital complejo",
+  },
 };
 
 // Plain literals (built server-side) passed as props to the client motion
@@ -49,7 +50,7 @@ export default function HomePage(): ReactNode {
             transition={{ duration: 0.85, delay: 0.55, ease: SOFT_EASE }}
             className="relative px-5 pb-24 sm:px-8 lg:px-10"
           >
-            <WindowMockup />
+            <HeroShowcase />
           </MotionSection>
         </div>
         <InView>
@@ -57,22 +58,19 @@ export default function HomePage(): ReactNode {
         </InView>
         <CoverageGrid />
         <InView>
-          <Features />
+          <Services />
+        </InView>
+        <InView>
+          <HowItWorks />
         </InView>
         <InView>
           <ValueProp />
-        </InView>
-        <InView>
-          <Testimonials />
         </InView>
         <InView>
           <Stats />
         </InView>
         <InView>
           <CaseStudy />
-        </InView>
-        <InView>
-          <Pricing />
         </InView>
         <InView>
           <Faq />

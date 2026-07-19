@@ -9,12 +9,12 @@ import type { ReactNode } from "react";
 
 const PROBLEMS: { title: string; body: string }[] = [
   {
-    title: "Alert Fatigue",
-    body: "Disconnected tools flood your team with noise, burying the signals that actually matter.",
+    title: "Datos dispersos",
+    body: "La información vive repartida en planillas y sistemas que no se hablan entre sí. Sin una vista clara, las decisiones se toman a ciegas.",
   },
   {
-    title: "The Coverage Gap",
-    body: "Every new vendor adds another blind spot, and stitching them together is a long-term burden.",
+    title: "Procesos manuales",
+    body: "Tareas repetitivas que consumen horas del equipo y deberían estar automatizadas, escalando errores en lugar de resultados.",
   },
 ];
 
@@ -31,22 +31,22 @@ export function ValueProp(): ReactNode {
         >
           <CurtainImage
             src="/value-prop.jpg"
-            alt="Fragmented security tooling"
+            alt="Procesos y datos dispersos en una organización"
             className={`absolute inset-0 h-full w-full ${DUOTONE_BASE}`}
           />
           <DuotoneOverlay />
         </div>
 
         <div className="lg:order-1">
-          <Kicker>The challenge</Kicker>
+          <Kicker>El desafío</Kicker>
           <h2 className="mt-5 max-w-2xl text-balance font-serif text-3xl font-normal leading-[1.12] tracking-[-0.01em] sm:text-4xl lg:text-[2.75rem]">
-            A unified platform gives your team an edge,{" "}
+            Digitalizar tu negocio te da una ventaja real,{" "}
             <span className="font-sans font-semibold tracking-tight">
-              but stitching tools
+              pero cada herramienta suelta
             </span>{" "}
-            together comes with{" "}
+            suma otra{" "}
             <span className="font-sans font-semibold tracking-tight">
-              tradeoffs
+              isla que nadie conecta
             </span>
           </h2>
 

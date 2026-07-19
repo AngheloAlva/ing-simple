@@ -8,13 +8,21 @@ export type Shape =
   | "key"
   | "bolt"
   | "plus"
-  | "bars";
+  | "bars"
+  | "clipboard";
 
 type AsciiIconProps = {
   shape: Shape;
   color?: string;
   cols?: number;
   className?: string;
+  /**
+   * When true, the canvas does not fix its own CSS pixel size. The display size
+   * is left to the parent (via `className`), so the icon can act as a scalable
+   * background. The drawing buffer stays square, so keep the container square
+   * (e.g. `aspect-square`) to avoid glyph distortion.
+   */
+  fill?: boolean;
 };
 
 const PATHS: Record<Shape, { d: string; evenOdd?: boolean }> = {
@@ -45,6 +53,12 @@ const PATHS: Record<Shape, { d: string; evenOdd?: boolean }> = {
   },
   bars: {
     d: "M14 58 H30 V88 H14 Z M42 38 H58 V88 H42 Z M70 18 H86 V88 H70 Z",
+  },
+  clipboard: {
+    d:
+      "M24 20 H76 V94 H24 Z" +
+      "M36 12 H64 V24 H36 Z" +
+      "M45 5 H55 V12 H45 Z",
   },
 };
 
@@ -96,6 +110,7 @@ export function AsciiIcon({
   color = "#2f80ff",
   cols = 22,
   className = "",
+  fill = false,
 }: AsciiIconProps): ReactNode {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -110,8 +125,10 @@ export function AsciiIcon({
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = cols * cell * dpr;
     canvas.height = rows * cell * dpr;
-    canvas.style.width = `${cols * cell}px`;
-    canvas.style.height = `${rows * cell}px`;
+    if (!fill) {
+      canvas.style.width = `${cols * cell}px`;
+      canvas.style.height = `${rows * cell}px`;
+    }
     ctx.scale(dpr, dpr);
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -181,7 +198,7 @@ export function AsciiIcon({
       observer.disconnect();
       stop();
     };
-  }, [shape, color, cols]);
+  }, [shape, color, cols, fill]);
 
   return <canvas ref={canvasRef} aria-hidden className={className} />;
 }

@@ -4,70 +4,15 @@ import { CutButton } from "@/components/cut-button";
 import { Logo } from "@/components/logo";
 import { NavVisual } from "@/components/nav-visual";
 import { softEase, useReducedMotion } from "@/lib/motion";
-import {
-  BadgeCheck,
-  ChevronDown,
-  Cloud,
-  Menu,
-  MonitorSmartphone,
-  Radar,
-  X,
-  type LucideIcon,
-} from "lucide-react";
+import { SERVICES } from "@/lib/services";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-type PlatformItem = {
-  title: string;
-  desc: string;
-  href: string;
-  icon: LucideIcon;
-  featureTitle: string;
-  featureDesc: string;
-};
-
-const PLATFORM_ITEMS: PlatformItem[] = [
-  {
-    title: "Threat Detection",
-    desc: "Real-time monitoring & response",
-    href: "#threat-detection",
-    icon: Radar,
-    featureTitle: "Stop attacks before they spread",
-    featureDesc:
-      "AI-driven detection flags anomalies in milliseconds and triggers automated response.",
-  },
-  {
-    title: "Endpoint Security",
-    desc: "Protect every device, everywhere",
-    href: "#endpoint",
-    icon: MonitorSmartphone,
-    featureTitle: "Every device, fully defended",
-    featureDesc:
-      "Deploy lightweight agents that secure laptops, servers, and mobile endpoints from a single console.",
-  },
-  {
-    title: "Cloud Protection",
-    desc: "Secure your entire infrastructure",
-    href: "#cloud",
-    icon: Cloud,
-    featureTitle: "Security that scales with you",
-    featureDesc:
-      "Continuously monitor workloads, misconfigurations, and identities across AWS, GCP, and Azure.",
-  },
-  {
-    title: "Compliance",
-    desc: "Meet every standard with ease",
-    href: "#compliance",
-    icon: BadgeCheck,
-    featureTitle: "Audit-ready, always",
-    featureDesc:
-      "Automate evidence collection and map controls to SOC 2, ISO 27001, HIPAA, and GDPR.",
-  },
-];
-
 const SIMPLE_LINKS = [
-  { label: "Customers", href: "#customers" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "Casos", href: "/casos" },
+  { label: "Portafolio", href: "/portafolio" },
+  { label: "Sobre nosotros", href: "/sobre-nosotros" },
 ];
 
 function useScrolled(threshold = 8): boolean {
@@ -87,7 +32,7 @@ export function Nav(): ReactNode {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobilePlatformOpen, setMobilePlatformOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const openMenu = (): void => {
@@ -110,7 +55,7 @@ export function Nav(): ReactNode {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const active = PLATFORM_ITEMS[activeItem] ?? PLATFORM_ITEMS[0];
+  const active = SERVICES[activeItem] ?? SERVICES[0];
   if (!active) return null;
 
   return (
@@ -150,7 +95,7 @@ export function Nav(): ReactNode {
                     : "text-foreground/80 hover:text-foreground"
                 }`}
               >
-                Platform
+                Servicios
                 <ChevronDown
                   className={`h-4 w-4 transition-transform duration-300 ${
                     menuOpen ? "rotate-180" : ""
@@ -170,7 +115,7 @@ export function Nav(): ReactNode {
                   >
                     <div className="border-border bg-background flex w-[600px] overflow-hidden rounded-md border shadow-2xl shadow-black/10">
                       <div className="flex w-[268px] flex-col gap-0.5 p-2">
-                        {PLATFORM_ITEMS.map((item, i) => (
+                        {SERVICES.map((item, i) => (
                           <a
                             key={item.href}
                             href={item.href}
@@ -241,17 +186,14 @@ export function Nav(): ReactNode {
         </div>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <CutButton variant="outline" href="#sign-in">
-            Sign In
-          </CutButton>
-          <CutButton variant="solid" href="#get-started">
-            Get Started
+          <CutButton variant="solid" href="/contacto">
+            Contactanos
           </CutButton>
         </div>
 
         <div className="flex items-center gap-2.5 lg:hidden">
-          <CutButton variant="solid" href="#get-started">
-            Get Started
+          <CutButton variant="solid" href="/contacto">
+            Contactanos
           </CutButton>
           <CutButton
             variant="outline"
@@ -281,21 +223,21 @@ export function Nav(): ReactNode {
             <div className="mx-auto max-w-[1440px] px-5 py-4 sm:px-8">
               <button
                 type="button"
-                onClick={() => setMobilePlatformOpen((v) => !v)}
-                aria-expanded={mobilePlatformOpen}
+                onClick={() => setMobileServicesOpen((v) => !v)}
+                aria-expanded={mobileServicesOpen}
                 className="focus-ring flex w-full items-center justify-between rounded-md px-2 py-3 text-sm font-medium"
               >
-                Platform
+                Servicios
                 <ChevronDown
                   className={`h-4 w-4 transition-transform duration-300 ${
-                    mobilePlatformOpen ? "rotate-180" : ""
+                    mobileServicesOpen ? "rotate-180" : ""
                   }`}
                   aria-hidden="true"
                 />
               </button>
 
               <AnimatePresence>
-                {mobilePlatformOpen && (
+                {mobileServicesOpen && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
@@ -304,7 +246,7 @@ export function Nav(): ReactNode {
                     className="overflow-hidden"
                   >
                     <div className="flex flex-col gap-1 pb-2 pl-2">
-                      {PLATFORM_ITEMS.map((item) => (
+                      {SERVICES.map((item) => (
                         <a
                           key={item.href}
                           href={item.href}
@@ -341,8 +283,8 @@ export function Nav(): ReactNode {
               ))}
 
               <div className="border-border/50 mt-3 border-t pt-4">
-                <CutButton variant="outline" href="#sign-in" fullWidth>
-                  Sign In
+                <CutButton variant="solid" href="/contacto" fullWidth>
+                  Contactanos
                 </CutButton>
               </div>
             </div>

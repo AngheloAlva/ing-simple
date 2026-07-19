@@ -10,39 +10,29 @@ type QA = { question: string; answer: string };
 
 const FAQS: QA[] = [
   {
-    question: "What exactly is Sentinel?",
+    question: "¿Qué tipo de empresas atienden?",
     answer:
-      "Sentinel is a unified security platform that collapses detection, response, and governance into one system of record. Every alert, log, and identity event flows into a single correlated graph, so your team acts on real threats instead of stitching together a dozen consoles.",
+      "Trabajamos con empresas de todos los tamaños, desde startups hasta organizaciones consolidadas. Nuestras soluciones se adaptan a las necesidades específicas de cada cliente, sin importar su industria o complejidad.",
   },
   {
-    question: "Which environments and clouds does Sentinel cover?",
+    question: "¿Cuánto tiempo toma implementar una solución?",
     answer:
-      "Sentinel runs across AWS, GCP, Azure, Kubernetes, and on-prem workloads from a single control plane. Agentless connectors cover most sources in minutes, while a lightweight collector handles anything that lives behind your firewall.",
+      "Depende del alcance del proyecto. Un dashboard puede estar listo en 1-2 semanas, mientras que una aplicación Power Platform más compleja puede tomar 4-6 semanas. Siempre entregamos cronogramas claros antes de comenzar.",
   },
   {
-    question: "How does Sentinel handle data security and compliance?",
+    question: "¿Las capacitaciones son presenciales o online?",
     answer:
-      "Data is encrypted in transit and at rest with hardware-backed keys, and every action is written to an immutable audit trail. Sentinel is SOC 2 Type II and ISO 27001 certified, with regional data residency available for GDPR and HIPAA programs.",
+      "Ofrecemos ambas modalidades. Las sesiones online son ideales para equipos distribuidos, mientras que las presenciales funcionan mejor para grupos pequeños en una misma ubicación. Adaptamos el formato a tus necesidades.",
   },
   {
-    question: "How long does it take to deploy?",
+    question: "¿Necesito tener conocimientos técnicos previos?",
     answer:
-      "Most teams are ingesting signal on day one. Connect your first sources through the guided setup, and Sentinel begins correlating events immediately — no professional-services engagement or multi-quarter rollout required.",
+      "No es necesario. Nuestro enfoque es hacer la tecnología accesible. Te acompañamos desde lo básico hasta el dominio de las herramientas, adaptando el ritmo a tu nivel de conocimiento previo.",
   },
   {
-    question: "Will it integrate with our existing stack?",
+    question: "¿Cómo puedo comenzar a trabajar con ustedes?",
     answer:
-      "Yes. Sentinel ships with native integrations for the common SIEMs, identity providers, ticketing tools, and chat platforms, plus a full REST API and webhooks so you can wire automated playbooks into whatever you already run.",
-  },
-  {
-    question: "How is access controlled and audited?",
-    answer:
-      "Granular role-based access, SSO, and SCIM provisioning keep permissions tight, while every login and change is logged and exportable. Automated playbooks can revoke access the instant a risky pattern is detected.",
-  },
-  {
-    question: "Can Sentinel be self-hosted?",
-    answer:
-      "Teams with strict data-control requirements can run Sentinel entirely within their own VPC or private cloud. You keep full ownership of the data plane while still receiving managed updates to the detection engine.",
+      "Agenda una llamada de diagnóstico gratuita. En 30 minutos entenderemos tus necesidades y te propondremos un plan de acción. Sin compromisos, solo una conversación para explorar cómo podemos ayudarte.",
   },
 ];
 
@@ -151,15 +141,15 @@ export function Faq(): ReactNode {
         {/* Left: heading */}
         <div className="border-b border-border py-10 lg:border-b-0 lg:border-r lg:py-16 lg:pr-12">
           <h2 className="text-balance font-serif text-4xl font-normal leading-[1.05] tracking-[-0.01em] sm:text-5xl lg:text-[3.5rem]">
-            Frequently asked questions
+            Preguntas frecuentes
           </h2>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted-foreground sm:text-base">
-            Everything you need to know about deploying Sentinel. Can&apos;t find
-            an answer? Our security team is one message away.
+            Todo lo que necesitas saber para empezar. ¿No encuentras tu
+            respuesta? Escríbenos y te ayudamos.
           </p>
           <div className="mt-8">
-            <CutButton href="#contact" variant="outline">
-              Talk to our team
+            <CutButton href="mailto:contacto@ingsimple.cl" variant="outline">
+              Contáctanos
             </CutButton>
           </div>
         </div>

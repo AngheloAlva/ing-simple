@@ -1,27 +1,26 @@
 import type { Metadata } from "next";
 
 export const siteConfig = {
-  name: "Security",
-  description:
-    "A premium, accessible security landing page template built with Next.js, Tailwind CSS, and TypeScript.",
+  name: "IngSimple",
+  description: "Soluciones simples para un mundo digital complejo",
   url: "https://example.com",
   ogImage: "/og-image.png",
-  creator: "@yourhandle",
+  creator: "@ingsimple",
   authors: [
     {
-      name: "Your Name",
+      name: "IngSimple",
       url: "https://example.com",
     },
   ],
   keywords: [
-    "security",
-    "cybersecurity",
-    "landing page",
-    "template",
-    "Next.js",
-    "React",
-    "Tailwind CSS",
-    "TypeScript",
+    "transformación digital",
+    "dashboards",
+    "analítica de datos",
+    "Power BI",
+    "capacitaciones",
+    "automatización de procesos",
+    "soluciones web",
+    "consultoría",
   ],
 } as const;
 

@@ -15,7 +15,11 @@ function useIsMounted(): boolean {
   );
 }
 
-export function HeroWaves(): ReactNode {
+export function HeroWaves({
+  videoUrl = "/sample-video-2.mp4",
+}: {
+  videoUrl?: string;
+} = {}): ReactNode {
   const mounted = useIsMounted();
   const { resolvedTheme } = useTheme();
   const prefersReducedMotion = useReducedMotion();
@@ -49,7 +53,7 @@ export function HeroWaves(): ReactNode {
         color={color}
         intensity={0}
         elementSize={10}
-        videoUrl="/sample-video-2.mp4"
+        videoUrl={videoUrl}
         noiseScale={25}
         hasCursorInteraction={true}
         className="opacity-50 dark:opacity-60"

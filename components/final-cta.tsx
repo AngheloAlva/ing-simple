@@ -106,7 +106,7 @@ export function FinalCta(): ReactNode {
             transition={itemTransition}
             className="text-balance font-serif text-4xl font-normal leading-[1.08] tracking-[-0.01em] sm:text-5xl lg:text-[3.75rem]"
           >
-            Take control of every threat across your org
+            ¿Listo para transformar tu negocio?
           </motion.h2>
 
           <motion.p
@@ -114,8 +114,9 @@ export function FinalCta(): ReactNode {
             transition={itemTransition}
             className="mt-5 max-w-md text-balance text-[15px] leading-relaxed text-muted-foreground sm:text-base"
           >
-            Unify detection, response, and governance on one platform — and give
-            your team a single line of sight from day one.
+            Agenda una consulta gratuita y descubre cómo podemos ayudarte a
+            optimizar procesos, capacitar a tu equipo y potenciar tu presencia
+            digital.
           </motion.p>
 
           <motion.div
@@ -123,11 +124,8 @@ export function FinalCta(): ReactNode {
             transition={itemTransition}
             className="mt-8 flex flex-wrap items-center justify-center gap-3"
           >
-            <CutButton variant="solid" href="#get-started">
-              Get started
-            </CutButton>
-            <CutButton variant="outline" href="#demo">
-              Book a demo
+            <CutButton variant="solid" href="/contacto">
+              Agenda tu consulta gratis
             </CutButton>
           </motion.div>
         </motion.div>

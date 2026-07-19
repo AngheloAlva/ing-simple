@@ -1,71 +1,40 @@
 import { CutButton } from "@/components/cut-button";
 import { Logo } from "@/components/logo";
-import { Github, Linkedin, Youtube } from "lucide-react";
+import { Linkedin } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 
 type FooterLink = { label: string; href: string };
 
 const COLUMNS: { title: string; links: FooterLink[] }[] = [
   {
-    title: "Product",
+    title: "Servicios",
     links: [
-      { label: "Platform", href: "#platform" },
-      { label: "Pricing", href: "#pricing" },
-      { label: "Customers", href: "#customers" },
-      { label: "Integrations", href: "#integrations" },
+      { label: "Reportabilidad & Analítica", href: "/servicios/reportabilidad" },
+      { label: "Capacitaciones", href: "/servicios/capacitaciones" },
+      { label: "Soluciones Web", href: "/servicios/soluciones-web" },
+      { label: "Power Platform", href: "/servicios/power-platform" },
     ],
   },
   {
-    title: "Resources",
+    title: "Empresa",
     links: [
-      { label: "Documentation", href: "#docs" },
-      { label: "Developers", href: "#developers" },
-      { label: "Changelog", href: "#changelog" },
-      { label: "System Status", href: "#status" },
+      { label: "Sobre nosotros", href: "/sobre-nosotros" },
+      { label: "Portafolio", href: "/portafolio" },
+      { label: "Casos", href: "/casos" },
+      { label: "Contacto", href: "/contacto" },
     ],
   },
   {
     title: "Legal",
-    links: [
-      { label: "Privacy Policy", href: "#privacy" },
-      { label: "Terms & Conditions", href: "#terms" },
-    ],
+    links: [{ label: "Política de privacidad", href: "/privacidad" }],
   },
 ];
 
-function XIcon({ className }: { className?: string }): ReactNode {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      className={className}
-    >
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
-  );
-}
-
 const SOCIALS: { label: string; href: string; icon: ReactNode }[] = [
   {
-    label: "GitHub",
-    href: "#github",
-    icon: <Github className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />,
-  },
-  {
     label: "LinkedIn",
-    href: "#linkedin",
+    href: "https://www.linkedin.com/company/ingenieria-simple/",
     icon: <Linkedin className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />,
-  },
-  {
-    label: "X",
-    href: "#x",
-    icon: <XIcon className="h-3.5 w-3.5" />,
-  },
-  {
-    label: "YouTube",
-    href: "#youtube",
-    icon: <Youtube className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />,
   },
 ];
 
@@ -156,15 +125,21 @@ export function Footer(): ReactNode {
 
             <FooterColumn
               index={3}
-              title="Connect"
-              links={[{ label: "Contact Sales", href: "#contact" }]}
+              title="Contacto"
+              links={[
+                {
+                  label: "contacto@ingsimple.cl",
+                  href: "mailto:contacto@ingsimple.cl",
+                },
+              ]}
             >
-              <div className="mt-6 flex flex-col items-start gap-2.5">
-                <CutButton variant="solid" href="#talk-to-us">
-                  Talk to us
-                </CutButton>
-                <CutButton variant="outline" href="#get-started">
-                  Get started
+              <div className="mt-3 space-y-1 text-sm text-muted-foreground">
+                <p>Santiago, Chile</p>
+                <p>Lun-Vie 9:00 – 18:00 (CLT)</p>
+              </div>
+              <div className="mt-6">
+                <CutButton variant="solid" href="/contacto">
+                  Conversemos
                 </CutButton>
               </div>
             </FooterColumn>
@@ -172,7 +147,8 @@ export function Footer(): ReactNode {
 
           <div className="mt-12 flex flex-col-reverse items-start justify-between gap-6 pt-6 sm:flex-row sm:items-center md:mt-14">
             <p className="text-xs text-muted-foreground">
-              © {new Date().getFullYear()} Sentinel. All rights reserved.
+              © {new Date().getFullYear()} Ingeniería Simple SpA. Todos los
+              derechos reservados.
             </p>
 
             <div className="flex items-center gap-4">
@@ -184,6 +160,8 @@ export function Footer(): ReactNode {
                   <a
                     href={social.href}
                     aria-label={social.label}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="focus-ring text-muted-foreground transition-colors hover:text-foreground"
                   >
                     {social.icon}

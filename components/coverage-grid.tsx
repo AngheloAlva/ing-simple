@@ -16,10 +16,20 @@ import {
 } from "motion/react";
 import { useRef, type CSSProperties, type ReactNode } from "react";
 
-const IMAGES: string[] = Array.from(
-  { length: 12 },
-  (_, i) => `/grid/${String(i + 1).padStart(2, "0")}.webp`,
-);
+const IMAGES: string[] = [
+  "/img/portfolio/is-360.png",
+  "/img/portfolio/dashboard-reportes.png",
+  "/img/portfolio/gis.png",
+  "/img/portfolio/monitoreo-ambiental.png",
+  "/img/portfolio/pipeline-operations-system.png",
+  "/img/portfolio/auditoria-mockup.png",
+  "/img/portfolio/aula-girasoles.png",
+  "/img/portfolio/emprende-tu-vida.png",
+  "/img/portfolio/inmobiliaria.png",
+  "/img/portfolio/algorithm-system-playground.png",
+  "/img/portfolio/game-demo.png",
+  "/img/portfolio/turismochiletours/hero.png",
+];
 
 const COLUMNS: string[][] = [0, 1, 2].map((col) =>
   IMAGES.filter((_, i) => i % 3 === col),
@@ -48,17 +58,17 @@ function DuotoneImage({ src }: { src: string }): ReactNode {
 function Heading(): ReactNode {
   return (
     <h2 className="mx-auto max-w-4xl text-balance font-serif text-4xl font-normal leading-[1.08] tracking-[-0.01em] sm:text-5xl lg:text-[3.5rem]">
-      Total{" "}
-      <span className="font-sans font-semibold tracking-tight">visibility</span>{" "}
-      across your entire infrastructure
+      Del dato a la{" "}
+      <span className="font-sans font-semibold tracking-tight">acción</span>, en
+      proyectos reales
     </h2>
   );
 }
 
 function CallToAction(): ReactNode {
   return (
-    <CutButton href="#platform" className="mt-8">
-      Explore the platform
+    <CutButton href="/portafolio" className="mt-8">
+      Ver portafolio
       <ArrowRight className="h-4 w-4" aria-hidden="true" />
     </CutButton>
   );
