@@ -36,6 +36,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local tooling (skill registry cache, engram memory config)
+.atl/
+.engram/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
