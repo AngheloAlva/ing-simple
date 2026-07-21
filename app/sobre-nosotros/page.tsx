@@ -1,10 +1,10 @@
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import { FinalCta } from "@/components/final-cta";
-import { NosotrosStory } from "@/components/nosotros-story";
-import { NosotrosMissionVision } from "@/components/nosotros-mission-vision";
-import { NosotrosValues } from "@/components/nosotros-values";
-import { NosotrosTeam } from "@/components/nosotros-team";
+import { NosotrosStory } from "@/components/nosotros/story";
+import { NosotrosMissionVision } from "@/components/nosotros/mission-vision";
+import { NosotrosValues } from "@/components/nosotros/values";
+import { NosotrosTeam } from "@/components/nosotros/team";
 import { InView } from "@/lib/motion";
 import { createMetadata } from "@/lib/metadata";
 import type { Metadata } from "next";

@@ -1,5 +1,5 @@
 import { CoverageGrid } from "@/components/coverage-grid";
-import { CaseStudy } from "@/components/case-study";
+import { CaseStudy } from "@/components/case-study-feature";
 import { Hero } from "@/components/hero";
 import { HeroWaves } from "@/components/hero-waves";
 import { Faq } from "@/components/faq";
@@ -10,7 +10,7 @@ import { Footer } from "@/components/footer";
 import { Nav } from "@/components/nav";
 import { Stats } from "@/components/stats";
 import { TrustedBy } from "@/components/trusted-by";
-import { ValueProp } from "@/components/value-prop";
+import { Challenge } from "@/components/challenge";
 import { HeroShowcase } from "@/components/hero-showcase";
 import { InView, MotionSection } from "@/lib/motion";
 import { createMetadata, siteConfig } from "@/lib/metadata";
@@ -64,7 +64,7 @@ export default function HomePage(): ReactNode {
           <HowItWorks />
         </InView>
         <InView>
-          <ValueProp />
+          <Challenge />
         </InView>
         <InView>
           <Stats />

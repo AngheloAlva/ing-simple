@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { LogoLoop, type LogoItem } from "@/components/LogoLoop"
+import { LogoLoop, type LogoItem } from "@/components/logo-loop"
 
 /** Client logos live in `public/img/logos/` in mixed formats (svg/png/avif/jpeg),
  *  so each entry carries its full filename. Names are used as the accessible

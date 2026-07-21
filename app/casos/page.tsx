@@ -1,7 +1,7 @@
-import { CasosConfidentiality } from "@/components/casos-confidentiality";
-import { CasosGrid } from "@/components/casos-grid";
-import { CasosHero } from "@/components/casos-hero";
-import { CasosStats } from "@/components/casos-stats";
+import { CasosConfidentiality } from "@/components/casos/confidentiality";
+import { CasosGrid } from "@/components/casos/grid";
+import { CasosHero } from "@/components/casos/hero";
+import { CasosStats } from "@/components/casos/stats";
 import { FinalCta } from "@/components/final-cta";
 import { Footer } from "@/components/footer";
 import { Nav } from "@/components/nav";

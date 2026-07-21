@@ -1,7 +1,7 @@
-import { DiagramAutomationInteractive } from "@/components/diagram-automation-interactive";
-import { DiagramReportabilityInteractive } from "@/components/diagram-reportability-interactive";
-import { DiagramTrainingInteractive } from "@/components/diagram-training-interactive";
-import { DiagramWebInteractive } from "@/components/diagram-web-interactive";
+import { DiagramAutomationInteractive } from "@/components/diagrams/automation-interactive";
+import { DiagramReportabilityInteractive } from "@/components/diagrams/reportability-interactive";
+import { DiagramTrainingInteractive } from "@/components/diagrams/training-interactive";
+import { DiagramWebInteractive } from "@/components/diagrams/web-interactive";
 import type { ReactNode } from "react";
 
 /**

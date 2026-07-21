@@ -9,10 +9,10 @@ import {
   type KeyboardEvent,
   type ReactNode,
 } from "react";
-import { PanelAutomation } from "@/components/panel-automation";
-import { PanelReportability } from "@/components/panel-reportability";
-import { PanelTraining } from "@/components/panel-training";
-import { PanelWeb } from "@/components/panel-web";
+import { PanelAutomation } from "@/components/panels/automation";
+import { PanelReportability } from "@/components/panels/reportability";
+import { PanelTraining } from "@/components/panels/training";
+import { PanelWeb } from "@/components/panels/web";
 import { WindowFrame } from "@/components/window-frame";
 import { softEase, useReducedMotion } from "@/lib/motion";
 

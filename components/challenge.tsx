@@ -21,7 +21,7 @@ const PROBLEMS: { title: string; body: string }[] = [
 const CUT_CLIP =
   "polygon(28px 0, 100% 0, 100% calc(100% - 28px), calc(100% - 28px) 100%, 0 100%, 0 28px)";
 
-export function ValueProp(): ReactNode {
+export function Challenge(): ReactNode {
   return (
     <section className="mx-auto max-w-[1440px] px-5 pb-24 sm:px-8 sm:pb-32 lg:px-10">
       <div className="grid items-center gap-10 lg:grid-cols-[1.35fr_1fr] lg:gap-12">

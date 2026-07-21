@@ -6,7 +6,7 @@ import {
   MockFrame,
   useAutoBuild,
   useBuild,
-} from "@/components/interactive-diagram";
+} from "@/components/diagrams/interactive-diagram";
 import { useReducedMotion } from "@/lib/motion";
 import { Check, Play, Settings2, X } from "lucide-react";
 import type { ReactNode } from "react";

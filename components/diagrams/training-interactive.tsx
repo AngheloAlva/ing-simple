@@ -7,7 +7,7 @@ import {
   MockFrame,
   useAutoBuild,
   useBuild,
-} from "@/components/interactive-diagram";
+} from "@/components/diagrams/interactive-diagram";
 import { useReducedMotion } from "@/lib/motion";
 import { motion } from "motion/react";
 import { Fragment, type ReactNode } from "react";
