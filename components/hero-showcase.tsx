@@ -29,10 +29,10 @@ type ShowcaseItem = {
 
 const ITEMS: ShowcaseItem[] = [
   {
-    id: "reportability",
-    label: "Dashboard operacional",
-    service: "Reportabilidad",
-    Panel: PanelReportability,
+    id: "automation",
+    label: "Flujo automatizado",
+    service: "Automatizaciones",
+    Panel: PanelAutomation,
   },
   {
     id: "web",
@@ -41,16 +41,16 @@ const ITEMS: ShowcaseItem[] = [
     Panel: PanelWeb,
   },
   {
+    id: "reportability",
+    label: "Dashboard operacional",
+    service: "Reportabilidad",
+    Panel: PanelReportability,
+  },
+  {
     id: "training",
     label: "Ruta de capacitación",
     service: "Capacitaciones",
     Panel: PanelTraining,
-  },
-  {
-    id: "automation",
-    label: "Flujo automatizado",
-    service: "Automatizaciones",
-    Panel: PanelAutomation,
   },
 ];
 

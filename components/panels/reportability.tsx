@@ -1,16 +1,21 @@
 import {
-  ArrowUpRight,
-  CalendarDays,
+  CalendarRange,
   Filter,
-  LayoutGrid,
+  Layers,
+  TrendingUp,
   type LucideIcon,
 } from "lucide-react";
 import type { ReactNode } from "react";
 
 /* --------------------------------------------------------------------------
- * Power BI–style operational report.
- * A slim report header over a canvas of diverse, hand-rolled SVG chart tiles.
- * Brand blue drives every data mark; green is used once (donut "Completadas").
+ * Budget-execution report (Ejecución presupuestaria).
+ * A slim report header over a canvas of hand-rolled SVG chart tiles:
+ *   - monthly budget-vs-actual bars with a dashed projection,
+ *   - a Ppto -> Real waterfall bridge,
+ *   - a per-area deviation table.
+ * Brand blue drives every neutral/adverse mark; brand green is the SINGLE
+ * accent, reserved for "favorable" contributions in the waterfall. No red:
+ * adverse magnitude is carried by blue tints, never a semantic-red semaphore.
  * ------------------------------------------------------------------------ */
 
 type Kpi = {
@@ -24,99 +29,110 @@ type Kpi = {
 
 const KPIS: Kpi[] = [
   {
-    label: "Usuarios activos",
-    value: "80",
-    delta: "+8",
-    spark: "0,15 12,13 24,14 36,9 48,7 60,4",
+    label: "Presupuesto total",
+    value: "48.450",
+    unit: "MM",
+    delta: "100%",
+    spark: "0,16 12,14 24,12 36,9 48,6 60,3",
   },
   {
-    label: "Órdenes / mes",
-    value: "100+",
-    delta: "12%",
-    spark: "0,16 12,12 24,13 36,8 48,9 60,5",
+    label: "Real acumulado",
+    value: "18.765",
+    unit: "MM",
+    delta: "38,7%",
+    spark: "0,17 12,15 24,13 36,11 48,8 60,6",
   },
   {
-    label: "Módulos integrados",
-    value: "20",
-    delta: "+3",
-    spark: "0,14 12,12 24,10 36,10 48,7 60,6",
+    label: "Desviación vs ppto.",
+    value: "−12,4",
+    unit: "%",
+    spark: "0,6 12,8 24,7 36,10 48,11 60,13",
   },
   {
-    label: "En producción",
-    value: "13",
-    unit: "meses",
-    spark: "0,12 12,11 24,9 36,10 48,7 60,5",
+    label: "Proyección anual",
+    value: "46.120",
+    unit: "MM",
+    delta: "95,2%",
+    spark: "0,15 12,13 24,12 36,9 48,7 60,4",
   },
 ];
 
-type Bar = { label: string; value: number };
-
-const ORDERS_BY_AREA: Bar[] = [
-  { label: "Minería", value: 42 },
-  { label: "Planta", value: 34 },
-  { label: "Mant.", value: 28 },
-  { label: "Bodega", value: 20 },
-  { label: "Calidad", value: 15 },
-  { label: "Admin", value: 9 },
+/** Monthly cumulative execution (CLP MM). Real stops at the elapsed month. */
+const MONTHS = [
+  "Ene",
+  "Feb",
+  "Mar",
+  "Abr",
+  "May",
+  "Jun",
+  "Jul",
+  "Ago",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dic",
 ];
+const BUDGET = [8.4, 12.6, 17.1, 21.8, 26.9, 31.2, 34.6, 37.8, 40.9, 43.6, 46.2, 48.45];
+const ACTUAL = [3.6, 7.4, 11.1, 15.0, 18.765];
+/** Projected cumulative real from the last elapsed month to year-end. */
+const PROJECTION = [18.765, 22.4, 26.1, 29.9, 33.6, 37.2, 40.6, 46.12];
 
-type Segment = {
+type WaterfallStep = {
   label: string;
-  value: number;
-  count: string;
-  /** Tailwind stroke class for the donut arc / legend dot background. */
-  stroke: string;
-  dot: string;
+  /** Signed contribution in CLP MM. */
+  delta: number;
+  kind: "anchor" | "favorable" | "adverse";
 };
 
-/** Percentages sum to 100; one green segment ("Completadas") is the accent. */
-const ORDER_STATUS: Segment[] = [
-  {
-    label: "Completadas",
-    value: 48,
-    count: "104",
-    stroke: "stroke-brand-green",
-    dot: "bg-brand-green",
-  },
-  {
-    label: "En proceso",
-    value: 30,
-    count: "65",
-    stroke: "stroke-primary",
-    dot: "bg-primary",
-  },
-  {
-    label: "Pendientes",
-    value: 14,
-    count: "30",
-    stroke: "stroke-primary/55",
-    dot: "bg-primary/55",
-  },
-  {
-    label: "Atrasadas",
-    value: 8,
-    count: "17",
-    stroke: "stroke-primary/25",
-    dot: "bg-primary/25",
-  },
+/** Ppto -> Real bridge (Q2). Anchors are absolute totals; steps are signed. */
+const BRIDGE: WaterfallStep[] = [
+  { label: "Ppto", delta: 12.4, kind: "anchor" },
+  { label: "Oper.", delta: -1.18, kind: "adverse" },
+  { label: "Comer.", delta: 0.34, kind: "favorable" },
+  { label: "Mant.", delta: -0.62, kind: "adverse" },
+  { label: "TI", delta: -0.41, kind: "adverse" },
+  { label: "Otros", delta: 0.09, kind: "favorable" },
+  { label: "Real", delta: 10.62, kind: "anchor" },
+];
+
+type AreaRow = {
+  label: string;
+  budget: number;
+  actual: number;
+  /** Deviation percentage (negative = under budget execution). */
+  dev: number;
+};
+
+const AREAS: AreaRow[] = [
+  { label: "Operaciones", budget: 14850, actual: 6120, dev: -15.8 },
+  { label: "Mantención", budget: 9230, actual: 3420, dev: -10.2 },
+  { label: "Administración", budget: 6800, actual: 2730, dev: -8.6 },
+  { label: "Comercial", budget: 3400, actual: 2100, dev: -5.3 },
+  { label: "TI", budget: 3110, actual: 1020, dev: -12.9 },
+  { label: "Otros", budget: 9910, actual: 3495, dev: -12.3 },
 ];
 
 type Chip = { label: string; icon: LucideIcon };
 
 const FILTERS: Chip[] = [
-  { label: "Área: Todas", icon: LayoutGrid },
-  { label: "Periodo: 30 días", icon: CalendarDays },
+  { label: "Escenario: Base", icon: Layers },
+  { label: "Periodo: YTD", icon: CalendarRange },
 ];
+
+/** Format a CLP MM figure with a thousands separator, no decimals. */
+function fmtMM(n: number): string {
+  return Math.round(n).toLocaleString("es-CL");
+}
 
 function ReportHeader(): ReactNode {
   return (
     <div className="flex shrink-0 flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-border/60 px-4 py-3 sm:px-5">
       <div className="flex min-w-0 flex-col">
         <h2 className="truncate text-sm font-semibold tracking-tight">
-          Reporte operacional
+          Ejecución presupuestaria
         </h2>
         <p className="text-[11px] text-muted-foreground">
-          Últimos 30 días · Actualizado recién
+          Ejercicio 2026 · CLP MM · Actualizado recién
         </p>
       </div>
 
@@ -178,7 +194,7 @@ function KpiTile({ kpi }: { kpi: Kpi }): ReactNode {
     <div className="flex flex-col justify-between rounded-lg border border-border/60 bg-background p-3">
       <span className="text-[11px] text-muted-foreground">{kpi.label}</span>
       <div className="mt-2 flex items-end justify-between gap-2">
-        <span className="text-lg font-semibold leading-none tracking-tight">
+        <span className="text-lg font-semibold leading-none tracking-tight tabular-nums">
           {kpi.value}
           {kpi.unit ? (
             <span className="ml-1 text-[11px] font-medium text-muted-foreground">
@@ -204,8 +220,8 @@ function KpiTile({ kpi }: { kpi: Kpi }): ReactNode {
             />
           </svg>
           {kpi.delta ? (
-            <span className="flex items-center gap-0.5 text-[10px] font-medium text-primary">
-              <ArrowUpRight className="h-2.5 w-2.5" aria-hidden="true" />
+            <span className="flex items-center gap-0.5 text-[10px] font-medium text-primary tabular-nums">
+              <TrendingUp className="h-2.5 w-2.5" aria-hidden="true" />
               {kpi.delta}
             </span>
           ) : null}
@@ -215,167 +231,63 @@ function KpiTile({ kpi }: { kpi: Kpi }): ReactNode {
   );
 }
 
-function BarTile(): ReactNode {
-  const max = Math.max(...ORDERS_BY_AREA.map((b) => b.value));
-  const slot = 50;
-  const barW = 26;
-  const baseline = 120;
-  const maxH = 100;
+/* ---- Monthly budget vs actual, with a dashed projection ---------------- */
 
-  return (
-    <Tile title="Órdenes por área" subtitle="Este mes">
-      <svg
-        viewBox="0 0 300 150"
-        preserveAspectRatio="xMidYMid meet"
-        className="h-full w-full text-primary"
-        aria-hidden="true"
-      >
-        {ORDERS_BY_AREA.map((bar, i) => {
-          const h = (bar.value / max) * maxH;
-          const x = i * slot + (slot - barW) / 2;
-          const y = baseline - h;
-          return (
-            <g key={bar.label}>
-              <rect
-                x={x}
-                y={y}
-                width={barW}
-                height={h}
-                rx="3"
-                fill="currentColor"
-                fillOpacity={i === 0 ? 1 : 0.85 - i * 0.08}
-              />
-              <text
-                x={i * slot + slot / 2}
-                y={y - 5}
-                textAnchor="middle"
-                className="fill-muted-foreground"
-                fontSize="9"
-              >
-                {bar.value}
-              </text>
-              <text
-                x={i * slot + slot / 2}
-                y={140}
-                textAnchor="middle"
-                className="fill-muted-foreground"
-                fontSize="9"
-              >
-                {bar.label}
-              </text>
-            </g>
-          );
-        })}
-      </svg>
-    </Tile>
-  );
-}
+function ExecutionTile(): ReactNode {
+  const W = 600;
+  const H = 200;
+  const pad = { top: 16, bottom: 24, left: 6, right: 6 };
+  const chartH = H - pad.top - pad.bottom;
+  const baseline = H - pad.bottom;
+  const max = Math.max(...BUDGET);
+  const slot = (W - pad.left - pad.right) / MONTHS.length;
+  const barW = 9;
+  const gap = 3;
 
-function DonutTile(): ReactNode {
-  // Precompute the starting offset of each arc so the render stays pure.
-  const arcs = ORDER_STATUS.map((seg, i) => ({
-    seg,
-    offset: -ORDER_STATUS.slice(0, i).reduce((sum, s) => sum + s.value, 0),
-  }));
+  const yOf = (v: number): number => baseline - (v / max) * chartH;
+  const centerOf = (i: number): number => pad.left + i * slot + slot / 2;
 
-  return (
-    <Tile title="Estado de órdenes" subtitle="216 totales" className="lg:row-span-2">
-      <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-3 py-1">
-        <div className="relative aspect-square w-full max-w-[150px]">
-          <svg viewBox="0 0 100 100" className="h-full w-full" aria-hidden="true">
-            <circle
-              cx="50"
-              cy="50"
-              r="38"
-              fill="none"
-              className="stroke-muted"
-              strokeWidth="14"
-            />
-            {arcs.map(({ seg, offset }) => (
-              <circle
-                key={seg.label}
-                cx="50"
-                cy="50"
-                r="38"
-                fill="none"
-                pathLength={100}
-                className={seg.stroke}
-                strokeWidth="14"
-                strokeDasharray={`${seg.value} ${100 - seg.value}`}
-                strokeDashoffset={offset}
-                transform="rotate(-90 50 50)"
-              />
-            ))}
-          </svg>
-          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-lg font-semibold leading-none tracking-tight">
-              216
-            </span>
-            <span className="text-[10px] text-muted-foreground">órdenes</span>
-          </div>
-        </div>
+  const projPoints = PROJECTION.map((v, i) => {
+    // Projection spans the last elapsed month (May, index 4) to Dec (index 11).
+    const monthIndex = ACTUAL.length - 1 + i;
+    return `${centerOf(monthIndex)},${yOf(v)}`;
+  }).join(" ");
 
-        <ul className="grid w-full grid-cols-2 gap-x-3 gap-y-1.5">
-          {ORDER_STATUS.map((seg) => (
-            <li
-              key={seg.label}
-              className="flex items-center gap-1.5 text-[10px] text-muted-foreground"
-            >
-              <span
-                className={`h-2 w-2 shrink-0 rounded-full ${seg.dot}`}
-                aria-hidden="true"
-              />
-              <span className="truncate">{seg.label}</span>
-              <span className="ml-auto font-medium tabular-nums text-foreground">
-                {seg.count}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </Tile>
-  );
-}
-
-function AreaTile(): ReactNode {
   return (
     <Tile
-      title="Actividad operacional"
-      subtitle="Registradas vs. completadas"
+      title="Ejecución mensual"
+      subtitle="Presupuesto vs. real"
       className="lg:col-span-2"
     >
-      <div className="flex shrink-0 items-center gap-4 pb-1">
+      <div className="flex shrink-0 flex-wrap items-center gap-x-4 gap-y-1 pb-1">
         <span className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
           <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-          Registradas
+          Presupuesto
         </span>
         <span className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
-          <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40" />
-          Completadas
+          <span className="h-1.5 w-1.5 rounded-full bg-primary/45" />
+          Real
+        </span>
+        <span className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+          <span className="h-px w-4 border-t border-dashed border-muted-foreground/60" />
+          Proyección
         </span>
       </div>
 
       <div className="relative min-h-0 flex-1 text-primary">
         <svg
-          viewBox="0 0 600 200"
+          viewBox={`0 0 ${W} ${H}`}
           preserveAspectRatio="none"
           className="h-full w-full"
           aria-hidden="true"
         >
-          <defs>
-            <linearGradient id="reportFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="currentColor" stopOpacity="0.16" />
-              <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-
-          {[40, 80, 120, 160].map((y) => (
+          {[0.25, 0.5, 0.75, 1].map((f) => (
             <line
-              key={y}
-              x1="0"
-              y1={y}
-              x2="600"
-              y2={y}
+              key={f}
+              x1={pad.left}
+              y1={baseline - f * chartH}
+              x2={W - pad.right}
+              y2={baseline - f * chartH}
               stroke="currentColor"
               strokeOpacity="0.08"
               strokeWidth="1"
@@ -383,30 +295,56 @@ function AreaTile(): ReactNode {
             />
           ))}
 
-          {/* Completadas (muted, dashed) */}
-          <path
-            d="M0,165 C40,160 50,150 90,150 C140,150 150,128 190,126 C240,124 250,140 300,132 C350,124 360,104 410,100 C460,96 470,108 510,104 C550,101 570,92 600,90"
+          {MONTHS.map((label, i) => {
+            const cx = centerOf(i);
+            const bY = yOf(BUDGET[i] ?? 0);
+            const hasActual = i < ACTUAL.length;
+            const aY = hasActual ? yOf(ACTUAL[i] ?? 0) : baseline;
+            return (
+              <g key={label}>
+                {/* Presupuesto */}
+                <rect
+                  x={cx - barW - gap / 2}
+                  y={bY}
+                  width={barW}
+                  height={baseline - bY}
+                  rx="2"
+                  fill="currentColor"
+                  fillOpacity="0.9"
+                />
+                {/* Real (only elapsed months) */}
+                {hasActual ? (
+                  <rect
+                    x={cx + gap / 2}
+                    y={aY}
+                    width={barW}
+                    height={baseline - aY}
+                    rx="2"
+                    fill="currentColor"
+                    fillOpacity="0.4"
+                  />
+                ) : null}
+                <text
+                  x={cx}
+                  y={H - 8}
+                  textAnchor="middle"
+                  className="fill-muted-foreground"
+                  fontSize="9"
+                >
+                  {label}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* Projection */}
+          <polyline
+            points={projPoints}
             fill="none"
             stroke="currentColor"
-            strokeOpacity="0.28"
+            strokeOpacity="0.55"
             strokeWidth="1.5"
             strokeDasharray="4 4"
-            strokeLinecap="round"
-            vectorEffect="non-scaling-stroke"
-          />
-
-          {/* Registradas area */}
-          <path
-            d="M0,140 C30,130 30,128 60,120 C90,112 100,138 120,135 C150,131 155,98 180,95 C210,92 215,114 240,110 C270,106 280,72 300,70 C330,68 335,88 360,85 C390,82 400,57 420,55 C450,53 455,78 480,75 C510,72 520,42 540,40 C570,38 580,54 600,52 L600,200 L0,200 Z"
-            fill="url(#reportFill)"
-            stroke="none"
-          />
-          {/* Registradas line */}
-          <path
-            d="M0,140 C30,130 30,128 60,120 C90,112 100,138 120,135 C150,131 155,98 180,95 C210,92 215,114 240,110 C270,106 280,72 300,70 C330,68 335,88 360,85 C390,82 400,57 420,55 C450,53 455,78 480,75 C510,72 520,42 540,40 C570,38 580,54 600,52"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
             vectorEffect="non-scaling-stroke"
@@ -417,39 +355,207 @@ function AreaTile(): ReactNode {
   );
 }
 
-function GaugeTile(): ReactNode {
+/* ---- Ppto -> Real waterfall bridge ------------------------------------- */
+
+function WaterfallTile(): ReactNode {
+  // Panoramic viewBox (wider than the tile) so `meet` fits to width and the
+  // bars span the whole card instead of being letterboxed with side gaps.
+  const W = 360;
+  const H = 150;
+  const pad = { top: 18, bottom: 20 };
+  const chartH = H - pad.top - pad.bottom;
+  const baseline = H - pad.bottom;
+
+  // Build cumulative geometry in a single pure pass. Each column carries the
+  // value levels of its bar top/bottom (anchors sit on the zoomed floor) plus
+  // `endLevel`, the running total the dashed connector rides to the next bar.
+  let running = 0;
+  const cols = BRIDGE.map((step) => {
+    const isAnchor = step.kind === "anchor";
+    const prev = running;
+    const end = isAnchor ? step.delta : running + step.delta;
+    running = end;
+    return {
+      ...step,
+      isAnchor,
+      value: step.delta,
+      endLevel: end,
+      topVal: isAnchor ? step.delta : Math.max(prev, end),
+      // null bottom = anchor, drawn down to the floor.
+      botVal: isAnchor ? null : Math.min(prev, end),
+    };
+  });
+
+  // Zoom the y-domain to the band where the action happens: the floor sits well
+  // below the lowest bar so small step deltas gain real, readable height
+  // instead of vanishing against full-height anchors on a from-zero axis.
+  const dataVals = cols.flatMap((c) =>
+    c.isAnchor ? [c.topVal] : [c.topVal, c.botVal as number]
+  );
+  const dataMin = Math.min(...dataVals);
+  const dataMax = Math.max(...dataVals);
+  const spread = dataMax - dataMin || 1;
+  const floor = dataMin - spread * 0.55;
+  const ceil = dataMax + spread * 0.12;
+
+  const slot = W / cols.length;
+  const barW = slot * 0.66;
+  const yOf = (v: number): number =>
+    baseline - ((v - floor) / (ceil - floor)) * chartH;
+  const centerOf = (i: number): number => i * slot + slot / 2;
+
+  const fillFor = (kind: WaterfallStep["kind"]): string => {
+    if (kind === "anchor") return "fill-primary";
+    if (kind === "favorable") return "fill-brand-green";
+    return "fill-primary/40";
+  };
+
   return (
-    <Tile title="Cumplimiento SLA" subtitle="Meta 90%">
-      <div className="flex min-h-0 flex-1 flex-col items-center justify-center">
-        <div className="relative w-full max-w-[180px]">
-          <svg viewBox="0 0 100 58" className="h-full w-full" aria-hidden="true">
-            <path
-              d="M10,50 A40,40 0 0 1 90,50"
-              fill="none"
-              className="stroke-muted"
-              strokeWidth="10"
-              strokeLinecap="round"
-            />
-            <path
-              d="M10,50 A40,40 0 0 1 90,50"
-              fill="none"
-              pathLength={100}
-              className="stroke-primary"
-              strokeWidth="10"
-              strokeLinecap="round"
-              strokeDasharray="92 100"
-            />
-          </svg>
-          <div className="absolute inset-x-0 bottom-0 flex flex-col items-center">
-            <span className="text-2xl font-semibold leading-none tracking-tight">
-              92%
-            </span>
-            <span className="mt-0.5 text-[10px] text-muted-foreground">
-              a tiempo
-            </span>
-          </div>
-        </div>
+    <Tile title="Puente ppto → real" subtitle="Q2 · CLP MM">
+      <div className="flex shrink-0 items-center gap-3 pb-1">
+        <span className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+          <span className="h-1.5 w-1.5 rounded-full bg-brand-green" />
+          Favorable
+        </span>
+        <span className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+          <span className="h-1.5 w-1.5 rounded-full bg-primary/40" />
+          Adverso
+        </span>
       </div>
+
+      <div className="relative min-h-0 flex-1">
+        <svg
+          viewBox={`0 0 ${W} ${H}`}
+          preserveAspectRatio="xMidYMid meet"
+          className="h-full w-full"
+          aria-hidden="true"
+        >
+          {cols.map((c, i) => {
+            const cx = centerOf(i);
+            const yTop = yOf(c.topVal);
+            const yBottom = c.botVal === null ? baseline : yOf(c.botVal);
+            const h = Math.max(yBottom - yTop, 2);
+            const nextX = i < cols.length - 1 ? centerOf(i + 1) : null;
+            const connY = yOf(c.endLevel);
+            return (
+              <g key={c.label}>
+                {/* Connector riding this column's running total to the next bar */}
+                {nextX !== null ? (
+                  <line
+                    x1={cx + barW / 2}
+                    y1={connY}
+                    x2={nextX - barW / 2}
+                    y2={connY}
+                    stroke="currentColor"
+                    className="text-muted-foreground"
+                    strokeOpacity="0.35"
+                    strokeWidth="1"
+                    strokeDasharray="3 3"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                ) : null}
+                <rect
+                  x={cx - barW / 2}
+                  y={yTop}
+                  width={barW}
+                  height={h}
+                  rx="2"
+                  className={fillFor(c.kind)}
+                />
+                <text
+                  x={cx}
+                  y={yTop - 5}
+                  textAnchor="middle"
+                  className={
+                    c.kind === "favorable"
+                      ? "fill-brand-green tabular-nums"
+                      : "fill-muted-foreground tabular-nums"
+                  }
+                  fontSize="9"
+                >
+                  {c.kind === "anchor"
+                    ? fmtMM(c.value * 1000)
+                    : `${c.delta > 0 ? "+" : "−"}${fmtMM(Math.abs(c.delta) * 1000)}`}
+                </text>
+                <text
+                  x={cx}
+                  y={H - 6}
+                  textAnchor="middle"
+                  className="fill-muted-foreground"
+                  fontSize="9"
+                >
+                  {c.label}
+                </text>
+              </g>
+            );
+          })}
+        </svg>
+      </div>
+    </Tile>
+  );
+}
+
+/* ---- Per-area deviation table ------------------------------------------ */
+
+function AreaTableTile(): ReactNode {
+  const maxDev = Math.max(...AREAS.map((a) => Math.abs(a.dev)));
+
+  return (
+    <Tile
+      title="Ejecución por área"
+      subtitle="Real vs. presupuesto"
+      className="lg:col-span-3"
+    >
+      <div className="grid grid-cols-[1.4fr_0.9fr_0.9fr_1.3fr] items-center gap-x-3 pb-1 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+        <span>Área</span>
+        <span className="text-right">Ppto.</span>
+        <span className="text-right">Real</span>
+        <span className="text-right">Desv. %</span>
+      </div>
+
+      <ul className="flex min-h-0 flex-1 flex-col justify-between">
+        {AREAS.map((row) => {
+          const intensity = Math.abs(row.dev) / maxDev; // 0..1
+          const barW = 20 + intensity * 60; // % width of the deviation bar
+          return (
+            <li
+              key={row.label}
+              className="grid grid-cols-[1.4fr_0.9fr_0.9fr_1.3fr] items-center gap-x-3 border-b border-border/40 py-1 text-[11px] last:border-b-0"
+            >
+              <span className="flex items-center gap-1.5 truncate">
+                <span
+                  className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary"
+                  style={{ opacity: 0.35 + intensity * 0.65 }}
+                  aria-hidden="true"
+                />
+                <span className="truncate text-foreground">{row.label}</span>
+              </span>
+              <span className="text-right tabular-nums text-muted-foreground">
+                {fmtMM(row.budget)}
+              </span>
+              <span className="text-right tabular-nums text-foreground">
+                {fmtMM(row.actual)}
+              </span>
+              <span className="flex items-center justify-end gap-2">
+                <span className="relative hidden h-1.5 w-14 overflow-hidden rounded-full bg-muted sm:block">
+                  <span
+                    className="absolute inset-y-0 right-1/2 rounded-full bg-primary/45"
+                    style={{ width: `${barW / 2}%` }}
+                    aria-hidden="true"
+                  />
+                </span>
+                <span className="w-12 text-right font-medium tabular-nums text-foreground">
+                  {row.dev.toLocaleString("es-CL", {
+                    minimumFractionDigits: 1,
+                    maximumFractionDigits: 1,
+                  })}
+                  %
+                </span>
+              </span>
+            </li>
+          );
+        })}
+      </ul>
     </Tile>
   );
 }
@@ -469,10 +575,9 @@ export function PanelReportability(): ReactNode {
 
         {/* Visual canvas */}
         <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 lg:grid-cols-3 lg:grid-rows-2">
-          <AreaTile />
-          <DonutTile />
-          <BarTile />
-          <GaugeTile />
+          <ExecutionTile />
+          <WaterfallTile />
+          <AreaTableTile />
         </div>
       </main>
     </div>
