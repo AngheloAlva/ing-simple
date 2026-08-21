@@ -113,6 +113,7 @@ export function DetailHero({
                 {project.liveUrl ? (
                   <CutButton
                     variant="solid"
+                    icon="arrow"
                     href={project.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"

@@ -291,8 +291,8 @@ const DocumentBody = memo(function DocumentBody({
 				))}
 			</div>
 			<div className="my-1.5 flex gap-2">
-				<div className="h-3 w-[36%] rounded-xs border border-neutral-300/80 dark:border-neutral-700/80" />
-				<div className="rounded-xd h-3 w-[18%] border border-neutral-300/80 dark:border-neutral-700/80" />
+				<div className="h-3 w-[36%] rounded-sm border border-neutral-300/80 dark:border-neutral-700/80" />
+				<div className="rounded-sm h-3 w-[18%] border border-neutral-300/80 dark:border-neutral-700/80" />
 			</div>
 			<div className="flex flex-col gap-1.5">
 				{Array.from({ length: 6 }).map((_, i) => (
@@ -300,7 +300,7 @@ const DocumentBody = memo(function DocumentBody({
 				))}
 			</div>
 			<div className="my-1.5 flex gap-2">
-				<div className="rounded-xd h-3 w-[28%] border border-neutral-300/80 dark:border-neutral-700/80" />
+				<div className="rounded-sm h-3 w-[28%] border border-neutral-300/80 dark:border-neutral-700/80" />
 				<div className="h-2.5 w-[24%] rounded-[1px] bg-neutral-300/60 dark:bg-neutral-700/60" />
 			</div>
 			<div className="flex flex-col gap-1.5">
