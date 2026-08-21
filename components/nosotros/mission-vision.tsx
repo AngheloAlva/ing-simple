@@ -69,7 +69,7 @@ export function NosotrosMissionVision() {
               <Icon
                 aria-hidden="true"
                 strokeWidth={1}
-                className="pointer-events-none absolute -right-5 -top-5 h-36 w-36 text-[#2f80ff]/[0.08]"
+                className="pointer-events-none absolute -right-5 -top-5 h-36 w-36 text-brand-blue/[0.08]"
               />
               <div className="relative">
                 <p className="font-mono text-[11px] font-medium uppercase tracking-[0.1em] text-muted-foreground">

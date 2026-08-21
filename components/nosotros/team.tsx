@@ -83,7 +83,7 @@ export function NosotrosTeam() {
             transition={{ duration: 0.4 }}
             className="inline-flex w-fit items-center gap-2 font-mono text-[11px] font-medium uppercase tracking-[0.1em] text-muted-foreground lg:mt-2"
           >
-            <span className="h-2 w-2 bg-[#2f80ff]" />
+            <span className="h-2 w-2 bg-brand-blue" />
             EQUIPO
           </motion.span>
 
@@ -125,7 +125,7 @@ export function NosotrosTeam() {
                       href={m.linkedin}
                       target={m.linkedin === "#" ? undefined : "_blank"}
                       rel={m.linkedin === "#" ? undefined : "noopener noreferrer"}
-                      className="grid h-9 w-9 place-items-center bg-[#2f80ff] text-white transition-opacity hover:opacity-90"
+                      className="grid h-9 w-9 place-items-center bg-brand-blue text-white transition-opacity hover:opacity-90"
                       aria-label={`LinkedIn de ${m.name}`}
                     >
                       <ArrowUpRight className="h-4 w-4" />

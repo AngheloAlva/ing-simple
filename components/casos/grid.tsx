@@ -161,14 +161,16 @@ export function CasosGrid(): ReactNode {
                 onClick={() => setFilter(key)}
                 className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-medium tracking-wide transition-colors duration-200 focus-ring ${
                   isActive
-                    ? "bg-foreground text-background"
-                    : "border border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground"
+                    ? "bg-primary text-primary-foreground"
+                    : "border border-border text-muted-foreground hover:border-primary/40 hover:text-primary"
                 }`}
               >
                 {label}
                 <span
                   className={`font-mono text-[11px] ${
-                    isActive ? "text-background/70" : "text-muted-foreground/70"
+                    isActive
+                      ? "text-primary-foreground/70"
+                      : "text-muted-foreground/70"
                   }`}
                 >
                   {count}

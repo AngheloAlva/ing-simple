@@ -137,7 +137,7 @@ export const features = {
 
 ### 3. Customize Design Tokens
 
-Edit `app/globals.css` to modify the color palette and dark-mode overrides. The brand accent (`#2f80ff`) is applied directly in components (corner pluses, ticks, highlights) — search for it to retheme the accent.
+Edit `app/globals.css` to modify the color palette and dark-mode overrides. The brand accent lives in the `--brand-blue` token and is consumed through the `brand-blue` utilities (`text-brand-blue`, `bg-brand-blue`, `border-brand-blue`) — change the token to retheme every accent at once.
 
 ### 4. Swap Content & Assets
 
@@ -172,7 +172,7 @@ The template uses CSS custom properties for theming, driven off a `.dark` class 
 - `--muted` / `--muted-foreground` — Subtle backgrounds and secondary text
 - `--accent` / `--accent-foreground` — Neutral action colors
 - `--border` / `--ring` — Borders and focus rings
-- **Brand accent** — `#2f80ff`, applied in-component (plus marks, ticks, highlights)
+- **Brand accent** — `--brand-blue` token, identical in light and dark; consumed via `brand-blue` utilities (plus marks, ticks, highlights, logo)
 
 ### Typography
 - `--font-sans` — Geist Sans (UI)

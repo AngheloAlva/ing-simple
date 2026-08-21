@@ -89,11 +89,11 @@ export function NosotrosValues() {
               <Icon
                 aria-hidden="true"
                 strokeWidth={1}
-                className="pointer-events-none absolute -right-4 -top-4 h-28 w-28 text-[#2f80ff]/[0.06]"
+                className="pointer-events-none absolute -right-4 -top-4 h-28 w-28 text-brand-blue/[0.06]"
               />
               <div className="relative">
                 <Icon
-                  className="h-6 w-6 text-[#2f80ff]"
+                  className="h-6 w-6 text-brand-blue"
                   strokeWidth={1.75}
                   aria-hidden="true"
                 />

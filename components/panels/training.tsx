@@ -2,9 +2,6 @@ import { Award, Check, CircleDot, Lock, Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 import { StaggerContainer, StaggerItem } from "@/lib/motion";
 
-const CUT =
-  "[clip-path:polygon(5px_0,100%_0,100%_calc(100%-5px),calc(100%-5px)_100%,0_100%,0_5px)]";
-
 type ModuleStatus = "completed" | "in-progress" | "locked";
 
 type Course = {
@@ -159,7 +156,7 @@ function LiveFeed(): ReactNode {
 
       {/* Certificate badge — the single green accent for this panel */}
       <div
-        className={`mt-3 flex shrink-0 items-center gap-3 border border-brand-green/30 bg-brand-green/10 p-3 ${CUT}`}
+        className={`mt-3 flex shrink-0 items-center gap-3 border border-brand-green/30 bg-brand-green/10 p-3 rounded-sm`}
       >
         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-green text-brand-green-foreground">
           <Award className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
