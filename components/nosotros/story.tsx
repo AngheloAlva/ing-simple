@@ -104,7 +104,7 @@ export function NosotrosStory() {
               className="mt-5 text-balance font-serif text-4xl font-normal leading-[1.08] tracking-[-0.01em] sm:text-5xl lg:text-[3.5rem]"
             >
               Hacemos lo complejo,{" "}
-              <span className="text-[#2f80ff]">simple</span>
+              <span className="text-brand-blue">simple</span>
             </motion.h1>
             <motion.p
               variants={item}
@@ -115,7 +115,7 @@ export function NosotrosStory() {
               digital con soluciones que realmente funcionan.
             </motion.p>
             <motion.div variants={item} className="mt-8">
-              <CutButton variant="solid" href="/contacto">
+              <CutButton variant="solid" icon="arrow" href="/contacto">
                 Conversemos
               </CutButton>
             </motion.div>

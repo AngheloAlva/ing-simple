@@ -124,7 +124,7 @@ export function FinalCta(): ReactNode {
             transition={itemTransition}
             className="mt-8 flex flex-wrap items-center justify-center gap-3"
           >
-            <CutButton variant="solid" href="/contacto">
+            <CutButton variant="solid" icon="arrow" href="/contacto">
               Agenda tu consulta gratis
             </CutButton>
           </motion.div>

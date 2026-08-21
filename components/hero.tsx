@@ -67,9 +67,9 @@ export function Hero(): ReactNode {
           <motion.div
             variants={item}
             transition={itemTransition}
-            className="mt-7 flex items-center justify-center gap-3"
+            className="mt-8 flex flex-wrap items-center justify-center gap-3"
           >
-            <CutButton variant="solid" href="#servicios">
+            <CutButton variant="solid" icon="arrow" href="#servicios">
               Explorar servicios
             </CutButton>
             <CutButton variant="outline" href="/contacto">

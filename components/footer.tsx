@@ -1,5 +1,6 @@
 import { CutButton } from "@/components/cut-button";
 import { Logo } from "@/components/logo";
+import { SERVICES } from "@/lib/services";
 import { Linkedin } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 
@@ -8,12 +9,10 @@ type FooterLink = { label: string; href: string };
 const COLUMNS: { title: string; links: FooterLink[] }[] = [
   {
     title: "Servicios",
-    links: [
-      { label: "Reportabilidad & Analítica", href: "/servicios/reportabilidad" },
-      { label: "Capacitaciones", href: "/servicios/capacitaciones" },
-      { label: "Soluciones Web", href: "/servicios/soluciones-web" },
-      { label: "Power Platform", href: "/servicios/power-platform" },
-    ],
+    links: SERVICES.map((service) => ({
+      label: service.shortName,
+      href: service.href,
+    })),
   },
   {
     title: "Empresa",
@@ -38,15 +37,14 @@ const SOCIALS: { label: string; href: string; icon: ReactNode }[] = [
   },
 ];
 
-const PANEL_CLIP =
-  "polygon(28px 0, 100% 0, 100% calc(100% - 28px), calc(100% - 28px) 100%, 0 100%, 0 28px)";
+const PANEL_RADIUS = "2px";
 
 function Plus({ className }: { className: string }): ReactNode {
   return (
     <svg
       aria-hidden="true"
       viewBox="0 0 24 24"
-      className={`pointer-events-none absolute z-10 h-3.5 w-3.5 text-[#2f80ff] ${className}`}
+      className={`pointer-events-none absolute z-10 h-3.5 w-3.5 text-brand-blue ${className}`}
     >
       <path
         d="M12 4v16M4 12h16"
@@ -102,7 +100,7 @@ function FooterColumn({
 }
 
 export function Footer(): ReactNode {
-  const clip = { clipPath: PANEL_CLIP } as CSSProperties;
+  const clip = { borderRadius: PANEL_RADIUS } as CSSProperties;
 
   return (
     <footer className="mx-auto max-w-[1440px] px-5 pb-10 sm:px-8 lg:px-10">
@@ -138,7 +136,7 @@ export function Footer(): ReactNode {
                 <p>Lun-Vie 9:00 – 18:00 (CLT)</p>
               </div>
               <div className="mt-6">
-                <CutButton variant="solid" href="/contacto">
+                <CutButton variant="solid" icon="arrow" href="/contacto">
                   Conversemos
                 </CutButton>
               </div>

@@ -74,7 +74,7 @@ export function CasosHero(): ReactNode {
             transition={itemTransition}
             className="mt-8 flex items-center justify-center gap-3"
           >
-            <CutButton variant="solid" href="#casos-grid">
+            <CutButton variant="solid" icon="arrow" href="#casos-grid">
               Ver los casos
             </CutButton>
             <CutButton variant="outline" href="/contacto">

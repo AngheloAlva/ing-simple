@@ -1,85 +1,158 @@
-import type { ComponentPropsWithoutRef, CSSProperties, ReactNode } from "react";
+"use client"
 
-const CUT =
-  "[clip-path:polygon(var(--cut)_0,100%_0,100%_calc(100%-var(--cut)),calc(100%-var(--cut))_100%,0_100%,0_var(--cut))]";
+import { ArrowRightIcon } from "@/components/icons/animated/animated-arrow-right"
+import { SendIcon } from "@/components/icons/animated/animated-send"
+import type { ComponentPropsWithoutRef, ReactNode } from "react"
+import { useCallback, useRef } from "react"
 
-type Variant = "solid" | "outline";
+/**
+ * Site button.
+ *
+ * `solid` and `outline` are the same control in opposite states: solid is
+ * filled blue with a white icon capsule, outline is its inverse. Hovering
+ * either one swaps the two, so a primary and a secondary sitting side by
+ * side trade places rather than both lighting up.
+ *
+ * Corner brackets snap outward on hover, echoing the CornerPlus marks that
+ * frame the section headers.
+ */
+
+const RADIUS = "rounded-sm"
+
+type Variant = "solid" | "outline"
+
+type IconKind = "arrow" | "send"
+
+/** Both animated icons expose the same imperative handle. */
+type IconHandle = { startAnimation: () => void; stopAnimation: () => void }
+
+const ICONS: Record<IconKind, typeof ArrowRightIcon | typeof SendIcon> = {
+	arrow: ArrowRightIcon,
+	send: SendIcon,
+}
 
 type BaseProps = {
-  variant?: Variant;
-  iconOnly?: boolean;
-  fullWidth?: boolean;
-  cut?: number;
-  className?: string;
-  children: ReactNode;
-};
+	variant?: Variant
+	/** Trailing icon tile. `arrow` for anything that navigates, `send` for
+	 *  anything that opens a conversation. Omitted for form submits, which
+	 *  go nowhere, and for plain secondary actions. */
+	icon?: IconKind
+	iconOnly?: boolean
+	fullWidth?: boolean
+	className?: string
+	children: ReactNode
+}
 
 type ButtonProps = BaseProps &
-  Omit<ComponentPropsWithoutRef<"button">, "className" | "children"> & {
-    href?: undefined;
-  };
+	Omit<ComponentPropsWithoutRef<"button">, "className" | "children"> & {
+		href?: undefined
+	}
 
 type AnchorProps = BaseProps &
-  Omit<ComponentPropsWithoutRef<"a">, "className" | "children"> & {
-    href: string;
-  };
+	Omit<ComponentPropsWithoutRef<"a">, "className" | "children"> & {
+		href: string
+	}
 
-type CutButtonProps = ButtonProps | AnchorProps;
+type CutButtonProps = ButtonProps | AnchorProps
 
 const BASE =
-  "inline-flex items-center justify-center gap-2 text-sm font-medium tracking-wide transition-colors duration-200 focus-ring";
+	"group relative inline-flex items-center justify-center gap-2.5 border text-sm font-medium tracking-wide transition-colors duration-300 ease-out focus-ring"
+
+const SURFACE: Record<Variant, string> = {
+	solid:
+		"border-brand-blue bg-brand-blue text-brand-blue-foreground hover:bg-transparent hover:text-brand-blue",
+	outline:
+		"border-brand-blue bg-transparent text-brand-blue hover:bg-brand-blue hover:text-brand-blue-foreground",
+}
+
+const ICON_BOX: Record<Variant, string> = {
+	solid:
+		"bg-brand-blue-foreground text-brand-blue group-hover:bg-brand-blue group-hover:text-brand-blue-foreground",
+	outline:
+		"bg-brand-blue text-brand-blue-foreground group-hover:bg-brand-blue-foreground group-hover:text-brand-blue",
+}
+
+const CORNER =
+	"pointer-events-none absolute h-2.5 w-2.5 border-brand-blue opacity-0 transition-all duration-300 ease-out group-hover:opacity-100"
+
+function Corners(): ReactNode {
+	return (
+		<>
+			<span
+				aria-hidden="true"
+				className={`${CORNER} top-0 left-0 border-t border-l group-hover:-top-1.5 group-hover:-left-1.5`}
+			/>
+			<span
+				aria-hidden="true"
+				className={`${CORNER} top-0 right-0 border-t border-r group-hover:-top-1.5 group-hover:-right-1.5`}
+			/>
+			<span
+				aria-hidden="true"
+				className={`${CORNER} bottom-0 left-0 border-b border-l group-hover:-bottom-1.5 group-hover:-left-1.5`}
+			/>
+			<span
+				aria-hidden="true"
+				className={`${CORNER} right-0 bottom-0 border-r border-b group-hover:-right-1.5 group-hover:-bottom-1.5`}
+			/>
+		</>
+	)
+}
 
 export function CutButton({
-  variant = "solid",
-  iconOnly = false,
-  fullWidth = false,
-  cut = 9,
-  className = "",
-  children,
-  ...props
+	variant = "solid",
+	icon,
+	iconOnly = false,
+	fullWidth = false,
+	className = "",
+	children,
+	...props
 }: CutButtonProps): ReactNode {
-  const cutVar = { "--cut": `${cut}px` } as CSSProperties;
-  const isAnchor = "href" in props && props.href !== undefined;
+	const iconRef = useRef<IconHandle>(null)
 
-  if (variant === "solid") {
-    const size = iconOnly ? "h-10 w-10" : `h-10 px-5 ${fullWidth ? "w-full" : ""}`;
-    const cls = `${BASE} ${size} ${CUT} bg-foreground text-background hover:bg-foreground/85 ${className}`;
+	// The pointer never touches the icon itself, so the button drives it.
+	// Focus mirrors hover to keep the cue for keyboard users.
+	const play = useCallback(() => iconRef.current?.startAnimation(), [])
+	const rest = useCallback(() => iconRef.current?.stopAnimation(), [])
 
-    if (isAnchor) {
-      const { href, ...rest } = props as AnchorProps;
-      return (
-        <a href={href} style={cutVar} className={cls} {...rest}>
-          {children}
-        </a>
-      );
-    }
-    return (
-      <button style={cutVar} className={cls} {...(props as ButtonProps)}>
-        {children}
-      </button>
-    );
-  }
+	const Icon = icon && !iconOnly ? ICONS[icon] : null
 
-  const wrapperSize = iconOnly ? "h-10 w-10" : `h-10 ${fullWidth ? "w-full" : ""}`;
-  const wrapper = `inline-flex ${wrapperSize} bg-border p-px ${CUT} ${className}`;
-  const innerSize = iconOnly ? "w-full" : `px-5 ${fullWidth ? "w-full" : ""}`;
-  const inner = `${BASE} h-full ${innerSize} ${CUT} bg-background text-foreground hover:bg-muted`;
+	const size = iconOnly
+		? "h-10 w-10"
+		: `h-10 ${Icon ? "pl-5 pr-2" : "px-5"} ${fullWidth ? "w-full" : ""}`
 
-  if (isAnchor) {
-    const { href, ...rest } = props as AnchorProps;
-    return (
-      <span style={cutVar} className={wrapper}>
-        <a href={href} style={cutVar} className={inner} {...rest}>
-          {children}
-        </a>
-      </span>
-    );
-  }
-  return (
-    <span style={cutVar} className={wrapper}>
-      <button style={cutVar} className={inner} {...(props as ButtonProps)}>
-        {children}
-      </button>
-    </span>
-  );
+	const cls = `${BASE} ${size} ${RADIUS} ${SURFACE[variant]} ${className}`
+
+	const handlers = Icon
+		? { onMouseEnter: play, onMouseLeave: rest, onFocus: play, onBlur: rest }
+		: {}
+
+	const content = (
+		<>
+			{!iconOnly && <Corners />}
+			{children}
+			{Icon && (
+				<span
+					aria-hidden="true"
+					className={`grid h-6 w-6 shrink-0 place-items-center rounded-sm transition-colors duration-300 ease-out ${ICON_BOX[variant]}`}
+				>
+					<Icon ref={iconRef} size={14} className="flex" />
+				</span>
+			)}
+		</>
+	)
+
+	if ("href" in props && props.href !== undefined) {
+		const { href, ...anchorRest } = props as AnchorProps
+		return (
+			<a href={href} className={cls} {...handlers} {...anchorRest}>
+				{content}
+			</a>
+		)
+	}
+
+	return (
+		<button className={cls} {...handlers} {...(props as ButtonProps)}>
+			{content}
+		</button>
+	)
 }

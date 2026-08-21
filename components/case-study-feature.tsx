@@ -48,7 +48,7 @@ export function CaseStudy(): ReactNode {
   const [active, setActive] = useState(0);
 
   return (
-    <section className="mx-auto max-w-[1440px] px-5 pb-24 sm:px-8 sm:pb-32 lg:px-10">
+    <section className="mx-auto max-w-[1440px] px-5 pb-32 sm:px-8 sm:pb-44 lg:px-10">
       <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         {/* Left column — sticky title + mockup */}
         <motion.div
@@ -58,10 +58,16 @@ export function CaseStudy(): ReactNode {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="lg:sticky lg:top-24"
         >
-          <Kicker>Casos de éxito</Kicker>
+          <div className="flex items-center gap-2">
+            <span
+              className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-green"
+              aria-hidden="true"
+            />
+            <Kicker>Casos de éxito</Kicker>
+          </div>
           <h2 className="mt-5 text-balance font-serif text-3xl font-normal leading-[1.12] tracking-[-0.01em] sm:text-4xl lg:text-[2.75rem]">
             Casos medidos en{" "}
-            <span className="font-sans font-semibold tracking-tight">
+            <span className="font-sans font-semibold tracking-tight text-brand-green-text">
               resultados
             </span>
             , no en pantallas
@@ -70,7 +76,7 @@ export function CaseStudy(): ReactNode {
             Proyectos reales, en producción, cada uno acompañado hasta que el
             equipo del cliente lo hace suyo.
           </p>
-          <div className="relative mt-10 aspect-[4/3] border border-border bg-muted/40 sm:mt-12">
+          <div className="relative mt-10 aspect-[4/3] rounded-sm border border-border bg-muted/40 sm:mt-12">
             <div className="absolute inset-0 overflow-hidden">
               {STUDIES.map((study, index) => (
                 <motion.div
@@ -101,7 +107,7 @@ export function CaseStudy(): ReactNode {
                   {STUDIES[active]?.client}
                 </p>
                 {STUDIES[active]?.metric ? (
-                  <p className="mt-0.5 text-xs text-muted-foreground">
+                  <p className="mt-0.5 text-xs font-medium text-brand-green-text">
                     {STUDIES[active].metric}
                   </p>
                 ) : null}
@@ -125,7 +131,7 @@ export function CaseStudy(): ReactNode {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
-          className="border-t border-border"
+          className="-mx-4 border-t border-border px-4"
         >
           {STUDIES.map((study, index) => (
             <motion.a
@@ -135,11 +141,15 @@ export function CaseStudy(): ReactNode {
               whileHover="hover"
               onMouseEnter={() => setActive(index)}
               onFocus={() => setActive(index)}
-              className="group grid grid-cols-[auto_1fr_auto] items-start gap-5 border-b border-border py-7 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary sm:gap-8 sm:py-9"
+              className={`group -mx-4 grid grid-cols-[auto_1fr_auto] items-start gap-5 border-b border-l-2 border-border px-4 py-7 transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-blue sm:gap-8 sm:py-9 ${
+                active === index
+                  ? "border-l-brand-blue bg-foreground/[0.035]"
+                  : "border-l-transparent"
+              }`}
             >
               <span
                 className={`pt-1.5 font-mono text-xs tracking-[0.12em] transition-colors duration-200 ${
-                  active === index ? "text-foreground" : "text-muted-foreground"
+                  active === index ? "text-brand-blue" : "text-muted-foreground"
                 }`}
               >
                 {study.index}
@@ -155,7 +165,13 @@ export function CaseStudy(): ReactNode {
                   {study.summary}
                 </p>
               </div>
-              <span className="mt-1 grid h-11 w-11 shrink-0 place-items-center border border-border text-foreground transition-colors duration-200 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
+              <span
+                className={`mt-1 grid h-11 w-11 shrink-0 place-items-center rounded-sm border transition-colors duration-200 ${
+                  active === index
+                    ? "border-brand-blue bg-brand-blue text-brand-blue-foreground"
+                    : "border-border text-foreground"
+                }`}
+              >
                 <motion.span
                   variants={{ hover: { x: 2, y: -2 } }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
@@ -168,7 +184,7 @@ export function CaseStudy(): ReactNode {
           ))}
 
           <div className="pt-8">
-            <CutButton href="/casos">
+            <CutButton href="/casos" icon="arrow">
               Ver todos los casos
             </CutButton>
           </div>
