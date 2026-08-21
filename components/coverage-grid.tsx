@@ -7,14 +7,13 @@ import {
   DuotoneOverlay,
 } from "@/components/duotone";
 import { useReducedMotion } from "@/lib/motion";
-import { ArrowRight } from "lucide-react";
 import {
   motion,
   useScroll,
   useTransform,
   type MotionValue,
 } from "motion/react";
-import { useRef, type CSSProperties, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 
 const IMAGES: string[] = [
   "/img/portfolio/is-360.png",
@@ -35,16 +34,18 @@ const COLUMNS: string[][] = [0, 1, 2].map((col) =>
   IMAGES.filter((_, i) => i % 3 === col),
 );
 
-const TILE_CLIP =
-  "polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut))";
+/** Clamped 0→1 ramp across [from, to]; holds 0 before and 1 after. */
+function ramp(value: number, from: number, to: number): number {
+  if (value <= from) return 0;
+  if (value >= to) return 1;
+  return (value - from) / (to - from);
+}
 
-const TILE_STYLE = { "--cut": "12px", clipPath: TILE_CLIP } as CSSProperties;
 
 function DuotoneImage({ src }: { src: string }): ReactNode {
   return (
     <div
-      style={TILE_STYLE}
-      className={`relative aspect-square w-full overflow-hidden ${DUOTONE_CONTAINER}`}
+      className={`relative aspect-square w-full overflow-hidden rounded-sm ${DUOTONE_CONTAINER}`}
     >
       <div
         style={{ backgroundImage: `url(${src})` }}
@@ -67,9 +68,8 @@ function Heading(): ReactNode {
 
 function CallToAction(): ReactNode {
   return (
-    <CutButton href="/portafolio" className="mt-8">
+    <CutButton href="/portafolio" icon="arrow" className="mt-8">
       Ver portafolio
-      <ArrowRight className="h-4 w-4" aria-hidden="true" />
     </CutButton>
   );
 }
@@ -86,9 +86,12 @@ function Tile({ progress, src, colIndex, pos, colLen }: TileProps): ReactNode {
   const fromTop = colIndex % 2 === 0;
   const isCenter = colIndex === 1;
 
+  // Timings are packed into the first ~85% of the pin so the sequence
+  // finishes with room to spare and the final headline-only frame is held
+  // long enough to read.
   const order = fromTop ? colLen - 1 - pos : pos;
-  const start = 0.06 + order * 0.045;
-  const end = start + 0.3;
+  const start = 0.02 + order * 0.04;
+  const end = start + 0.24;
 
   const revealY = useTransform(
     progress,
@@ -99,7 +102,7 @@ function Tile({ progress, src, colIndex, pos, colLen }: TileProps): ReactNode {
 
   const mid = Math.floor(colLen / 2);
   const spreadTo = isCenter ? `${(pos < mid ? -1 : 1) * 42}%` : "0%";
-  const spreadY = useTransform(progress, [0.54, 0.9], ["0%", spreadTo], {
+  const spreadY = useTransform(progress, [0.48, 0.86], ["0%", spreadTo], {
     clamp: true,
   });
 
@@ -116,7 +119,7 @@ function StaticCoverage(): ReactNode {
   return (
     <section
       id="platform"
-      className="mx-auto max-w-[1440px] px-5 py-24 sm:px-8 sm:py-32 lg:px-10"
+      className="mx-auto max-w-[1440px] px-5 py-32 sm:px-8 sm:py-44 lg:px-10"
     >
       <div className="text-center">
         <Heading />
@@ -143,26 +146,32 @@ export function CoverageGrid(): ReactNode {
     offset: ["start start", "end end"],
   });
 
-  const scale = useTransform(scrollYProgress, [0.5, 0.92], [1, 2.05]);
-  const leftX = useTransform(scrollYProgress, [0.52, 0.92], ["0%", "-55%"]);
-  const rightX = useTransform(scrollYProgress, [0.52, 0.92], ["0%", "55%"]);
-  const gridOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.03, 0.86, 0.99],
-    [0, 1, 1, 0],
+  const scale = useTransform(scrollYProgress, [0.46, 0.88], [1, 2.05]);
+  const leftX = useTransform(scrollYProgress, [0.48, 0.88], ["0%", "-55%"]);
+  const rightX = useTransform(scrollYProgress, [0.48, 0.88], ["0%", "55%"]);
+
+  // Opacities use the callback form of `useTransform`. The keyframe-array
+  // form does not hold its end value here once the pin completes, which made
+  // the whole panel snap to invisible in a single scroll step.
+  const gridOpacity = useTransform(scrollYProgress, (p) =>
+    // Fade in over the first sliver, then dissolve gradually while the tiles
+    // zoom past the frame, so only the headline is left at the end.
+    p < 0.02 ? ramp(p, 0, 0.02) : 1 - ramp(p, 0.56, 0.88),
   );
 
-  const titleOpacity = useTransform(scrollYProgress, [0.02, 0.14], [0, 1]);
+  const titleOpacity = useTransform(scrollYProgress, (p) =>
+    ramp(p, 0.02, 0.12),
+  );
   const titleY = useTransform(
     scrollYProgress,
-    [0.02, 0.14, 0.6, 0.82],
+    [0.02, 0.12, 0.56, 0.78],
     [28, 0, 0, -8],
   );
 
-  const bodyOpacity = useTransform(scrollYProgress, [0.6, 0.8], [0, 1]);
-  const bodyY = useTransform(scrollYProgress, [0.6, 0.8], [16, 0]);
+  const bodyOpacity = useTransform(scrollYProgress, (p) => ramp(p, 0.54, 0.72));
+  const bodyY = useTransform(scrollYProgress, [0.54, 0.72], [16, 0]);
   const bodyPointer = useTransform(scrollYProgress, (v) =>
-    v > 0.62 ? "auto" : "none",
+    v > 0.56 ? "auto" : "none",
   );
 
   if (prefersReducedMotion) {
@@ -170,7 +179,7 @@ export function CoverageGrid(): ReactNode {
   }
 
   return (
-    <section id="platform" ref={sectionRef} className="relative h-[420vh]">
+    <section id="platform" ref={sectionRef} className="relative h-[260vh]">
       <div className="sticky top-0 h-screen overflow-hidden bg-background">
         <motion.div
           style={{ opacity: gridOpacity }}
