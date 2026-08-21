@@ -1,72 +1,60 @@
-import { CurtainImage } from "@/components/curtain-image";
-import { Kicker } from "@/components/corner-plus";
-import {
-  DUOTONE_BASE,
-  DUOTONE_CONTAINER,
-  DuotoneOverlay,
-} from "@/components/duotone";
-import type { ReactNode } from "react";
-
-const PROBLEMS: { title: string; body: string }[] = [
-  {
-    title: "Datos dispersos",
-    body: "La información vive repartida en planillas y sistemas que no se hablan entre sí. Sin una vista clara, las decisiones se toman a ciegas.",
-  },
-  {
-    title: "Procesos manuales",
-    body: "Tareas repetitivas que consumen horas del equipo y deberían estar automatizadas, escalando errores en lugar de resultados.",
-  },
-];
-
-const CUT_CLIP =
-  "polygon(28px 0, 100% 0, 100% calc(100% - 28px), calc(100% - 28px) 100%, 0 100%, 0 28px)";
+import { ChallengeCard } from "@/components/challenge-card"
+import { Kicker } from "@/components/corner-plus"
+import { DiagramGenericTool } from "@/components/diagrams/challenge/generic-tool"
+import { DiagramManualSteps } from "@/components/diagrams/challenge/manual-steps"
+import { DiagramScatteredData } from "@/components/diagrams/challenge/scattered-data"
+import { DiagramSinglePoint } from "@/components/diagrams/challenge/single-point"
+import type { ReactNode } from "react"
 
 export function Challenge(): ReactNode {
-  return (
-    <section className="mx-auto max-w-[1440px] px-5 pb-24 sm:px-8 sm:pb-32 lg:px-10">
-      <div className="grid items-center gap-10 lg:grid-cols-[1.35fr_1fr] lg:gap-12">
-        <div
-          className={`relative aspect-[4/3] w-full overflow-hidden sm:aspect-square lg:order-2 ${DUOTONE_CONTAINER}`}
-          style={{ clipPath: CUT_CLIP }}
-        >
-          <CurtainImage
-            src="/value-prop.jpg"
-            alt="Procesos y datos dispersos en una organización"
-            className={`absolute inset-0 h-full w-full ${DUOTONE_BASE}`}
-          />
-          <DuotoneOverlay />
-        </div>
+	return (
+		<section className="mx-auto max-w-360 px-5 pb-32 sm:px-8 sm:pb-44 lg:px-10">
+			<div className="grid gap-4 sm:gap-5 lg:grid-cols-3">
+				{/* Voice tile: deliberately borderless so the four problems read as
+            the only objects in the grid. */}
+				<div className="flex flex-col justify-center lg:col-span-2 lg:pr-10">
+					<div className="flex items-center gap-2">
+						<span className="bg-brand-blue h-1.5 w-1.5 shrink-0 rounded-full" aria-hidden="true" />
+						<Kicker>El desafío</Kicker>
+					</div>
+					<h2 className="mt-5 max-w-2xl font-serif text-3xl leading-[1.12] font-normal tracking-[-0.01em] text-balance sm:text-4xl lg:text-[2.75rem]">
+						Digitalizar tu negocio te da <span className="text-brand-blue">una ventaja real</span>,{" "}
+						<span className="font-sans font-semibold tracking-tight">
+							pero cada herramienta suelta
+						</span>{" "}
+						suma otra{" "}
+						<span className="font-sans font-semibold tracking-tight">isla que nadie conecta</span>
+					</h2>
+				</div>
 
-        <div className="lg:order-1">
-          <Kicker>El desafío</Kicker>
-          <h2 className="mt-5 max-w-2xl text-balance font-serif text-3xl font-normal leading-[1.12] tracking-[-0.01em] sm:text-4xl lg:text-[2.75rem]">
-            Digitalizar tu negocio te da una ventaja real,{" "}
-            <span className="font-sans font-semibold tracking-tight">
-              pero cada herramienta suelta
-            </span>{" "}
-            suma otra{" "}
-            <span className="font-sans font-semibold tracking-tight">
-              isla que nadie conecta
-            </span>
-          </h2>
+				<ChallengeCard
+					title="Datos dispersos"
+					body="La información vive repartida en planillas y sistemas que no se hablan entre sí. Sin una vista clara, las decisiones se toman a ciegas."
+				>
+					<DiagramScatteredData />
+				</ChallengeCard>
 
-          <dl className="mt-10">
-            {PROBLEMS.map((item) => (
-              <div
-                key={item.title}
-                className="border-t border-dotted border-border py-5"
-              >
-                <dt className="text-sm font-semibold tracking-tight">
-                  {item.title}
-                </dt>
-                <dd className="mt-1.5 max-w-md text-sm leading-relaxed text-muted-foreground">
-                  {item.body}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </div>
-    </section>
-  );
+				<ChallengeCard
+					title="Procesos manuales"
+					body="Tareas repetitivas que consumen horas del equipo y deberían estar automatizadas, escalando errores en lugar de resultados."
+				>
+					<DiagramManualSteps />
+				</ChallengeCard>
+
+				<ChallengeCard
+					title="Herramientas que no encajan"
+					body="Pagas por un sistema genérico que cubre una parte y te obliga a adaptar el proceso a la herramienta, en lugar de al revés."
+				>
+					<DiagramGenericTool />
+				</ChallengeCard>
+
+				<ChallengeCard
+					title="Conocimiento que no circula"
+					body="Todo depende de quien sabe cómo se hace. Si esa persona no está, el proceso se frena y nadie puede retomarlo."
+				>
+					<DiagramSinglePoint />
+				</ChallengeCard>
+			</div>
+		</section>
+	)
 }

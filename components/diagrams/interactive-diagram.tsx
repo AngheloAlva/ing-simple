@@ -1,7 +1,7 @@
 "use client";
 
 import { RotateCcw } from "lucide-react";
-import { motion } from "motion/react";
+import { animate, motion } from "motion/react";
 import {
   useCallback,
   useEffect,
@@ -221,6 +221,7 @@ export function Connector({
 export function MockFrame({
   title,
   hint,
+  frameClassName,
   anyBuilt,
   onReset,
   viewportClassName,
@@ -229,7 +230,10 @@ export function MockFrame({
 }: {
   /** When omitted, a neutral URL pill is shown (browser look). */
   title?: string;
-  hint: string;
+  /** Overlay shown until the first zone is built. Omit for diagrams that assemble themselves. */
+  hint?: string;
+  /** Overrides the outer width constraint. */
+  frameClassName?: string;
   anyBuilt: boolean;
   onReset: () => void;
   viewportClassName?: string;
@@ -238,7 +242,10 @@ export function MockFrame({
   children: ReactNode;
 }): ReactNode {
   return (
-    <div ref={containerRef} className="mx-auto w-full max-w-[560px]">
+    <div
+      ref={containerRef}
+      className={`mx-auto w-full ${frameClassName ?? "max-w-[560px]"}`}
+    >
       <div className="overflow-hidden rounded-xl border border-border bg-background shadow-xl shadow-black/[0.06]">
         <div className="flex h-9 items-center gap-1.5 border-b border-border px-3">
           <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
@@ -264,7 +271,7 @@ export function MockFrame({
         </div>
 
         <div className={`relative ${viewportClassName ?? "h-[300px] sm:h-[340px]"}`}>
-          {!anyBuilt ? (
+          {hint && !anyBuilt ? (
             <div className="pointer-events-none absolute inset-x-0 top-3 z-10 flex justify-center">
               <span className="rounded-full border border-border bg-background/90 px-3 py-1 text-[11px] font-medium text-muted-foreground shadow-sm">
                 {hint}
@@ -275,5 +282,52 @@ export function MockFrame({
         </div>
       </div>
     </div>
+  );
+}
+
+/**
+ * Counts from 0 up to `to` once mounted, so revealed figures land instead of
+ * appearing. Renders the final value immediately when motion is reduced.
+ */
+export function CountUp({
+  to,
+  decimals = 0,
+  prefix = "",
+  suffix = "",
+  delay = 0,
+  prefersReduced,
+}: {
+  to: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+  delay?: number;
+  prefersReduced: boolean;
+}): ReactNode {
+  const [value, setValue] = useState(prefersReduced ? to : 0);
+
+  useEffect(() => {
+    if (prefersReduced) {
+      setValue(to);
+      return;
+    }
+    const controls = animate(0, to, {
+      duration: 0.9,
+      delay,
+      ease: EASE,
+      onUpdate: setValue,
+    });
+    return () => controls.stop();
+  }, [to, delay, prefersReduced]);
+
+  return (
+    <>
+      {prefix}
+      {value.toLocaleString("es", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+      })}
+      {suffix}
+    </>
   );
 }
