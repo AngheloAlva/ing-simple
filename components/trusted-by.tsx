@@ -47,8 +47,8 @@ function CornerPlus({ className }: { className: string }): ReactNode {
 
 export function TrustedBy(): ReactNode {
 	return (
-		<section className="mx-auto max-w-360 px-5 pb-24 sm:px-8 lg:px-10">
-			<div className="border-border relative border">
+		<section className="mx-auto max-w-360 px-5 pb-32 sm:px-8 lg:px-10">
+			<div className="border-border relative rounded-sm border">
 				<CornerPlus className="top-0 left-0 -translate-x-1/2 -translate-y-1/2" />
 				<CornerPlus className="top-0 right-0 translate-x-1/2 -translate-y-1/2" />
 				<CornerPlus className="bottom-0 left-0 -translate-x-1/2 translate-y-1/2" />
