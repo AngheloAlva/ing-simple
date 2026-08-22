@@ -658,7 +658,7 @@ function AnalyticsMockup() {
 					<BarChart3 className="h-3 w-3" style={{ color: BRAND }} />
 					<span className="text-foreground text-[10px] font-semibold">Análisis y reportes</span>
 				</div>
-				<span className="text-muted-foreground text-[7px]">2015–2026 · filtros server-side</span>
+				<span className="text-muted-foreground text-[7px]">2023–2026 · filtros server-side</span>
 			</div>
 			<div className="grid grid-cols-5 gap-1">
 				{stats.map((s, i) => {
@@ -792,13 +792,13 @@ function MigrationMockup() {
 			<div className="flex items-center justify-between gap-1.5">
 				<div className="flex items-center gap-1.5">
 					<Database className="h-3 w-3" style={{ color: BRAND }} />
-					<span className="text-foreground text-[10px] font-semibold">Migración 11 años</span>
+					<span className="text-foreground text-[10px] font-semibold">Migración 3 años</span>
 				</div>
 				<span
 					className="rounded-full px-1.5 py-0.5 text-[6px] font-medium text-white"
 					style={{ backgroundColor: BRAND }}
 				>
-					2015–2026
+					2023–2026
 				</span>
 			</div>
 			<div className="flex flex-1 flex-col items-stretch justify-center gap-0.5">
@@ -835,7 +835,7 @@ function MigrationMockup() {
 				style={{ backgroundColor: BRAND }}
 			>
 				<CheckCircle2 className="h-2.5 w-2.5" />
-				<span>11 años importados</span>
+				<span>3 años importados</span>
 			</div>
 		</div>
 	)
@@ -855,7 +855,7 @@ export const dashboardTurismoVisuals: CaseStudyVisuals = {
 		bannerLeft: "Power Apps, Microsoft Lists y Excel dispersos →",
 		bannerRight: "una sola plataforma operativa",
 		footerText:
-			"El dashboard consolida 11 años de data atrapada en Microsoft Lists, planillas Excel y hilos de WhatsApp en una única fuente de verdad sobre Postgres. Auditoría inmutable, calendario visual con validación de conflictos en servidor, permisos granulares por módulo y exportes operativos en PDF y Excel listos para el día a día — no para una demo.",
+			"El dashboard consolida 3 años de data atrapada en Microsoft Lists, planillas Excel y hilos de WhatsApp en una única fuente de verdad sobre Postgres. Auditoría inmutable, calendario visual con validación de conflictos en servidor, permisos granulares por módulo y exportes operativos en PDF y Excel listos para el día a día — no para una demo.",
 		axisColor: BRAND,
 	},
 	architecture: {
@@ -929,7 +929,7 @@ export const dashboardTurismoVisuals: CaseStudyVisuals = {
 				w: 280,
 				h: 80,
 				label: "PostgreSQL (Neon)",
-				sub: "Branching de DB por PR · 11 años de data migrada",
+				sub: "Branching de DB por PR · 3 años de data migrada",
 				tone: "neutral",
 			},
 			{
@@ -979,7 +979,7 @@ export const dashboardTurismoVisuals: CaseStudyVisuals = {
 			span: "narrow",
 			icon: ArrowLeftRight,
 		},
-		"Migración de 11 años de data": {
+		"Migración de 3 años de data": {
 			visual: <MigrationMockup />,
 			span: "narrow",
 			icon: Database,

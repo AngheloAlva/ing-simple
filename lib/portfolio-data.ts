@@ -1,8 +1,5 @@
 export type ProjectCategory =
-	| "desarrollo-web"
-	| "power-platform"
-	| "capacitaciones"
-	| "reportabilidad"
+	"desarrollo-web" | "power-platform" | "capacitaciones" | "reportabilidad"
 
 export interface CaseStudyMetric {
 	value: string
@@ -1215,14 +1212,14 @@ export const portfolioProjects: ProjectData[] = [
 			problem: [
 				"La empresa operaba sobre una Power Apps heredada usada por el jefe y las operadoras: cubría lo básico (ventas, cotizaciones, traspasos, pasajeros y tours), pero con controles nativos pensados para uso casual, no para un equipo que pasa horas adentro. La UX y la búsqueda eran tediosas, las validaciones débiles, sin auditoría real y con poca garantía de integridad referencial.",
 				"Encima, faltaban módulos clave que la operación ya necesitaba pero no tenía dónde vivir: calendario operativo visual, recepciones de pasajeros en hoteles, validaciones estrictas con auditoría, búsqueda y edición rápida con filtros server-side, permisos granulares por módulo y exportes operativos (hoja de ruta diaria, planillas administrativas).",
-				"La Power Apps además era 11 años de operación (2015–2026) viviendo sobre Microsoft Lists, con esquema inconsistente, columnas agregadas y renombradas a lo largo del tiempo, y referencias entre listas mantenidas a mano. Migrar al dominio normalizado de Postgres no era un volcado directo: requería un proceso explícito de extracción, limpieza y normalización por períodos.",
+				"La Power Apps además era 3 años de operación (2023–2026) viviendo sobre Microsoft Lists, con esquema inconsistente, columnas agregadas y renombradas a lo largo del tiempo, y referencias entre listas mantenidas a mano. Migrar al dominio normalizado de Postgres no era un volcado directo: requería un proceso explícito de extracción, limpieza y normalización por períodos.",
 			],
 			solution: [
 				"La nueva web cubre todos los flujos que estaban atrapados (ventas, pasajeros, traspasos, tours, asignación de operadores) con UX moderna, tablas virtualizadas, filtros server-side y formularios reactivos con validación Zod compartida cliente/servidor.",
 				"Suma flujos nuevos que la Power Apps no soportaba: calendario de eventos con drag-and-drop y validación de conflictos en servidor, módulo de recepciones, facturación mayorista, comisiones, flujo de caja con múltiples divisas (CLP/USD), analytics y alertas, aprobaciones y exportes PDF/Excel por día / rango / selección.",
 				"El dashboard es un sistema independiente del sitio corporativo y del ecommerce de San Pedro: repos y bases de datos completamente separados. Es la tercera pieza del ecosistema digital del cliente, pero no comparte modelo de datos con las otras dos — cada plataforma tiene su propia responsabilidad y su propio ciclo de vida.",
 				"Sistema de roles con permisos por módulo (RoleModulePermission). Perfiles típicos: administración (jefe), operadoras (ventas, cotizaciones, recepciones, traspasos, asignación de operadores). Cada rol ve solo los módulos que necesita.",
-				"Migración de 11 años de data en tres pasos: extracción de las Microsoft Lists conectadas a la Power Apps a un Excel maestro, limpieza y normalización en un segundo Excel derivado (tipos, referencias reconciliadas, mapeo a Prisma) e importación por períodos con un script Node que validó cada lote contra el schema Zod compartido.",
+				"Migración de 3 años de data en tres pasos: extracción de las Microsoft Lists conectadas a la Power Apps a un Excel maestro, limpieza y normalización en un segundo Excel derivado (tipos, referencias reconciliadas, mapeo a Prisma) e importación por períodos con un script Node que validó cada lote contra el schema Zod compartido.",
 			],
 			architectureDescription:
 				'Aplicación Next.js 16 con App Router, Server Actions como capa de mutación (sin API routes salvo casos puntuales) y React Server Components por defecto. La organización sigue clean architecture por feature ("screaming architecture"): cada dominio vive en src/project/{domain}/ con su actions/, components/, schemas/, types/ y columns/. 22 módulos de dominio (ventas, eventos, calendario, caja, comisiones, proveedores, etc.) y 40+ modelos Prisma con 49+ migraciones. Persistencia en PostgreSQL (Neon) vía Prisma 7. Auth con Better Auth 1.4 (email + password) y permisos granulares por módulo modelados en DB. Tablas y filtros server-side con TanStack Table + paginación cursor-based; formularios con TanStack Form + Zod; estado de servidor con TanStack Query. Archivos (vouchers, PDFs, imágenes) en Vercel Blob; emails transaccionales con Resend + React Email. Exportes generados client-side con @react-pdf/renderer y ExcelJS, importados dinámicamente para no inflar el bundle. Deploy en Vercel con Turbopack y React Compiler. Workflow de desarrollo con SDD (Spec-Driven Development).',
@@ -1315,9 +1312,9 @@ export const portfolioProjects: ProjectData[] = [
 						"San Pedro funciona como un ecosistema chico de agencias que se pasan pasajeros entre sí. Dos módulos hermanos resuelven el flujo: Recepciones registra pasajeros recibidos de otras agencias y los inserta en el calendario operativo como cualquier venta (voucher, evento, hoja de ruta); Traspasos manda pasajeros propios a otra agencia con voucher de traspaso, dejando rastro de qué venta original derivó qué pasajero a qué destino. Antes vivía en WhatsApp y Excel — ahora es un canal B2B operable con auditoría.",
 				},
 				{
-					title: "Migración de 11 años de data",
+					title: "Migración de 3 años de data",
 					description:
-						"Extracción de Microsoft Lists (2015–2026) a Excel maestro, normalización y reconciliación de referencias en un Excel derivado, y carga por períodos con un script Node que valida cada lote contra el schema Zod compartido con la app antes de tocar producción.",
+						"Extracción de Microsoft Lists (2023–2026) a Excel maestro, normalización y reconciliación de referencias en un Excel derivado, y carga por períodos con un script Node que valida cada lote contra el schema Zod compartido con la app antes de tocar producción.",
 				},
 			],
 			metrics: [
@@ -1327,9 +1324,9 @@ export const portfolioProjects: ProjectData[] = [
 					caption: "Carpetas en src/project/ (ventas, eventos, caja, comisiones, …).",
 				},
 				{
-					value: "11 años",
+					value: "3 años",
 					label: "de data histórica migrada",
-					caption: "2015–2026 desde Microsoft Lists a Postgres por períodos.",
+					caption: "2023–2026 desde Microsoft Lists a Postgres por períodos.",
 				},
 				{
 					value: "~3 min → ~45 s",
@@ -1361,7 +1358,7 @@ export const portfolioProjects: ProjectData[] = [
 					date: "Mayo 2026",
 					title: "UAT con usuarios reales",
 					description:
-						"En curso con el jefe y operadoras. Migración de data histórica 2015–2026 desde Microsoft Lists corriendo en paralelo.",
+						"En curso con el jefe y operadoras. Migración de data histórica 2023–2026 desde Microsoft Lists corriendo en paralelo.",
 					icon: "current",
 					isCurrent: true,
 				},
