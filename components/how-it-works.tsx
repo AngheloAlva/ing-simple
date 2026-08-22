@@ -26,7 +26,11 @@ function StepVisual({ visual: Visual }: { visual: () => ReactNode }): ReactNode 
 	const inView = useInView(ref, { amount: 0.6 })
 
 	return (
-		<div ref={ref} aria-hidden="true" className="border-border bg-background rounded-sm border p-4 lg:h-56">
+		<div
+			ref={ref}
+			aria-hidden="true"
+			className="border-border bg-background rounded-sm border p-4 lg:h-56"
+		>
 			<DiagramActiveProvider active={inView}>
 				<Visual />
 			</DiagramActiveProvider>
@@ -138,7 +142,7 @@ export function HowItWorks(): ReactNode {
 										}}
 										className={`bg-primary absolute top-1/2 hidden h-px origin-left -translate-y-1/2 lg:block ${segment}`}
 									/>
-									<span className="bg-primary text-primary-foreground relative z-10 flex h-10 w-10 items-center justify-center font-mono text-sm font-medium">
+									<span className="bg-primary text-primary-foreground relative z-10 flex h-10 w-10 items-center justify-center rounded-sm font-mono text-sm font-medium">
 										{String(index + 1).padStart(2, "0")}
 									</span>
 								</div>
