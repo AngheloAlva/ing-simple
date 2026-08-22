@@ -62,6 +62,8 @@ export type Service = {
   slug: string;
   /** Lucide icon for the navbar dropdown. */
   icon: LucideIcon;
+  /** Square artwork shown in the navbar dropdown preview panel. */
+  image: string;
   /** Benefit-framed heading, reused as the Features card title. */
   featureTitle: string;
   /** Benefit-framed body, reused as the Features card body. */
@@ -82,6 +84,7 @@ export const SERVICES: Service[] = [
     desc: "Dashboards dinámicos y reportes automatizados para decidir con datos.",
     href: "/servicios/reportabilidad",
     slug: "reportabilidad",
+    image: "/img/about/power-bi.png",
     icon: BarChart3,
     featureTitle: "Decisiones basadas en datos",
     featureDesc:
@@ -189,6 +192,7 @@ export const SERVICES: Service[] = [
     desc: "Formación en Power BI, Power Apps, Excel avanzado y más.",
     href: "/servicios/capacitaciones",
     slug: "capacitaciones",
+    image: "/img/about/training.png",
     icon: GraduationCap,
     featureTitle: "Equipos más autónomos",
     featureDesc:
@@ -296,6 +300,7 @@ export const SERVICES: Service[] = [
     desc: "Sitios y sistemas web modernos, rápidos y a medida.",
     href: "/servicios/soluciones-web",
     slug: "soluciones-web",
+    image: "/img/about/web.png",
     icon: Code,
     featureTitle: "Presencia digital a medida",
     featureDesc:
@@ -410,6 +415,7 @@ export const SERVICES: Service[] = [
     desc: "Automatizamos tareas y flujos repetitivos para ganar eficiencia.",
     href: "/servicios/automatizaciones",
     slug: "automatizaciones",
+    image: "/img/about/power-platform.png",
     icon: Workflow,
     featureTitle: "Menos tareas manuales",
     featureDesc:

@@ -164,7 +164,22 @@ export function Nav(): ReactNode {
 
 											<div className="flex flex-1 flex-col p-3">
 												<div className="relative min-h-0 w-full flex-1 overflow-hidden rounded">
-													<NavVisual />
+													<AnimatePresence mode="wait">
+														<motion.div
+															key={active.slug}
+															initial={{ opacity: 0 }}
+															animate={{ opacity: 1 }}
+															exit={{ opacity: 0 }}
+															transition={{ duration: 0.2 }}
+															className="absolute inset-0"
+														>
+															<NavVisual
+																src={active.image}
+																alt=""
+																tone={activeItem % 2 === 0 ? "blue" : "green"}
+															/>
+														</motion.div>
+													</AnimatePresence>
 												</div>
 												<div className="mt-3 h-16">
 													<AnimatePresence mode="wait">
