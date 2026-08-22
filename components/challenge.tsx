@@ -1,4 +1,6 @@
 import { ChallengeCard } from "@/components/challenge-card"
+import GradientText from "@/components/gradient-text"
+import { brandGradient } from "@/lib/gradient"
 import { Kicker } from "@/components/corner-plus"
 import { DiagramGenericTool } from "@/components/diagrams/challenge/generic-tool"
 import { DiagramManualSteps } from "@/components/diagrams/challenge/manual-steps"
@@ -14,16 +16,18 @@ export function Challenge(): ReactNode {
             the only objects in the grid. */}
 				<div className="flex flex-col justify-center lg:col-span-2 lg:pr-10">
 					<div className="flex items-center gap-2">
-						<span className="bg-brand-blue h-1.5 w-1.5 shrink-0 rounded-full" aria-hidden="true" />
 						<Kicker>El desafío</Kicker>
 					</div>
 					<h2 className="mt-5 max-w-2xl font-serif text-3xl leading-[1.12] font-normal tracking-[-0.01em] text-balance sm:text-4xl lg:text-[2.75rem]">
-						Digitalizar tu negocio te da <span className="text-brand-blue">una ventaja real</span>,{" "}
-						<span className="font-sans font-semibold tracking-tight">
-							pero cada herramienta suelta
-						</span>{" "}
-						suma otra{" "}
-						<span className="font-sans font-semibold tracking-tight">isla que nadie conecta</span>
+						Digitalizar tu negocio te da una ventaja real, pero cada herramienta suelta suma otra{" "}
+						<GradientText
+							inline
+							className="font-sans font-semibold tracking-tight"
+							colors={brandGradient}
+							animationSpeed={6}
+						>
+							isla que nadie conecta
+						</GradientText>
 					</h2>
 				</div>
 
