@@ -1,7 +1,7 @@
 "use client";
 
 import { CutButton } from "@/components/cut-button";
-import { SERVICE_DIAGRAMS } from "@/components/service-diagrams";
+import { SERVICE_VISUALS } from "@/components/service-diagrams";
 import {
   fadeInUp,
   reducedMotionVariants,
@@ -38,7 +38,7 @@ export function ServicioHero(service: ServicioHeroProps): ReactNode {
     ? { duration: 0.01 }
     : { duration: 0.7, ease: softEase };
 
-  const Diagram = SERVICE_DIAGRAMS[service.href];
+  const Diagram = SERVICE_VISUALS[service.href];
 
   return (
     <section className="relative overflow-hidden">

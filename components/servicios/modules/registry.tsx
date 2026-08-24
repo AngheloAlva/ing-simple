@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 
 /**
  * Signature interactive module per service page, keyed by slug — mirrors the
- * `SERVICE_DIAGRAMS` pattern so slugs stay configurable in `lib/services.ts`.
+ * `SERVICE_VISUALS` pattern so slugs stay configurable in `lib/services.ts`.
  */
 export const SERVICE_MODULES: Record<string, () => ReactNode> = {
   reportabilidad: ModuleAnatomy,

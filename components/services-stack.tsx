@@ -1,14 +1,13 @@
 import { CutButton } from "@/components/cut-button"
 import { ScrollStack } from "@/components/scroll-stack"
-import { SERVICE_DIAGRAMS } from "@/components/service-diagrams"
+import { SERVICE_VISUALS } from "@/components/service-diagrams"
 import { SERVICES } from "@/lib/services"
 import { Plus } from "lucide-react"
 import type { CSSProperties, ReactNode } from "react"
 
 /**
- * Experimental variant of the home services section: the same four service
- * lines rendered as a scroll-driven card stack instead of alternating rows.
- * Kept next to `services.tsx` so both layouts can be compared before one wins.
+ * Home services section: the four service lines as a scroll-driven card
+ * stack, each with the interactive artefact of that service.
  */
 
 const CARD_CLIP = "polygon(0 0, calc(100% - 34px) 0, 100% 34px, 100% 100%, 0 100%)"
@@ -43,12 +42,12 @@ export function ServicesStack(): ReactNode {
 				className="-mt-20"
 			>
 				{SERVICES.map((service) => {
-					const Diagram = SERVICE_DIAGRAMS[service.href]
+					const Diagram = SERVICE_VISUALS[service.href]
 
 					return (
 						<article key={service.href} className="bg-border h-full w-full p-px" style={clip}>
 							<div
-								className="bg-muted dark:bg-card grid h-full w-full items-center gap-8 overflow-hidden p-8 sm:p-10 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:gap-14 lg:p-14"
+								className="bg-muted dark:bg-card grid h-full w-full items-center gap-8 overflow-hidden p-8 sm:p-10 lg:grid-cols-[minmax(0,0.76fr)_minmax(0,1.24fr)] lg:gap-14 lg:p-14"
 								style={clip}
 							>
 								<div className="min-w-0">
