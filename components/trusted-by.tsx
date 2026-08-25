@@ -3,8 +3,17 @@ import { LogoLoop, type LogoItem } from "@/components/logo-loop"
 
 /** Client logos live in `public/img/logos/` in mixed formats (svg/png/avif/jpeg),
  *  so each entry carries its full filename. Names are used as the accessible
- *  label for each logo. */
-type Client = { file: string; name: string }
+ *  label for each logo.
+ *
+ *  Every file is a transparent cut-out, but they come in two kinds:
+ *  - single-colour marks (white or coloured): `brightness-0` turns them into a
+ *    clean black silhouette (inverted to white in dark mode);
+ *  - artwork with internal contrast (white text on a dark shape, a white box
+ *    behind the mark): `brightness-0` would flatten them into a blob, so they
+ *    are flagged `blend` and rendered in greyscale with a blend mode instead —
+ *    multiply drops white against the light background, screen drops black in
+ *    dark mode — which keeps their internal contrast. */
+type Client = { file: string; name: string; blend?: boolean }
 
 const CLIENTS: Client[] = [
 	{ file: "otc.svg", name: "OTC" },
@@ -15,7 +24,7 @@ const CLIENTS: Client[] = [
 	{ file: "busanc.avif", name: "Busanc" },
 	{ file: "bimakers.avif", name: "BiMakers" },
 	{ file: "bzconsulting.png", name: "BZ Consulting" },
-	{ file: "caemp.png", name: "Grupo CAEMP" },
+	{ file: "caemp.png", name: "Grupo CAEMP", blend: true },
 	{ file: "aiep.svg", name: "AIEP" },
 	{ file: "udp.png", name: "Universidad Diego Portales" },
 	{ file: "club-hipico.svg", name: "Club Hípico" },
@@ -28,10 +37,23 @@ const CLIENTS: Client[] = [
 	{ file: "asicap.png", name: "Asicap" },
 ]
 
+const SILHOUETTE = "brightness-0 dark:invert"
+const BLEND = "grayscale contrast-125 mix-blend-multiply dark:invert dark:mix-blend-screen"
+
 const LOGOS: LogoItem[] = CLIENTS.map((client) => ({
-	src: `/img/logos/${client.file}`,
-	alt: client.name,
+	node: (
+		<img
+			src={`/img/logos/${client.file}`}
+			alt={client.name}
+			title={client.name}
+			loading="lazy"
+			decoding="async"
+			draggable={false}
+			className={`pointer-events-none block h-[var(--logoloop-logoHeight)] w-auto object-contain ${client.blend ? BLEND : SILHOUETTE}`}
+		/>
+	),
 	title: client.name,
+	ariaLabel: client.name,
 }))
 
 function CornerPlus({ className }: { className: string }): ReactNode {
@@ -74,7 +96,7 @@ export function TrustedBy(): ReactNode {
 							fadeOut
 							fadeOutColor="var(--background)"
 							ariaLabel="Empresas que confían en IngSimple"
-							className="[&_img]:opacity-55 [&_img]:brightness-0 [&_img]:grayscale [&_img]:transition-opacity [&_img]:duration-200 dark:[&_img]:invert [&_li:hover_img]:opacity-100"
+							className="[&_img]:opacity-55 [&_img]:transition-opacity [&_img]:duration-200 [&_li:hover_img]:opacity-100"
 						/>
 					</div>
 				</div>
