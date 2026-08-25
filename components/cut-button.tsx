@@ -55,8 +55,10 @@ type AnchorProps = BaseProps &
 
 type CutButtonProps = ButtonProps | AnchorProps
 
+// `scale` rides in the same transition list as the colours so the press
+// feedback never overrides the hover swap's transition-property.
 const BASE =
-	"group relative inline-flex items-center justify-center gap-2.5 border text-sm font-medium tracking-wide transition-colors duration-300 ease-out focus-ring"
+	"group relative inline-flex items-center justify-center gap-2.5 border text-sm font-medium tracking-wide transition-[color,background-color,border-color,scale] duration-300 ease-out active:scale-[0.96] active:duration-150 focus-ring"
 
 const SURFACE: Record<Variant, string> = {
 	solid:
@@ -72,27 +74,29 @@ const ICON_BOX: Record<Variant, string> = {
 		"bg-brand-blue text-brand-blue-foreground group-hover:bg-brand-blue-foreground group-hover:text-brand-blue",
 }
 
+// Brackets sit on the corners and translate outward on hover, so only
+// opacity and translate ever animate.
 const CORNER =
-	"pointer-events-none absolute h-2.5 w-2.5 border-brand-blue opacity-0 transition-all duration-300 ease-out group-hover:opacity-100"
+	"pointer-events-none absolute h-2.5 w-2.5 border-brand-blue opacity-0 transition-[opacity,translate] duration-300 ease-out group-hover:opacity-100"
 
 function Corners(): ReactNode {
 	return (
 		<>
 			<span
 				aria-hidden="true"
-				className={`${CORNER} top-0 left-0 border-t border-l group-hover:-top-1.5 group-hover:-left-1.5`}
+				className={`${CORNER} top-0 left-0 border-t border-l group-hover:-translate-x-1.5 group-hover:-translate-y-1.5`}
 			/>
 			<span
 				aria-hidden="true"
-				className={`${CORNER} top-0 right-0 border-t border-r group-hover:-top-1.5 group-hover:-right-1.5`}
+				className={`${CORNER} top-0 right-0 border-t border-r group-hover:translate-x-1.5 group-hover:-translate-y-1.5`}
 			/>
 			<span
 				aria-hidden="true"
-				className={`${CORNER} bottom-0 left-0 border-b border-l group-hover:-bottom-1.5 group-hover:-left-1.5`}
+				className={`${CORNER} bottom-0 left-0 border-b border-l group-hover:-translate-x-1.5 group-hover:translate-y-1.5`}
 			/>
 			<span
 				aria-hidden="true"
-				className={`${CORNER} right-0 bottom-0 border-r border-b group-hover:-right-1.5 group-hover:-bottom-1.5`}
+				className={`${CORNER} right-0 bottom-0 border-r border-b group-hover:translate-x-1.5 group-hover:translate-y-1.5`}
 			/>
 		</>
 	)

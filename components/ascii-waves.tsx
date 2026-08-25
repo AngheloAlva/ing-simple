@@ -1,9 +1,9 @@
-"use client";
+"use client"
 
-import React, { useRef, useEffect, useMemo } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import * as THREE from "three";
-import { cn } from "@/lib/utils";
+import React, { useRef, useEffect, useMemo } from "react"
+import { Canvas, useFrame, useThree } from "@react-three/fiber"
+import * as THREE from "three"
+import { cn } from "@/lib/utils"
 
 const vertexShader = `
   varying vec2 vUv;
@@ -11,7 +11,7 @@ const vertexShader = `
     vUv = uv;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }
-`;
+`
 
 const fragmentShader = `
   uniform float uTime;
@@ -144,322 +144,321 @@ const fragmentShader = `
 
       gl_FragColor = vec4(finalColor, alpha);
   }
-`;
+`
 
-const createFontTexture = (
-  chars: string,
-  fontSize: number = 64
-): THREE.Texture => {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return new THREE.Texture();
+const createFontTexture = (chars: string, fontSize: number = 64): THREE.Texture => {
+	const canvas = document.createElement("canvas")
+	const ctx = canvas.getContext("2d")
+	if (!ctx) return new THREE.Texture()
 
-  const charCount = chars.length;
-  const width = charCount * fontSize;
-  const height = fontSize;
+	const charCount = chars.length
+	const width = charCount * fontSize
+	const height = fontSize
 
-  canvas.width = width;
-  canvas.height = height;
+	canvas.width = width
+	canvas.height = height
 
-  ctx.clearRect(0, 0, width, height);
+	ctx.clearRect(0, 0, width, height)
 
-  ctx.font = `bold ${fontSize}px monospace`;
-  ctx.fillStyle = "white";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
+	ctx.font = `bold ${fontSize}px monospace`
+	ctx.fillStyle = "white"
+	ctx.textAlign = "center"
+	ctx.textBaseline = "middle"
 
-  for (let i = 0; i < charCount; i++) {
-    const char = chars[i] ?? " ";
-    const x = i * fontSize + fontSize / 2;
-    const y = fontSize / 2;
-    ctx.fillText(char, x, y);
-  }
+	for (let i = 0; i < charCount; i++) {
+		const char = chars[i] ?? " "
+		const x = i * fontSize + fontSize / 2
+		const y = fontSize / 2
+		ctx.fillText(char, x, y)
+	}
 
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.minFilter = THREE.LinearFilter;
-  texture.magFilter = THREE.LinearFilter;
-  texture.needsUpdate = true;
-  return texture;
-};
+	const texture = new THREE.CanvasTexture(canvas)
+	texture.minFilter = THREE.LinearFilter
+	texture.magFilter = THREE.LinearFilter
+	texture.needsUpdate = true
+	return texture
+}
 
 interface SceneProps {
-  mouse: React.MutableRefObject<THREE.Vector2>;
-  characters: string;
-  color: string;
-  invert: boolean;
-  scale: number;
-  size: number;
-  speed: number;
-  hasMouse: boolean;
-  intensity: number;
-  interactionIntensity: number;
-  waveTension: number;
-  waveTwist: number;
-  videoUrl?: string | undefined;
-  active: boolean;
+	mouse: React.MutableRefObject<THREE.Vector2>
+	characters: string
+	color: string
+	invert: boolean
+	scale: number
+	size: number
+	speed: number
+	hasMouse: boolean
+	intensity: number
+	interactionIntensity: number
+	waveTension: number
+	waveTwist: number
+	videoUrl?: string | undefined
+	active: boolean
 }
 
 interface WaveUniforms {
-  uTime: THREE.IUniform<number>;
-  uMouse: THREE.IUniform<THREE.Vector2>;
-  uResolution: THREE.IUniform<THREE.Vector2>;
-  uFontTexture: THREE.IUniform<THREE.Texture | null>;
-  uCharCount: THREE.IUniform<number>;
-  uColor: THREE.IUniform<THREE.Color>;
-  uInvert: THREE.IUniform<boolean>;
-  uScale: THREE.IUniform<number>;
-  uSize: THREE.IUniform<number>;
-  uSpeed: THREE.IUniform<number>;
-  uHasMouse: THREE.IUniform<number>;
-  uIntensity: THREE.IUniform<number>;
-  uInteractIntensity: THREE.IUniform<number>;
-  uWaveTension: THREE.IUniform<number>;
-  uWaveTwist: THREE.IUniform<number>;
-  uVideoTexture: THREE.IUniform<THREE.Texture | null>;
-  uHasVideo: THREE.IUniform<boolean>;
+	uTime: THREE.IUniform<number>
+	uMouse: THREE.IUniform<THREE.Vector2>
+	uResolution: THREE.IUniform<THREE.Vector2>
+	uFontTexture: THREE.IUniform<THREE.Texture | null>
+	uCharCount: THREE.IUniform<number>
+	uColor: THREE.IUniform<THREE.Color>
+	uInvert: THREE.IUniform<boolean>
+	uScale: THREE.IUniform<number>
+	uSize: THREE.IUniform<number>
+	uSpeed: THREE.IUniform<number>
+	uHasMouse: THREE.IUniform<number>
+	uIntensity: THREE.IUniform<number>
+	uInteractIntensity: THREE.IUniform<number>
+	uWaveTension: THREE.IUniform<number>
+	uWaveTwist: THREE.IUniform<number>
+	uVideoTexture: THREE.IUniform<THREE.Texture | null>
+	uHasVideo: THREE.IUniform<boolean>
 }
 
 const Scene: React.FC<SceneProps> = ({
-  mouse,
-  characters,
-  color,
-  invert,
-  scale,
-  size: elementSize,
-  speed,
-  hasMouse,
-  intensity,
-  interactionIntensity,
-  waveTension,
-  waveTwist,
-  videoUrl,
-  active,
+	mouse,
+	characters,
+	color,
+	invert,
+	scale,
+	size: elementSize,
+	speed,
+	hasMouse,
+	intensity,
+	interactionIntensity,
+	waveTension,
+	waveTwist,
+	videoUrl,
+	active,
 }) => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const materialRef = useRef<THREE.ShaderMaterial>(null);
-  const { size, viewport } = useThree();
+	const meshRef = useRef<THREE.Mesh>(null)
+	const materialRef = useRef<THREE.ShaderMaterial>(null)
+	const { size, viewport } = useThree()
 
-  const safeCharacters = characters.length > 0 ? characters : " ";
+	const safeCharacters = characters.length > 0 ? characters : " "
 
-  const fontTextureRef = useRef<THREE.Texture | null>(null);
-  const videoTextureRef = useRef<THREE.VideoTexture | null>(null);
-  const videoElRef = useRef<HTMLVideoElement | null>(null);
+	const fontTextureRef = useRef<THREE.Texture | null>(null)
+	const videoTextureRef = useRef<THREE.VideoTexture | null>(null)
+	const videoElRef = useRef<HTMLVideoElement | null>(null)
 
-  const uniforms = useMemo(
-    () => ({
-      uTime: { value: 0 },
-      uMouse: { value: new THREE.Vector2(0, 0) },
-      uResolution: { value: new THREE.Vector2(size.width, size.height) },
-      uFontTexture: { value: null as THREE.Texture | null },
-      uCharCount: { value: safeCharacters.length },
-      uColor: { value: new THREE.Color(color) },
-      uInvert: { value: invert },
-      uScale: { value: scale },
-      uSize: { value: elementSize },
-      uSpeed: { value: speed },
-      uHasMouse: { value: hasMouse ? 1.0 : 0.0 },
-      uIntensity: { value: intensity },
-      uInteractIntensity: { value: interactionIntensity },
-      uWaveTension: { value: waveTension },
-      uWaveTwist: { value: waveTwist },
-      uVideoTexture: { value: null as THREE.Texture | null },
-      uHasVideo: { value: false },
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+	const uniforms = useMemo(
+		() => ({
+			uTime: { value: 0 },
+			uMouse: { value: new THREE.Vector2(0, 0) },
+			uResolution: { value: new THREE.Vector2(size.width, size.height) },
+			uFontTexture: { value: null as THREE.Texture | null },
+			uCharCount: { value: safeCharacters.length },
+			uColor: { value: new THREE.Color(color) },
+			uInvert: { value: invert },
+			uScale: { value: scale },
+			uSize: { value: elementSize },
+			uSpeed: { value: speed },
+			uHasMouse: { value: hasMouse ? 1.0 : 0.0 },
+			uIntensity: { value: intensity },
+			uInteractIntensity: { value: interactionIntensity },
+			uWaveTension: { value: waveTension },
+			uWaveTwist: { value: waveTwist },
+			uVideoTexture: { value: null as THREE.Texture | null },
+			uHasVideo: { value: false },
+		}),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[]
+	)
 
-  useEffect(() => {
-    const texture = createFontTexture(safeCharacters);
-    texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
-    fontTextureRef.current = texture;
-    return () => {
-      texture.dispose();
-      fontTextureRef.current = null;
-    };
-  }, [safeCharacters]);
+	useEffect(() => {
+		const texture = createFontTexture(safeCharacters)
+		texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping
+		fontTextureRef.current = texture
+		return () => {
+			texture.dispose()
+			fontTextureRef.current = null
+		}
+	}, [safeCharacters])
 
-  useEffect(() => {
-    if (!videoUrl) {
-      videoTextureRef.current = null;
-      return;
-    }
+	useEffect(() => {
+		if (!videoUrl) {
+			videoTextureRef.current = null
+			return
+		}
 
-    const video = document.createElement("video");
-    video.src = videoUrl;
-    video.crossOrigin = "Anonymous";
-    video.loop = true;
-    video.muted = true;
-    video.playsInline = true;
-    video.play().catch((e) => console.error("Video play failed", e));
+		const video = document.createElement("video")
+		video.src = videoUrl
+		video.crossOrigin = "Anonymous"
+		video.loop = true
+		video.muted = true
+		video.playsInline = true
+		video.play().catch((e: unknown) => {
+			// StrictMode mounts twice in dev; the first play() is interrupted by
+			// the cleanup's pause() and rejects with AbortError. Nothing is wrong.
+			if (e instanceof DOMException && e.name === "AbortError") return
+			console.error("Video play failed", e)
+		})
 
-    const texture = new THREE.VideoTexture(video);
-    texture.minFilter = THREE.LinearFilter;
-    texture.magFilter = THREE.LinearFilter;
+		const texture = new THREE.VideoTexture(video)
+		texture.minFilter = THREE.LinearFilter
+		texture.magFilter = THREE.LinearFilter
 
-    videoTextureRef.current = texture;
-    videoElRef.current = video;
+		videoTextureRef.current = texture
+		videoElRef.current = video
 
-    return () => {
-      video.pause();
-      video.src = "";
-      texture.dispose();
-      videoTextureRef.current = null;
-      videoElRef.current = null;
-    };
-  }, [videoUrl]);
+		return () => {
+			video.pause()
+			video.src = ""
+			texture.dispose()
+			videoTextureRef.current = null
+			videoElRef.current = null
+		}
+	}, [videoUrl])
 
-  useEffect(() => {
-    const video = videoElRef.current;
-    if (!video) return;
-    if (active) {
-      video.play().catch(() => {});
-    } else {
-      video.pause();
-    }
-  }, [active]);
+	useEffect(() => {
+		const video = videoElRef.current
+		if (!video) return
+		if (active) {
+			video.play().catch(() => {})
+		} else {
+			video.pause()
+		}
+	}, [active])
 
-  useFrame((state) => {
-    if (materialRef.current) {
-      const u = materialRef.current.uniforms as unknown as WaveUniforms;
-      u.uTime.value = state.clock.elapsedTime;
-      u.uResolution.value.set(size.width, size.height);
-      u.uColor.value.set(color);
-      u.uInvert.value = invert;
-      u.uScale.value = scale;
-      u.uSize.value = elementSize;
-      u.uSpeed.value = speed;
-      u.uHasMouse.value = hasMouse ? 1.0 : 0.0;
-      u.uIntensity.value = intensity;
-      u.uInteractIntensity.value = interactionIntensity;
-      u.uWaveTension.value = waveTension;
-      u.uWaveTwist.value = waveTwist;
-      u.uCharCount.value = safeCharacters.length;
+	useFrame((state) => {
+		if (materialRef.current) {
+			const u = materialRef.current.uniforms as unknown as WaveUniforms
+			u.uTime.value = state.clock.elapsedTime
+			u.uResolution.value.set(size.width, size.height)
+			u.uColor.value.set(color)
+			u.uInvert.value = invert
+			u.uScale.value = scale
+			u.uSize.value = elementSize
+			u.uSpeed.value = speed
+			u.uHasMouse.value = hasMouse ? 1.0 : 0.0
+			u.uIntensity.value = intensity
+			u.uInteractIntensity.value = interactionIntensity
+			u.uWaveTension.value = waveTension
+			u.uWaveTwist.value = waveTwist
+			u.uCharCount.value = safeCharacters.length
 
-      if (fontTextureRef.current) {
-        u.uFontTexture.value = fontTextureRef.current;
-      }
+			if (fontTextureRef.current) {
+				u.uFontTexture.value = fontTextureRef.current
+			}
 
-      if (videoTextureRef.current) {
-        u.uVideoTexture.value = videoTextureRef.current;
-        u.uHasVideo.value = true;
-      } else {
-        u.uVideoTexture.value = null;
-        u.uHasVideo.value = false;
-      }
+			if (videoTextureRef.current) {
+				u.uVideoTexture.value = videoTextureRef.current
+				u.uHasVideo.value = true
+			} else {
+				u.uVideoTexture.value = null
+				u.uHasVideo.value = false
+			}
 
-      if (mouse.current) {
-        u.uMouse.value.lerp(mouse.current, 0.1);
-      }
-    }
-  });
+			if (mouse.current) {
+				u.uMouse.value.lerp(mouse.current, 0.1)
+			}
+		}
+	})
 
-  return (
-    <mesh ref={meshRef}>
-      <planeGeometry args={[viewport.width, viewport.height]} />
-      <shaderMaterial
-        ref={materialRef}
-        vertexShader={vertexShader}
-        fragmentShader={fragmentShader}
-        uniforms={uniforms}
-        transparent={true}
-      />
-    </mesh>
-  );
-};
+	return (
+		<mesh ref={meshRef}>
+			<planeGeometry args={[viewport.width, viewport.height]} />
+			<shaderMaterial
+				ref={materialRef}
+				vertexShader={vertexShader}
+				fragmentShader={fragmentShader}
+				uniforms={uniforms}
+				transparent={true}
+			/>
+		</mesh>
+	)
+}
 
 export interface AsciiWavesProps {
-  characters?: string;
-  color?: string;
-  invert?: boolean;
-  noiseScale?: number;
-  elementSize?: number;
-  speed?: number;
-  hasCursorInteraction?: boolean;
-  intensity?: number;
-  interactionIntensity?: number;
-  waveTension?: number;
-  waveTwist?: number;
-  className?: string;
-  videoUrl?: string;
+	characters?: string
+	color?: string
+	invert?: boolean
+	noiseScale?: number
+	elementSize?: number
+	speed?: number
+	hasCursorInteraction?: boolean
+	intensity?: number
+	interactionIntensity?: number
+	waveTension?: number
+	waveTwist?: number
+	className?: string
+	videoUrl?: string
 }
 
 const AsciiWaves: React.FC<AsciiWavesProps> = ({
-  characters = " .:-+*=%@#",
-  color = "#ffffff",
-  invert = false,
-  noiseScale = 2.0,
-  elementSize = 16.0,
-  speed = 1.0,
-  hasCursorInteraction = true,
-  intensity = 1.0,
-  interactionIntensity = 1.0,
-  waveTension = 0.5,
-  waveTwist = 0.1,
-  className = "",
-  videoUrl,
+	characters = " .:-+*=%@#",
+	color = "#ffffff",
+	invert = false,
+	noiseScale = 2.0,
+	elementSize = 16.0,
+	speed = 1.0,
+	hasCursorInteraction = true,
+	intensity = 1.0,
+	interactionIntensity = 1.0,
+	waveTension = 0.5,
+	waveTwist = 0.1,
+	className = "",
+	videoUrl,
 }) => {
-  const mouse = useRef(new THREE.Vector2(0, 0));
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = React.useState(true);
+	const mouse = useRef(new THREE.Vector2(0, 0))
+	const containerRef = useRef<HTMLDivElement>(null)
+	const [inView, setInView] = React.useState(true)
 
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setInView(entry?.isIntersecting ?? true),
-      { rootMargin: "120px" }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+	useEffect(() => {
+		const el = containerRef.current
+		if (!el) return
+		const observer = new IntersectionObserver(
+			([entry]) => setInView(entry?.isIntersecting ?? true),
+			{ rootMargin: "120px" }
+		)
+		observer.observe(el)
+		return () => observer.disconnect()
+	}, [])
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = rect.height - (e.clientY - rect.top);
-    mouse.current.set(x, y);
-  };
+	const handleMouseMove = (e: React.MouseEvent) => {
+		const rect = e.currentTarget.getBoundingClientRect()
+		const x = e.clientX - rect.left
+		const y = rect.height - (e.clientY - rect.top)
+		mouse.current.set(x, y)
+	}
 
-  return (
-    <div
-      ref={containerRef}
-      className={cn(
-        "relative h-full w-full cursor-text overflow-hidden",
-        className
-      )}
-      onMouseMove={handleMouseMove}
-    >
-      <Canvas
-        orthographic
-        camera={{ position: [0, 0, 1], zoom: 1 }}
-        dpr={[1, 1.5]}
-        frameloop={inView ? "always" : "never"}
-        gl={{
-          alpha: true,
-          antialias: false,
-          powerPreference: "high-performance",
-        }}
-      >
-        <Scene
-          mouse={mouse}
-          characters={characters}
-          color={color}
-          invert={invert}
-          scale={noiseScale}
-          size={elementSize}
-          speed={speed}
-          hasMouse={hasCursorInteraction}
-          intensity={intensity}
-          interactionIntensity={interactionIntensity}
-          waveTension={waveTension}
-          waveTwist={waveTwist}
-          videoUrl={videoUrl}
-          active={inView}
-        />
-      </Canvas>
-    </div>
-  );
-};
+	return (
+		<div
+			ref={containerRef}
+			className={cn("relative h-full w-full cursor-text overflow-hidden", className)}
+			onMouseMove={handleMouseMove}
+		>
+			<Canvas
+				orthographic
+				camera={{ position: [0, 0, 1], zoom: 1 }}
+				dpr={[1, 1.5]}
+				frameloop={inView ? "always" : "never"}
+				gl={{
+					alpha: true,
+					antialias: false,
+					powerPreference: "high-performance",
+				}}
+			>
+				<Scene
+					mouse={mouse}
+					characters={characters}
+					color={color}
+					invert={invert}
+					scale={noiseScale}
+					size={elementSize}
+					speed={speed}
+					hasMouse={hasCursorInteraction}
+					intensity={intensity}
+					interactionIntensity={interactionIntensity}
+					waveTension={waveTension}
+					waveTwist={waveTwist}
+					videoUrl={videoUrl}
+					active={inView}
+				/>
+			</Canvas>
+		</div>
+	)
+}
 
-export default AsciiWaves;
+export default AsciiWaves

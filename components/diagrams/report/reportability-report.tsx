@@ -300,7 +300,7 @@ function CentreRow({
 }): ReactNode {
 	return (
 		<motion.tr
-			className="border-border/60 hover:bg-muted/50 border-b transition-colors"
+			className="border-border/60 hover:bg-muted/60 border-b transition-colors"
 			initial={reduced ? false : { opacity: 0, x: -6 }}
 			animate={show ? { opacity: 1, x: 0 } : { opacity: 0, x: -6 }}
 			transition={{ duration: reduced ? 0 : 0.35, ease: EASE, delay: reduced ? 0 : index * 0.07 }}

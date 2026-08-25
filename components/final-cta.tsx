@@ -27,7 +27,17 @@ const item: Variants = {
 	visible: { opacity: 1, y: 0 },
 }
 
-export function FinalCta(): ReactNode {
+const DEFAULT_TITLE = "¿Listo para transformar tu negocio?"
+const DEFAULT_BODY =
+	"Agenda una consulta gratuita y descubre cómo podemos ayudarte a optimizar procesos, capacitar a tu equipo y potenciar tu presencia digital."
+
+export function FinalCta({
+	title = DEFAULT_TITLE,
+	body = DEFAULT_BODY,
+}: {
+	title?: string
+	body?: string
+} = {}): ReactNode {
 	const mounted = useIsMounted()
 	const { resolvedTheme } = useTheme()
 	const prefersReducedMotion = useReducedMotion()
@@ -97,7 +107,7 @@ export function FinalCta(): ReactNode {
 						transition={itemTransition}
 						className="font-serif text-4xl leading-[1.08] font-normal tracking-[-0.01em] text-balance sm:text-5xl lg:text-[3.75rem]"
 					>
-						¿Listo para transformar tu negocio?
+						{title}
 					</motion.h2>
 
 					<motion.p
@@ -105,8 +115,7 @@ export function FinalCta(): ReactNode {
 						transition={itemTransition}
 						className="text-muted-foreground mt-5 max-w-md text-[15px] leading-relaxed text-balance sm:text-base"
 					>
-						Agenda una consulta gratuita y descubre cómo podemos ayudarte a optimizar procesos,
-						capacitar a tu equipo y potenciar tu presencia digital.
+						{body}
 					</motion.p>
 
 					<motion.div
