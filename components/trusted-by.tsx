@@ -17,6 +17,7 @@ const CLIENTS: Client[] = [
 	{ file: "bzconsulting.png", name: "BZ Consulting" },
 	{ file: "caemp.png", name: "Grupo CAEMP" },
 	{ file: "aiep.svg", name: "AIEP" },
+	{ file: "udp.png", name: "Universidad Diego Portales" },
 	{ file: "club-hipico.svg", name: "Club Hípico" },
 	{ file: "sgs.svg", name: "SGS" },
 	{ file: "generadora-metropolitana.png", name: "Generadora Metropolitana" },
@@ -59,7 +60,7 @@ export function TrustedBy(): ReactNode {
 						<span className="text-muted-foreground text-xs font-medium">
 							Empresas que confían en nosotros
 						</span>
-          </div>
+					</div>
 
 					<div className="min-w-0 flex-1 px-6 py-6 md:py-7">
 						<LogoLoop
