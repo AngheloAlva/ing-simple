@@ -1,3 +1,4 @@
+import Link from "next/link"
 import type { ReactNode } from "react"
 
 // IngSimple brand logo (icon + wordmark). The two brand tones map to the
@@ -74,8 +75,8 @@ function LogoMark({ className }: { className?: string }): ReactNode {
 
 export function Logo(): ReactNode {
 	return (
-		<a href="#top" className="focus-ring group inline-flex items-center" aria-label="IngSimple">
+		<Link href="/" className="focus-ring group inline-flex items-center" aria-label="IngSimple">
 			<LogoMark className="h-9 w-auto transition-transform duration-300 group-hover:scale-[1.03] sm:h-10" />
-		</a>
+		</Link>
 	)
 }
