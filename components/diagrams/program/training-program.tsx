@@ -145,10 +145,7 @@ function CompetencyRow({
 				<motion.div
 					className="absolute inset-y-0 left-0 rounded-sm"
 					initial={{ width: 0 }}
-					animate={{
-						width: show ? `${now}%` : 0,
-						backgroundColor: complete ? GREEN : "var(--primary)",
-					}}
+					animate={{ width: show ? `${now}%` : 0, backgroundColor: GREEN }}
 					transition={{ ...DATA_TRANSITION, duration: reduced ? 0 : 0.7 }}
 				/>
 			</div>
@@ -326,7 +323,7 @@ export function TrainingProgram(): ReactNode {
 									<span className="bg-primary/30 h-2 w-2 rounded-[1px]" /> Al inicio
 								</span>
 								<span className="flex items-center gap-1.5">
-									<span className="bg-primary h-2 w-2 rounded-[1px]" /> Hoy
+									<span className="bg-brand-green h-2 w-2 rounded-[1px]" /> Hoy
 								</span>
 							</div>
 							<div className="mt-3 space-y-3">
