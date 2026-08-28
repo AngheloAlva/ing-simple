@@ -208,7 +208,7 @@ export function InView({
 		<motion.div
 			initial="hidden"
 			whileInView="visible"
-			viewport={{ once: true, margin: "-80px" }}
+			viewport={inViewViewport}
 			variants={activeVariants}
 			transition={activeTransition}
 			className={className}
@@ -219,8 +219,18 @@ export function InView({
 	)
 }
 
-/** Shared viewport for once-only scroll entrances. */
-export const inViewViewport = { once: true, margin: "-80px" } as const
+/**
+ * Shared viewport for once-only scroll entrances.
+ *
+ * The negative BOTTOM margin is the trigger depth: it shrinks the detection
+ * box upward, so an element has to travel well inside the screen before it
+ * animates instead of firing the instant its first pixel appears. It is a
+ * percentage of the viewport rather than a pixel value so the feel holds on
+ * a phone as well as on a desktop, and it is deliberately not `amount` —
+ * `amount` is a fraction of the ELEMENT, so short rows would still fire
+ * immediately while tall ones lagged.
+ */
+export const inViewViewport = { once: true, margin: "0px 0px -32% 0px" } as const
 
 const staticContainer: Variants = { hidden: {}, visible: {} }
 
