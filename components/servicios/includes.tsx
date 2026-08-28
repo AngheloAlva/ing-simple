@@ -3,7 +3,7 @@
 import { Kicker } from "@/components/corner-plus"
 import { INCLUDE_GLYPHS } from "@/components/servicios/include-glyphs"
 import type { IncludesVariant } from "@/components/servicios/modules/registry"
-import { softEase, useReducedMotion, useStaggerEntrance } from "@/lib/motion"
+import { StaggerInView, softEase, useReducedMotion, useStaggerEntrance } from "@/lib/motion"
 import type { ServiceInclude } from "@/lib/services"
 import { Zap } from "lucide-react"
 import { motion, type Transition, type Variants } from "motion/react"
@@ -105,7 +105,7 @@ function DashboardLayout({ items }: { items: ServiceInclude[] }): ReactNode {
 	const { item, itemTransition } = useStaggerEntrance()
 
 	return (
-		<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+		<StaggerInView className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{items.map((entry, i) => (
 				<DashboardCard
 					key={entry.title}
@@ -115,29 +115,57 @@ function DashboardLayout({ items }: { items: ServiceInclude[] }): ReactNode {
 					itemTransition={itemTransition}
 				/>
 			))}
-		</div>
+		</StaggerInView>
 	)
 }
 
-/** Capacitaciones — a course curriculum: full-width numbered module rows. */
+/**
+ * Capacitaciones — a course outline. Rows are split into one panel per
+ * `group` so the actual syllabus is not numbered alongside the delivery
+ * promises; ungrouped items fall into a single unlabelled panel. The panels
+ * carry `bg-background` because this section sits on a tinted band and
+ * borderless rows would read as loose text on it.
+ */
 function SyllabusLayout({ items }: { items: ServiceInclude[] }): ReactNode {
 	const { item, itemTransition } = useStaggerEntrance()
 
+	// First-seen order, so the data file controls which panel comes first.
+	const groups: { label: string | undefined; entries: ServiceInclude[] }[] = []
+	for (const entry of items) {
+		const current = groups.find((group) => group.label === entry.group)
+		if (current) current.entries.push(entry)
+		else groups.push({ label: entry.group, entries: [entry] })
+	}
+
 	return (
-		<div className="border-border mx-auto max-w-4xl border-t">
-			{items.map((entry, i) => (
-				<motion.article
-					key={entry.title}
-					variants={item}
-					transition={itemTransition}
-					className="border-border hover:border-primary/40 grid gap-2 border-b border-dotted py-6 transition-colors duration-200 sm:grid-cols-[110px_1fr_1.2fr] sm:items-baseline sm:gap-6 sm:py-7"
+		<div className="mx-auto flex max-w-4xl flex-col gap-4">
+			{groups.map((group) => (
+				<StaggerInView
+					key={group.label ?? "sin-grupo"}
+					className="border-border bg-background rounded-sm border"
 				>
-					<p className="text-primary text-xs font-medium tracking-widest uppercase">
-						Módulo {String(i + 1).padStart(2, "0")}
-					</p>
-					<h3 className="text-base font-semibold tracking-tight">{entry.title}</h3>
-					<p className="text-muted-foreground text-sm leading-relaxed">{entry.desc}</p>
-				</motion.article>
+					{group.label ? (
+						<p className="border-border/60 text-muted-foreground border-b px-6 py-3 text-[11px] font-medium tracking-widest uppercase">
+							{group.label}
+						</p>
+					) : null}
+					<div className="px-6">
+						{group.entries.map((entry, i) => (
+							<motion.article
+								key={entry.title}
+								variants={item}
+								transition={itemTransition}
+								className="border-border/60 grid gap-2 border-b border-dotted py-6 last:border-b-0 sm:grid-cols-[52px_1fr_1.2fr] sm:items-baseline sm:gap-6 sm:py-7"
+							>
+								<p className="text-primary text-xs font-medium tabular-nums">
+									{String(i + 1).padStart(2, "0")}
+								</p>
+								<h3 className="text-base font-semibold tracking-tight">{entry.title}</h3>
+								<p className="text-muted-foreground text-sm leading-relaxed">{entry.desc}</p>
+							</motion.article>
+						))}
+					</div>
+				</StaggerInView>
 			))}
 		</div>
 	)
@@ -148,7 +176,7 @@ function BrowserLayout({ items }: { items: ServiceInclude[] }): ReactNode {
 	const { item, itemTransition } = useStaggerEntrance()
 
 	return (
-		<div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+		<StaggerInView className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 			{items.map((entry) => (
 				<motion.article
 					key={entry.title}
@@ -170,16 +198,20 @@ function BrowserLayout({ items }: { items: ServiceInclude[] }): ReactNode {
 					</div>
 				</motion.article>
 			))}
-		</div>
+		</StaggerInView>
 	)
 }
 
-/** Automatizaciones — a connected pipeline of steps running downward. */
+/**
+ * Automatizaciones — a connected pipeline of steps running downward. Like the
+ * syllabus, it carries `bg-background` so the pipeline reads as an object on
+ * the section's tinted band instead of loose text.
+ */
 function FlowLayout({ items }: { items: ServiceInclude[] }): ReactNode {
 	const { item, itemTransition } = useStaggerEntrance()
 
 	return (
-		<div className="mx-auto max-w-3xl">
+		<StaggerInView className="border-border bg-background mx-auto max-w-3xl rounded-sm border p-7 sm:p-9">
 			<ol className="border-border relative border-l border-dotted pl-8 sm:pl-10">
 				{items.map((entry, i) => (
 					<motion.li
@@ -205,7 +237,7 @@ function FlowLayout({ items }: { items: ServiceInclude[] }): ReactNode {
 					</motion.li>
 				))}
 			</ol>
-		</div>
+		</StaggerInView>
 	)
 }
 
@@ -223,7 +255,10 @@ function MosaicLayout({ items }: { items: ServiceInclude[] }): ReactNode {
 
 	return (
 		<div className="bg-border p-px" style={clip}>
-			<div className="grid gap-px sm:grid-cols-2 lg:grid-cols-3" style={clip}>
+			<StaggerInView
+				className="grid gap-px sm:grid-cols-2 lg:grid-cols-3"
+				style={{ borderRadius: PANEL_RADIUS }}
+			>
 				{items.map((entry, i) => (
 					<motion.article
 						key={entry.title}
@@ -236,7 +271,7 @@ function MosaicLayout({ items }: { items: ServiceInclude[] }): ReactNode {
 						<p className="text-muted-foreground mt-3 text-sm leading-relaxed">{entry.desc}</p>
 					</motion.article>
 				))}
-			</div>
+			</StaggerInView>
 		</div>
 	)
 }
@@ -256,10 +291,23 @@ export function ServicioIncludes({
 	return (
 		<section
 			id="incluye"
-			className="mx-auto max-w-[1440px] scroll-mt-24 px-5 pb-24 sm:px-8 sm:pb-32 lg:px-10"
+			className="border-border bg-muted/40 dark:bg-card/50 relative isolate mb-24 scroll-mt-24 border-y sm:mb-32"
 		>
-			<motion.div variants={container} initial="hidden" whileInView="visible" viewport={viewport}>
-				<div className="mx-auto mb-12 max-w-2xl text-center sm:mb-16">
+			<div className="mx-auto max-w-[1440px] px-5 py-24 sm:px-8 sm:py-32 lg:px-10">
+				{/*
+				 * Header and layout are separate variant roots on purpose. One root
+				 * around the whole section fires as soon as its top edge crosses the
+				 * viewport, and this section is far taller than a screen, so the
+				 * lower rows finished animating long before anyone scrolled to them.
+				 * Each layout now triggers on its own geometry.
+				 */}
+				<motion.div
+					variants={container}
+					initial="hidden"
+					whileInView="visible"
+					viewport={viewport}
+					className="mx-auto mb-12 max-w-2xl text-center sm:mb-16"
+				>
 					<motion.div variants={item} transition={itemTransition}>
 						<Kicker>Qué incluye</Kicker>
 					</motion.div>
@@ -273,10 +321,10 @@ export function ServicioIncludes({
 							{shortName.toLowerCase()}
 						</span>
 					</motion.h2>
-				</div>
+				</motion.div>
 
 				<Layout items={items} />
-			</motion.div>
+			</div>
 		</section>
 	)
 }

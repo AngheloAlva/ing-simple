@@ -15,6 +15,13 @@ export type ServiceInclude = {
 	desc: string
 	/** Optional id of an animated glyph (see `include-glyphs.tsx`); layouts fall back when absent. */
 	glyph?: string
+	/**
+	 * Optional panel heading. The syllabus layout splits its rows into one
+	 * panel per group, in first-seen order, so a service can separate what is
+	 * taught from how it is delivered instead of numbering both as one list.
+	 * Layouts that do not group simply ignore it.
+	 */
+	group?: string
 }
 
 export type ServiceStep = { title: string; desc: string }
@@ -229,26 +236,32 @@ export const SERVICES: Service[] = [
 			],
 			includes: [
 				{
-					title: "Programas a medida",
-					desc: "Diseñamos el contenido según el nivel real del equipo y los problemas concretos de tu operación. Nada de temarios genéricos.",
-				},
-				{
+					group: "Temario",
 					title: "Power BI de básico a avanzado",
 					desc: "Desde conectar la primera fuente hasta modelado, DAX y publicación de dashboards para toda la organización.",
 				},
 				{
+					group: "Temario",
 					title: "Excel avanzado",
 					desc: "Tablas dinámicas, Power Query, funciones avanzadas y automatización de tareas repetitivas dentro de la planilla.",
 				},
 				{
+					group: "Temario",
 					title: "Power Apps y Power Automate",
 					desc: "Construcción de aplicaciones y flujos de trabajo sin código, para digitalizar procesos internos con lo que ya tienes.",
 				},
 				{
+					group: "Cómo lo dictamos",
+					title: "Programas a medida",
+					desc: "Diseñamos el contenido según el nivel real del equipo y los problemas concretos de tu operación. Nada de temarios genéricos.",
+				},
+				{
+					group: "Cómo lo dictamos",
 					title: "Ejercicios con tus datos",
 					desc: "Los casos prácticos se arman con información de tu propia operación, para que lo aprendido se aplique al día siguiente.",
 				},
 				{
+					group: "Cómo lo dictamos",
 					title: "Acompañamiento post-curso",
 					desc: "Material de apoyo y un canal de consultas después de las sesiones, para resolver dudas cuando aparecen de verdad.",
 				},
