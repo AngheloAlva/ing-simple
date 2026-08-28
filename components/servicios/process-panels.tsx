@@ -35,7 +35,7 @@ function Chip({
 				"inline-flex shrink-0 items-center gap-1 rounded-sm border px-1.5 py-0.5 text-[10px] font-medium whitespace-nowrap",
 				tone === "muted" && "border-border/60 bg-muted/40 text-muted-foreground",
 				tone === "primary" && "border-primary/30 bg-primary/5 text-primary",
-				tone === "green" && "border-brand-green/40 bg-brand-green/10 text-brand-green-text"
+				tone === "green" && "border-brand-green/50 bg-brand-green/15 text-brand-green-text"
 			)}
 		>
 			{children}
@@ -534,8 +534,365 @@ function EntregaPanel(): ReactNode {
 
 /* ---- Registry ----------------------------------------------------------- */
 
+/* ==========================================================================
+ * Capacitaciones
+ * ======================================================================== */
+
+/* ---- 01 · Diagnóstico de nivel ------------------------------------------ */
+
+type Assessed = { area: string; people: string; level: string; tone: "primary" | "muted" }
+
+const ASSESSED: Assessed[] = [
+	{ area: "Operaciones", people: "5 personas", level: "Básico", tone: "muted" },
+	{ area: "Comercial", people: "4 personas", level: "Básico", tone: "muted" },
+	{ area: "Control de gestión", people: "2 personas", level: "Intermedio", tone: "primary" },
+	{ area: "Gerencia", people: "1 persona", level: "Lector", tone: "muted" },
+]
+
+const GAPS: { skill: string; now: number }[] = [
+	{ skill: "Tablas dinámicas", now: 60 },
+	{ skill: "Power Query", now: 25 },
+	{ skill: "Modelado", now: 15 },
+	{ skill: "DAX", now: 5 },
+]
+
+function NivelPanel(): ReactNode {
+	return (
+		<div className="flex h-full flex-col">
+			<div className="grid gap-4 pb-4 sm:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] sm:gap-5">
+				<div>
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>Quiénes se capacitan</SectionLabel>
+						<span className="text-muted-foreground text-[10px] tabular-nums">12 personas</span>
+					</div>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{ASSESSED.map((row) => (
+							<div key={row.area} className="flex items-center justify-between gap-3 px-2.5 py-2">
+								<span className="flex min-w-0 items-baseline gap-1.5">
+									<span className="text-[11px] font-medium">{row.area}</span>
+									<span className="text-muted-foreground truncate text-[10px]">· {row.people}</span>
+								</span>
+								<Chip tone={row.tone}>{row.level}</Chip>
+							</div>
+						))}
+					</Tile>
+					<p className="text-muted-foreground mt-2 text-[10px] tabular-nums">
+						2 cohortes · nivel de entrada disparejo
+					</p>
+				</div>
+				<div>
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>Dominio actual</SectionLabel>
+						<span className="text-muted-foreground text-[10px]">% del grupo</span>
+					</div>
+					<Tile className="mt-2 px-2.5 py-2">
+						<div className="flex flex-col gap-2">
+							{GAPS.map((gap) => (
+								<div key={gap.skill}>
+									<div className="flex items-baseline justify-between gap-2">
+										<span className="text-[10px] leading-snug">{gap.skill}</span>
+										<span className="text-muted-foreground text-[10px] tabular-nums">
+											{gap.now} %
+										</span>
+									</div>
+									<div className="bg-border/60 mt-1 h-1 w-full rounded-full">
+										<div className="bg-primary h-1 rounded-full" style={{ width: `${gap.now}%` }} />
+									</div>
+								</div>
+							))}
+						</div>
+					</Tile>
+					<p className="text-muted-foreground mt-2 text-[10px]">
+						Medido con un ejercicio corto, no con una encuesta.
+					</p>
+				</div>
+			</div>
+			<Outcome chip={<Chip tone="primary">Semana 1</Chip>}>
+				punto de partida por área y las brechas que el programa debe cerrar
+			</Outcome>
+		</div>
+	)
+}
+
+/* ---- 02 · Diseño del programa ------------------------------------------- */
+
+type Unit = { code: string; name: string; hours: string; included: boolean }
+
+const UNITS: Unit[] = [
+	{ code: "M1", name: "Datos ordenados en Excel", hours: "3 h", included: true },
+	{ code: "M2", name: "Power Query", hours: "4 h", included: true },
+	{ code: "M3", name: "Modelo y relaciones", hours: "3 h", included: true },
+	{ code: "M4", name: "Primeras medidas DAX", hours: "3 h", included: true },
+	{ code: "M5", name: "Power Apps", hours: "—", included: false },
+]
+
+function ProgramaPanel(): ReactNode {
+	return (
+		<div className="flex h-full flex-col">
+			<div className="grid gap-4 pb-4 sm:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] sm:gap-5">
+				<div>
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>Temario propuesto</SectionLabel>
+						<span className="text-muted-foreground text-[10px] tabular-nums">13 h</span>
+					</div>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{UNITS.map((unit) => (
+							<div key={unit.code} className="flex items-center justify-between gap-3 px-2.5 py-2">
+								<span className="flex min-w-0 items-center gap-2">
+									{unit.included ? (
+										<CheckMark />
+									) : (
+										<span
+											className="border-border inline-block h-4 w-4 shrink-0 rounded-full border border-dotted"
+											aria-hidden="true"
+										/>
+									)}
+									<span
+										className={cn(
+											"truncate text-[11px]",
+											unit.included ? "font-medium" : "text-muted-foreground"
+										)}
+									>
+										{unit.name}
+									</span>
+								</span>
+								<span className="text-muted-foreground shrink-0 text-[10px] tabular-nums">
+									{unit.hours}
+								</span>
+							</div>
+						))}
+					</Tile>
+					<p className="text-muted-foreground mt-2 text-[10px]">
+						M5 queda fuera de esta etapa: se retoma cuando el grupo cierre M4.
+					</p>
+				</div>
+				<div>
+					<SectionLabel>Formato acordado</SectionLabel>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{[
+							["Modalidad", "Online en vivo"],
+							["Sesiones", "4 de 3 h"],
+							["Cohorte", "6 personas"],
+							["Datos", "Los del cliente"],
+						].map(([label, value]) => (
+							<div key={label} className="flex items-baseline justify-between gap-2 px-2.5 py-2">
+								<span className="text-muted-foreground text-[10px]">{label}</span>
+								<span className="text-[10px] font-medium">{value}</span>
+							</div>
+						))}
+					</Tile>
+					<p className="text-muted-foreground mt-2 text-[10px]">
+						Grupos chicos: nadie avanza sin haber hecho el ejercicio.
+					</p>
+				</div>
+			</div>
+			<Outcome chip={<Chip tone="primary">Semana 2</Chip>}>
+				temario, calendario y set de datos acordados antes de la primera clase
+			</Outcome>
+		</div>
+	)
+}
+
+/* ---- 03 · Sesiones prácticas -------------------------------------------- */
+
+type Beat = { time: string; label: string; kind: "teoría" | "ejercicio"; done: boolean }
+
+const BEATS: Beat[] = [
+	{ time: "00:00", label: "Repaso del ejercicio anterior", kind: "teoría", done: true },
+	{ time: "00:20", label: "Power Query sobre tus planillas", kind: "teoría", done: true },
+	{ time: "00:50", label: "Cada uno limpia su propia fuente", kind: "ejercicio", done: true },
+	{ time: "01:40", label: "Revisión en conjunto", kind: "teoría", done: false },
+	{ time: "02:10", label: "Ejercicio guiado de cierre", kind: "ejercicio", done: false },
+]
+
+function SesionesPanel(): ReactNode {
+	return (
+		<div className="flex h-full flex-col">
+			<div className="pb-4">
+				<div className="flex items-baseline justify-between gap-2">
+					<SectionLabel>Sesión 02 · Power Query</SectionLabel>
+					<span className="text-muted-foreground flex items-center gap-1.5 text-[10px] tabular-nums">
+						<LiveDot />6 conectados · 3 h
+					</span>
+				</div>
+				<Tile className="divide-border/60 mt-2 divide-y">
+					{BEATS.map((beat) => (
+						<div key={beat.time} className="flex items-center justify-between gap-3 px-2.5 py-2">
+							<span className="flex min-w-0 items-center gap-2">
+								<span className="text-muted-foreground w-9 shrink-0 text-[10px] tabular-nums">
+									{beat.time}
+								</span>
+								{beat.done ? (
+									<CheckMark />
+								) : (
+									<span
+										className="border-border inline-block h-4 w-4 shrink-0 rounded-full border border-dotted"
+										aria-hidden="true"
+									/>
+								)}
+								<span
+									className={cn(
+										"truncate text-[11px]",
+										beat.done ? "text-muted-foreground" : "font-medium"
+									)}
+								>
+									{beat.label}
+								</span>
+							</span>
+							<Chip tone={beat.kind === "ejercicio" ? "primary" : "muted"}>{beat.kind}</Chip>
+						</div>
+					))}
+				</Tile>
+				<p className="text-muted-foreground mt-2 text-[10px] tabular-nums">
+					Más de la mitad del tiempo es teclado del participante, no diapositiva.
+				</p>
+			</div>
+			<Outcome chip={<Chip tone="muted">En curso</Chip>}>
+				cada sesión cierra con un ejercicio terminado sobre datos reales
+			</Outcome>
+		</div>
+	)
+}
+
+/* ---- 04 · Aplicación real ----------------------------------------------- */
+
+const BUILD: { label: string; detail: string; done: boolean }[] = [
+	{ label: "Fuente conectada", detail: "Planilla de ventas", done: true },
+	{ label: "Modelo armado", detail: "3 tablas relacionadas", done: true },
+	{ label: "Medidas propias", detail: "Margen y cumplimiento", done: true },
+	{ label: "Tablero publicado", detail: "Visible para su jefatura", done: false },
+]
+
+function AplicacionPanel(): ReactNode {
+	return (
+		<div className="flex h-full flex-col">
+			<div className="grid gap-4 pb-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:gap-5">
+				<div>
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>Lo que construye el equipo</SectionLabel>
+						<span className="text-muted-foreground text-[10px] tabular-nums">3 de 4</span>
+					</div>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{BUILD.map((row) => (
+							<div key={row.label} className="flex items-start gap-2 px-2.5 py-2">
+								{row.done ? (
+									<CheckMark className="mt-px" />
+								) : (
+									<span
+										className="border-border mt-px inline-block h-4 w-4 shrink-0 rounded-full border border-dotted"
+										aria-hidden="true"
+									/>
+								)}
+								<span className="min-w-0">
+									<span className="block text-[11px] font-medium">{row.label}</span>
+									<span className="text-muted-foreground block text-[10px] leading-snug">
+										{row.detail}
+									</span>
+								</span>
+							</div>
+						))}
+					</Tile>
+				</div>
+				<div>
+					<SectionLabel>Quién lo hizo</SectionLabel>
+					<Tile className="mt-2 px-2.5 py-2">
+						<p className="text-[11px] leading-snug">
+							El tablero lo arma <span className="font-medium">el equipo</span>, no nosotros.
+							Nosotros revisamos y corregimos en vivo.
+						</p>
+					</Tile>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{[
+							["Horas de práctica", "13 h"],
+							["Tableros propios", "6"],
+							["Dependencia externa", "Baja"],
+						].map(([label, value]) => (
+							<div key={label} className="flex items-baseline justify-between gap-2 px-2.5 py-2">
+								<span className="text-muted-foreground text-[10px]">{label}</span>
+								<span className="text-[10px] font-medium tabular-nums">{value}</span>
+							</div>
+						))}
+					</Tile>
+				</div>
+			</div>
+			<Outcome chip={<Chip tone="green">Cierre</Chip>}>
+				un tablero construido por el equipo, funcionando sobre datos de la operación
+			</Outcome>
+		</div>
+	)
+}
+
+/* ---- 05 · Acompañamiento ------------------------------------------------ */
+
+const FOLLOWUP: { week: string; asked: number; solved: number }[] = [
+	{ week: "S1", asked: 9, solved: 9 },
+	{ week: "S2", asked: 6, solved: 6 },
+	{ week: "S3", asked: 3, solved: 3 },
+	{ week: "S4", asked: 1, solved: 1 },
+]
+
+function AcompanamientoPanel(): ReactNode {
+	const peak = 9
+
+	return (
+		<div className="flex h-full flex-col">
+			<div className="grid gap-4 pb-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:gap-5">
+				<div>
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>Consultas post-curso</SectionLabel>
+						<span className="text-muted-foreground text-[10px] tabular-nums">19 resueltas</span>
+					</div>
+					<Tile className="mt-2 px-2.5 py-2">
+						<div className="flex flex-col gap-2">
+							{FOLLOWUP.map((row) => (
+								<div key={row.week} className="flex items-center gap-2">
+									<span className="text-muted-foreground w-5 shrink-0 text-[10px] tabular-nums">
+										{row.week}
+									</span>
+									<span className="bg-border/60 h-1 flex-1 rounded-full">
+										<span
+											className="bg-primary block h-1 rounded-full"
+											style={{ width: `${(row.asked / peak) * 100}%` }}
+										/>
+									</span>
+									<span className="text-muted-foreground w-4 shrink-0 text-right text-[10px] tabular-nums">
+										{row.asked}
+									</span>
+								</div>
+							))}
+						</div>
+					</Tile>
+					<p className="text-muted-foreground mt-2 text-[10px]">
+						Las consultas bajan solas: esa es la señal de que la autonomía quedó.
+					</p>
+				</div>
+				<div>
+					<SectionLabel>Qué queda con el equipo</SectionLabel>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{[
+							"Grabaciones de las sesiones",
+							"Ejercicios y sus soluciones",
+							"Archivos del caso aplicado",
+							"Canal de consultas por 30 días",
+						].map((asset) => (
+							<div key={asset} className="flex items-center gap-2 px-2.5 py-2">
+								<CheckMark className="bg-brand-green/15 text-brand-green-text" />
+								<span className="text-[11px] leading-snug">{asset}</span>
+							</div>
+						))}
+					</Tile>
+				</div>
+			</div>
+			<Outcome chip={<Chip tone="green">Autonomía</Chip>}>
+				el equipo resuelve sin nosotros y el material queda en la empresa
+			</Outcome>
+		</div>
+	)
+}
+
 export const PROCESS_PANELS: Partial<Record<string, PanelComponent[]>> = {
 	reportabilidad: [DiagnosticoPanel, ModeladoPanel, DisenoPanel, AutomatizacionPanel, EntregaPanel],
+	capacitaciones: [NivelPanel, ProgramaPanel, SesionesPanel, AplicacionPanel, AcompanamientoPanel],
 }
 
 /* ---- Fallback ----------------------------------------------------------- */
