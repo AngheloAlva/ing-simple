@@ -462,26 +462,32 @@ export const SERVICES: Service[] = [
 			includes: [
 				{
 					title: "Flujos de aprobación",
+					glyph: "approval",
 					desc: "Solicitudes, visados y aprobaciones con reglas claras, notificaciones automáticas y registro de cada paso.",
 				},
 				{
 					title: "Integración entre sistemas",
+					glyph: "integration",
 					desc: "Conectamos tus plataformas para que los datos fluyan solos, sin doble digitación ni planillas puente.",
 				},
 				{
 					title: "Documentos y reportes automáticos",
+					glyph: "documents",
 					desc: "Contratos, certificados e informes que se generan y envían solos a partir de tus datos.",
 				},
 				{
 					title: "Formularios y apps internas",
+					glyph: "forms",
 					desc: "Capturamos la información en la fuente con formularios y aplicaciones simples, en vez de papel o planillas sueltas.",
 				},
 				{
 					title: "Notificaciones y alertas",
+					glyph: "alerts",
 					desc: "Avisos automáticos cuando algo requiere atención: vencimientos, quiebres de stock, tareas pendientes.",
 				},
 				{
 					title: "Monitoreo de flujos",
+					glyph: "monitoring",
 					desc: "Cada automatización queda con manejo de errores y visibilidad de su ejecución, para que sepas que está corriendo bien.",
 				},
 			],

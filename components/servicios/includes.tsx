@@ -5,7 +5,6 @@ import { INCLUDE_GLYPHS } from "@/components/servicios/include-glyphs"
 import type { IncludesVariant } from "@/components/servicios/modules/registry"
 import { StaggerInView, softEase, useReducedMotion, useStaggerEntrance } from "@/lib/motion"
 import type { ServiceInclude } from "@/lib/services"
-import { Zap } from "lucide-react"
 import { motion, type Transition, type Variants } from "motion/react"
 import { useState, type CSSProperties, type ReactNode } from "react"
 
@@ -48,11 +47,11 @@ function SparkBar({ height, index }: { height: number; index: number }): ReactNo
 }
 
 /**
- * One dashboard card. Hover is tracked here (not via a `whileHover` label)
+ * One include card. Hover is tracked here (not via a `whileHover` label)
  * because a variant label on the card would make it its own variant root and
  * cut off the entrance it inherits from the section's stagger.
  */
-function DashboardCard({
+function IncludeCard({
 	entry,
 	index,
 	item,
@@ -97,17 +96,18 @@ function DashboardCard({
 }
 
 /**
- * Reportabilidad — KPI-style dashboard tiles. Each card carries an
+ * Reportabilidad and Automatizaciones — a grid of tiles. Each card carries an
  * identifying glyph (see `include-glyphs.tsx`) when the include declares one,
- * otherwise a decorative mini chart.
+ * otherwise a decorative mini chart. The two services share the grid but not a
+ * single glyph, so they still read as two different offerings.
  */
-function DashboardLayout({ items }: { items: ServiceInclude[] }): ReactNode {
+function CardsLayout({ items }: { items: ServiceInclude[] }): ReactNode {
 	const { item, itemTransition } = useStaggerEntrance()
 
 	return (
 		<StaggerInView className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{items.map((entry, i) => (
-				<DashboardCard
+				<IncludeCard
 					key={entry.title}
 					entry={entry}
 					index={i}
@@ -202,50 +202,10 @@ function BrowserLayout({ items }: { items: ServiceInclude[] }): ReactNode {
 	)
 }
 
-/**
- * Automatizaciones — a connected pipeline of steps running downward. Like the
- * syllabus, it carries `bg-background` so the pipeline reads as an object on
- * the section's tinted band instead of loose text.
- */
-function FlowLayout({ items }: { items: ServiceInclude[] }): ReactNode {
-	const { item, itemTransition } = useStaggerEntrance()
-
-	return (
-		<StaggerInView className="border-border bg-background mx-auto max-w-3xl rounded-sm border p-7 sm:p-9">
-			<ol className="border-border relative border-l border-dotted pl-8 sm:pl-10">
-				{items.map((entry, i) => (
-					<motion.li
-						key={entry.title}
-						variants={item}
-						transition={itemTransition}
-						className={`group relative ${i < items.length - 1 ? "pb-9" : ""}`}
-					>
-						<span
-							className="border-primary/50 bg-background text-primary group-hover:border-primary absolute top-0.5 -left-8 flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full border transition-colors duration-200 sm:-left-10"
-							aria-hidden="true"
-						>
-							<Zap className="h-3 w-3" strokeWidth={2} />
-						</span>
-						<div className="sm:flex sm:items-baseline sm:gap-6">
-							<h3 className="text-base font-semibold tracking-tight sm:w-64 sm:shrink-0">
-								{entry.title}
-							</h3>
-							<p className="text-muted-foreground mt-1.5 text-sm leading-relaxed sm:mt-0">
-								{entry.desc}
-							</p>
-						</div>
-					</motion.li>
-				))}
-			</ol>
-		</StaggerInView>
-	)
-}
-
 const LAYOUTS: Record<IncludesVariant, ({ items }: { items: ServiceInclude[] }) => ReactNode> = {
-	dashboard: DashboardLayout,
+	cards: CardsLayout,
 	syllabus: SyllabusLayout,
 	browser: BrowserLayout,
-	flow: FlowLayout,
 }
 
 /** Fallback for slugs without a registered variant: the cut-panel mosaic. */

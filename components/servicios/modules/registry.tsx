@@ -15,15 +15,15 @@ export const SERVICE_MODULES: Record<string, () => ReactNode> = {
 	"automatizaciones": ModuleCalculator,
 }
 
-export type IncludesVariant = "dashboard" | "syllabus" | "browser" | "flow"
+export type IncludesVariant = "cards" | "syllabus" | "browser"
 
 /**
  * Visual dialect of the "Qué incluye" section per service, so the four pages
  * read as four different services instead of one template with new copy.
  */
 export const SERVICE_INCLUDES_VARIANTS: Record<string, IncludesVariant> = {
-	"reportabilidad": "dashboard",
+	"reportabilidad": "cards",
 	"capacitaciones": "syllabus",
 	"soluciones-web": "browser",
-	"automatizaciones": "flow",
+	"automatizaciones": "cards",
 }

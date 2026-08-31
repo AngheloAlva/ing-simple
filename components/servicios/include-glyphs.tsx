@@ -6,7 +6,8 @@ import { motion, type TargetAndTransition, type Transition, type Variants } from
 import type { ComponentType, ReactNode } from "react"
 
 /* --------------------------------------------------------------------------
- * Tiny identifying glyphs for the "Qué incluye" dashboard cards.
+ * Tiny identifying glyphs for the "Qué incluye" cards: 1-6 belong to
+ * reportabilidad, 7-12 to automatizaciones.
  *
  * Every glyph fits a 40×28 box, is drawn in `currentColor` with three
  * opacity tiers (0.35 / 0.6 / 1) and animates in two ways:
@@ -377,6 +378,268 @@ function HandoffGlyph({ hovered = false }: IncludeGlyphProps): ReactNode {
 	)
 }
 
+/* ------------------------------ 7. approval ------------------------------- */
+
+/** A request forks by rule: cleared automatically, or routed to a person. */
+function ApprovalGlyph({ hovered = false }: IncludeGlyphProps): ReactNode {
+	const m = useGlyphMotion(hovered)
+
+	return (
+		<svg {...SVG_PROPS} aria-hidden="true">
+			{/* The incoming request, then the fork */}
+			<motion.circle
+				cx={3.5}
+				cy={14}
+				r={2.5}
+				fill="currentColor"
+				stroke="none"
+				style={{ opacity: MID }}
+				variants={m.pop(MID, 0)}
+			/>
+			<motion.path
+				d="M6.5 14 H13"
+				strokeWidth={1.25}
+				style={{ opacity: MID }}
+				variants={m.draw(1)}
+			/>
+			<motion.path d="M13 14 C 18 14, 18 7, 23 7" strokeWidth={1.25} variants={m.draw(2)} />
+			<motion.path
+				d="M13 14 C 18 14, 18 21, 23 21"
+				strokeWidth={1.25}
+				style={{ opacity: DIM }}
+				variants={m.draw(3)}
+			/>
+
+			{/* Cleared by the rule */}
+			<motion.g {...m.hover({ scale: 1 }, { scale: 1.14 })}>
+				<motion.circle cx={31} cy={7} r={5} strokeWidth={1.5} variants={m.pop(FULL, 4)} />
+				<motion.path d="M28.5 7 L30.5 9 L33.5 5" strokeWidth={1.5} variants={m.draw(6)} />
+			</motion.g>
+
+			{/* Sent to a person instead */}
+			<motion.g variants={m.pop(DIM, 5)} style={{ opacity: DIM }}>
+				<circle cx={31} cy={18.5} r={2.25} strokeWidth={1.25} />
+				<path d="M27.5 25 A 3.5 3.5 0 0 1 34.5 25" strokeWidth={1.25} />
+			</motion.g>
+		</svg>
+	)
+}
+
+/* ----------------------------- 8. integration ----------------------------- */
+
+/** Two systems trading data both ways, so nothing is retyped in between. */
+function IntegrationGlyph({ hovered = false }: IncludeGlyphProps): ReactNode {
+	const m = useGlyphMotion(hovered)
+
+	return (
+		<svg {...SVG_PROPS} aria-hidden="true">
+			<motion.g variants={m.pop(MID, 0)} style={{ opacity: MID }}>
+				<rect x={1} y={7} width={13} height={14} rx={2} strokeWidth={1.25} />
+				<line x1={4} x2={11} y1={12} y2={12} strokeWidth={1.25} />
+				<line x1={4} x2={8.5} y1={16} y2={16} strokeWidth={1.25} />
+			</motion.g>
+
+			<motion.g variants={m.pop(MID, 1)} style={{ opacity: MID }}>
+				<rect x={26} y={7} width={13} height={14} rx={2} strokeWidth={1.25} />
+				<line x1={29} x2={36} y1={12} y2={12} strokeWidth={1.25} />
+				<line x1={29} x2={33.5} y1={16} y2={16} strokeWidth={1.25} />
+			</motion.g>
+
+			{/* Outbound on top, inbound below — the exchange runs in both directions */}
+			<motion.g {...m.hover({ x: 0 }, { x: 1.5 })}>
+				<motion.path
+					d="M16 11 H24 M21.75 9 L24 11 L21.75 13"
+					strokeWidth={1.25}
+					variants={m.pop(FULL, 3)}
+				/>
+			</motion.g>
+			<motion.g {...m.hover({ x: 0 }, { x: -1.5 })}>
+				<motion.path
+					d="M24 17 H16 M18.25 15 L16 17 L18.25 19"
+					strokeWidth={1.25}
+					style={{ opacity: MID }}
+					variants={m.pop(MID, 4)}
+				/>
+			</motion.g>
+		</svg>
+	)
+}
+
+/* ------------------------------ 9. documents ------------------------------ */
+
+/** A stack of documents the flow issues on its own. */
+function DocumentsGlyph({ hovered = false }: IncludeGlyphProps): ReactNode {
+	const m = useGlyphMotion(hovered)
+
+	return (
+		<svg {...SVG_PROPS} aria-hidden="true">
+			<motion.rect
+				x={13}
+				y={1}
+				width={15}
+				height={20}
+				rx={2}
+				strokeWidth={1.25}
+				style={{ opacity: DIM }}
+				variants={m.pop(DIM, 0)}
+			/>
+			<motion.rect
+				x={10.5}
+				y={3.5}
+				width={15}
+				height={20}
+				rx={2}
+				strokeWidth={1.25}
+				style={{ opacity: MID }}
+				variants={m.pop(MID, 1)}
+			/>
+
+			{/* The finished one, pulled clear of the stack on hover */}
+			<motion.g {...m.hover({ x: 0 }, { x: -2 })}>
+				<motion.g variants={m.pop(FULL, 2)}>
+					<rect x={8} y={6} width={15} height={20} rx={2} strokeWidth={1.25} />
+					<line x1={11} x2={20} y1={12} y2={12} strokeWidth={1.5} opacity={MID} />
+					<line x1={11} x2={17} y1={16} y2={16} strokeWidth={1.5} opacity={DIM} />
+					<line x1={11} x2={18.5} y1={20} y2={20} strokeWidth={1.5} opacity={DIM} />
+				</motion.g>
+			</motion.g>
+
+			{/* Issued automatically, not typed */}
+			<motion.path
+				d="M33.5 4.8 L34.6 7.9 L37.7 9 L34.6 10.1 L33.5 13.2 L32.4 10.1 L29.3 9 L32.4 7.9 Z"
+				fill="currentColor"
+				stroke="none"
+				variants={m.pop(FULL, 4)}
+			/>
+		</svg>
+	)
+}
+
+/* -------------------------------- 10. forms ------------------------------- */
+
+/** A form that captures the data at the source, fields then confirmation. */
+function FormsGlyph({ hovered = false }: IncludeGlyphProps): ReactNode {
+	const m = useGlyphMotion(hovered)
+
+	return (
+		<svg {...SVG_PROPS} aria-hidden="true">
+			<motion.rect
+				x={8}
+				y={1}
+				width={24}
+				height={26}
+				rx={2.5}
+				strokeWidth={1.25}
+				style={{ opacity: MID }}
+				variants={m.pop(MID, 0)}
+			/>
+			<motion.rect
+				x={11.5}
+				y={5.5}
+				width={17}
+				height={5}
+				rx={1.5}
+				strokeWidth={1.25}
+				style={{ opacity: DIM }}
+				variants={m.enter({ opacity: 0, x: -4 }, { opacity: DIM, x: 0 }, 1)}
+			/>
+			<motion.rect
+				x={11.5}
+				y={12.5}
+				width={17}
+				height={5}
+				rx={1.5}
+				strokeWidth={1.25}
+				style={{ opacity: DIM }}
+				variants={m.enter({ opacity: 0, x: -4 }, { opacity: DIM, x: 0 }, 2)}
+			/>
+
+			<motion.g {...m.hover({ scale: 1 }, { scale: 1.16 })}>
+				<motion.rect
+					x={11.5}
+					y={18.75}
+					width={7}
+					height={7}
+					rx={1.75}
+					strokeWidth={1.25}
+					variants={m.pop(FULL, 4)}
+				/>
+				<motion.path d="M13.4 22.2 L14.7 23.6 L16.9 20.9" strokeWidth={1.25} variants={m.draw(6)} />
+			</motion.g>
+		</svg>
+	)
+}
+
+/* ------------------------------- 11. alerts ------------------------------- */
+
+/** A bell that rings out, so nobody has to remember to check. */
+function AlertsGlyph({ hovered = false }: IncludeGlyphProps): ReactNode {
+	const m = useGlyphMotion(hovered)
+
+	return (
+		<svg {...SVG_PROPS} aria-hidden="true">
+			<motion.g {...m.hover({ rotate: 0 }, { rotate: -10 })}>
+				<motion.g variants={m.pop(FULL, 0)}>
+					<path d="M9 19 V13 A6 6 0 0 1 21 13 V19" strokeWidth={1.5} />
+					<line x1={6.5} x2={23.5} y1={19} y2={19} strokeWidth={1.5} />
+					<path d="M12.5 22 A 2.5 2.5 0 0 0 17.5 22" strokeWidth={1.5} />
+				</motion.g>
+			</motion.g>
+
+			{/* The alert reaching whoever needs it */}
+			<motion.path
+				d="M27 10 A 7 7 0 0 1 27 18"
+				strokeWidth={1.5}
+				style={{ opacity: MID }}
+				variants={m.draw(3)}
+			/>
+			<motion.path
+				d="M31.5 6.5 A 11 11 0 0 1 31.5 21.5"
+				strokeWidth={1.5}
+				style={{ opacity: DIM }}
+				variants={m.draw(5)}
+			/>
+		</svg>
+	)
+}
+
+/* ----------------------------- 12. monitoring ----------------------------- */
+
+/** The flow's own pulse, with a light that says it is still running. */
+function MonitoringGlyph({ hovered = false }: IncludeGlyphProps): ReactNode {
+	const m = useGlyphMotion(hovered)
+
+	return (
+		<svg {...SVG_PROPS} aria-hidden="true">
+			<motion.path d="M1 16 H8" strokeWidth={1.5} style={{ opacity: DIM }} variants={m.draw(0)} />
+			<motion.path
+				d="M8 16 L11 16 L13.5 8 L17 24 L20 13 L22.5 16 L27 16"
+				strokeWidth={1.5}
+				variants={m.draw(1)}
+			/>
+
+			<motion.g {...m.hover({ scale: 1 }, { scale: 1.2 })}>
+				<motion.circle
+					cx={34}
+					cy={16}
+					r={5.5}
+					strokeWidth={1.25}
+					style={{ opacity: DIM }}
+					variants={m.pop(DIM, 4)}
+				/>
+				<motion.circle
+					cx={34}
+					cy={16}
+					r={2.75}
+					fill="currentColor"
+					stroke="none"
+					variants={m.pop(FULL, 5)}
+				/>
+			</motion.g>
+		</svg>
+	)
+}
+
 /* -------------------------------- registry -------------------------------- */
 
 export const INCLUDE_GLYPHS: Record<string, ComponentType<IncludeGlyphProps>> = {
@@ -386,4 +649,10 @@ export const INCLUDE_GLYPHS: Record<string, ComponentType<IncludeGlyphProps>> = 
 	kpi: KpiGlyph,
 	refresh: RefreshGlyph,
 	handoff: HandoffGlyph,
+	approval: ApprovalGlyph,
+	integration: IntegrationGlyph,
+	documents: DocumentsGlyph,
+	forms: FormsGlyph,
+	alerts: AlertsGlyph,
+	monitoring: MonitoringGlyph,
 }
