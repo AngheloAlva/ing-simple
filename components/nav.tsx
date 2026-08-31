@@ -127,7 +127,7 @@ export function Nav(): ReactNode {
 								onClick={() => setMenuOpen((v) => !v)}
 								aria-expanded={menuOpen}
 								className={`focus-ring inline-flex items-center gap-1 rounded-md px-3 py-2 text-[13px] font-medium transition-colors ${
-									menuOpen ? "text-accent" : "text-foreground/80 hover:text-foreground"
+									menuOpen ? "text-primary" : "text-foreground/80 hover:text-foreground"
 								}`}
 							>
 								Servicios
