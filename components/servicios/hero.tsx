@@ -1,5 +1,6 @@
 "use client"
 
+import { Kicker } from "@/components/corner-plus"
 import { CutButton } from "@/components/cut-button"
 import GradientText from "@/components/gradient-text"
 import { SERVICE_VISUALS } from "@/components/service-diagrams"
@@ -21,7 +22,7 @@ const container: Variants = {
  * receive the full object (its `icon` field is a component function).
  */
 type ServicioHeroProps = {
-	title: string
+	shortName: string
 	href: string
 	page: ServicePage
 }
@@ -45,13 +46,9 @@ export function ServicioHero(service: ServicioHeroProps): ReactNode {
 						animate="visible"
 						className="flex flex-col items-start"
 					>
-						<motion.p
-							variants={item}
-							transition={itemTransition}
-							className="text-muted-foreground text-sm font-medium"
-						>
-							{service.title}
-						</motion.p>
+						<motion.div variants={item} transition={itemTransition}>
+							<Kicker>{service.shortName}</Kicker>
+						</motion.div>
 
 						<motion.h1
 							variants={item}

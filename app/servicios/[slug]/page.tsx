@@ -92,7 +92,7 @@ export default async function ServicePage({ params }: PageProps): Promise<ReactN
 			<span id="top" className="sr-only" />
 			<Nav />
 			<main id="main-content" className="flex-1">
-				<ServicioHero title={service.title} href={service.href} page={service.page} />
+				<ServicioHero shortName={service.shortName} href={service.href} page={service.page} />
 				<ServicioProblem problem={service.page.problem} audience={service.page.audience} />
 				{Module ? (
 					<InView>
