@@ -60,11 +60,7 @@ const LINES: Line[] = [
 			{ name: "Next.js", use: "El framework de todo lo que ponemos en producción", glyph: true },
 			{ name: "TypeScript", use: "Tipos de punta a punta, del formulario a la base", glyph: true },
 			{ name: "PostgreSQL", use: "La base de datos donde vive la operación", glyph: true },
-			{
-				name: "Recharts",
-				use: "Los gráficos viven dentro del sistema, no en un informe aparte",
-				glyph: true,
-			},
+			{ name: "NestJS", use: "El backend propio cuando el sistema lo pide", glyph: true },
 			{
 				name: "Tailwind CSS",
 				use: "Interfaces consistentes sin estilos que se pudren",
@@ -106,8 +102,9 @@ export function NosotrosStack(): ReactNode {
 					<span className="font-sans font-semibold tracking-tight">herramienta</span>
 				</h2>
 				<p className="text-muted-foreground mt-4 text-sm leading-relaxed sm:text-base">
-					No es una lista de todo lo que sabemos usar. Son las herramientas con las que
-					efectivamente entregamos, agrupadas por el servicio al que sirven.
+					Son las herramientas con las que entregamos a diario, agrupadas por el servicio al que
+					sirven. No es todo lo que usamos: cada proyecto suma las suyas según lo que necesite
+					resolver.
 				</p>
 			</div>
 
@@ -140,6 +137,16 @@ export function NosotrosStack(): ReactNode {
 					</div>
 				))}
 			</div>
+
+			<p className="text-muted-foreground border-border/60 mt-10 border-t border-dotted pt-5 text-sm leading-relaxed">
+				Cada caso publicado detalla el stack completo con el que se construyó.{" "}
+				<Link
+					href="/casos"
+					className="focus-ring text-foreground hover:text-primary font-medium transition-colors duration-200"
+				>
+					Ver los casos
+				</Link>
+			</p>
 		</section>
 	)
 }
