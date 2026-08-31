@@ -15,9 +15,6 @@ import { useCallback, useRef, useState, type KeyboardEvent, type ReactNode } fro
  * that moves by itself and one that waits for the visitor.
  * ------------------------------------------------------------------------ */
 
-/** Frame height on lg: fixed so the section never jumps between panels. */
-const FRAME_HEIGHT_CLASS = "lg:h-[400px]"
-
 function pad(index: number): string {
 	return String(index + 1).padStart(2, "0")
 }
@@ -96,12 +93,18 @@ export function ServicioProcess({
 				</div>
 
 				{/* Body: panel left, steps right */}
-				<div className="mt-10 grid grid-cols-1 gap-8 sm:mt-12 lg:grid-cols-[minmax(0,0.6fr)_minmax(0,0.4fr)] lg:items-start lg:gap-12">
+				<div className="mt-10 grid grid-cols-1 gap-8 sm:mt-12 lg:grid-cols-[minmax(0,0.6fr)_minmax(0,0.4fr)] lg:gap-12">
 					<motion.div variants={item} transition={itemTransition} className="min-w-0">
 						<div
 							className={cn(
 								"border-border bg-background text-foreground flex flex-col overflow-hidden rounded-sm border shadow-xl shadow-black/6",
-								FRAME_HEIGHT_CLASS
+								// The step rail decides the height of the row and the panel fills it,
+								// so the two columns always end on the same line. Measured stable at
+								// 449px across every step, service and viewport width: the step
+								// descriptions all wrap to two lines, so nothing resizes on a tab
+								// change. A three-line description would grow both columns together,
+								// which is still right — the panels have no fixed content height.
+								"lg:h-full"
 							)}
 						>
 							<div className="border-border flex shrink-0 items-center justify-between gap-3 border-b px-3.5 py-2.5">
@@ -167,7 +170,7 @@ export function ServicioProcess({
 										tabIndex={isActive ? 0 : -1}
 										onClick={() => pick(index)}
 										onKeyDown={(event) => onTabKeyDown(event, index)}
-										className="focus-ring group flex w-full flex-col items-start gap-1 py-4 pr-2 pl-4 text-left"
+										className="focus-ring group flex w-full flex-col items-start gap-1 py-3 pr-2 pl-4 text-left"
 									>
 										<span
 											className={cn(

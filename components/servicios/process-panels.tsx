@@ -890,9 +890,405 @@ function AcompanamientoPanel(): ReactNode {
 	)
 }
 
+/* ======================= AUTOMATIZACIONES =============================== */
+
+/* ---- 01 · Mapeo del proceso --------------------------------------------- */
+
+type ManualStep = { step: string; who: string; time: string; flag?: string }
+
+const FLOW_TODAY: ManualStep[] = [
+	{ step: "Llega la solicitud", who: "Correo", time: "—" },
+	{ step: "Revisar presupuesto", who: "Analista", time: "25 min" },
+	{ step: "Pedir el visto bueno", who: "Jefatura", time: "1,5 días", flag: "Espera" },
+	{ step: "Cargar en el ERP", who: "Analista", time: "20 min", flag: "Redigita" },
+	{ step: "Avisar al solicitante", who: "Correo", time: "10 min" },
+]
+
+const TIME_LOSS: { label: string; pct: number }[] = [
+	{ label: "Esperando aprobación", pct: 62 },
+	{ label: "Redigitando en el ERP", pct: 20 },
+	{ label: "Revisando a mano", pct: 12 },
+	{ label: "Avisando y archivando", pct: 6 },
+]
+
+function MapeoPanel(): ReactNode {
+	return (
+		<div className="flex h-full flex-col">
+			<div className="grid flex-1 gap-4 pb-4 sm:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] sm:gap-5">
+				<div className="flex flex-col">
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>El proceso hoy</SectionLabel>
+						<span className="text-muted-foreground text-[10px] tabular-nums">2 días por caso</span>
+					</div>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{FLOW_TODAY.map((row) => (
+							<div key={row.step} className="flex items-center justify-between gap-3 px-2.5 py-2">
+								<span className="flex min-w-0 items-baseline gap-1.5">
+									<span className="truncate text-[11px] font-medium">{row.step}</span>
+									<span className="text-muted-foreground shrink-0 text-[10px]">· {row.who}</span>
+								</span>
+								<span className="flex shrink-0 items-center gap-1.5">
+									{row.flag ? <Chip>{row.flag}</Chip> : null}
+									<span className="text-muted-foreground text-[10px] tabular-nums">{row.time}</span>
+								</span>
+							</div>
+						))}
+					</Tile>
+					<p className="text-muted-foreground mt-auto pt-2 text-[10px]">
+						Lo cronometramos acompañando el proceso real, no preguntando cuánto creen que demora.
+					</p>
+				</div>
+				<div className="flex flex-col">
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>Dónde se va el tiempo</SectionLabel>
+						<span className="text-muted-foreground text-[10px]">% del ciclo</span>
+					</div>
+					<Tile className="mt-2 flex-1 px-2.5 py-2">
+						<div className="flex h-full flex-col justify-between gap-2">
+							{TIME_LOSS.map((row) => (
+								<div key={row.label}>
+									<div className="flex items-baseline justify-between gap-2">
+										<span className="text-[10px] leading-snug">{row.label}</span>
+										<span className="text-muted-foreground text-[10px] tabular-nums">
+											{row.pct} %
+										</span>
+									</div>
+									<div className="bg-border/60 mt-1 h-1 w-full rounded-full">
+										<div className="bg-primary h-1 rounded-full" style={{ width: `${row.pct}%` }} />
+									</div>
+								</div>
+							))}
+						</div>
+					</Tile>
+				</div>
+			</div>
+			<Outcome chip={<Chip tone="primary">Semana 1</Chip>}>
+				el proceso actual medido paso a paso, con las etapas que se llevan las horas
+			</Outcome>
+		</div>
+	)
+}
+
+/* ---- 02 · Diseño del flujo ---------------------------------------------- */
+
+type FlowDecision = { step: string; mode: "auto" | "persona" }
+
+const FLOW_DESIGN: FlowDecision[] = [
+	{ step: "Entrada por formulario", mode: "auto" },
+	{ step: "Validar presupuesto y proveedor", mode: "auto" },
+	{ step: "Aprobar sobre el tope", mode: "persona" },
+	{ step: "Crear la orden en el ERP", mode: "auto" },
+	{ step: "Avisar al solicitante", mode: "auto" },
+]
+
+const FLOW_RULES: [string, string][] = [
+	["Tope automático", "$500.000"],
+	["Sobre el tope", "Jefatura"],
+	["Proveedor no vigente", "Rechaza"],
+	["Sin presupuesto", "Avisa y espera"],
+]
+
+function FlujoPanel(): ReactNode {
+	return (
+		<div className="flex h-full flex-col">
+			<div className="grid flex-1 gap-4 pb-4 sm:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] sm:gap-5">
+				<div className="flex flex-col">
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>Qué corre solo</SectionLabel>
+						<span className="text-muted-foreground text-[10px] tabular-nums">4 de 5 pasos</span>
+					</div>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{FLOW_DESIGN.map((row) => (
+							<div key={row.step} className="flex items-center justify-between gap-3 px-2.5 py-2">
+								<span className="flex min-w-0 items-center gap-2">
+									{row.mode === "auto" ? (
+										<CheckMark />
+									) : (
+										<span
+											className="border-border inline-block h-4 w-4 shrink-0 rounded-full border border-dotted"
+											aria-hidden="true"
+										/>
+									)}
+									<span
+										className={cn(
+											"truncate text-[11px]",
+											row.mode === "auto" ? "font-medium" : "text-muted-foreground"
+										)}
+									>
+										{row.step}
+									</span>
+								</span>
+								<span className="text-muted-foreground shrink-0 text-[10px]">
+									{row.mode === "auto" ? "Automático" : "Persona"}
+								</span>
+							</div>
+						))}
+					</Tile>
+					<p className="text-muted-foreground mt-auto pt-2 text-[10px]">
+						El paso que queda con persona es una decisión, no una limitación técnica.
+					</p>
+				</div>
+				<div className="flex flex-col">
+					<SectionLabel>Reglas del negocio</SectionLabel>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{FLOW_RULES.map(([label, value]) => (
+							<div key={label} className="flex items-baseline justify-between gap-2 px-2.5 py-2">
+								<span className="text-muted-foreground min-w-0 truncate text-[10px]">{label}</span>
+								<span className="shrink-0 text-[10px] font-medium">{value}</span>
+							</div>
+						))}
+					</Tile>
+					<p className="text-muted-foreground mt-auto pt-2 text-[10px]">
+						Escritas y firmadas antes de construir nada.
+					</p>
+				</div>
+			</div>
+			<Outcome chip={<Chip tone="primary">Semana 2</Chip>}>
+				el flujo definido: qué corre solo, qué pasa por una persona y bajo qué regla
+			</Outcome>
+		</div>
+	)
+}
+
+/* ---- 03 · Implementación ------------------------------------------------ */
+
+type Connection = { name: string; detail: string; live: boolean }
+
+const CONNECTIONS: Connection[] = [
+	{ name: "ERP", detail: "Órdenes de compra", live: true },
+	{ name: "SharePoint", detail: "Adjuntos y registro", live: true },
+	{ name: "Correo", detail: "Entrada y avisos", live: true },
+	{ name: "Firma digital", detail: "Casos sobre el tope", live: false },
+]
+
+const BUILD_ITEMS: { label: string; done: boolean }[] = [
+	{ label: "Formulario de entrada", done: true },
+	{ label: "Validaciones y reglas", done: true },
+	{ label: "Creación de la orden", done: true },
+	{ label: "Avisos al solicitante", done: true },
+	{ label: "Manejo de errores", done: false },
+]
+
+function ImplementacionPanel(): ReactNode {
+	return (
+		<div className="flex h-full flex-col">
+			<div className="grid flex-1 gap-4 pb-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:gap-5">
+				<div className="flex flex-col">
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>Conexiones</SectionLabel>
+						<span className="text-muted-foreground text-[10px] tabular-nums">3 de 4</span>
+					</div>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{CONNECTIONS.map((row) => (
+							<div key={row.name} className="flex items-center justify-between gap-3 px-2.5 py-2">
+								<span className="flex min-w-0 items-baseline gap-1.5">
+									<span className="text-[11px] font-medium">{row.name}</span>
+									<span className="text-muted-foreground truncate text-[10px]">· {row.detail}</span>
+								</span>
+								<span className="flex shrink-0 items-center gap-1.5">
+									{row.live ? <LiveDot /> : null}
+									<span className="text-muted-foreground text-[10px]">
+										{row.live ? "Conectado" : "En trámite"}
+									</span>
+								</span>
+							</div>
+						))}
+					</Tile>
+					<p className="text-muted-foreground mt-auto pt-2 text-[10px]">
+						Contra tus sistemas y tus datos, en un ambiente aparte del productivo.
+					</p>
+				</div>
+				<div className="flex flex-col">
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>Construcción</SectionLabel>
+						<span className="text-muted-foreground text-[10px] tabular-nums">4 de 5</span>
+					</div>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{BUILD_ITEMS.map((row) => (
+							<div key={row.label} className="flex items-center gap-2 px-2.5 py-2">
+								{row.done ? (
+									<CheckMark />
+								) : (
+									<span
+										className="border-border inline-block h-4 w-4 shrink-0 rounded-full border border-dotted"
+										aria-hidden="true"
+									/>
+								)}
+								<span
+									className={cn(
+										"truncate text-[11px]",
+										row.done ? "font-medium" : "text-muted-foreground"
+									)}
+								>
+									{row.label}
+								</span>
+							</div>
+						))}
+					</Tile>
+				</div>
+			</div>
+			<Outcome chip={<Chip tone="primary">Semanas 3-4</Chip>}>
+				el flujo armado y enchufado, corriendo fuera de producción
+			</Outcome>
+		</div>
+	)
+}
+
+/* ---- 04 · Pruebas con tu equipo ----------------------------------------- */
+
+const TEST_RESULTS: { label: string; value: string; green?: boolean }[] = [
+	{ label: "Casos probados", value: "40" },
+	{ label: "Resueltos solos", value: "34", green: true },
+	{ label: "Derivados a una persona", value: "5" },
+	{ label: "Marcados para corregir", value: "1" },
+]
+
+const TEST_NOTES: { who: string; note: string }[] = [
+	{ who: "Abastecimiento", note: "Faltaba el centro de costo en el aviso" },
+	{ who: "Jefatura", note: "Aprobar desde el correo, sin entrar al sistema" },
+	{ who: "Contabilidad", note: "Adjuntar la cotización a la orden" },
+]
+
+function PruebasPanel(): ReactNode {
+	return (
+		<div className="flex h-full flex-col">
+			<div className="grid flex-1 gap-4 pb-4 sm:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] sm:gap-5">
+				<div className="flex flex-col">
+					<SectionLabel>Corrida de prueba</SectionLabel>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{TEST_RESULTS.map((row) => (
+							<div
+								key={row.label}
+								className="flex items-baseline justify-between gap-2 px-2.5 py-2"
+							>
+								<span className="text-muted-foreground min-w-0 text-[10px] leading-snug">
+									{row.label}
+								</span>
+								<span
+									className={cn(
+										"shrink-0 text-[11px] font-semibold tabular-nums",
+										row.green && "text-brand-green-text"
+									)}
+								>
+									{row.value}
+								</span>
+							</div>
+						))}
+					</Tile>
+					<p className="text-muted-foreground mt-auto pt-2 text-[10px]">
+						Casos reales del mes pasado, no ejemplos inventados.
+					</p>
+				</div>
+				<div className="flex flex-col">
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>Lo que pidió el equipo</SectionLabel>
+						<span className="text-muted-foreground text-[10px] tabular-nums">3 ajustes</span>
+					</div>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{TEST_NOTES.map((row) => (
+							<div key={row.who} className="flex items-start gap-2 px-2.5 py-2">
+								<CheckMark className="bg-brand-green/15 text-brand-green-text mt-px" />
+								<span className="min-w-0">
+									<span className="block text-[10px] leading-snug">{row.note}</span>
+									<span className="text-muted-foreground block text-[10px]">{row.who}</span>
+								</span>
+							</div>
+						))}
+					</Tile>
+				</div>
+			</div>
+			<Outcome chip={<Chip tone="green">Aplicado</Chip>}>
+				el flujo validado por quienes lo van a usar, con sus correcciones ya adentro
+			</Outcome>
+		</div>
+	)
+}
+
+/* ---- 05 · Puesta en marcha ---------------------------------------------- */
+
+const WEEK_RUNS: { day: string; runs: number }[] = [
+	{ day: "Lun", runs: 41 },
+	{ day: "Mar", runs: 38 },
+	{ day: "Mié", runs: 45 },
+	{ day: "Jue", runs: 40 },
+	{ day: "Vie", runs: 36 },
+]
+
+const WEEK_PEAK = 45
+
+const FAILSAFE: string[] = [
+	"Reintenta 3 veces antes de rendirse",
+	"Avisa a soporte si igual falla",
+	"Cada ejecución queda registrada",
+	"Plan B escrito para el paso crítico",
+]
+
+function MarchaPanel(): ReactNode {
+	return (
+		<div className="flex h-full flex-col">
+			<div className="grid flex-1 gap-4 pb-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:gap-5">
+				<div className="flex flex-col">
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>Primera semana en vivo</SectionLabel>
+						<span className="flex items-center gap-1.5">
+							<LiveDot />
+							<span className="text-muted-foreground text-[10px] tabular-nums">
+								200 ejecuciones
+							</span>
+						</span>
+					</div>
+					<Tile className="mt-2 flex-1 px-2.5 py-2.5">
+						{/*
+						 * The bar needs a parent with a resolved height, so the track is its
+						 * own `flex-1` row inside a fixed-height column. Sizing the bar
+						 * against the column itself gives a percentage of `auto`, which
+						 * computes to zero and draws nothing.
+						 */}
+						<div className="flex h-full items-stretch justify-between gap-2">
+							{WEEK_RUNS.map((row) => (
+								<div key={row.day} className="flex min-w-0 flex-1 flex-col items-center gap-1.5">
+									<span className="text-muted-foreground text-[10px] tabular-nums">{row.runs}</span>
+									<div className="flex w-full flex-1 items-end">
+										<div
+											className="bg-primary mx-auto w-full max-w-8 rounded-t-sm"
+											style={{ height: `${(row.runs / WEEK_PEAK) * 100}%` }}
+										/>
+									</div>
+									<span className="text-muted-foreground text-[10px]">{row.day}</span>
+								</div>
+							))}
+						</div>
+					</Tile>
+					<p className="text-muted-foreground mt-auto pt-2 text-[10px] tabular-nums">
+						0 caídas · 0 casos perdidos
+					</p>
+				</div>
+				<div className="flex flex-col">
+					<SectionLabel>Si algo falla</SectionLabel>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{FAILSAFE.map((line) => (
+							<div key={line} className="flex items-start gap-2 px-2.5 py-2">
+								<CheckMark className="bg-brand-green/15 text-brand-green-text mt-px" />
+								<span className="text-[10px] leading-snug">{line}</span>
+							</div>
+						))}
+					</Tile>
+					<p className="text-muted-foreground mt-auto pt-2 text-[10px]">
+						Un flujo que falla en silencio es peor que el proceso manual.
+					</p>
+				</div>
+			</div>
+			<Outcome chip={<Chip tone="green">En producción</Chip>}>
+				el flujo corriendo con monitoreo y alertas, acompañado las primeras semanas
+			</Outcome>
+		</div>
+	)
+}
+
 export const PROCESS_PANELS: Partial<Record<string, PanelComponent[]>> = {
 	reportabilidad: [DiagnosticoPanel, ModeladoPanel, DisenoPanel, AutomatizacionPanel, EntregaPanel],
 	capacitaciones: [NivelPanel, ProgramaPanel, SesionesPanel, AplicacionPanel, AcompanamientoPanel],
+	automatizaciones: [MapeoPanel, FlujoPanel, ImplementacionPanel, PruebasPanel, MarchaPanel],
 }
 
 /* ---- Fallback ----------------------------------------------------------- */
