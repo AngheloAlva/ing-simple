@@ -19,6 +19,16 @@ import MoneyIcon from "@/components/icons/money"
 import GsapIcon from "@/components/icons/gsap"
 import PDFIcon from "@/components/icons/pdf"
 import TailwindCSSIcon from "@/components/icons/tailwindcss"
+import PowerAutomateIcon from "@/components/icons/power-automate"
+import PowerPlatformIcon from "@/components/icons/power-platform"
+import { MicrosoftSharePoint } from "@/components/icons/sharepoint"
+import { MicrosoftOneDrive } from "@/components/icons/one-drive"
+import PowerAppsIcon from "@/components/icons/power-apps"
+import { MicrosoftOffice } from "@/components/icons/office"
+import { MicrosoftExcel } from "@/components/icons/excel"
+import { MicrosoftTeams } from "@/components/icons/teams"
+import PowerBiIcon from "@/components/icons/power-bi"
+import { Microsoft } from "@/components/icons/microsoft"
 
 interface TechBrand {
 	icon: (props: React.SVGProps<SVGSVGElement>) => React.ReactElement
@@ -193,6 +203,94 @@ const TECH_BRANDS: { match: string[]; brand: TechBrand }[] = [
 		brand: {
 			icon: (props: React.SVGProps<SVGSVGElement>) => <CloudinaryIcon {...props} />,
 			background: "#FFFFFF",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["power bi"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <PowerBiIcon {...props} />,
+			background: "#F2C811",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["power automate"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <PowerAutomateIcon {...props} />,
+			background: "#0066FF",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["power apps"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <PowerAppsIcon {...props} />,
+			background: "#742774",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["power platform"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <PowerPlatformIcon {...props} />,
+			background: "#742774",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["sharepoint"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <MicrosoftSharePoint {...props} />,
+			background: "#038387",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["onedrive"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <MicrosoftOneDrive {...props} />,
+			background: "#0078D4",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["excel"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <MicrosoftExcel {...props} />,
+			background: "#107C41",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["teams"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <MicrosoftTeams {...props} />,
+			background: "#4B53BC",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["microsoft 365"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <MicrosoftOffice {...props} />,
+			background: "#D83B01",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["office"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <MicrosoftOffice {...props} />,
+			background: "#D83B01",
+			foreground: "#FFFFFF",
+		},
+	},
+	{
+		match: ["microsoft"],
+		brand: {
+			icon: (props: React.SVGProps<SVGSVGElement>) => <Microsoft {...props} />,
+			background: "#00A4EF",
 			foreground: "#FFFFFF",
 		},
 	},

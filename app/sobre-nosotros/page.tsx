@@ -4,6 +4,7 @@ import { FinalCta } from "@/components/final-cta";
 import { NosotrosStory } from "@/components/nosotros/story";
 import { NosotrosMissionVision } from "@/components/nosotros/mission-vision";
 import { NosotrosValues } from "@/components/nosotros/values";
+import { NosotrosStack } from "@/components/nosotros/stack";
 import { NosotrosTeam } from "@/components/nosotros/team";
 import { InView } from "@/lib/motion";
 import { createMetadata } from "@/lib/metadata";
@@ -29,6 +30,9 @@ export default function SobreNosotrosPage(): ReactNode {
         </InView>
         <InView>
           <NosotrosValues />
+        </InView>
+        <InView>
+          <NosotrosStack />
         </InView>
         <InView>
           <NosotrosTeam />
