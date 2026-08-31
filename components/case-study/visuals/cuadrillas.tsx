@@ -1063,7 +1063,7 @@ export const cuadrillasVisuals: CaseStudyVisuals = {
 			"Pedidos por WhatsApp, planillas de turnos y reportes de campo entran por la izquierda. Ingeniería Simple los procesa y los convierte en los módulos operativos de Bimakers.",
 		axisColor: "#0f766e",
 		centerContent: (
-			<Logo className="h-10 w-auto" classNameIcon="text-accent" classNameText="text-foreground" />
+			<Logo className="h-10 w-auto" classNameIcon="text-primary" classNameText="text-foreground" />
 		),
 	},
 	architecture: {

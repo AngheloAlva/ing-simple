@@ -622,7 +622,7 @@ function CapacidadMockup() {
 		<div className="border-border bg-background flex h-full flex-col gap-1.5 rounded-xl border p-3">
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-1.5">
-					<Activity className="text-accent h-3 w-3" />
+					<Activity className="text-primary h-3 w-3" />
 					<span className="text-foreground text-[10px] font-semibold">Capacidad</span>
 				</div>
 				<span className="text-muted-foreground text-[7px]">por día</span>

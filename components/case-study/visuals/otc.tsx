@@ -520,7 +520,7 @@ function IndicadoresMockup() {
 		<div className="border-border bg-background flex flex-col gap-2 rounded-xl border p-3">
 			<div className="flex items-end justify-between">
 				<span className="text-foreground text-[10px] font-semibold">OTs / semana</span>
-				<span className="text-accent text-[10px] font-medium">
+				<span className="text-primary text-[10px] font-medium">
 					{hovered !== null ? bars[hovered] : avg}
 				</span>
 			</div>
@@ -560,7 +560,7 @@ function PermisosMockup() {
 				className="border-border bg-muted/40 relative flex w-full max-w-35 flex-col gap-1.5 rounded-md border p-2.5"
 			>
 				<div className="flex items-center gap-1.5">
-					<FileCheck2 className="text-accent h-3 w-3" />
+					<FileCheck2 className="text-primary h-3 w-3" />
 					<span className="text-foreground text-[9px] font-semibold">PT-04821</span>
 				</div>
 				<div className="bg-muted h-1 w-full rounded-full" />
@@ -609,7 +609,7 @@ function SolicitudesMockup() {
 	return (
 		<div className="border-border bg-background flex h-full flex-col gap-2 rounded-xl border p-3">
 			<div className="flex items-center gap-1.5">
-				<Inbox className="text-accent h-3 w-3" />
+				<Inbox className="text-primary h-3 w-3" />
 				<span className="text-foreground text-[10px] font-semibold">Bandeja</span>
 				<span className="bg-accent text-background ml-auto rounded-full px-1.5 py-0.5 text-[9px] font-medium">
 					3
@@ -649,7 +649,7 @@ export const otcVisuals: CaseStudyVisuals = {
 			"Papel, correos y Excel entran por la izquierda. Ingeniería Simple los procesa y los convierte en los seis módulos operativos de OTC 360.",
 		axisColor: "#0f766e",
 		centerContent: (
-			<Logo className="h-10 w-auto" classNameIcon="text-accent" classNameText="text-foreground" />
+			<Logo className="h-10 w-auto" classNameIcon="text-primary" classNameText="text-foreground" />
 		),
 	},
 	architecture: {

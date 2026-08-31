@@ -141,7 +141,7 @@ function SeoDominioMockup() {
 	return (
 		<div className="border-border bg-background flex h-full flex-col gap-1.5 rounded-xl border p-3">
 			<div className="flex items-center gap-1.5">
-				<Search className="text-accent h-3 w-3" />
+				<Search className="text-primary h-3 w-3" />
 				<span className="text-foreground text-[10px] font-semibold">SEO independiente</span>
 			</div>
 			<div className="flex flex-1 flex-col gap-1">
@@ -177,7 +177,7 @@ function ContenidoCompartidoMockup() {
 	return (
 		<div className="border-border bg-background flex h-full flex-col gap-1.5 rounded-xl border p-3">
 			<div className="flex items-center gap-1.5">
-				<Share2 className="text-accent h-3 w-3" />
+				<Share2 className="text-primary h-3 w-3" />
 				<span className="text-foreground text-[10px] font-semibold">Compartido vs. específico</span>
 			</div>
 			<div className="grid flex-1 grid-cols-2 gap-1.5">
@@ -225,7 +225,7 @@ function ContactoMockup() {
 	return (
 		<div className="border-border bg-background flex h-full flex-col gap-1.5 rounded-xl border p-3">
 			<div className="flex items-center gap-1.5">
-				<Mail className="text-accent h-3 w-3" />
+				<Mail className="text-primary h-3 w-3" />
 				<span className="text-foreground text-[10px] font-semibold">Contacto y cotización</span>
 			</div>
 			<div className="flex flex-1 flex-col gap-1.5 pt-0.5">
