@@ -11,7 +11,7 @@ import { useReducedMotion } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 import { ArrowRight, Check, Inbox, ListChecks, Pause, Play, Plug, UserRound } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
-import { useEffect, useState, type ReactNode } from "react"
+import { useEffect, useState, type ReactNode, type RefObject } from "react"
 
 /* --------------------------------------------------------------------------
  * Automatizaciones — not the diagram of a flow but the flow running. Requests
@@ -38,6 +38,14 @@ const SPAWN_EVERY = 3
 const MANUAL_HOLD = 2
 const DONE_LINGER = 2
 const VISIBLE = 5
+
+/**
+ * How far the day's counter may climb while someone watches. The tray keeps
+ * running, but a visitor who leaves the page open must not end up reading that
+ * a purchase-approval flow cleared a hundred requests in ten minutes: the
+ * figure would stop being a claim about the service and become an obvious lie.
+ */
+const MAX_WATCHED = 6
 
 /* -------------------------------- simulation ------------------------------ */
 
@@ -91,6 +99,41 @@ function advance(sim: Sim, flow: Flow): Sim {
 	return { tick, nextId, items: items.slice(0, VISIBLE), processed }
 }
 
+/**
+ * True only while the visual is on screen and the tab is in the foreground.
+ * `useEntrance` disconnects its observer once it has played, so the running
+ * simulation needs an observer of its own: without one the interval keeps
+ * ticking for the whole session, and in a background tab — where rAF is frozen
+ * but timers are not — the rows it retires never finish their exit animation
+ * and pile up in the DOM.
+ */
+function useOnScreen(ref: RefObject<HTMLDivElement | null>): boolean {
+	const [inView, setInView] = useState(false)
+	const [foreground, setForeground] = useState(true)
+
+	useEffect(() => {
+		const el = ref.current
+		if (!el) return
+
+		const observer = new IntersectionObserver(
+			(entries) => setInView(entries[0]?.isIntersecting ?? false),
+			{ threshold: 0 }
+		)
+		observer.observe(el)
+
+		const readVisibility = (): void => setForeground(document.visibilityState === "visible")
+		readVisibility()
+		document.addEventListener("visibilitychange", readVisibility)
+
+		return () => {
+			observer.disconnect()
+			document.removeEventListener("visibilitychange", readVisibility)
+		}
+	}, [ref])
+
+	return inView && foreground
+}
+
 function useSimulation(flow: Flow, running: boolean): Sim {
 	const [sim, setSim] = useState<Sim>(FRESH)
 	const [flowName, setFlowName] = useState(flow.name)
@@ -111,20 +154,31 @@ function useSimulation(flow: Flow, running: boolean): Sim {
 
 /* ----------------------------------- pieces ------------------------------- */
 
+/**
+ * One step of the flow, with the rule it applies. The rule used to appear on
+ * hover only, which put it out of reach on a touch screen, so the step is a
+ * real button that toggles it as well. The frame clips its own overflow, so
+ * the first and last rules anchor to their edge instead of centring.
+ */
 function StepNode({
 	flow,
 	index,
 	active,
+	open,
+	onToggle,
 	show,
 	reduced,
 }: {
 	flow: Flow
 	index: number
 	active: boolean
+	open: boolean
+	onToggle: () => void
 	show: boolean
 	reduced: boolean
 }): ReactNode {
 	const step = flow.steps[index]!
+	const isFirst = index === 0
 	const isLast = index === flow.steps.length - 1
 	return (
 		<>
@@ -133,22 +187,32 @@ function StepNode({
 				initial={reduced ? false : { opacity: 0, y: 6 }}
 				animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
 				transition={{ duration: reduced ? 0 : 0.35, ease: EASE, delay: reduced ? 0 : index * 0.08 }}
-				tabIndex={0}
-				aria-label={`${step.name}: ${step.rule}`}
 			>
-				<div
+				<button
+					type="button"
+					onClick={onToggle}
+					aria-expanded={open}
+					aria-label={`${step.name}: ${step.rule}`}
 					className={cn(
-						"focus-ring flex min-h-8 items-center justify-center rounded-sm border px-1 py-1 text-center transition-colors duration-300 sm:px-1.5",
+						"focus-ring flex min-h-8 w-full items-center justify-center rounded-sm border px-1 py-1 text-center transition-colors duration-300 sm:px-1.5",
 						active ? "border-primary bg-primary/10" : "border-border bg-background"
 					)}
 				>
 					<p className="text-[9px] leading-tight font-medium break-words sm:truncate sm:text-[10px] sm:leading-normal">
 						{step.name}
 					</p>
-				</div>
+				</button>
 				<div
 					role="tooltip"
-					className="border-border bg-background pointer-events-none absolute top-[calc(100%+4px)] left-1/2 z-20 w-40 -translate-x-1/2 rounded-sm border px-2 py-1.5 text-[10px] leading-snug opacity-0 shadow-md transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+					className={cn(
+						"border-border bg-background pointer-events-none absolute top-[calc(100%+4px)] z-20 w-40 max-w-[60vw] rounded-sm border px-2 py-1.5 text-[10px] leading-snug shadow-md transition-opacity",
+						isFirst && "left-0",
+						isLast && "right-0",
+						!isFirst && !isLast && "left-1/2 -translate-x-1/2",
+						open
+							? "opacity-100"
+							: "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"
+					)}
 				>
 					{step.rule}
 				</div>
@@ -324,15 +388,17 @@ export function AutomationFlow(): ReactNode {
 	const [flowIndex, setFlowIndex] = useState(0)
 	const [live, setLive] = useState(true)
 	const [openId, setOpenId] = useState<number | null>(null)
+	const [openStep, setOpenStep] = useState<number | null>(null)
 
 	const flow = FLOWS[flowIndex] ?? FLOWS[0]!
 	const showSteps = stage >= 1
 	const showTray = stage >= 2
 	const showCounters = stage >= 3
 
-	const sim = useSimulation(flow, live && showTray)
+	const onScreen = useOnScreen(ref)
+	const sim = useSimulation(flow, live && showTray && onScreen)
 	const activeSteps = new Set(sim.items.filter((i) => !i.done && i.hold === 0).map((i) => i.step))
-	const processedToday = flow.processedToday + sim.processed
+	const processedToday = flow.processedToday + Math.min(sim.processed, MAX_WATCHED)
 	const hoursSaved = processedToday * flow.hoursPerItem
 
 	return (
@@ -378,6 +444,7 @@ export function AutomationFlow(): ReactNode {
 								onClick={() => {
 									setFlowIndex(i)
 									setOpenId(null)
+									setOpenStep(null)
 								}}
 								className="h-auto px-1.5 py-1.5 leading-tight text-balance"
 							>
@@ -393,8 +460,9 @@ export function AutomationFlow(): ReactNode {
 					<div className="border-border rounded-sm border p-2.5">
 						<div className="flex items-center justify-between text-[11px]">
 							<p className="font-medium">Pasos del flujo</p>
-							<p className="text-muted-foreground hidden text-[10px] sm:block">
-								Pasa el mouse para ver la regla
+							<p className="text-muted-foreground text-[10px]">
+								<span className="sm:hidden">Toca un paso para ver su regla</span>
+								<span className="hidden sm:inline">Pasa el mouse para ver la regla</span>
 							</p>
 						</div>
 						<div key={flow.name} className="mt-2 flex items-center">
@@ -404,6 +472,8 @@ export function AutomationFlow(): ReactNode {
 									flow={flow}
 									index={i}
 									active={activeSteps.has(i)}
+									open={openStep === i}
+									onToggle={() => setOpenStep((prev) => (prev === i ? null : i))}
 									show={showSteps}
 									reduced={reduced}
 								/>
