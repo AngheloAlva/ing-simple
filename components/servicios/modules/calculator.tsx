@@ -204,7 +204,7 @@ export function ModuleCalculator(): ReactNode {
 						</p>
 						<div className="mt-8">
 							<CutButton variant="solid" icon="arrow" href="/contacto">
-								Recuperemos esas horas
+								Hagamos el número real
 							</CutButton>
 						</div>
 					</div>

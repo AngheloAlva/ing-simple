@@ -34,7 +34,13 @@ const INPUTS: InputSpec[] = [
 const STAGE_MS = [600, 1350, 2100]
 
 const TICK_MS = 1600
-const SPAWN_EVERY = 3
+/**
+ * A request every two ticks. At three the tray sat at two or three rows in a
+ * box built for five, so the flow the section is selling looked idle. The
+ * five-row cap stays: items enter at the top and the oldest is dropped, and
+ * the oldest is the one about to be marked Completada — the beat worth seeing.
+ */
+const SPAWN_EVERY = 2
 const MANUAL_HOLD = 2
 const DONE_LINGER = 2
 const VISIBLE = 5
@@ -389,6 +395,7 @@ export function AutomationFlow(): ReactNode {
 	const [live, setLive] = useState(true)
 	const [openId, setOpenId] = useState<number | null>(null)
 	const [openStep, setOpenStep] = useState<number | null>(null)
+	const [trayFocused, setTrayFocused] = useState(false)
 
 	const flow = FLOWS[flowIndex] ?? FLOWS[0]!
 	const showSteps = stage >= 1
@@ -396,7 +403,13 @@ export function AutomationFlow(): ReactNode {
 	const showCounters = stage >= 3
 
 	const onScreen = useOnScreen(ref)
-	const sim = useSimulation(flow, live && showTray && onScreen)
+	/*
+	 * Reading a request holds the tray still. Without this the timer retires the
+	 * row under whoever is reading it: a keyboard user loses focus to the body
+	 * mid-trail, and an open trail vanishes mid-sentence.
+	 */
+	const reading = trayFocused || openId !== null
+	const sim = useSimulation(flow, live && showTray && onScreen && !reading)
 	const activeSteps = new Set(sim.items.filter((i) => !i.done && i.hold === 0).map((i) => i.step))
 	const processedToday = flow.processedToday + Math.min(sim.processed, MAX_WATCHED)
 	const hoursSaved = processedToday * flow.hoursPerItem
@@ -482,7 +495,13 @@ export function AutomationFlow(): ReactNode {
 					</div>
 
 					{/* Tray */}
-					<div className="border-border rounded-sm border p-2">
+					<div
+						className="border-border rounded-sm border p-2"
+						onFocus={() => setTrayFocused(true)}
+						onBlur={(event) => {
+							if (!event.currentTarget.contains(event.relatedTarget)) setTrayFocused(false)
+						}}
+					>
 						<div className="flex items-center justify-between px-2 text-[11px]">
 							<p className="font-medium">Bandeja</p>
 							<p className="text-muted-foreground flex items-center gap-1.5 text-[10px]">
