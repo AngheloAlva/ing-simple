@@ -60,7 +60,11 @@ const LINES: Line[] = [
 			{ name: "Next.js", use: "El framework de todo lo que ponemos en producción", glyph: true },
 			{ name: "TypeScript", use: "Tipos de punta a punta, del formulario a la base", glyph: true },
 			{ name: "PostgreSQL", use: "La base de datos donde vive la operación", glyph: true },
-			{ name: "NestJS", use: "El backend propio cuando el sistema lo pide", glyph: true },
+			{
+				name: "Recharts",
+				use: "Los gráficos viven dentro del sistema, no en un informe aparte",
+				glyph: true,
+			},
 			{
 				name: "Tailwind CSS",
 				use: "Interfaces consistentes sin estilos que se pudren",
@@ -136,17 +140,6 @@ export function NosotrosStack(): ReactNode {
 					</div>
 				))}
 			</div>
-
-			<p className="text-muted-foreground border-border/60 mt-10 border-t border-dotted pt-5 text-sm leading-relaxed">
-				Capacitaciones no tiene una fila propia a propósito: no trae herramientas nuevas, enseña
-				estas mismas.{" "}
-				<Link
-					href="/servicios/capacitaciones"
-					className="focus-ring text-foreground hover:text-primary font-medium transition-colors duration-200"
-				>
-					Ver el servicio
-				</Link>
-			</p>
 		</section>
 	)
 }
