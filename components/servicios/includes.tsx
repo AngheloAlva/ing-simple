@@ -171,7 +171,8 @@ function SyllabusLayout({ items }: { items: ServiceInclude[] }): ReactNode {
 	)
 }
 
-/** Soluciones Web — every item lives inside a mini browser window. */
+/** Desarrollo Web — every item lives inside a mini browser window, showing the
+ * client's own address rather than one of ours. */
 function BrowserLayout({ items }: { items: ServiceInclude[] }): ReactNode {
 	const { item, itemTransition } = useStaggerEntrance()
 
@@ -182,14 +183,14 @@ function BrowserLayout({ items }: { items: ServiceInclude[] }): ReactNode {
 					key={entry.title}
 					variants={item}
 					transition={itemTransition}
-					className="border-border/60 bg-background hover:border-primary/40 overflow-hidden rounded-xl border shadow-lg shadow-black/[0.04] transition-colors duration-200"
+					className="border-border/60 bg-background overflow-hidden rounded-xl border shadow-lg shadow-black/[0.04]"
 				>
 					<div className="border-border/60 flex items-center gap-1.5 border-b px-3 py-2">
 						<span className="bg-border h-2 w-2 rounded-full" />
 						<span className="bg-border h-2 w-2 rounded-full" />
 						<span className="bg-primary/60 h-2 w-2 rounded-full" />
 						<span className="bg-muted/60 text-muted-foreground ml-2 truncate rounded px-2 py-0.5 text-[10px]">
-							ingsimple.cl/{entry.title.toLowerCase().split(" ")[0]}
+							{entry.address ?? "tu-empresa.cl"}
 						</span>
 					</div>
 					<div className="p-6">

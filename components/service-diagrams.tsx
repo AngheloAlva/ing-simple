@@ -12,6 +12,6 @@ import type { ReactNode } from "react"
 export const SERVICE_VISUALS: Record<string, () => ReactNode> = {
 	"/servicios/reportabilidad": ReportabilityReport,
 	"/servicios/capacitaciones": TrainingProgram,
-	"/servicios/soluciones-web": WebSolution,
+	"/servicios/desarrollo-web": WebSolution,
 	"/servicios/automatizaciones": AutomationFlow,
 }

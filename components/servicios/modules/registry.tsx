@@ -1,6 +1,6 @@
 import { ModuleAnatomy } from "@/components/servicios/modules/anatomy"
-import { ModuleBeforeAfter } from "@/components/servicios/modules/before-after"
 import { ModuleCalculator } from "@/components/servicios/modules/calculator"
+import { ModuleProcessToSystem } from "@/components/servicios/modules/process-to-system"
 import { ModuleQuiz } from "@/components/servicios/modules/quiz"
 import type { ReactNode } from "react"
 
@@ -11,7 +11,7 @@ import type { ReactNode } from "react"
 export const SERVICE_MODULES: Record<string, () => ReactNode> = {
 	"reportabilidad": ModuleAnatomy,
 	"capacitaciones": ModuleQuiz,
-	"soluciones-web": ModuleBeforeAfter,
+	"desarrollo-web": ModuleProcessToSystem,
 	"automatizaciones": ModuleCalculator,
 }
 
@@ -24,6 +24,6 @@ export type IncludesVariant = "cards" | "syllabus" | "browser"
 export const SERVICE_INCLUDES_VARIANTS: Record<string, IncludesVariant> = {
 	"reportabilidad": "cards",
 	"capacitaciones": "syllabus",
-	"soluciones-web": "browser",
+	"desarrollo-web": "browser",
 	"automatizaciones": "cards",
 }

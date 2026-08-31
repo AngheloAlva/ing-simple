@@ -37,7 +37,7 @@ const ITEMS: ShowcaseItem[] = [
   {
     id: "web",
     label: "ERP a medida",
-    service: "Soluciones Web",
+    service: "Desarrollo Web",
     Panel: PanelWeb,
   },
   {

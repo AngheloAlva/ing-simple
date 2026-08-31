@@ -13,7 +13,7 @@ import { WorkflowIcon } from "@/components/icons/animated/animated-workflow"
 export const SERVICE_ICONS = {
 	reportabilidad: ChartColumnIncreasingIcon,
 	capacitaciones: GraduationCapIcon,
-	"soluciones-web": CodeIcon,
+	"desarrollo-web": CodeIcon,
 	automatizaciones: WorkflowIcon,
 } as const
 

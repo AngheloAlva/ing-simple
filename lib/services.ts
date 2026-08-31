@@ -22,6 +22,12 @@ export type ServiceInclude = {
 	 * Layouts that do not group simply ignore it.
 	 */
 	group?: string
+	/**
+	 * Optional address for the browser layout's URL bar. It stands for the
+	 * client's own site — the thing we build for them — so it must never
+	 * imply a page on ours. Layouts that draw no chrome ignore it.
+	 */
+	address?: string
 }
 
 export type ServiceStep = { title: string; desc: string }
@@ -318,11 +324,11 @@ export const SERVICES: Service[] = [
 	},
 	{
 		number: "03",
-		shortName: "Soluciones Web",
-		title: "Soluciones Web",
+		shortName: "Desarrollo Web",
+		title: "Desarrollo Web",
 		desc: "Sitios y sistemas web modernos, rápidos y a medida.",
-		href: "/servicios/soluciones-web",
-		slug: "soluciones-web",
+		href: "/servicios/desarrollo-web",
+		slug: "desarrollo-web",
 		image: "/img/about/web.png",
 		icon: Code,
 		featureTitle: "Presencia digital a medida",
@@ -352,26 +358,32 @@ export const SERVICES: Service[] = [
 			includes: [
 				{
 					title: "Sitios corporativos y landing pages",
+					address: "tu-empresa.cl",
 					desc: "Presencia digital rápida, cuidada y orientada a generar contactos, con SEO técnico desde el primer commit.",
 				},
 				{
 					title: "Sistemas de gestión a medida",
+					address: "tu-empresa.cl/operaciones",
 					desc: "Plataformas que digitalizan tu proceso completo: órdenes de trabajo, inventarios, operaciones, lo que tu negocio necesite.",
 				},
 				{
 					title: "Portales con roles y permisos",
+					address: "portal.tu-empresa.cl",
 					desc: "Cada usuario ve y hace solo lo que le corresponde, con trazabilidad de cada acción.",
 				},
 				{
 					title: "Integraciones y APIs",
+					address: "api.tu-empresa.cl",
 					desc: "Conectamos el sistema con tus herramientas actuales: ERP, facturación, correo, pasarelas y servicios externos.",
 				},
 				{
 					title: "Performance y experiencia de usuario",
+					address: "tu-empresa.cl/cotizar",
 					desc: "Interfaces rápidas y claras que la gente entiende sin manual. La adopción es parte del diseño, no un accidente.",
 				},
 				{
 					title: "Puesta en producción y soporte",
+					address: "estado.tu-empresa.cl",
 					desc: "Despliegue, monitoreo y evolución continua. Entregamos software funcionando, no un zip con código.",
 				},
 			],
@@ -402,6 +414,10 @@ export const SERVICES: Service[] = [
 				"En una conversación de 30 minutos entendemos tu operación y te decimos por dónde empezar y con qué alcance.",
 			caseCategory: "desarrollo-web",
 			faq: [
+				{
+					q: "¿Solo hacen sitios web?",
+					a: "El desarrollo web es donde tenemos más kilómetros y los casos que puedes ver funcionando. La base técnica es la misma para aplicaciones móviles, de escritorio o integraciones de IA sobre tus procesos, así que si tu proyecto va por ahí lo conversamos y te decimos con franqueza qué hemos hecho antes y qué haríamos por primera vez.",
+				},
 				{
 					q: "¿Cómo cotizan un proyecto web?",
 					a: "Partimos con una conversación de diagnóstico gratuita para entender qué necesitas. Con eso preparamos una propuesta con alcance, etapas y cronograma claros, antes de comprometer nada.",

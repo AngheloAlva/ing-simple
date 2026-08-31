@@ -33,7 +33,7 @@ import { motion } from "motion/react"
 import { useState, type ReactNode } from "react"
 
 /* --------------------------------------------------------------------------
- * Soluciones Web — a corporate site in production with the client's own
+ * Desarrollo Web — a corporate site in production with the client's own
  * process built into it: the quote request that used to live in email and
  * WhatsApp is now a form that lands in the CRM with a response commitment.
  * The preview is navigable and reflows per device; the audit it ships with

@@ -1,5 +1,5 @@
 /* --------------------------------------------------------------------------
- * Data behind the Soluciones Web visual: a corporate site with a quote flow
+ * Data behind the Desarrollo Web visual: a corporate site with a quote flow
  * built into it, the audit it ships with, and what changed for the business.
  * ------------------------------------------------------------------------ */
 

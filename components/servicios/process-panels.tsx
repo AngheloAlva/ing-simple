@@ -1285,10 +1285,346 @@ function MarchaPanel(): ReactNode {
 	)
 }
 
+/* ======================= Desarrollo Web ================================== */
+
+/* ---- 01 · Levantamiento -------------------------------------------------- */
+
+type DataHome = { data: string; tool: string; risk: string }
+
+const DATA_TODAY: DataHome[] = [
+	{ data: "Clientes", tool: "Planilla compartida", risk: "3 versiones" },
+	{ data: "Solicitudes", tool: "Correo", risk: "Sin historial" },
+	{ data: "Estados", tool: "WhatsApp", risk: "Se pierde" },
+	{ data: "Facturación", tool: "ERP", risk: "Isla" },
+]
+
+const SURVEY_QUESTIONS = [
+	"¿Quién decide, y con qué información al frente?",
+	"¿Qué pasa hoy cuando alguien se equivoca?",
+	"¿Qué dato nadie quiere volver a digitar?",
+	"¿Qué reporte se arma a mano cada mes?",
+]
+
+function LevantamientoPanel(): ReactNode {
+	return (
+		<div className="flex h-full flex-col">
+			<div className="grid flex-1 gap-4 pb-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:gap-5">
+				<div className="flex flex-col">
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>Dónde vive tu información</SectionLabel>
+						<span className="text-muted-foreground text-[10px]">Hoy</span>
+					</div>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{DATA_TODAY.map((row) => (
+							<div key={row.data} className="flex items-center justify-between gap-3 px-2.5 py-2">
+								<span className="flex min-w-0 items-baseline gap-1.5">
+									<span className="truncate text-[11px] font-medium">{row.data}</span>
+									<span className="text-muted-foreground shrink-0 text-[10px]">· {row.tool}</span>
+								</span>
+								<Chip>{row.risk}</Chip>
+							</div>
+						))}
+					</Tile>
+					<p className="text-muted-foreground pt-2.5 text-[10px]">
+						Lo levantamos sentados en tu operación, mirando cómo trabaja la gente de verdad.
+					</p>
+				</div>
+				<div className="flex flex-col">
+					<SectionLabel>Lo que preguntamos</SectionLabel>
+					<Tile className="mt-2 px-2.5 py-2.5">
+						<div className="flex flex-col gap-2.5">
+							{SURVEY_QUESTIONS.map((question) => (
+								<div key={question} className="flex items-start gap-2">
+									<CheckMark className="mt-px" />
+									<span className="text-[10px] leading-snug">{question}</span>
+								</div>
+							))}
+						</div>
+					</Tile>
+				</div>
+			</div>
+			<Outcome chip={<Chip tone="primary">Semanas 1-2</Chip>}>
+				el mapa de tu operación, con la primera versión útil ya acotada
+			</Outcome>
+		</div>
+	)
+}
+
+/* ---- 02 · Propuesta y diseño -------------------------------------------- */
+
+type ScopeItem = { module: string; stage: 1 | 2 | 3 }
+
+const SCOPE: ScopeItem[] = [
+	{ module: "Usuarios, roles y permisos", stage: 1 },
+	{ module: "Solicitudes y aprobaciones", stage: 1 },
+	{ module: "Reportes de gestión", stage: 2 },
+	{ module: "Portal para clientes", stage: 2 },
+	{ module: "Integración con el ERP", stage: 3 },
+]
+
+const PROTOTYPE_SCREENS = ["Bandeja de pendientes", "Detalle de solicitud", "Panel de gerencia"]
+
+function PropuestaPanel(): ReactNode {
+	return (
+		<div className="flex h-full flex-col">
+			<div className="grid flex-1 gap-4 pb-4 sm:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] sm:gap-5">
+				<div className="flex flex-col">
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>Alcance por etapas</SectionLabel>
+						<span className="text-muted-foreground text-[10px]">Qué entra primero</span>
+					</div>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{SCOPE.map((row) => (
+							<div key={row.module} className="flex items-center justify-between gap-3 px-2.5 py-2">
+								<span className="truncate text-[11px] font-medium">{row.module}</span>
+								<Chip tone={row.stage === 1 ? "primary" : "muted"}>Etapa {row.stage}</Chip>
+							</div>
+						))}
+					</Tile>
+					<p className="text-muted-foreground pt-2.5 text-[10px]">
+						La etapa 1 es la versión más chica que ya te sirve en producción.
+					</p>
+				</div>
+				<div className="flex flex-col">
+					<SectionLabel>Prototipo navegable</SectionLabel>
+					<Tile className="mt-2 px-2.5 py-2.5">
+						<div className="flex flex-col gap-2.5">
+							{PROTOTYPE_SCREENS.map((screen) => (
+								<div key={screen} className="border-border/60 rounded-sm border px-2 py-1.5">
+									<div className="flex items-center gap-1" aria-hidden="true">
+										<span className="bg-border h-1 w-1 rounded-full" />
+										<span className="bg-border h-1 w-1 rounded-full" />
+										<span className="bg-primary/60 h-1 w-1 rounded-full" />
+									</div>
+									<p className="mt-1 text-[10px] leading-snug font-medium">{screen}</p>
+								</div>
+							))}
+							<p className="text-muted-foreground text-[10px] leading-snug">
+								Se navega y se comenta antes de programar nada.
+							</p>
+						</div>
+					</Tile>
+				</div>
+			</div>
+			<Outcome chip={<Chip tone="primary">Semana 3</Chip>}>
+				alcance cerrado y un prototipo que ya puedes mostrar internamente
+			</Outcome>
+		</div>
+	)
+}
+
+/* ---- 03 · Desarrollo iterativo ------------------------------------------ */
+
+type Delivery = { sprint: string; shipped: string; state: "Entregado" | "En curso" | "Siguiente" }
+
+const DELIVERIES: Delivery[] = [
+	{ sprint: "Entrega 1", shipped: "Login, roles y permisos", state: "Entregado" },
+	{ sprint: "Entrega 2", shipped: "Solicitudes de punta a punta", state: "Entregado" },
+	{ sprint: "Entrega 3", shipped: "Aprobaciones y notificaciones", state: "En curso" },
+	{ sprint: "Entrega 4", shipped: "Reportes de gestión", state: "Siguiente" },
+]
+
+function IterativoPanel(): ReactNode {
+	return (
+		<div className="flex h-full flex-col">
+			<div className="grid flex-1 gap-4 pb-4 sm:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] sm:gap-5">
+				<div className="flex flex-col">
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>Entregas cada dos semanas</SectionLabel>
+						<span className="text-muted-foreground text-[10px] tabular-nums">2 de 4</span>
+					</div>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{DELIVERIES.map((row) => (
+							<div key={row.sprint} className="flex items-center justify-between gap-3 px-2.5 py-2">
+								<span className="flex min-w-0 items-baseline gap-1.5">
+									<span className="shrink-0 text-[10px] font-medium tabular-nums">
+										{row.sprint}
+									</span>
+									<span className="text-muted-foreground truncate text-[10px]">
+										· {row.shipped}
+									</span>
+								</span>
+								{row.state === "Entregado" ? (
+									<CheckMark />
+								) : (
+									<Chip tone={row.state === "En curso" ? "primary" : "muted"}>{row.state}</Chip>
+								)}
+							</div>
+						))}
+					</Tile>
+					<p className="text-muted-foreground pt-2.5 text-[10px]">
+						Cada entrega se prueba con tu equipo. Si algo no calza, se corrige ahí y no al final.
+					</p>
+				</div>
+				<div className="flex flex-col">
+					<SectionLabel>Lo que ves cada quincena</SectionLabel>
+					<Tile className="mt-2 px-2.5 py-2.5">
+						<div className="flex flex-col gap-2.5">
+							{[
+								"Un ambiente de pruebas con tu usuario",
+								"El avance funcionando, no un informe",
+								"La lista de lo que viene, repriorizable",
+							].map((item) => (
+								<div key={item} className="flex items-start gap-2">
+									<CheckMark className="mt-px" />
+									<span className="text-[10px] leading-snug">{item}</span>
+								</div>
+							))}
+						</div>
+					</Tile>
+				</div>
+			</div>
+			<Outcome chip={<Chip tone="primary">Semanas 4+</Chip>}>
+				software funcionando y probado por tu equipo desde la primera quincena
+			</Outcome>
+		</div>
+	)
+}
+
+/* ---- 04 · Puesta en producción ------------------------------------------ */
+
+const GO_LIVE = [
+	"Migración de los datos históricos",
+	"Capacitación a los usuarios reales",
+	"Dominio, certificado y respaldos",
+	"Monitoreo de errores y rendimiento",
+]
+
+const GO_LIVE_FACTS: { label: string; value: string }[] = [
+	{ label: "Usuarios activos", value: "48" },
+	{ label: "Datos migrados", value: "12.400" },
+	{ label: "Respaldo", value: "Diario" },
+]
+
+function ProduccionPanel(): ReactNode {
+	return (
+		<div className="flex h-full flex-col">
+			<div className="grid flex-1 gap-4 pb-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:gap-5">
+				<div className="flex flex-col">
+					<SectionLabel>Antes de abrir la puerta</SectionLabel>
+					<Tile className="mt-2 px-2.5 py-2.5">
+						<div className="flex flex-col gap-2.5">
+							{GO_LIVE.map((item) => (
+								<div key={item} className="flex items-start gap-2">
+									<CheckMark className="mt-px" />
+									<span className="text-[10px] leading-snug">{item}</span>
+								</div>
+							))}
+						</div>
+					</Tile>
+				</div>
+				<div className="flex flex-col">
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>El día de la salida</SectionLabel>
+						<span className="text-muted-foreground flex items-center gap-1.5 text-[10px]">
+							<LiveDot />
+							En vivo
+						</span>
+					</div>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{GO_LIVE_FACTS.map((row) => (
+							<div key={row.label} className="flex items-center justify-between gap-3 px-2.5 py-2">
+								<span className="text-muted-foreground text-[10px]">{row.label}</span>
+								<span className="text-[11px] font-medium tabular-nums">{row.value}</span>
+							</div>
+						))}
+					</Tile>
+					<p className="text-muted-foreground pt-2.5 text-[10px]">
+						Acompañamos la primera semana en vivo, con el equipo trabajando.
+					</p>
+				</div>
+			</div>
+			<Outcome chip={<Chip tone="green">En producción</Chip>}>
+				el sistema andando y tu gente usándolo, no un zip con código fuente
+			</Outcome>
+		</div>
+	)
+}
+
+/* ---- 05 · Evolución continua -------------------------------------------- */
+
+type Request = { title: string; state: "Publicado" | "En curso" | "En cola" }
+
+const BACKLOG: Request[] = [
+	{ title: "Firma digital en terreno", state: "Publicado" },
+	{ title: "Exportar a Excel filtrado", state: "Publicado" },
+	{ title: "Alertas por vencimiento", state: "En curso" },
+	{ title: "App móvil para supervisores", state: "En cola" },
+]
+
+function EvolucionPanel(): ReactNode {
+	return (
+		<div className="flex h-full flex-col">
+			<div className="grid flex-1 gap-4 pb-4 sm:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] sm:gap-5">
+				<div className="flex flex-col">
+					<div className="flex items-baseline justify-between gap-2">
+						<SectionLabel>Lo que pide la operación</SectionLabel>
+						<span className="text-muted-foreground text-[10px]">Últimos 6 meses</span>
+					</div>
+					<Tile className="divide-border/60 mt-2 divide-y">
+						{BACKLOG.map((row) => (
+							<div key={row.title} className="flex items-center justify-between gap-3 px-2.5 py-2">
+								<span className="truncate text-[11px] font-medium">{row.title}</span>
+								{row.state === "Publicado" ? (
+									<CheckMark />
+								) : (
+									<Chip tone={row.state === "En curso" ? "primary" : "muted"}>{row.state}</Chip>
+								)}
+							</div>
+						))}
+					</Tile>
+					<p className="text-muted-foreground pt-2.5 text-[10px]">
+						Las ideas nacen del uso real: nadie pide esto en la reunión de levantamiento.
+					</p>
+				</div>
+				<div className="flex flex-col">
+					<SectionLabel>Cómo seguimos</SectionLabel>
+					<Tile className="mt-2 px-2.5 py-2.5">
+						<div className="flex flex-col gap-2.5">
+							{[
+								"Canal directo para reportar y pedir",
+								"Monitoreo activo, sin esperar tu llamado",
+								"Mejoras priorizadas contigo cada mes",
+							].map((item) => (
+								<div key={item} className="flex items-start gap-2">
+									<CheckMark className="mt-px" />
+									<span className="text-[10px] leading-snug">{item}</span>
+								</div>
+							))}
+						</div>
+					</Tile>
+				</div>
+			</div>
+			<Outcome chip={<Chip tone="primary">Continuo</Chip>}>
+				un sistema que crece con la operación en vez de envejecer con ella
+			</Outcome>
+		</div>
+	)
+}
+
 export const PROCESS_PANELS: Partial<Record<string, PanelComponent[]>> = {
-	reportabilidad: [DiagnosticoPanel, ModeladoPanel, DisenoPanel, AutomatizacionPanel, EntregaPanel],
-	capacitaciones: [NivelPanel, ProgramaPanel, SesionesPanel, AplicacionPanel, AcompanamientoPanel],
-	automatizaciones: [MapeoPanel, FlujoPanel, ImplementacionPanel, PruebasPanel, MarchaPanel],
+	"reportabilidad": [
+		DiagnosticoPanel,
+		ModeladoPanel,
+		DisenoPanel,
+		AutomatizacionPanel,
+		EntregaPanel,
+	],
+	"capacitaciones": [
+		NivelPanel,
+		ProgramaPanel,
+		SesionesPanel,
+		AplicacionPanel,
+		AcompanamientoPanel,
+	],
+	"automatizaciones": [MapeoPanel, FlujoPanel, ImplementacionPanel, PruebasPanel, MarchaPanel],
+	"desarrollo-web": [
+		LevantamientoPanel,
+		PropuestaPanel,
+		IterativoPanel,
+		ProduccionPanel,
+		EvolucionPanel,
+	],
 }
 
 /* ---- Fallback ----------------------------------------------------------- */
