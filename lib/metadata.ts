@@ -1,15 +1,43 @@
 import type { Metadata } from "next";
 
+/** The domain the finished site will live on, once it replaces the old one. */
+const PRODUCTION_URL = "https://ingenieriasimple.cl";
+
+/**
+ * The origin every canonical, Open Graph tag and sitemap entry is built from.
+ *
+ * Only the production deployment claims the real domain. A preview resolves to
+ * its own URL instead, so its canonicals can never point at pages the live site
+ * does not have yet. Set `NEXT_PUBLIC_SITE_URL` to override this anywhere that
+ * is not Vercel.
+ */
+function resolveSiteUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
+  if (explicit !== undefined && explicit !== "") return explicit;
+
+  if (process.env.VERCEL_ENV === "production") return PRODUCTION_URL;
+  if (process.env.VERCEL_URL !== undefined && process.env.VERCEL_URL !== "") {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+
+  return "http://localhost:3000";
+}
+
+/** True only where the site is meant to be crawled. */
+export const isIndexable =
+  process.env.VERCEL_ENV === "production" ||
+  process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true";
+
 export const siteConfig = {
   name: "IngSimple",
   description: "Soluciones simples para un mundo digital complejo",
-  url: "https://example.com",
+  url: resolveSiteUrl(),
   ogImage: "/og-image.png",
   creator: "@ingsimple",
   authors: [
     {
       name: "IngSimple",
-      url: "https://example.com",
+      url: PRODUCTION_URL,
     },
   ],
   keywords: [
@@ -19,7 +47,7 @@ export const siteConfig = {
     "Power BI",
     "capacitaciones",
     "automatización de procesos",
-    "soluciones web",
+    "desarrollo web",
     "consultoría",
   ],
 } as const;
