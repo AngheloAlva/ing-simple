@@ -5,7 +5,6 @@ import { NosotrosStory } from "@/components/nosotros/story";
 import { NosotrosMissionVision } from "@/components/nosotros/mission-vision";
 import { NosotrosValues } from "@/components/nosotros/values";
 import { NosotrosStack } from "@/components/nosotros/stack";
-import { NosotrosTeam } from "@/components/nosotros/team";
 import { InView } from "@/lib/motion";
 import { createMetadata } from "@/lib/metadata";
 import type { Metadata } from "next";
@@ -14,7 +13,7 @@ import type { ReactNode } from "react";
 export const metadata: Metadata = createMetadata({
   title: "Sobre Nosotros",
   description:
-    "Conoce al equipo detrás de IngSimple. Nuestra misión, valores e historia transformando organizaciones con soluciones digitales simples y efectivas.",
+    "Cada servicio de IngSimple nació de un problema real de un cliente. Nuestra historia, misión, valores y las herramientas con las que construimos.",
   path: "/sobre-nosotros",
 });
 
@@ -33,9 +32,6 @@ export default function SobreNosotrosPage(): ReactNode {
         </InView>
         <InView>
           <NosotrosStack />
-        </InView>
-        <InView>
-          <NosotrosTeam />
         </InView>
         <FinalCta />
       </main>

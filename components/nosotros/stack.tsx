@@ -2,6 +2,7 @@
 
 import { TechGlyph } from "@/components/case-study/tech-icon"
 import { Kicker } from "@/components/corner-plus"
+import Link from "next/link"
 import { StaggerInView, useStaggerEntrance } from "@/lib/motion"
 import { motion } from "motion/react"
 import type { ReactNode } from "react"
@@ -113,12 +114,12 @@ export function NosotrosStack(): ReactNode {
 							<h3 className="text-muted-foreground font-mono text-[11px] font-medium tracking-[0.1em] uppercase">
 								{line.service}
 							</h3>
-							<a
+							<Link
 								href={line.href}
 								className="focus-ring text-muted-foreground hover:text-primary shrink-0 text-xs font-medium transition-colors duration-200"
 							>
 								Ver el servicio
-							</a>
+							</Link>
 						</div>
 						<StaggerInView className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 							{line.tools.map((tool) => (
@@ -139,12 +140,12 @@ export function NosotrosStack(): ReactNode {
 			<p className="text-muted-foreground border-border/60 mt-10 border-t border-dotted pt-5 text-sm leading-relaxed">
 				Capacitaciones no tiene una fila propia a propósito: no trae herramientas nuevas, enseña
 				estas mismas.{" "}
-				<a
+				<Link
 					href="/servicios/capacitaciones"
 					className="focus-ring text-foreground hover:text-primary font-medium transition-colors duration-200"
 				>
 					Ver el servicio
-				</a>
+				</Link>
 			</p>
 		</section>
 	)
