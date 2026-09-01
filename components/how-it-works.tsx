@@ -6,12 +6,15 @@ import { DiagramActiveProvider } from "@/components/diagrams/hover-context"
 import { DiagramAuditScan } from "@/components/diagrams/process/audit-scan"
 import { DiagramProposalConvert } from "@/components/diagrams/process/proposal-convert"
 import { DiagramRolloutGantt } from "@/components/diagrams/process/rollout-gantt"
+import { DiagramSupportFeed } from "@/components/diagrams/process/support-feed"
 import { motion, useInView, useReducedMotion, type Variants } from "motion/react"
 import { useRef, type ReactNode } from "react"
 
 /**
- * "Tres etapas, ninguna caja negra" — the three steps rendered as a connected
+ * "Cuatro etapas, ninguna caja negra" — the steps rendered as a connected
  * timeline, each with a small visual previewing what happens at that stage.
+ * The last one is open-ended: support has no end date, so its badge is
+ * outlined instead of filled and the line keeps going past it.
  */
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
@@ -39,7 +42,15 @@ function StepVisual({ visual: Visual }: { visual: () => ReactNode }): ReactNode 
 	)
 }
 
-const STEPS = [
+type Step = {
+	title: string
+	copy: string
+	visual: () => ReactNode
+	/** A stage with no end date: drawn as a state, not a milestone. */
+	open?: boolean
+}
+
+const STEPS: Step[] = [
 	{
 		title: "Diagnóstico",
 		copy: "Revisamos tus fuentes de datos y tus procesos actuales para identificar dónde se pierde tiempo y qué conviene resolver primero.",
@@ -54,6 +65,12 @@ const STEPS = [
 		title: "Implementación",
 		copy: "Construimos por etapas con entregas frecuentes, capacitamos a tu equipo y acompañamos la puesta en marcha hasta ver resultados.",
 		visual: DiagramRolloutGantt,
+	},
+	{
+		title: "Acompañamiento",
+		copy: "No desaparecemos después de la entrega. Resolvemos dudas, ajustamos lo que la operación pida y hacemos crecer la solución a tu ritmo.",
+		visual: DiagramSupportFeed,
+		open: true,
 	},
 ]
 
@@ -95,7 +112,7 @@ export function HowItWorks(): ReactNode {
 						id="how-it-works-heading"
 						className="mt-4 font-serif text-3xl leading-[1.1] font-normal tracking-[-0.01em] text-balance sm:text-4xl lg:text-[2.75rem]"
 					>
-						Tres etapas,{" "}
+						Cuatro etapas,{" "}
 						<span className="font-sans font-semibold tracking-tight">ninguna caja negra</span>
 					</h2>
 					<p className="text-muted-foreground mt-4 max-w-xl text-sm leading-relaxed sm:text-base">
@@ -108,7 +125,7 @@ export function HowItWorks(): ReactNode {
 					initial="hidden"
 					whileInView="show"
 					viewport={{ once: true, margin: "-80px" }}
-					className="mt-8 grid list-none grid-cols-1 gap-12 lg:grid-cols-3 lg:gap-x-12"
+					className="mt-8 grid list-none grid-cols-1 gap-12 lg:grid-cols-4 lg:gap-x-8"
 				>
 					{STEPS.map((step, index) => {
 						// The connector line bleeds past the column on both sides, except at
@@ -131,7 +148,7 @@ export function HowItWorks(): ReactNode {
 								<div className="relative mt-8 flex h-10 items-center">
 									<div
 										aria-hidden="true"
-										className={`bg-border absolute top-1/2 hidden h-px -translate-y-1/2 lg:block ${segment}`}
+										className={`bg-border absolute top-1/2 hidden h-0.5 -translate-y-1/2 lg:block ${segment}`}
 									/>
 									<motion.div
 										aria-hidden="true"
@@ -143,9 +160,29 @@ export function HowItWorks(): ReactNode {
 											delay: 0.3 + index * 0.35,
 											ease: "linear",
 										}}
-										className={`bg-primary absolute top-1/2 hidden h-px origin-left -translate-y-1/2 lg:block ${segment}`}
+										className={`bg-primary absolute top-1/2 hidden h-0.5 origin-left -translate-y-1/2 lg:block ${segment}`}
 									/>
-									<span className="bg-primary text-primary-foreground relative z-10 flex h-10 w-10 items-center justify-center rounded-sm font-mono text-sm font-medium">
+									{step.open ? (
+										/* The line does not stop at the badge: it runs off the grid, dashed. */
+										<motion.div
+											aria-hidden="true"
+											initial={reduce ? false : { opacity: 0 }}
+											whileInView={{ opacity: 1 }}
+											viewport={{ once: true, margin: "-80px" }}
+											transition={{
+												duration: 0.35,
+												delay: 0.3 + (index + 1) * 0.35,
+											}}
+											className="border-primary absolute top-1/2 -right-12 left-0 hidden -translate-y-1/2 border-t-2 border-dashed lg:block"
+										/>
+									) : null}
+									<span
+										className={`relative z-10 flex h-10 w-10 items-center justify-center rounded-sm font-mono text-sm font-medium ${
+											step.open
+												? "border-primary bg-background text-primary border"
+												: "bg-primary text-primary-foreground"
+										}`}
+									>
 										{String(index + 1).padStart(2, "0")}
 									</span>
 								</div>

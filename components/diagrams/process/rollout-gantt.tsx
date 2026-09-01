@@ -3,7 +3,6 @@
 import { useDiagramActive } from "@/components/diagrams/hover-context"
 import { Reveal, RevealGroup } from "@/components/diagrams/reveal"
 import { useReducedMotion } from "@/lib/motion"
-import { cn } from "@/lib/utils"
 import { Check } from "lucide-react"
 import {
 	animate,
@@ -17,9 +16,8 @@ import { useEffect, useRef, useState, type ReactNode } from "react"
 
 /* --------------------------------------------------------------------------
  * Implementación — the plan as a Gantt that actually runs. Stages overlap and
- * close one by one as the playhead crosses them, and the last track never
- * closes: support runs past the end of the chart on a dashed line, because
- * the work does not stop at delivery.
+ * close one by one as the playhead crosses them. What happens after delivery
+ * is the next step's picture, so this chart ends where the training does.
  * ------------------------------------------------------------------------ */
 
 type Track = {
@@ -27,17 +25,14 @@ type Track = {
 	/** Start and length in weeks. */
 	start: number
 	span: number
-	/** Support has no end date, so its bar leaves the chart instead of closing. */
-	open?: boolean
 }
 
-const TOTAL_WEEKS = 8
+const TOTAL_WEEKS = 6
 
 const TRACKS: Track[] = [
 	{ label: "Base y datos", start: 0, span: 3 },
 	{ label: "Automatizaciones", start: 2, span: 3 },
 	{ label: "Capacitación", start: 4.5, span: 1.5 },
-	{ label: "Acompañamiento", start: 6, span: 2, open: true },
 ]
 
 /** First useful version ships here, and it is the number people remember. */
@@ -85,33 +80,21 @@ function GanttRow({ track, progress }: { track: Track; progress: MotionValue<num
 
 				{/* Actual progress. */}
 				<motion.span
-					className={cn(
-						"absolute top-1/2 h-2.5 origin-left -translate-y-1/2 rounded-[1px]",
-						track.open ? "bg-brand-blue/70" : "bg-brand-blue"
-					)}
+					className="bg-brand-blue absolute top-1/2 h-2.5 origin-left -translate-y-1/2 rounded-[1px]"
 					style={{ left: percent(track.start), width: percent(track.span), scaleX }}
 					aria-hidden="true"
 				/>
 
-				{track.open ? (
-					/* Support leaves the chart: there is no closing edge to draw. */
-					<span
-						className="border-brand-blue/40 absolute top-1/2 border-t border-dashed"
-						style={{ left: percent(track.start + track.span), right: "-0.75rem" }}
-						aria-hidden="true"
-					/>
-				) : (
-					<motion.span
-						className="text-brand-green absolute top-1/2 -translate-y-1/2"
-						style={{
-							left: `calc(${percent(track.start + track.span)} + 4px)`,
-							opacity: doneOpacity,
-						}}
-						aria-hidden="true"
-					>
-						<Check className="h-3 w-3" strokeWidth={2.5} />
-					</motion.span>
-				)}
+				<motion.span
+					className="text-brand-green absolute top-1/2 -translate-y-1/2"
+					style={{
+						left: `calc(${percent(track.start + track.span)} + 4px)`,
+						opacity: doneOpacity,
+					}}
+					aria-hidden="true"
+				>
+					<Check className="h-3 w-3" strokeWidth={2.5} />
+				</motion.span>
 			</div>
 		</Reveal>
 	)
