@@ -355,83 +355,36 @@ export const portfolioProjects: ProjectData[] = [
 					tag: "Integridad",
 					reason:
 						"Modelo relacional para entidades fuertemente vinculadas (cuadrillas ↔ tareas ↔ usuarios ↔ roles), con advisory locks de PostgreSQL para numeración concurrente de tareas sin colisiones.",
-					detail: {
-						constraint:
-							"Las entidades del dominio (cuadrillas, tareas, usuarios, roles) están fuertemente vinculadas y se modifican en simultáneo desde múltiples roles.",
-						decision:
-							"Postgres por su modelo relacional probado y sus garantías ACID. Prisma como capa de tipos sobre el schema, para que el modelo de datos y el código TypeScript nunca se desincronicen. Advisory locks de Postgres resuelven la numeración concurrente de tareas: aunque dos capataces creen una tarea en el mismo milisegundo, no hay colisiones ni números duplicados.",
-						outcome: "Integridad de datos garantizada por la base, no por la aplicación.",
-					},
 				},
 				{
 					name: "Next.js + React + TypeScript",
 					tag: "Performance",
 					reason:
 						"App Router con React Server Components para listados y vistas operativas pesadas, y tipos estrictos en cada capa para reducir bugs en un sistema crítico de coordinación.",
-					detail: {
-						constraint:
-							"Vistas operativas con cientos de tareas tenían que cargar rápido y sin bugs de tipos en flujos críticos.",
-						decision:
-							"App Router con React Server Components mueve el render pesado al servidor — el navegador del operario en planta no sufre. TypeScript estricto en cada capa atrapa errores de coordinación (un status mal escrito, un roleId cruzado) antes de llegar a producción.",
-						outcome:
-							"Listados que escalan a miles de filas sin trabarse y un sistema donde el compilador es la primera línea de defensa.",
-					},
 				},
 				{
 					name: "Better Auth",
 					tag: "Soberanía de datos",
 					reason:
 						"Sesiones server-side con control completo del esquema multi-rol, sin lock-in a un proveedor SaaS de identidad externo.",
-					detail: {
-						constraint:
-							"Sistema multi-rol crítico que no podía depender de un proveedor externo de identidad.",
-						decision:
-							"Better Auth corre server-side con control total del esquema de roles y permisos. Sin redirecciones a dominios de terceros, sin lock-in a un SaaS que pueda cambiar precios o políticas, sin enviar datos de usuarios industriales fuera de la infraestructura del proyecto.",
-						outcome:
-							"Autenticación con sesiones propias, esquema de roles a medida, y soberanía completa sobre los datos de identidad.",
-					},
 				},
 				{
 					name: "Zod",
 					tag: "Validación",
 					reason:
 						"Validación de datos extremo a extremo: el mismo esquema valida en el cliente, en el server y en la carga masiva por Excel.",
-					detail: {
-						constraint:
-							"La carga masiva por Excel podía romper la base con un solo registro inválido en una de 500 filas.",
-						decision:
-							"Zod define el esquema UNA vez y lo reusa en tres lugares: formularios del cliente, endpoints del servidor y el pipeline de importación de Excel. Lo que pasa la validación es estructuralmente correcto antes de tocar la base de datos.",
-						outcome:
-							"Errores detectados fila por fila antes del commit, sin estados inconsistentes ni rollbacks parciales.",
-					},
 				},
 				{
 					name: "Ably",
 					tag: "Real-time",
 					reason:
 						"Sincronización en tiempo real de estados de tareas y notificaciones entre roles, sin sostener infraestructura de WebSockets propia.",
-					detail: {
-						constraint:
-							"Estados de tareas y notificaciones tenían que propagarse entre roles en tiempo real, sin sostener un servidor de WebSockets propio.",
-						decision:
-							'Ably maneja la capa de pub/sub con reconexión automática, ordering garantizado y entrega "at-least-once". El backend solo publica eventos — la infraestructura de tiempo real es responsabilidad del proveedor, no del equipo.',
-						outcome:
-							"Cuando un operario marca una tarea como terminada, el supervisor lo ve al instante. Sin polling, sin recargar, sin infraestructura adicional que mantener.",
-					},
 				},
 				{
 					name: "TanStack Table + ExcelJS + Vercel Blob",
 					tag: "Escalabilidad",
 					reason:
 						"Tablas operativas grandes con orden y filtros, carga masiva transaccional desde Excel, y almacenamiento de adjuntos sin acoplar al filesystem del runtime.",
-					detail: {
-						constraint:
-							"Tres restricciones distintas del mismo dominio: visualizar miles de tareas, importarlas masivamente, y guardar adjuntos pesados (fotos de campo, planos).",
-						decision:
-							"TanStack Table para tablas operativas con ordering, filtros y selección que escalan sin perder fluidez. ExcelJS para procesar planillas reales del cliente (con merges, formatos, hojas múltiples) en un wizard transaccional. Vercel Blob para adjuntos, separados del filesystem del runtime — los archivos no compiten por espacio con el código.",
-						outcome:
-							"El cliente sigue trabajando con sus Excels de siempre, pero la información termina estructurada, auditable y consultable.",
-					},
 				},
 			],
 			techStackIntro:
