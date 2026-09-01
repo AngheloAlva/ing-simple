@@ -4,9 +4,10 @@ import GradientText from "@/components/gradient-text"
 import { brandGradientGreen } from "@/lib/gradient"
 import { CornerPlus, Kicker } from "@/components/corner-plus"
 import { CutButton } from "@/components/cut-button"
+import { getCaseStudyVisuals } from "@/components/case-study/visuals/registry"
 import { CATEGORY_LABELS, portfolioProjects } from "@/lib/portfolio-data"
-import { ArrowUpRight } from "lucide-react"
-import { motion, type Variants } from "motion/react"
+import { ArrowUpRight, Lock } from "lucide-react"
+import { AnimatePresence, motion, type Variants } from "motion/react"
 import { useState, type ReactNode } from "react"
 
 // Derived from the migrated portfolio data — only projects with a full case
@@ -26,7 +27,8 @@ const STUDIES = portfolioProjects
 			year: caseStudy.inProductionSince.match(/\d{4}/)?.[0] ?? "",
 			metric: metric ? `${metric.value} · ${metric.label}` : "",
 			summary: project.shortDescription,
-			logo: project.clientLogo ?? "",
+			imageUrl: project.imageUrl,
+			confidential: caseStudy.visualPrivacy === "confidential-ui",
 		}
 	})
 
@@ -46,8 +48,35 @@ const rowVariants: Variants = {
 	},
 }
 
+/**
+ * The preview of one case: its hand-built mockup when the registry has one,
+ * otherwise the project image. Reframed edge to edge like the /casos grid.
+ * Only the active case is mounted, so six mockups never run at once.
+ */
+function CasePreview({ study }: { study: (typeof STUDIES)[number] }): ReactNode {
+	const HeroMockup = getCaseStudyVisuals(study.id)?.HeroMockup ?? null
+
+	if (HeroMockup) {
+		return (
+			<div className="pointer-events-none absolute inset-0 [&>*]:h-full [&>*]:w-full [&>*]:!rounded-none">
+				<HeroMockup label={`Vista de ${study.title}`} />
+			</div>
+		)
+	}
+
+	return (
+		<img
+			src={study.imageUrl}
+			alt={study.title}
+			draggable={false}
+			className="h-full w-full object-cover"
+		/>
+	)
+}
+
 export function CaseStudy(): ReactNode {
 	const [active, setActive] = useState(0)
+	const current = STUDIES[active]
 
 	return (
 		<section className="mx-auto max-w-360 px-5 pb-32 sm:px-8 sm:pb-44 lg:px-10">
@@ -79,44 +108,46 @@ export function CaseStudy(): ReactNode {
 						Proyectos reales, en producción, cada uno acompañado hasta que el equipo del cliente lo
 						hace suyo.
 					</p>
-					<div className="border-border bg-muted/40 relative mt-10 aspect-4/3 rounded-sm border sm:mt-12">
-						<div className="absolute inset-0 overflow-hidden">
-							{STUDIES.map((study, index) => (
-								<motion.div
-									key={study.id}
-									initial={false}
-									animate={{
-										opacity: active === index ? 1 : 0,
-										scale: active === index ? 1 : 1.04,
-									}}
-									transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-									aria-hidden={active !== index}
-									className="absolute inset-0 flex items-center justify-center p-12"
-								>
-									{study.logo ? (
-										<img
-											src={study.logo}
-											alt={study.client}
-											draggable={false}
-											className="max-h-[42%] max-w-[62%] object-contain"
-										/>
-									) : null}
-								</motion.div>
-							))}
+					<div className="border-border bg-background relative mt-10 rounded-sm border sm:mt-12">
+						{/* Preview keeps the mockups' native ratio; the caption sits below it
+						    so nothing ever covers the visual. */}
+						<div className="bg-muted/40 relative aspect-[16/10] overflow-hidden">
+							<AnimatePresence initial={false}>
+								{current ? (
+									<motion.div
+										key={current.id}
+										initial={{ opacity: 0, scale: 1.04 }}
+										animate={{ opacity: 1, scale: 1 }}
+										exit={{ opacity: 0 }}
+										transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+										className="absolute inset-0"
+									>
+										<CasePreview study={current} />
+									</motion.div>
+								) : null}
+							</AnimatePresence>
+						</div>
 
-							{/* Caption bar */}
-							<div className="border-border bg-background/80 absolute inset-x-0 bottom-0 border-t px-5 py-4 backdrop-blur-sm sm:px-6">
-								<p className="text-sm font-semibold tracking-tight">{STUDIES[active]?.client}</p>
-								{STUDIES[active]?.metric ? (
+						<div className="border-border flex items-end justify-between gap-4 border-t px-5 py-4 sm:px-6">
+							<div className="min-w-0">
+								<p className="truncate text-sm font-semibold tracking-tight">{current?.client}</p>
+								{current?.metric ? (
 									<p className="text-brand-green-text mt-0.5 text-xs font-medium">
-										{STUDIES[active].metric}
+										{current.metric}
 									</p>
 								) : null}
 							</div>
-
-							<span className="bg-background/80 text-foreground absolute top-4 left-4 px-3 py-1 font-mono text-[11px] tracking-[0.12em] backdrop-blur-sm">
-								{STUDIES[active]?.index} / {TOTAL}
-							</span>
+							<div className="flex shrink-0 flex-col items-end gap-1.5">
+								<span className="text-foreground font-mono text-[11px] tracking-[0.12em]">
+									{current?.index} / {TOTAL}
+								</span>
+								{current?.confidential ? (
+									<span className="text-muted-foreground inline-flex items-center gap-1.5 font-mono text-[10px] tracking-[0.1em] uppercase">
+										<Lock className="h-3 w-3" aria-hidden="true" />
+										Vista confidencial
+									</span>
+								) : null}
+							</div>
 						</div>
 
 						<CornerPlus className="top-0 left-0 -translate-x-1/2 -translate-y-1/2" />
