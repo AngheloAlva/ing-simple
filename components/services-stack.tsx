@@ -1,3 +1,4 @@
+import { Kicker } from "@/components/corner-plus"
 import { CutButton } from "@/components/cut-button"
 import { ScrollStack } from "@/components/scroll-stack"
 import { SERVICE_VISUALS } from "@/components/service-diagrams"
@@ -19,11 +20,14 @@ export function ServicesStack(): ReactNode {
 		<section id="servicios" className="scroll-mt-24 pb-32 sm:pb-44">
 			<div className="mx-auto max-w-360 px-5 sm:px-8 lg:px-10">
 				<div className="max-w-2xl">
-					<h2 className="text-3xl leading-[1.12] font-semibold tracking-tight text-balance sm:text-4xl lg:text-[2.75rem]">
-						Nuestras líneas de servicio
+					<Kicker>Qué hacemos</Kicker>
+					<h2 className="mt-4 font-serif text-3xl leading-[1.1] font-normal tracking-[-0.01em] text-balance sm:text-4xl lg:text-[2.75rem]">
+						Cuatro líneas de servicio,{" "}
+						<span className="font-sans font-semibold tracking-tight">una sola operación</span>
 					</h2>
 					<p className="text-muted-foreground mt-4 max-w-xl text-sm leading-relaxed sm:text-base">
-						Cuatro áreas especializadas para acompañar tu transformación digital de forma integral.
+						No son cuatro proveedores distintos. Cada línea resuelve un frente de tu operación y
+						todas dejan lo mismo: algo funcionando y un equipo capaz de mantenerlo.
 					</p>
 				</div>
 			</div>

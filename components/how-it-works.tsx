@@ -1,6 +1,7 @@
 "use client"
 
 import { CircuitTrace } from "@/components/circuit-trace"
+import { Kicker } from "@/components/corner-plus"
 import { DiagramActiveProvider } from "@/components/diagrams/hover-context"
 import { DiagramAuditScan } from "@/components/diagrams/process/audit-scan"
 import { DiagramProposalConvert } from "@/components/diagrams/process/proposal-convert"
@@ -9,8 +10,8 @@ import { motion, useInView, useReducedMotion, type Variants } from "motion/react
 import { useRef, type ReactNode } from "react"
 
 /**
- * "¿Cómo trabajamos?" — the three steps rendered as a connected timeline,
- * each with a small visual previewing what happens at that stage.
+ * "Tres etapas, ninguna caja negra" — the three steps rendered as a connected
+ * timeline, each with a small visual previewing what happens at that stage.
  */
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
@@ -89,14 +90,16 @@ export function HowItWorks(): ReactNode {
 					transition={{ duration: 0.6, ease: EASE }}
 					className="max-w-2xl"
 				>
+					<Kicker>Cómo trabajamos</Kicker>
 					<h2
 						id="how-it-works-heading"
-						className="text-3xl leading-[1.12] font-semibold tracking-tight text-balance sm:text-4xl lg:text-[2.75rem]"
+						className="mt-4 font-serif text-3xl leading-[1.1] font-normal tracking-[-0.01em] text-balance sm:text-4xl lg:text-[2.75rem]"
 					>
-						¿Cómo trabajamos?
+						Tres etapas,{" "}
+						<span className="font-sans font-semibold tracking-tight">ninguna caja negra</span>
 					</h2>
-					<p className="text-muted-foreground mt-2 max-w-xl text-sm leading-relaxed sm:text-base">
-						Un proceso simple y transparente, de principio a fin.
+					<p className="text-muted-foreground mt-4 max-w-xl text-sm leading-relaxed sm:text-base">
+						En cada etapa sabes qué se está haciendo, qué falta y cuándo vas a verlo funcionando.
 					</p>
 				</motion.div>
 
