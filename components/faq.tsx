@@ -16,7 +16,7 @@ const FAQS: QA[] = [
 	{
 		question: "¿Cuánto tiempo toma implementar una solución?",
 		answer:
-			"Depende del alcance del proyecto. Un dashboard puede estar listo en 1-2 semanas, mientras que una aplicación Power Platform más compleja puede tomar 4-6 semanas. Siempre entregamos cronogramas claros antes de comenzar.",
+			"Depende del alcance del proyecto. Un dashboard puede estar listo en 1-2 semanas, mientras que una automatización que cruza varios sistemas puede tomar 4-6 semanas. Siempre entregamos cronogramas claros antes de comenzar.",
 	},
 	{
 		question: "¿Las capacitaciones son presenciales o online?",
@@ -55,9 +55,7 @@ function FaqItem({
 		// The divider is driven by the index, not by `:first-child`: the two
 		// decorative CornerPlus marks are the accordion's real first children,
 		// so a position-based variant paints a rule above the first question.
-		<div
-			className={`border-border border-dotted ${index > 0 ? "border-t" : ""}`}
-		>
+		<div className={`border-border border-dotted ${index > 0 ? "border-t" : ""}`}>
 			<h3>
 				<button
 					id={buttonId}
