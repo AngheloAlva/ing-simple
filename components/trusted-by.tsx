@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import { CornerPlus } from "@/components/corner-plus"
 import { LogoLoop, type LogoItem } from "@/components/logo-loop"
 
 /** Client logos live in `public/img/logos/` in mixed formats (svg/png/avif/jpeg),
@@ -55,18 +56,6 @@ const LOGOS: LogoItem[] = CLIENTS.map((client) => ({
 	title: client.name,
 	ariaLabel: client.name,
 }))
-
-function CornerPlus({ className }: { className: string }): ReactNode {
-	return (
-		<svg
-			aria-hidden="true"
-			viewBox="0 0 24 24"
-			className={`pointer-events-none absolute h-3.5 w-3.5 text-blue-500 ${className}`}
-		>
-			<path d="M12 4v16M4 12h16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-		</svg>
-	)
-}
 
 export function TrustedBy(): ReactNode {
 	return (
