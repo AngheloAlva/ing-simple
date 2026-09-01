@@ -14,8 +14,15 @@ const UNIQUE_CLIENTS = new Set(
   CASES.map((project) => project.caseStudy!.clientName)
 ).size;
 
+const FIRST_YEAR = Math.min(
+  ...CASES.map((project) =>
+    Number(/20\d{2}/.exec(project.caseStudy!.inProductionSince)?.[0] ?? Infinity)
+  )
+);
+
 type Stat = {
   value: number;
+  from?: number;
   prefix?: string;
   suffix?: string;
   label: string;
@@ -24,13 +31,14 @@ type Stat = {
 const STATS: Stat[] = [
   { value: CASES.length, label: "Plataformas en producción" },
   { value: UNIQUE_CLIENTS, label: "Empresas cliente" },
-  { value: 100, suffix: "%", label: "En uso real, no demos" },
+  { value: FIRST_YEAR, from: FIRST_YEAR - 12, label: "En producción desde" },
 ];
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 function StatNumber({
   value,
+  from,
   prefix,
   suffix,
   inView,
@@ -38,13 +46,14 @@ function StatNumber({
   delay,
 }: {
   value: number;
+  from: number;
   prefix: string;
   suffix: string;
   inView: boolean;
   reduce: boolean;
   delay: number;
 }): ReactNode {
-  const [display, setDisplay] = useState(0);
+  const [display, setDisplay] = useState(from);
 
   useEffect(() => {
     if (!inView) return;
@@ -52,14 +61,14 @@ function StatNumber({
       const raf = requestAnimationFrame(() => setDisplay(value));
       return () => cancelAnimationFrame(raf);
     }
-    const controls = animate(0, value, {
+    const controls = animate(from, value, {
       duration: 1.6,
       delay,
       ease: EASE,
       onUpdate: (latest) => setDisplay(latest),
     });
     return () => controls.stop();
-  }, [inView, reduce, value, delay]);
+  }, [inView, reduce, from, value, delay]);
 
   return (
     <span className="block font-serif text-5xl font-normal leading-none tracking-[-0.02em] tabular-nums sm:text-6xl">
@@ -78,7 +87,7 @@ export function CasosStats(): ReactNode {
     <section className="mx-auto max-w-[1440px] px-5 pb-24 sm:px-8 sm:pb-32 lg:px-10">
       <div
         ref={panelRef}
-        className="relative grid grid-cols-1 border border-border sm:grid-cols-3"
+        className="relative grid grid-cols-1 rounded-sm border border-border sm:grid-cols-3"
       >
         <CornerPlus className="left-0 top-0 -translate-x-1/2 -translate-y-1/2" />
         <CornerPlus className="right-0 top-0 translate-x-1/2 -translate-y-1/2" />
@@ -94,6 +103,7 @@ export function CasosStats(): ReactNode {
           >
             <StatNumber
               value={stat.value}
+              from={stat.from ?? 0}
               prefix={stat.prefix ?? ""}
               suffix={stat.suffix ?? ""}
               inView={inView}

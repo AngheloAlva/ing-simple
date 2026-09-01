@@ -53,7 +53,7 @@ export function CasosConfidentiality(): ReactNode {
         </div>
 
         {/* Right — items stacked vertically inside the cross-cornered panel */}
-        <div className="relative border border-border">
+        <div className="relative rounded-sm border border-border">
           <CornerPlus className="left-0 top-0 -translate-x-1/2 -translate-y-1/2" />
           <CornerPlus className="right-0 top-0 translate-x-1/2 -translate-y-1/2" />
           <CornerPlus className="bottom-0 left-0 -translate-x-1/2 translate-y-1/2" />
@@ -75,7 +75,7 @@ export function CasosConfidentiality(): ReactNode {
                   </>
                 )}
                 <div className="flex items-start gap-4">
-                  <span className="inline-grid h-10 w-10 shrink-0 place-items-center border border-border text-foreground">
+                  <span className="inline-grid h-10 w-10 shrink-0 place-items-center rounded-sm border border-border text-foreground">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <div>

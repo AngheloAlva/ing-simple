@@ -9,6 +9,7 @@ import {
 } from "@/lib/portfolio-data";
 import { ArrowUpRight, Lock } from "lucide-react";
 import { AnimatePresence, motion, type Variants } from "motion/react";
+import Image from "next/image";
 import { useMemo, useState, type ReactNode } from "react";
 
 type Filter = "todos" | ProjectCategory;
@@ -47,10 +48,9 @@ function CaseCard({
 
   return (
     <motion.a
-      layout
       variants={cardVariants}
       href={`/casos/${project.id}`}
-      className="group relative flex flex-col overflow-hidden border border-border bg-background transition-colors duration-200 hover:border-primary focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
+      className="group relative flex flex-col overflow-hidden rounded-sm border border-border bg-background transition-colors duration-200 hover:border-primary focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary"
     >
       {/* Thumbnail — the polished per-project mockup, non-interactive here */}
       <div className="relative aspect-[16/10] overflow-hidden border-b border-border bg-muted/40">
@@ -59,19 +59,14 @@ function CaseCard({
             <HeroMockup />
           </div>
         ) : project.imageUrl ? (
-          <img
+          <Image
             src={project.imageUrl}
             alt={project.title}
+            fill
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             draggable={false}
-            className="h-full w-full object-cover"
+            className="object-cover"
           />
-        ) : null}
-
-        {isConfidential ? (
-          <span className="absolute right-3 top-3 inline-flex items-center gap-1.5 bg-background/85 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground backdrop-blur-sm">
-            <Lock className="h-3 w-3" aria-hidden="true" />
-            Vista confidencial
-          </span>
         ) : null}
       </div>
 
@@ -99,15 +94,23 @@ function CaseCard({
           {project.title}
         </h3>
         <p className="mt-2 line-clamp-3 text-pretty text-sm leading-relaxed text-muted-foreground">
-          {caseStudy.pitch}
+          {project.shortDescription}
         </p>
 
-        <div className="mt-5 flex items-center gap-2 pt-1 text-sm font-medium text-foreground">
-          Ver caso
-          <ArrowUpRight
-            className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            aria-hidden="true"
-          />
+        <div className="mt-auto flex items-center justify-between gap-3 pt-6 text-sm font-medium text-foreground">
+          <span className="inline-flex items-center gap-2">
+            Ver caso
+            <ArrowUpRight
+              className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              aria-hidden="true"
+            />
+          </span>
+          {isConfidential ? (
+            <span className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+              <Lock className="h-3 w-3" aria-hidden="true" />
+              Vista confidencial
+            </span>
+          ) : null}
         </div>
       </div>
     </motion.a>
@@ -159,7 +162,7 @@ export function CasosGrid(): ReactNode {
                 role="tab"
                 aria-selected={isActive}
                 onClick={() => setFilter(key)}
-                className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-medium tracking-wide transition-colors duration-200 focus-ring ${
+                className={`inline-flex items-center gap-1.5 rounded-sm px-3.5 py-1.5 text-sm font-medium tracking-wide transition-colors duration-200 focus-ring ${
                   isActive
                     ? "bg-primary text-primary-foreground"
                     : "border border-border text-muted-foreground hover:border-primary/40 hover:text-primary"
@@ -201,7 +204,7 @@ export function CasosGrid(): ReactNode {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="relative mt-10 flex min-h-[280px] flex-col items-center justify-center border border-dashed border-border px-6 py-16 text-center"
+            className="relative mt-10 flex min-h-[280px] flex-col items-center justify-center rounded-sm border border-dashed border-border px-6 py-16 text-center"
           >
             <CornerPlus className="left-0 top-0 -translate-x-1/2 -translate-y-1/2" />
             <CornerPlus className="right-0 top-0 translate-x-1/2 -translate-y-1/2" />

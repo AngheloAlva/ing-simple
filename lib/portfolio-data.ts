@@ -87,7 +87,7 @@ export interface ProjectData {
 export const CATEGORY_LABELS: Record<"todos" | ProjectCategory, string> = {
 	"todos": "Todos",
 	"desarrollo-web": "Desarrollo Web",
-	"power-platform": "Power Platform",
+	"power-platform": "Automatizaciones",
 	"capacitaciones": "Capacitaciones",
 	"reportabilidad": "Reportabilidad",
 }
@@ -505,7 +505,7 @@ export const portfolioProjects: ProjectData[] = [
 	{
 		id: "busanc",
 		imageUrl: "/img/portfolio/placeholder.jpg",
-		title: "Busanc — Plataforma de Gestión Comercial e Industrial",
+		title: "Plataforma Busanc",
 		shortDescription:
 			"ERP a medida para gestionar el flujo comercial, ingeniería y producción de una empresa de productos antidesgaste para minería.",
 		fullDescription:

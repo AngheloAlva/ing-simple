@@ -22,7 +22,7 @@ export function CasosHero(): ReactNode {
 
   return (
     <section className="relative overflow-hidden">
-      <HeroWaves videoUrl="/sample-video.mp4" />
+      <HeroWaves />
 
       <div
         aria-hidden="true"
@@ -53,9 +53,9 @@ export function CasosHero(): ReactNode {
             transition={itemTransition}
             className="mt-5 text-balance font-serif text-4xl font-normal leading-[1.1] tracking-[-0.01em] sm:text-5xl lg:text-[3.5rem]"
           >
-            Software que ya está{" "}
+            Software que ya corre en{" "}
             <span className="font-sans font-semibold tracking-tight">
-              corriendo en empresas reales
+              empresas reales
             </span>
           </motion.h1>
 
