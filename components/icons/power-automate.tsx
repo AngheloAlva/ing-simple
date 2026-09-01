@@ -25,23 +25,23 @@ export default function PowerAutomateIcon(props: SVGProps<SVGSVGElement>) {
 			</g>
 			<defs>
 				<linearGradient id="c" x1="48" y1="31.5" x2="14" y2="-2.5" gradientUnits="userSpaceOnUse">
-					<stop stop-color="#102784" />
-					<stop offset=".274" stop-color="#1b44b1" />
-					<stop offset="1" stop-color="#2764e7" />
+					<stop stopColor="#102784" />
+					<stop offset=".274" stopColor="#1b44b1" />
+					<stop offset="1" stopColor="#2764e7" />
 				</linearGradient>
 				<linearGradient id="d" x1="76.5" y1="25" x2="11.5" y2="91.5" gradientUnits="userSpaceOnUse">
-					<stop stop-color="#0fafff" />
-					<stop offset=".178" stop-color="#4894fe" />
-					<stop offset="1" stop-color="#2764e7" />
+					<stop stopColor="#0fafff" />
+					<stop offset=".178" stopColor="#4894fe" />
+					<stop offset="1" stopColor="#2764e7" />
 				</linearGradient>
 				<linearGradient id="e" x1="28.5" y1="72" x2="38.5" y2="83.5" gradientUnits="userSpaceOnUse">
-					<stop stop-color="#2764e7" stop-opacity="0" />
-					<stop offset="1" stop-color="#2052cb" />
+					<stop stopColor="#2764e7" stopOpacity="0" />
+					<stop offset="1" stopColor="#2052cb" />
 				</linearGradient>
 				<linearGradient id="f" x1="89" y1="38.5" x2="43" y2="90.5" gradientUnits="userSpaceOnUse">
-					<stop stop-color="#6ce0ff" />
-					<stop offset=".212" stop-color="#66c0ff" />
-					<stop offset="1" stop-color="#58aafe" />
+					<stop stopColor="#6ce0ff" />
+					<stop offset=".212" stopColor="#66c0ff" />
+					<stop offset="1" stopColor="#58aafe" />
 				</linearGradient>
 				<clipPath id="a">
 					<path fill="#fff" d="M0 0h96v96H0z" />

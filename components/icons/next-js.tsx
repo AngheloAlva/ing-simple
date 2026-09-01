@@ -31,8 +31,8 @@ export default function NextjsIcon(props: SVGProps<SVGSVGElement>) {
 					y1="116.5"
 					y2="160.5"
 				>
-					<stop stop-color="#fff" />
-					<stop offset="1" stop-color="#fff" stop-opacity="0" />
+					<stop stopColor="#fff" />
+					<stop offset="1" stopColor="#fff" stopOpacity="0" />
 				</linearGradient>
 				<linearGradient
 					gradientUnits="userSpaceOnUse"
@@ -42,8 +42,8 @@ export default function NextjsIcon(props: SVGProps<SVGSVGElement>) {
 					y1="54"
 					y2="106.875"
 				>
-					<stop stop-color="#fff" />
-					<stop offset="1" stop-color="#fff" stop-opacity="0" />
+					<stop stopColor="#fff" />
+					<stop offset="1" stopColor="#fff" stopOpacity="0" />
 				</linearGradient>
 			</defs>
 		</svg>

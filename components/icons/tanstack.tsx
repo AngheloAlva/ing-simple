@@ -239,7 +239,7 @@ export default function TanStackIcon(props: SVGProps<SVGSVGElement>) {
 					cx="308.5"
 					cy="720.5"
 					stroke="#6DA300"
-					stroke-opacity=".502"
+					strokeOpacity=".502"
 					strokeWidth="26"
 					mask="url(#tanstack__c)"
 					rx="253"
@@ -253,7 +253,7 @@ export default function TanStackIcon(props: SVGProps<SVGSVGElement>) {
 							cy="113.5"
 							r="106"
 							stroke="#FFC900"
-							stroke-opacity=".529"
+							strokeOpacity=".529"
 							strokeWidth="15"
 						/>
 						<path

@@ -1,9 +1,9 @@
 export default function MoneyIcon(props: React.SVGProps<SVGSVGElement>) {
 	return (
 		<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-			<g stroke-width="0" />
-			<g stroke-linecap="round" stroke-linejoin="round" />
-			<g stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+			<g strokeWidth="0" />
+			<g strokeLinecap="round" strokeLinejoin="round" />
+			<g stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
 				<path
 					d="M9.5 13.75c0 .97.75 1.75 1.67 1.75h1.88c.8 0 1.45-.68 1.45-1.53 0-.91-.4-1.24-.99-1.45l-3.01-1.05c-.59-.21-.99-.53-.99-1.45 0-.84.65-1.53 1.45-1.53h1.88c.92 0 1.67.78 1.67 1.75M12 7.5v9"
 					opacity=".4"
