@@ -46,6 +46,21 @@ export type ParagraphBlock = string | { headline: string; body: string }
 
 export type CaseStudyVisualPrivacy = "public" | "confidential-ui"
 
+export type CaseStudySectionKey =
+	| "solution"
+	| "architecture"
+	| "techStack"
+	| "features"
+	| "timeline"
+	| "metrics"
+	| "beforeAfter"
+
+export interface CaseStudyHeadline {
+	lead: string
+	emphasis: string
+	standfirst?: string
+}
+
 export interface CaseStudy {
 	pitch: string
 	duration: string
@@ -65,6 +80,8 @@ export interface CaseStudy {
 	timeline?: CaseStudyMilestone[]
 	testimonial?: CaseStudyTestimonial
 	beforeAfter?: Array<{ before: string; after: string }>
+	/** Per-section headline overrides; sections fall back to neutral defaults. */
+	sectionHeadlines?: Partial<Record<CaseStudySectionKey, CaseStudyHeadline>>
 }
 
 export interface ProjectData {

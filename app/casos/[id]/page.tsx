@@ -56,23 +56,21 @@ export default async function CaseStudyDetailPage({ params }: PageProps): Promis
 	}
 
 	const caseStudy = project.caseStudy
-	// Template primary as fallback so accent-driven details stay on-brand.
-	const accent = project.gradientColor ?? "var(--brand-blue)"
 
 	return (
 		<>
 			<span id="top" className="sr-only" />
 			<Nav />
 			<main id="main-content" className="flex-1">
-				<DetailHero project={project} caseStudy={caseStudy} accent={accent} />
+				<DetailHero project={project} caseStudy={caseStudy} />
 				<DetailContext project={project} caseStudy={caseStudy} />
 				<DetailSolution caseStudy={caseStudy} />
-				<DetailArchitecture project={project} caseStudy={caseStudy} accent={accent} />
-				<DetailTechStack caseStudy={caseStudy} accent={accent} />
-				<DetailFeatures project={project} caseStudy={caseStudy} accent={accent} />
-				<DetailTimeline caseStudy={caseStudy} accent={accent} />
-				<DetailMetrics caseStudy={caseStudy} accent={accent} />
-				<DetailBeforeAfter caseStudy={caseStudy} accent={accent} />
+				<DetailArchitecture project={project} caseStudy={caseStudy} />
+				<DetailTechStack caseStudy={caseStudy} />
+				<DetailFeatures project={project} caseStudy={caseStudy} />
+				<DetailTimeline caseStudy={caseStudy} />
+				<DetailMetrics caseStudy={caseStudy} />
+				<DetailBeforeAfter caseStudy={caseStudy} />
 				<DetailRelated currentId={project.id} />
 				<FinalCta />
 			</main>

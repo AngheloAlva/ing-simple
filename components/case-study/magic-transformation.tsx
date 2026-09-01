@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "motion/react"
+import { motion, useInView } from "motion/react"
 import {
 	memo,
 	useRef,
@@ -11,6 +11,7 @@ import {
 	type CSSProperties,
 } from "react"
 
+import { useReducedMotion } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
 const MT_DOC_STYLE_ID = "magic-transform-doc-keyframes"
@@ -38,7 +39,7 @@ export interface MagicTransformDocument {
 export interface MagicTransformResult {
 	/** Stable id used as React key. */
 	id: string
-	/** Label shown on the chip (e.g. "email", "total"). */
+	/** Label shown on the chip (e.g. "correo", "total"). */
 	label: string
 	/** Background color of the chip. */
 	color: string
@@ -77,11 +78,11 @@ export interface MagicTransformProps {
 	documentHeight?: number
 	/** Visible gap between adjacent documents in the stream, in px. Loops seamlessly. */
 	documentGap?: number
-	/** Color of the central axis line. */
+	/** Color of the central axis line. Defaults to the primary token. */
 	axisColor?: string
 	/** Background color of the stage (transparent by default). */
 	backgroundColor?: string
-	/** Custom node rendered in the center tile (defaults to the React Bits Pro logo). */
+	/** Node rendered in the centre tile (the client logo on case pages). */
 	centerContent?: ReactNode
 	/** Pixel size of the center tile on the axis. */
 	centerSize?: number
@@ -104,29 +105,17 @@ const DEFAULT_DOCUMENTS: MagicTransformDocument[] = [
 	{ id: "doc-3" },
 ]
 
-const DEFAULT_RESULTS: MagicTransformResult[] = [
-	{ id: "email", label: "email", color: "#5C6B2E", textColor: "#ffffff" },
-	{ id: "total", label: "total", color: "#9D2A6E", textColor: "#ffffff" },
-	{ id: "address", label: "address", color: "#2A5C8C", textColor: "#ffffff" },
-	{ id: "order", label: "order", color: "#A8642A", textColor: "#ffffff" },
-	{ id: "items", label: "item lines", color: "#2D1B3D", textColor: "#ffffff" },
-]
+/** One hue, varied by opacity: the chips read as steps of the same accent. */
+const primaryAt = (percent: number): string =>
+	`color-mix(in srgb, var(--primary) ${percent}%, transparent)`
 
-const DefaultCenterLogo = ({ size = 56 }: { size?: number }) => (
-	<svg
-		width={size}
-		height={size * (57 / 63)}
-		viewBox="0 0 63 57"
-		fill="none"
-		aria-hidden
-		xmlns="http://www.w3.org/2000/svg"
-	>
-		<path
-			d="M16.9883 0.633911C19.5173 -0.654995 22.3394 0.207113 24.6621 1.56555L26.7285 2.77356L24.3115 6.9054L22.2461 5.69739C20.3583 4.5933 19.4591 4.74681 19.1611 4.89856L19.1602 4.89954C18.9155 5.0241 18.4181 5.46239 18.125 6.93567C17.8387 8.37572 17.8405 10.4141 18.2266 12.9767C18.4261 14.3009 18.7244 15.7285 19.1152 17.2374C20.6688 17.0074 22.2869 16.8192 23.9561 16.6808C26.7507 12.1642 29.7392 8.32115 32.6191 5.4845C34.6752 3.45936 36.7752 1.84852 38.8018 0.913208C40.7972 -0.00756875 43.124 -0.442579 45.2354 0.630981L45.2402 0.632935C46.7598 1.4098 47.7221 2.75607 48.2891 4.23059C48.849 5.68704 49.0781 7.39449 49.0869 9.19836L49.0986 11.5909L44.3125 11.6144L44.3008 9.2218C44.2936 7.76171 44.1029 6.68073 43.8213 5.94836C43.5492 5.24095 43.2511 4.99368 43.0664 4.89758L42.9551 4.85168C42.6485 4.74911 42.0029 4.70738 40.8076 5.25891C39.4734 5.87462 37.8244 7.07555 35.9775 8.89465C34.0001 10.8424 31.9089 13.3887 29.8496 16.3986C30.2685 16.3927 30.6896 16.3888 31.1123 16.3888C39.2274 16.3888 46.6748 17.482 52.1758 19.3156C54.9137 20.2281 57.3026 21.3677 59.0557 22.7491C60.7816 24.1093 62.2244 25.9864 62.2246 28.3556C62.2245 30.3972 61.1425 32.0811 59.7607 33.3585C58.3791 34.6356 56.5011 35.7031 54.3623 36.5861L52.1504 37.4991L50.3242 33.0743L52.5361 32.1613C54.3856 31.3977 55.6997 30.5945 56.5117 29.8439C57.3226 29.0941 57.4374 28.592 57.4375 28.3556C57.4373 28.0811 57.2726 27.4387 56.0928 26.5089C54.9391 25.5998 53.1213 24.6763 50.6621 23.8566C45.7686 22.2255 38.8561 21.1759 31.1123 21.1759C29.6347 21.1759 28.1871 21.214 26.7783 21.2872C26.0737 22.5086 25.3826 23.781 24.7119 25.0968C24.1552 26.189 23.6329 27.2758 23.1426 28.3497C23.6341 29.4263 24.1567 30.5164 24.7148 31.6115H24.7158C28.2309 38.5139 32.3038 44.197 35.9785 47.8165C37.8251 49.6353 39.4728 50.8352 40.8066 51.4503C42.0008 52.0009 42.6461 51.9593 42.9531 51.8566L43.0645 51.8107C43.2832 51.6985 43.6968 51.3472 43.9971 50.213C44.2968 49.0806 44.3962 47.4527 44.1963 45.3517C43.7981 41.1682 42.2674 35.638 39.6523 29.6359L38.6973 27.4425L43.085 25.5304L44.041 27.7247C46.7865 34.0262 48.5015 40.0607 48.9619 44.8986C49.1911 47.3078 49.1222 49.5568 48.624 51.4386C48.1269 53.316 47.1125 55.1192 45.2383 56.0753L45.2363 56.0763C43.1252 57.151 40.7987 56.7173 38.8027 55.797C36.7756 54.8623 34.6754 53.252 32.6191 51.2267C28.5864 47.2545 24.3434 41.3077 20.7168 34.298C19.479 37.7579 18.6413 40.9697 18.2256 43.7316C17.8398 46.2947 17.8374 48.334 18.124 49.7745C18.3807 51.0645 18.7944 51.5607 19.0576 51.7482L19.1602 51.8116L19.1621 51.8126C19.5397 52.0053 20.7776 52.1209 23.2949 50.3361L25.2471 48.9513L28.0156 52.8566L26.0635 54.2404C23.3614 56.1562 19.9735 57.5986 16.9883 56.0763V56.0773C14.8766 55.0021 13.8587 52.8647 13.4297 50.7091C12.9941 48.5198 13.0627 45.8735 13.4922 43.0197C14.1377 38.7306 15.6472 33.659 17.9092 28.3497C17.092 26.4314 16.3752 24.5433 15.7598 22.713C14.2388 23.0498 12.8324 23.4333 11.5625 23.8566C9.1035 24.6762 7.2855 25.5999 6.13184 26.5089C4.95201 27.4387 4.78729 28.0812 4.78711 28.3556C4.78726 28.7825 5.25106 29.943 7.9834 31.3722L10.1035 32.4816L7.88477 36.7228L5.76465 35.6134C2.82393 34.0752 0.000114308 31.7068 0 28.3556C0.000183998 25.9864 1.44301 24.1093 3.16895 22.7491C4.92202 21.3678 7.31108 20.2281 10.0488 19.3156C11.3888 18.8689 12.845 18.467 14.3975 18.1134C14.0073 16.5685 13.7047 15.0872 13.4941 13.6896C13.0643 10.8363 12.9944 8.191 13.4297 6.00208C13.8584 3.84658 14.8766 1.70906 16.9883 0.633911ZM20.7354 19.4396C19.3193 19.4396 18.1711 20.587 18.1709 22.0031C18.1709 23.4192 19.3192 24.5675 20.7354 24.5675C22.1515 24.5675 23.2998 23.4192 23.2998 22.0031C23.2996 20.587 22.1514 19.4396 20.7354 19.4396Z"
-			fill="currentColor"
-		/>
-	</svg>
-)
+const DEFAULT_RESULTS: MagicTransformResult[] = [
+	{ id: "email", label: "correo", color: primaryAt(100) },
+	{ id: "total", label: "total", color: primaryAt(80) },
+	{ id: "address", label: "dirección", color: primaryAt(65) },
+	{ id: "order", label: "pedido", color: primaryAt(50) },
+	{ id: "items", label: "líneas", color: primaryAt(35) },
+]
 
 const ScribbleLine = ({ width, amplitude = 1.6 }: { width: number; amplitude?: number }) => {
 	const segments = Math.max(8, Math.floor(width / 6))
@@ -149,7 +138,7 @@ const ScribbleLine = ({ width, amplitude = 1.6 }: { width: number; amplitude?: n
 			style={{ display: "block" }}
 			aria-hidden
 		>
-			<path d={d} fill="none" stroke="#262626" strokeWidth={0.9} />
+			<path d={d} fill="none" stroke="var(--foreground)" strokeOpacity={0.7} strokeWidth={0.9} />
 		</svg>
 	)
 }
@@ -164,7 +153,7 @@ const HalftoneBlock = ({ width, height }: { width: number; height: number }) => 
 					const v = (Math.sin(r * 12.9898 + c * 78.233) * 43758.5453) % 1
 					const on = (v + 1) % 1 > 0.5
 					return on ? (
-						<rect key={`${r}-${c}`} x={c * 4} y={r * 4} width={3} height={3} fill="#d4d4d4" />
+						<rect key={`${r}-${c}`} x={c * 4} y={r * 4} width={3} height={3} fill="var(--border)" />
 					) : null
 				})
 			)}
@@ -202,11 +191,11 @@ const DocumentBody = memo(function DocumentBody({
 		return (
 			<div className="flex h-full w-full flex-col gap-1.5 overflow-hidden p-4">
 				<div className="mb-2 flex items-center justify-between">
-					<div className="h-1.5 w-1/3 rounded-[1px] bg-neutral-300/80 dark:bg-neutral-700/80" />
-					<div className="h-1.5 w-1/6 rounded-[1px] bg-neutral-300/60 dark:bg-neutral-700/60" />
+					<div className="bg-muted-foreground/30 h-1.5 w-1/3 rounded-[1px]" />
+					<div className="bg-muted-foreground/20 h-1.5 w-1/6 rounded-[1px]" />
 				</div>
 				<div
-					className="grid gap-[1px] overflow-hidden rounded-[2px] bg-neutral-200/80 dark:bg-neutral-700/60"
+					className="bg-border grid gap-[1px] overflow-hidden rounded-[2px]"
 					style={{
 						gridTemplateColumns: `repeat(${cols}, 1fr)`,
 					}}
@@ -216,17 +205,13 @@ const DocumentBody = memo(function DocumentBody({
 						return (
 							<div
 								key={i}
-								className={
-									isHeader ? "bg-neutral-100 dark:bg-neutral-800" : "bg-white dark:bg-neutral-900"
-								}
+								className={isHeader ? "bg-muted" : "bg-background"}
 								style={{ height: rowH }}
 							>
 								<div className="flex h-full items-center px-1.5">
 									<div
 										className={`h-1 rounded-[1px] ${
-											isHeader
-												? "bg-neutral-400/70 dark:bg-neutral-500/70"
-												: "bg-neutral-300/70 dark:bg-neutral-700/70"
+											isHeader ? "bg-muted-foreground/50" : "bg-muted-foreground/30"
 										}`}
 										style={{ width: `${50 + rand(i) * 40}%` }}
 									/>
@@ -243,23 +228,23 @@ const DocumentBody = memo(function DocumentBody({
 		return (
 			<div className="flex h-full w-full flex-col gap-1.5 overflow-hidden p-4">
 				<div className="mb-2 flex items-center gap-2">
-					<div className="h-3 w-3 rounded-full bg-neutral-300/80 dark:bg-neutral-700/80" />
+					<div className="bg-muted-foreground/30 h-3 w-3 rounded-full" />
 					<div className="flex flex-1 flex-col gap-1">
-						<div className="h-1.5 w-1/2 rounded-[1px] bg-neutral-300/80 dark:bg-neutral-700/80" />
-						<div className="h-1 w-1/3 rounded-[1px] bg-neutral-300/60 dark:bg-neutral-700/60" />
+						<div className="bg-muted-foreground/30 h-1.5 w-1/2 rounded-[1px]" />
+						<div className="bg-muted-foreground/20 h-1 w-1/3 rounded-[1px]" />
 					</div>
 				</div>
-				<div className="border-t border-neutral-200 pt-2 dark:border-neutral-700/60">
-					<div className="h-2 w-3/4 rounded-[1px] bg-neutral-300/80 dark:bg-neutral-700/80" />
+				<div className="border-border border-t pt-2">
+					<div className="bg-muted-foreground/30 h-2 w-3/4 rounded-[1px]" />
 				</div>
 				<div className="mt-1 flex flex-col gap-1.5">
 					{Array.from({ length: 9 }).map((_, i) => (
 						<ScribbleLine key={`em-${i}`} width={innerWidth * (0.6 + rand(i + 10) * 0.35)} />
 					))}
 				</div>
-				<div className="mt-auto flex gap-1.5 border-t border-neutral-200 pt-2 dark:border-neutral-700/60">
-					<div className="h-3 w-12 rounded-[2px] bg-neutral-200 dark:bg-neutral-700" />
-					<div className="h-3 w-12 rounded-[2px] border border-neutral-300 dark:border-neutral-700" />
+				<div className="border-border mt-auto flex gap-1.5 border-t pt-2">
+					<div className="bg-border h-3 w-12 rounded-[2px]" />
+					<div className="border-border h-3 w-12 rounded-[2px] border" />
 				</div>
 			</div>
 		)
@@ -269,7 +254,7 @@ const DocumentBody = memo(function DocumentBody({
 		const blockHeight = Math.floor(height * 0.42)
 		return (
 			<div className="flex h-full w-full flex-col gap-1.5 overflow-hidden p-4">
-				<div className="mb-2 h-1.5 w-1/4 rounded-[1px] bg-neutral-300/80 dark:bg-neutral-700/80" />
+				<div className="bg-muted-foreground/30 mb-2 h-1.5 w-1/4 rounded-[1px]" />
 				<div className="overflow-hidden">
 					<HalftoneBlock width={innerWidth} height={blockHeight} />
 				</div>
@@ -284,15 +269,15 @@ const DocumentBody = memo(function DocumentBody({
 
 	return (
 		<div className="flex h-full w-full flex-col gap-1.5 overflow-hidden p-4">
-			<div className="mb-2 h-1.5 w-1/4 rounded-[1px] bg-neutral-300/80 dark:bg-neutral-700/80" />
+			<div className="bg-muted-foreground/30 mb-2 h-1.5 w-1/4 rounded-[1px]" />
 			<div className="flex flex-col gap-1.5">
 				{Array.from({ length: 7 }).map((_, i) => (
 					<ScribbleLine key={`p1-${i}`} width={innerWidth * (0.7 + rand(i) * 0.28)} />
 				))}
 			</div>
 			<div className="my-1.5 flex gap-2">
-				<div className="h-3 w-[36%] rounded-sm border border-neutral-300/80 dark:border-neutral-700/80" />
-				<div className="rounded-sm h-3 w-[18%] border border-neutral-300/80 dark:border-neutral-700/80" />
+				<div className="border-border h-3 w-[36%] rounded-sm border" />
+				<div className="border-border h-3 w-[18%] rounded-sm border" />
 			</div>
 			<div className="flex flex-col gap-1.5">
 				{Array.from({ length: 6 }).map((_, i) => (
@@ -300,8 +285,8 @@ const DocumentBody = memo(function DocumentBody({
 				))}
 			</div>
 			<div className="my-1.5 flex gap-2">
-				<div className="rounded-sm h-3 w-[28%] border border-neutral-300/80 dark:border-neutral-700/80" />
-				<div className="h-2.5 w-[24%] rounded-[1px] bg-neutral-300/60 dark:bg-neutral-700/60" />
+				<div className="border-border h-3 w-[28%] rounded-sm border" />
+				<div className="bg-muted-foreground/20 h-2.5 w-[24%] rounded-[1px]" />
 			</div>
 			<div className="flex flex-col gap-1.5">
 				{Array.from({ length: 4 }).map((_, i) => (
@@ -313,11 +298,11 @@ const DocumentBody = memo(function DocumentBody({
 })
 
 const ResultBody = () => (
-	<div className="flex flex-col gap-0.75 rounded-md border border-neutral-200 bg-white p-2 shadow-[0_2px_8px_rgba(0,0,0,0.04)] dark:border-neutral-800 dark:bg-neutral-900">
+	<div className="border-border bg-background flex flex-col gap-0.75 rounded-sm border p-2">
 		{Array.from({ length: 3 }).map((_, i) => (
 			<div key={i} className="grid grid-cols-3 gap-0.75">
-				<div className="h-1.5 rounded-[1px] bg-neutral-200 dark:bg-neutral-700" />
-				<div className="col-span-2 h-1.5 rounded-[1px] bg-neutral-100 dark:bg-neutral-800" />
+				<div className="bg-border h-1.5 rounded-[1px]" />
+				<div className="bg-muted col-span-2 h-1.5 rounded-[1px]" />
 			</div>
 		))}
 	</div>
@@ -367,7 +352,8 @@ interface SlidingDocProps {
 	documentHeight: number
 	documentGap: number
 	centerX: number
-	paused: boolean
+	/** Static snapshot of the stream: no CSS animation at all. */
+	isStatic: boolean
 	className?: string
 }
 
@@ -380,7 +366,7 @@ const SlidingDoc = memo(function SlidingDoc({
 	documentHeight,
 	documentGap,
 	centerX,
-	paused,
+	isStatic,
 	className,
 }: SlidingDocProps) {
 	const cycle = beat * total
@@ -388,23 +374,31 @@ const SlidingDoc = memo(function SlidingDoc({
 	const travelStart = travelEnd - total * (documentWidth + documentGap)
 	const loopEnd = travelEnd + documentWidth + documentGap
 
-	const docStyle: CSSProperties = {
+	const baseStyle: CSSProperties = {
 		width: documentWidth,
 		height: documentHeight,
 		top: 0,
 		left: 0,
 		position: "absolute",
-		willChange: "transform",
-		["--mt-from" as string]: `${travelStart}px`,
-		["--mt-to" as string]: `${loopEnd}px`,
-		animationName: "magic-transform-doc-slide",
-		animationDuration: `${cycle}s`,
-		animationTimingFunction: "linear",
-		animationIterationCount: "infinite",
-		animationDelay: `${-index * beat}s`,
-		animationPlayState: paused ? "paused" : "running",
-		transform: paused ? `translate3d(${travelStart}px, 0, 0)` : undefined,
 	}
+
+	// Where this document sits at t = 0 of the loop (its negative delay
+	// spreads the stream evenly), so the still frame matches the moving one.
+	const staticX = travelStart + (index / total) * (loopEnd - travelStart)
+
+	const docStyle: CSSProperties = isStatic
+		? { ...baseStyle, transform: `translate3d(${staticX}px, 0, 0)` }
+		: {
+				...baseStyle,
+				willChange: "transform",
+				["--mt-from" as string]: `${travelStart}px`,
+				["--mt-to" as string]: `${loopEnd}px`,
+				animationName: "magic-transform-doc-slide",
+				animationDuration: `${cycle}s`,
+				animationTimingFunction: "linear",
+				animationIterationCount: "infinite",
+				animationDelay: `${-index * beat}s`,
+			}
 
 	return (
 		<div className={className} style={docStyle}>
@@ -427,7 +421,7 @@ const MagicTransform = ({
 	documentWidth = 220,
 	documentHeight = 320,
 	documentGap = 60,
-	axisColor = "#7C3AED",
+	axisColor = "var(--primary)",
 	backgroundColor,
 	centerContent,
 	centerSize = 56,
@@ -439,8 +433,13 @@ const MagicTransform = ({
 }: MagicTransformProps) => {
 	useDocSlideStyles()
 
+	const reduce = useReducedMotion()
 	const stageRef = useRef<HTMLDivElement | null>(null)
+	const inView = useInView(stageRef, { margin: "-10% 0px" })
 	const [stageWidth, setStageWidth] = useState(0)
+
+	// Reduced motion renders the still frame; off screen nothing runs either.
+	const isStatic = paused || reduce || !inView
 
 	useEffect(() => {
 		const el = stageRef.current
@@ -468,13 +467,15 @@ const MagicTransform = ({
 	const [burstId, setBurstId] = useState(0)
 	const animStartRef = useRef(0)
 
+	// Remounting the stream on any of these restarts the CSS loop from t = 0,
+	// which is what keeps the beat timer below in phase with it.
 	const restartKey = useMemo(
-		() => `${beat}|${documentWidth}|${documentGap}|${docCount}|${centerX}`,
-		[beat, documentWidth, documentGap, docCount, centerX]
+		() => `${beat}|${documentWidth}|${documentGap}|${docCount}|${centerX}|${isStatic}`,
+		[beat, documentWidth, documentGap, docCount, centerX, isStatic]
 	)
 
 	useEffect(() => {
-		if (paused || stageWidth <= 0) return
+		if (isStatic || stageWidth <= 0) return
 
 		animStartRef.current = performance.now()
 
@@ -501,7 +502,7 @@ const MagicTransform = ({
 			clearTimeout(timeoutId)
 			if (intervalId) clearInterval(intervalId)
 		}
-	}, [paused, stageWidth, beat, docCount, documentWidth, documentGap, restartKey])
+	}, [isStatic, stageWidth, beat, docCount, documentWidth, documentGap, restartKey])
 
 	const axisHeight = documentHeight
 	const axisHaloWidth = 56
@@ -530,12 +531,12 @@ const MagicTransform = ({
 		...style,
 	}
 
-	const showBursts = burstId > 0 && !paused
+	const showBursts = burstId > 0 && !isStatic
 
 	return (
 		<div
 			ref={stageRef}
-			className={cn("relative overflow-hidden rounded-2xl", classNames?.root, className)}
+			className={cn("relative overflow-hidden rounded-sm", classNames?.root, className)}
 			style={rootStyle}
 		>
 			{stageWidth > 0 && (
@@ -561,11 +562,8 @@ const MagicTransform = ({
 							documentHeight={documentHeight}
 							documentGap={documentGap}
 							centerX={centerX}
-							paused={paused}
-							className={cn(
-								"rounded-[14px] border border-neutral-200 bg-white shadow-[0_8px_32px_rgba(0,0,0,0.06)] dark:border-neutral-800 dark:bg-neutral-900",
-								classNames?.document
-							)}
+							isStatic={isStatic}
+							className={cn("border-border bg-background rounded-sm border", classNames?.document)}
 						/>
 					))}
 				</div>
@@ -579,7 +577,7 @@ const MagicTransform = ({
 					left: "50%",
 					top: "50%",
 					transform: "translate(-100%, -50%)",
-					background: `linear-gradient(90deg, transparent 0%, ${axisColor}10 60%, ${axisColor}1F 100%)`,
+					background: `linear-gradient(90deg, transparent 0%, color-mix(in srgb, ${axisColor} 6%, transparent) 60%, color-mix(in srgb, ${axisColor} 12%, transparent) 100%)`,
 				}}
 				aria-hidden
 			/>
@@ -599,7 +597,7 @@ const MagicTransform = ({
 			<motion.div
 				key={`center-${burstId}`}
 				className={cn(
-					"pointer-events-none absolute top-1/2 left-1/2 z-30 flex items-center justify-center rounded-xl bg-white p-2 text-neutral-900 shadow-[0_10px_40px_rgba(124,58,237,0.25)] dark:bg-neutral-900 dark:text-white",
+					"border-border bg-background text-foreground pointer-events-none absolute top-1/2 left-1/2 z-30 flex items-center justify-center rounded-sm border p-2",
 					classNames?.center
 				)}
 				style={{
@@ -607,29 +605,15 @@ const MagicTransform = ({
 					height: centerSize,
 					translate: "-50% -50%",
 				}}
-				initial={{
-					scale: 1,
-					boxShadow: `0 10px 40px ${axisColor}33`,
-				}}
-				animate={
-					burstId === 0
-						? {}
-						: {
-								scale: [1, 1.14, 1],
-								boxShadow: [
-									`0 10px 40px ${axisColor}33`,
-									`0 10px 60px ${axisColor}AA`,
-									`0 10px 40px ${axisColor}33`,
-								],
-							}
-				}
+				initial={{ scale: 1 }}
+				animate={burstId === 0 || reduce ? {} : { scale: [1, 1.14, 1] }}
 				transition={{
 					duration: Math.min(0.6, beat * 0.5),
 					ease: [0.16, 1, 0.3, 1],
 					times: [0, 0.25, 1],
 				}}
 			>
-				{centerContent ?? <DefaultCenterLogo size={centerSize - 24} />}
+				{centerContent}
 			</motion.div>
 
 			{stageWidth > 0 && showBursts && (
@@ -674,13 +658,7 @@ const MagicTransform = ({
 									},
 								}}
 							>
-								<div
-									className="h-full w-full rounded-[3px]"
-									style={{
-										background: p.color,
-										boxShadow: `0 1px 3px ${p.color}66`,
-									}}
-								/>
+								<div className="h-full w-full rounded-[3px]" style={{ background: p.color }} />
 							</motion.div>
 						)
 					})}
@@ -747,10 +725,7 @@ const MagicTransform = ({
 									},
 								}}
 							>
-								<div
-									className="h-5 w-22 rounded-md shadow-[0_2px_6px_rgba(0,0,0,0.06)]"
-									style={{ background: res.color }}
-								/>
+								<div className="h-5 w-22 rounded-sm" style={{ background: res.color }} />
 								<div className={cn(classNames?.resultBody)}>
 									<ResultBody />
 								</div>
@@ -760,7 +735,7 @@ const MagicTransform = ({
 				</div>
 			)}
 
-			{stageWidth > 0 && paused && (
+			{stageWidth > 0 && isStatic && (
 				<div className="pointer-events-none absolute top-1/2 left-1/2 z-20" aria-hidden>
 					{results.map((res, i) => {
 						const slot = slots[i] ?? { col: i % 2, row: Math.floor(i / 2) }
@@ -776,10 +751,7 @@ const MagicTransform = ({
 									transform: `translate(${targetX}px, ${targetY}px)`,
 								}}
 							>
-								<div
-									className="h-5 w-22 rounded-md shadow-[0_2px_6px_rgba(0,0,0,0.06)]"
-									style={{ background: res.color }}
-								/>
+								<div className="h-5 w-22 rounded-sm" style={{ background: res.color }} />
 								<div className={cn(classNames?.resultBody)}>
 									<ResultBody />
 								</div>
