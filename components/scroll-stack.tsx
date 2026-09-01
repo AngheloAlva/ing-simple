@@ -8,6 +8,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type CSSProperties,
   type ReactNode,
 } from "react";
 import { cn } from "@/lib/utils";
@@ -55,6 +56,10 @@ export interface ScrollStackProps {
   cardHeight?: number;
   /** Corner radius of the cards in pixels */
   borderRadius?: number;
+  /** Below Tailwind's `lg`, lay the cards out in normal document flow instead
+   *  of a pinned stack. The stacked layout needs a fixed card height, which
+   *  leaves no room for tall content on small screens. */
+  flowBelowLg?: boolean;
   /** Perspective depth in pixels used by the turning variants */
   perspective?: number;
   /** Show the segmented progress rail */
@@ -264,6 +269,7 @@ export const ScrollStack = ({
   cardWidth = 880,
   cardHeight = 0.68,
   borderRadius = 22,
+  flowBelowLg = false,
   perspective = 1400,
   showProgress = true,
   showCounter = true,
@@ -289,6 +295,7 @@ export const ScrollStack = ({
 
   const [lead, setLead] = useState(0);
   const [calm, setCalm] = useState(false);
+  const [flow, setFlow] = useState(false);
 
   useEffect(() => {
     report.current = onIndexChange;
@@ -302,6 +309,20 @@ export const ScrollStack = ({
     query.addEventListener("change", sync);
     return () => query.removeEventListener("change", sync);
   }, []);
+
+  // The flow fallback itself is a CSS breakpoint, so the server already emits
+  // the right structure and nothing jumps on hydration. This mirror exists
+  // only to stop the scroll painter from writing transforms onto cards that
+  // are no longer stacked.
+  useEffect(() => {
+    if (!flowBelowLg) return;
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const query = window.matchMedia("(max-width: 1023.98px)");
+    const sync = () => setFlow(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, [flowBelowLg]);
 
   const recipe = useMemo<Recipe>(
     () => ({
@@ -367,6 +388,23 @@ export const ScrollStack = ({
     const view = doc.defaultView;
     if (!view) return;
 
+    if (flow) {
+      // Static cards in flow mode: drop everything a previous stacked pass
+      // wrote — including the `visibility: hidden` that parks cards beyond
+      // `depth`, which would otherwise leave them invisible — and never
+      // attach the scroll loop.
+      for (let i = 0; i < count; i += 1) {
+        const slot = slotRefs.current[i];
+        if (!slot) continue;
+        slot.style.transform = "";
+        slot.style.opacity = "";
+        slot.style.filter = "";
+        slot.style.clipPath = "";
+        slot.style.visibility = "";
+      }
+      return;
+    }
+
     const ease = calm ? 0 : clamp(smooth, 0, 0.95);
 
     const step = (stamp: number) => {
@@ -415,7 +453,7 @@ export const ScrollStack = ({
       view.removeEventListener("resize", wake);
       watch.disconnect();
     };
-  }, [measure, paint, smooth, calm]);
+  }, [measure, paint, smooth, calm, flow, count]);
 
   const reach = Math.max(0.2, scrollLength);
   const runway = 100 + Math.max(0, count - 1) * reach * 100;
@@ -424,19 +462,44 @@ export const ScrollStack = ({
     <section
       ref={rootRef}
       aria-label="Scrolling card stack"
-      className={cn("relative w-full", className)}
-      style={{ height: `${runway}vh` }}
+      className={cn(
+        "relative w-full",
+        flowBelowLg ? "lg:h-[var(--stack-runway)]" : undefined,
+        className,
+      )}
+      style={
+        flowBelowLg
+          ? ({ "--stack-runway": `${runway}vh` } as CSSProperties)
+          : { height: `${runway}vh` }
+      }
     >
       <div
-        className="sticky top-0 flex h-screen w-full items-center justify-center overflow-hidden px-5 sm:px-8 lg:px-10"
+        className={cn(
+          "flex w-full items-center justify-center px-5 sm:px-8 lg:px-10",
+          flowBelowLg
+            ? "lg:sticky lg:top-0 lg:h-screen lg:overflow-hidden"
+            : "sticky top-0 h-screen overflow-hidden",
+        )}
         style={{ perspective: `${Math.max(200, perspective)}px` }}
       >
         <div
-          className="relative w-full"
-          style={{
-            maxWidth: `${Math.max(200, cardWidth)}px`,
-            height: `${clamp(cardHeight, 0.2, 0.95) * 100}vh`,
-          }}
+          className={cn(
+            "relative w-full",
+            flowBelowLg
+              ? "flex flex-col gap-5 lg:block lg:h-[var(--stack-card)]"
+              : undefined,
+          )}
+          style={
+            flowBelowLg
+              ? ({
+                  maxWidth: `${Math.max(200, cardWidth)}px`,
+                  "--stack-card": `${clamp(cardHeight, 0.2, 0.95) * 100}vh`,
+                } as CSSProperties)
+              : {
+                  maxWidth: `${Math.max(200, cardWidth)}px`,
+                  height: `${clamp(cardHeight, 0.2, 0.95) * 100}vh`,
+                }
+          }
         >
           {cards.map((card, index) => (
             <div
@@ -444,7 +507,10 @@ export const ScrollStack = ({
               ref={(node) => {
                 slotRefs.current[index] = node;
               }}
-              className="absolute inset-0 [backface-visibility:hidden] [transform-style:preserve-3d] [will-change:transform,opacity]"
+              className={cn(
+                "[backface-visibility:hidden] [transform-style:preserve-3d] [will-change:transform,opacity]",
+                flowBelowLg ? "lg:absolute lg:inset-0" : "absolute inset-0",
+              )}
               style={{ zIndex: index }}
             >
               {custom.length > 0 ? (
@@ -462,7 +528,12 @@ export const ScrollStack = ({
         </div>
 
         {(showProgress || showCounter) && count > 1 && (
-          <div className="pointer-events-none absolute inset-x-0 bottom-6 flex items-center justify-center gap-4 px-6 sm:bottom-8">
+          <div
+            className={cn(
+              "pointer-events-none absolute inset-x-0 bottom-6 items-center justify-center gap-4 px-6 sm:bottom-8",
+              flowBelowLg ? "hidden lg:flex" : "flex",
+            )}
+          >
             {showProgress && (
               <span className="relative h-px w-28 overflow-hidden bg-current/20 sm:w-44">
                 <span

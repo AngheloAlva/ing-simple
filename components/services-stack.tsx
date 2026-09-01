@@ -43,15 +43,16 @@ export function ServicesStack(): ReactNode {
 				cardWidth={1360}
 				cardHeight={0.74}
 				borderRadius={0}
-				className="-mt-20"
+				flowBelowLg
+				className="mt-10 lg:-mt-20 lg:mt-0"
 			>
 				{SERVICES.map((service) => {
 					const Diagram = SERVICE_VISUALS[service.href]
 
 					return (
-						<article key={service.href} className="bg-border h-full w-full p-px" style={clip}>
+						<article key={service.href} className="bg-border w-full p-px lg:h-full" style={clip}>
 							<div
-								className="bg-muted dark:bg-card grid h-full w-full items-center gap-8 overflow-hidden p-8 sm:p-10 lg:grid-cols-[minmax(0,0.76fr)_minmax(0,1.24fr)] lg:gap-14 lg:p-14"
+								className="bg-muted dark:bg-card grid w-full items-center gap-8 overflow-hidden p-8 sm:p-10 lg:h-full lg:grid-cols-[minmax(0,0.76fr)_minmax(0,1.24fr)] lg:gap-14 lg:p-14"
 								style={clip}
 							>
 								<div className="min-w-0">
@@ -90,9 +91,7 @@ export function ServicesStack(): ReactNode {
 									</div>
 								</div>
 
-								<div className="hidden min-w-0 justify-center lg:flex">
-									{Diagram ? <Diagram /> : null}
-								</div>
+								<div className="flex min-w-0 justify-center">{Diagram ? <Diagram /> : null}</div>
 							</div>
 						</article>
 					)
