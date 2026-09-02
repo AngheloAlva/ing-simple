@@ -1,6 +1,7 @@
 "use client"
 
 import { Kicker } from "@/components/corner-plus"
+import type { ModuleProps } from "@/components/servicios/modules/types"
 import { CutButton } from "@/components/cut-button"
 import { useStaggerEntrance } from "@/lib/motion"
 import { cn } from "@/lib/utils"
@@ -155,7 +156,7 @@ function MeterRow({
 
 /* ---- Module ------------------------------------------------------------- */
 
-export function ModuleQuiz(): ReactNode {
+export function ModuleQuiz({ contactHref }: ModuleProps): ReactNode {
 	const { container, item, itemTransition, viewport } = useStaggerEntrance()
 
 	const [answers, setAnswers] = useState<number[]>([])
@@ -278,7 +279,7 @@ export function ModuleQuiz(): ReactNode {
 											{diagnosis.desc}
 										</p>
 										<div className="mt-6 flex flex-wrap items-center gap-3">
-											<CutButton variant="solid" icon="arrow" href="/contacto">
+											<CutButton variant="solid" icon="arrow" href={contactHref}>
 												Conversemos el programa
 											</CutButton>
 											<button

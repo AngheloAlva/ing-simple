@@ -5,6 +5,7 @@ import { CornerPlus } from "@/components/corner-plus"
 import { CutButton } from "@/components/cut-button"
 import { CATEGORY_LABELS, type CaseStudy, type ProjectData } from "@/lib/portfolio-data"
 import { useStaggerEntrance } from "@/lib/motion"
+import { contactHref, serviceSlugForCategory } from "@/lib/services"
 import { motion, type Variants } from "motion/react"
 import Link from "next/link"
 import type { ReactNode } from "react"
@@ -101,7 +102,10 @@ export function DetailHero({ project, caseStudy }: DetailHeroProps): ReactNode {
 										Ver sitio en vivo
 									</CutButton>
 								) : null}
-								<CutButton variant="outline" href="/contacto">
+								<CutButton
+									variant="outline"
+									href={contactHref(serviceSlugForCategory(project.category))}
+								>
 									Cotizar algo similar
 								</CutButton>
 							</motion.div>

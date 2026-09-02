@@ -2,13 +2,14 @@ import { ModuleAnatomy } from "@/components/servicios/modules/anatomy"
 import { ModuleCalculator } from "@/components/servicios/modules/calculator"
 import { ModuleProcessToSystem } from "@/components/servicios/modules/process-to-system"
 import { ModuleQuiz } from "@/components/servicios/modules/quiz"
+import type { ModuleProps } from "@/components/servicios/modules/types"
 import type { ReactNode } from "react"
 
 /**
  * Signature interactive module per service page, keyed by slug — mirrors the
  * `SERVICE_VISUALS` pattern so slugs stay configurable in `lib/services.ts`.
  */
-export const SERVICE_MODULES: Record<string, () => ReactNode> = {
+export const SERVICE_MODULES: Record<string, (props: ModuleProps) => ReactNode> = {
 	"reportabilidad": ModuleAnatomy,
 	"capacitaciones": ModuleQuiz,
 	"desarrollo-web": ModuleProcessToSystem,

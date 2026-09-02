@@ -6,7 +6,7 @@ import GradientText from "@/components/gradient-text"
 import { SERVICE_VISUALS } from "@/components/service-diagrams"
 import { brandGradient } from "@/lib/gradient"
 import { fadeInUp, reducedMotionVariants, softEase, useReducedMotion } from "@/lib/motion"
-import type { ServicePage } from "@/lib/services"
+import { contactHref, type ServicePage } from "@/lib/services"
 import { motion, type Variants } from "motion/react"
 import type { ReactNode } from "react"
 
@@ -23,6 +23,7 @@ const container: Variants = {
  */
 type ServicioHeroProps = {
 	shortName: string
+	slug: string
 	href: string
 	page: ServicePage
 }
@@ -79,7 +80,7 @@ export function ServicioHero(service: ServicioHeroProps): ReactNode {
 							transition={itemTransition}
 							className="mt-8 flex flex-wrap items-center gap-3"
 						>
-							<CutButton variant="solid" icon="send" href="/contacto">
+							<CutButton variant="solid" icon="send" href={contactHref(service.slug)}>
 								Conversemos
 							</CutButton>
 							<CutButton variant="outline" href="#incluye">

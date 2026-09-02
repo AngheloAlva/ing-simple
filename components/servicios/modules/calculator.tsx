@@ -1,6 +1,7 @@
 "use client"
 
 import { Kicker } from "@/components/corner-plus"
+import type { ModuleProps } from "@/components/servicios/modules/types"
 import { CutButton } from "@/components/cut-button"
 import { useReducedMotion } from "@/lib/motion"
 import { motion, useSpring, useTransform } from "motion/react"
@@ -125,7 +126,7 @@ function YearGrid({ recovered }: { recovered: number }): ReactNode {
 	)
 }
 
-export function ModuleCalculator(): ReactNode {
+export function ModuleCalculator({ contactHref }: ModuleProps): ReactNode {
 	const [people, setPeople] = useState(5)
 	const [hours, setHours] = useState(6)
 
@@ -203,7 +204,7 @@ export function ModuleCalculator(): ReactNode {
 							{daysPerPerson} jornadas por persona.
 						</p>
 						<div className="mt-8">
-							<CutButton variant="solid" icon="arrow" href="/contacto">
+							<CutButton variant="solid" icon="arrow" href={contactHref}>
 								Hagamos el número real
 							</CutButton>
 						</div>

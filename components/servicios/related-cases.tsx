@@ -4,7 +4,7 @@ import { CutButton } from "@/components/cut-button"
 import { CaseThumbnail } from "@/components/servicios/case-thumbnail"
 import { portfolioProjects, type ProjectData } from "@/lib/portfolio-data"
 import { brandGradientGreen } from "@/lib/gradient"
-import type { Service } from "@/lib/services"
+import { contactHref, type Service } from "@/lib/services"
 import { ArrowUpRight, Lock } from "lucide-react"
 import type { CSSProperties, ReactNode } from "react"
 
@@ -136,7 +136,7 @@ export function ServicioCases({ service }: { service: Service }): ReactNode {
 							qué haríamos en tu caso y con qué alcance.
 						</p>
 						<div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-							<CutButton variant="solid" icon="send" href="/contacto">
+							<CutButton variant="solid" icon="send" href={contactHref(service.slug)}>
 								Cuéntanos tu caso
 							</CutButton>
 							<CutButton variant="outline" href="/casos">

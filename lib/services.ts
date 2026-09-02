@@ -563,3 +563,17 @@ export const SERVICES: Service[] = [
 export function getServiceBySlug(slug: string): Service | undefined {
 	return SERVICES.find((service) => service.slug === slug)
 }
+
+/** The slug of the service whose case-study category is `category`, if any. */
+export function serviceSlugForCategory(category: ProjectCategory): string | undefined {
+	return SERVICES.find((service) => service.page.caseCategory === category)?.slug
+}
+
+/**
+ * `/contacto`, preselecting a service in the form when a slug is given.
+ * The page resolves the slug back through `SERVICES`, so unknown values
+ * simply fall through to an empty selection.
+ */
+export function contactHref(serviceSlug?: string): string {
+	return serviceSlug ? `/contacto?servicio=${encodeURIComponent(serviceSlug)}` : "/contacto"
+}

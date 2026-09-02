@@ -34,9 +34,12 @@ const DEFAULT_BODY =
 export function FinalCta({
 	title = DEFAULT_TITLE,
 	body = DEFAULT_BODY,
+	href = "/contacto",
 }: {
 	title?: string
 	body?: string
+	/** Contact destination; service pages pass a preselecting `contactHref`. */
+	href?: string
 } = {}): ReactNode {
 	const mounted = useIsMounted()
 	const { resolvedTheme } = useTheme()
@@ -123,7 +126,7 @@ export function FinalCta({
 						transition={itemTransition}
 						className="mt-8 flex flex-wrap items-center justify-center gap-3"
 					>
-						<CutButton variant="solid" icon="send" href="/contacto">
+						<CutButton variant="solid" icon="send" href={href}>
 							Agenda tu consulta gratis
 						</CutButton>
 					</motion.div>

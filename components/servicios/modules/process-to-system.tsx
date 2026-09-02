@@ -1,6 +1,7 @@
 "use client"
 
 import { Kicker } from "@/components/corner-plus"
+import type { ModuleProps } from "@/components/servicios/modules/types"
 import { CutButton } from "@/components/cut-button"
 import { useReducedMotion } from "@/lib/motion"
 import { cn } from "@/lib/utils"
@@ -194,7 +195,7 @@ function TranslationRow({
 	)
 }
 
-export function ModuleProcessToSystem(): ReactNode {
+export function ModuleProcessToSystem({ contactHref }: ModuleProps): ReactNode {
 	const [processIndex, setProcessIndex] = useState(0)
 	const [stepIndex, setStepIndex] = useState(0)
 	const [userPicked, setUserPicked] = useState(false)
@@ -431,7 +432,7 @@ export function ModuleProcessToSystem(): ReactNode {
 						Tu proceso real no es ninguno de estos tres, y ese es justamente el punto: el sistema se
 						construye sobre el tuyo.
 					</p>
-					<CutButton variant="solid" icon="arrow" href="/contacto">
+					<CutButton variant="solid" icon="arrow" href={contactHref}>
 						Traduzcamos tu proceso
 					</CutButton>
 				</div>

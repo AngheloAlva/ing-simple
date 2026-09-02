@@ -10,7 +10,7 @@ import { ServicioProblem } from "@/components/servicios/problem"
 import { ServicioProcess } from "@/components/servicios/process"
 import { createMetadata, siteConfig } from "@/lib/metadata"
 import { InView } from "@/lib/motion"
-import { getServiceBySlug, SERVICES, type Service } from "@/lib/services"
+import { contactHref, getServiceBySlug, SERVICES, type Service } from "@/lib/services"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import type { ReactNode } from "react"
@@ -78,6 +78,7 @@ export default async function ServicePage({ params }: PageProps): Promise<ReactN
 	}
 
 	const Module = SERVICE_MODULES[service.slug]
+	const contact = contactHref(service.slug)
 
 	return (
 		<>
@@ -92,11 +93,16 @@ export default async function ServicePage({ params }: PageProps): Promise<ReactN
 			<span id="top" className="sr-only" />
 			<Nav />
 			<main id="main-content" className="flex-1">
-				<ServicioHero shortName={service.shortName} href={service.href} page={service.page} />
+				<ServicioHero
+					shortName={service.shortName}
+					slug={service.slug}
+					href={service.href}
+					page={service.page}
+				/>
 				<ServicioProblem problem={service.page.problem} audience={service.page.audience} />
 				{Module ? (
 					<InView>
-						<Module />
+						<Module contactHref={contact} />
 					</InView>
 				) : null}
 				<ServicioIncludes
@@ -109,7 +115,7 @@ export default async function ServicePage({ params }: PageProps): Promise<ReactN
 					<ServicioCases service={service} />
 				</InView>
 				<ServicioFaq serviceName={service.shortName} items={service.page.faq} />
-				<FinalCta title={service.page.ctaTitle} body={service.page.ctaBody} />
+				<FinalCta title={service.page.ctaTitle} body={service.page.ctaBody} href={contact} />
 			</main>
 			<InView>
 				<Footer />

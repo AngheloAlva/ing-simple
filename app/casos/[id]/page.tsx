@@ -14,6 +14,7 @@ import { Nav } from "@/components/nav"
 import { createMetadata } from "@/lib/metadata"
 import { InView } from "@/lib/motion"
 import { portfolioProjects } from "@/lib/portfolio-data"
+import { contactHref, serviceSlugForCategory } from "@/lib/services"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import type { ReactNode } from "react"
@@ -72,7 +73,7 @@ export default async function CaseStudyDetailPage({ params }: PageProps): Promis
 				<DetailMetrics caseStudy={caseStudy} />
 				<DetailBeforeAfter caseStudy={caseStudy} />
 				<DetailRelated currentId={project.id} />
-				<FinalCta />
+				<FinalCta href={contactHref(serviceSlugForCategory(project.category))} />
 			</main>
 			<InView>
 				<Footer />
