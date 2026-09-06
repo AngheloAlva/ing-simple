@@ -1,3 +1,4 @@
+import type { GuiaMeta } from "@/lib/guias/schema"
 import type { ProjectData } from "@/lib/portfolio-data"
 import { parseSpanishMonthYear } from "@/lib/seo/dates"
 import type { Service } from "@/lib/services"
@@ -28,11 +29,20 @@ function latestParsableMilestoneDate(project: ProjectData): string | undefined {
  * milestone date their own case-study data can supply, falling back to
  * `now` when nothing parses.
  */
+/** Latest `updatedAt`/`publishedAt` across `guias`, or `undefined` when the list is empty. */
+function latestGuiaDate(guias: GuiaMeta[]): string | undefined {
+	return guias
+		.map((guia) => guia.updatedAt ?? guia.publishedAt)
+		.sort()
+		.at(-1)
+}
+
 export function buildSitemap(
 	base: string,
 	services: Service[],
 	projects: ProjectData[],
 	now: string,
+	guias: GuiaMeta[]
 ): MetadataRoute.Sitemap {
 	const staticRoutes: MetadataRoute.Sitemap = [
 		{ url: base, priority: 1, changeFrequency: "weekly", lastModified: now },
@@ -63,5 +73,21 @@ export function buildSitemap(
 			lastModified: latestParsableMilestoneDate(project) ?? now,
 		}))
 
-	return [...staticRoutes, ...servicePages, ...casePages]
+	const guiasIndexRoute: MetadataRoute.Sitemap = [
+		{
+			url: `${base}/guias`,
+			priority: 0.8,
+			changeFrequency: "weekly",
+			lastModified: latestGuiaDate(guias) ?? now,
+		},
+	]
+
+	const guiaPages: MetadataRoute.Sitemap = guias.map((guia) => ({
+		url: `${base}/guias/${guia.slug}`,
+		priority: 0.6,
+		changeFrequency: "monthly",
+		lastModified: guia.updatedAt ?? guia.publishedAt,
+	}))
+
+	return [...staticRoutes, ...servicePages, ...casePages, ...guiasIndexRoute, ...guiaPages]
 }

@@ -1,11 +1,13 @@
 import { describe, expect, it } from "vitest"
 import { siteConfig } from "@/lib/metadata"
+import type { GuiaMeta } from "@/lib/guias/schema"
 import type { ProjectData } from "@/lib/portfolio-data"
 import type { Service } from "@/lib/services"
 import {
 	articleJsonLd,
 	breadcrumbJsonLd,
 	faqJsonLd,
+	guiaJsonLd,
 	organizationJsonLd,
 	serviceJsonLd,
 	webSiteJsonLd,
@@ -19,20 +21,20 @@ describe("organizationJsonLd", () => {
 			"@context": "https://schema.org",
 			"@type": "ProfessionalService",
 			"@id": `${siteConfig.url}/#organization`,
-			name: "Ingeniería Simple SpA",
-			alternateName: ["Ingeniería Simple", "IngSimple"],
-			url: siteConfig.url,
-			logo: `${siteConfig.url}/logo.svg`,
-			image: `${siteConfig.url}/opengraph-image`,
-			email: "contacto@ingsimple.cl",
-			description: siteConfig.description,
-			areaServed: { "@type": "Country", name: "Chile" },
-			address: {
+			"name": "Ingeniería Simple SpA",
+			"alternateName": ["Ingeniería Simple", "IngSimple"],
+			"url": siteConfig.url,
+			"logo": `${siteConfig.url}/logo.svg`,
+			"image": `${siteConfig.url}/opengraph-image`,
+			"email": "contacto@ingsimple.cl",
+			"description": siteConfig.description,
+			"areaServed": { "@type": "Country", "name": "Chile" },
+			"address": {
 				"@type": "PostalAddress",
-				addressLocality: "Santiago",
-				addressCountry: "CL",
+				"addressLocality": "Santiago",
+				"addressCountry": "CL",
 			},
-			sameAs: ["https://www.linkedin.com/company/ingenieria-simple/"],
+			"sameAs": ["https://www.linkedin.com/company/ingenieria-simple/"],
 		})
 	})
 })
@@ -45,10 +47,10 @@ describe("webSiteJsonLd", () => {
 		expect(site).toMatchObject({
 			"@context": "https://schema.org",
 			"@type": "WebSite",
-			name: siteConfig.name,
-			url: siteConfig.url,
-			inLanguage: "es-CL",
-			publisher: { "@id": org["@id"] },
+			"name": siteConfig.name,
+			"url": siteConfig.url,
+			"inLanguage": "es-CL",
+			"publisher": { "@id": org["@id"] },
 		})
 	})
 })
@@ -63,18 +65,18 @@ describe("breadcrumbJsonLd", () => {
 		expect(list).toEqual({
 			"@context": "https://schema.org",
 			"@type": "BreadcrumbList",
-			itemListElement: [
+			"itemListElement": [
 				{
 					"@type": "ListItem",
-					position: 1,
-					name: "Inicio",
-					item: `${siteConfig.url}/`,
+					"position": 1,
+					"name": "Inicio",
+					"item": `${siteConfig.url}/`,
 				},
 				{
 					"@type": "ListItem",
-					position: 2,
-					name: "Casos",
-					item: `${siteConfig.url}/casos`,
+					"position": 2,
+					"name": "Casos",
+					"item": `${siteConfig.url}/casos`,
 				},
 			],
 		})
@@ -88,11 +90,11 @@ describe("faqJsonLd", () => {
 		expect(faq).toEqual({
 			"@context": "https://schema.org",
 			"@type": "FAQPage",
-			mainEntity: [
+			"mainEntity": [
 				{
 					"@type": "Question",
-					name: "¿Q?",
-					acceptedAnswer: { "@type": "Answer", text: "A." },
+					"name": "¿Q?",
+					"acceptedAnswer": { "@type": "Answer", "text": "A." },
 				},
 			],
 		})
@@ -132,24 +134,24 @@ describe("serviceJsonLd", () => {
 			{
 				"@context": "https://schema.org",
 				"@type": "Service",
-				serviceType: service.title,
-				provider: {
+				"serviceType": service.title,
+				"provider": {
 					"@type": "Organization",
-					name: "Ingeniería Simple SpA",
-					url: siteConfig.url,
+					"name": "Ingeniería Simple SpA",
+					"url": siteConfig.url,
 				},
-				areaServed: { "@type": "Country", name: "Chile" },
-				description: service.page.seoDescription,
-				url: `${siteConfig.url}${service.href}`,
+				"areaServed": { "@type": "Country", "name": "Chile" },
+				"description": service.page.seoDescription,
+				"url": `${siteConfig.url}${service.href}`,
 			},
 			{
 				"@context": "https://schema.org",
 				"@type": "FAQPage",
-				mainEntity: [
+				"mainEntity": [
 					{
 						"@type": "Question",
-						name: "¿Qué?",
-						acceptedAnswer: { "@type": "Answer", text: "Respuesta." },
+						"name": "¿Qué?",
+						"acceptedAnswer": { "@type": "Answer", "text": "Respuesta." },
 					},
 				],
 			},
@@ -199,13 +201,13 @@ describe("articleJsonLd", () => {
 		expect(article).toMatchObject({
 			"@context": "https://schema.org",
 			"@type": "Article",
-			headline: "OTC 360",
-			description: "Plataforma de gestión de órdenes de trabajo.",
-			url: `${siteConfig.url}/casos/otc`,
-			inLanguage: "es-CL",
-			author: { "@id": org["@id"] },
-			publisher: { "@id": org["@id"] },
-			datePublished: "2025-04-01",
+			"headline": "OTC 360",
+			"description": "Plataforma de gestión de órdenes de trabajo.",
+			"url": `${siteConfig.url}/casos/otc`,
+			"inLanguage": "es-CL",
+			"author": { "@id": org["@id"] },
+			"publisher": { "@id": org["@id"] },
+			"datePublished": "2025-04-01",
 		})
 	})
 
@@ -229,5 +231,59 @@ describe("articleJsonLd", () => {
 		const article = articleJsonLd(project)
 
 		expect(article.datePublished).toBeUndefined()
+	})
+})
+
+describe("guiaJsonLd", () => {
+	function baseGuia(overrides: Partial<GuiaMeta> = {}): GuiaMeta {
+		return {
+			slug: "ia-en-procesos-por-donde-empezar",
+			title: "Cómo empezar con IA en tus procesos",
+			description: "Una guía práctica para pymes que quieren dar el primer paso con IA.",
+			publishedAt: "2026-09-06",
+			tema: "ia",
+			servicio: "automatizaciones",
+			tags: ["ia", "pymes"],
+			draft: false,
+			readingTimeMinutes: 4,
+			portada: "/img/guias/ia-en-procesos-por-donde-empezar.png",
+			portadaAlt: "Persona revisando un panel con procesos automatizados",
+			...overrides,
+		}
+	}
+
+	it("builds an Article referencing the org, with keywords from tags", () => {
+		const guia = baseGuia()
+		const article = guiaJsonLd(guia)
+		const org = organizationJsonLd()
+
+		expect(article).toMatchObject({
+			"@context": "https://schema.org",
+			"@type": "Article",
+			"headline": guia.title,
+			"description": guia.description,
+			"url": `${siteConfig.url}/guias/${guia.slug}`,
+			"inLanguage": "es-CL",
+			"author": { "@id": org["@id"] },
+			"publisher": { "@id": org["@id"] },
+			"datePublished": "2026-09-06",
+			"dateModified": "2026-09-06",
+			"image": [`${siteConfig.url}${guia.portada}`],
+			"keywords": "ia, pymes",
+		})
+	})
+
+	it("uses updatedAt for dateModified when present", () => {
+		const guia = baseGuia({ updatedAt: "2026-09-10" })
+		const article = guiaJsonLd(guia)
+
+		expect(article.dateModified).toBe("2026-09-10")
+	})
+
+	it("omits keywords when there are no tags", () => {
+		const guia = baseGuia({ tags: [] })
+		const article = guiaJsonLd(guia)
+
+		expect(article.keywords).toBeUndefined()
 	})
 })

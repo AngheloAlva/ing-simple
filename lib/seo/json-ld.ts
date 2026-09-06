@@ -1,3 +1,4 @@
+import type { GuiaMeta } from "@/lib/guias/schema"
 import { siteConfig } from "@/lib/metadata"
 import type { ProjectData } from "@/lib/portfolio-data"
 import type { Service } from "@/lib/services"
@@ -15,20 +16,20 @@ export function organizationJsonLd(): Record<string, unknown> {
 		"@context": "https://schema.org",
 		"@type": "ProfessionalService",
 		"@id": ORGANIZATION_ID,
-		name: "Ingeniería Simple SpA",
-		alternateName: ["Ingeniería Simple", "IngSimple"],
-		url: siteConfig.url,
-		logo: `${siteConfig.url}/logo.svg`,
-		image: `${siteConfig.url}/opengraph-image`,
-		email: "contacto@ingsimple.cl",
-		description: siteConfig.description,
-		areaServed: { "@type": "Country", name: "Chile" },
-		address: {
+		"name": "Ingeniería Simple SpA",
+		"alternateName": ["Ingeniería Simple", "IngSimple"],
+		"url": siteConfig.url,
+		"logo": `${siteConfig.url}/logo.svg`,
+		"image": `${siteConfig.url}/opengraph-image`,
+		"email": "contacto@ingsimple.cl",
+		"description": siteConfig.description,
+		"areaServed": { "@type": "Country", "name": "Chile" },
+		"address": {
 			"@type": "PostalAddress",
-			addressLocality: "Santiago",
-			addressCountry: "CL",
+			"addressLocality": "Santiago",
+			"addressCountry": "CL",
 		},
-		sameAs: ["https://www.linkedin.com/company/ingenieria-simple/"],
+		"sameAs": ["https://www.linkedin.com/company/ingenieria-simple/"],
 	}
 }
 
@@ -36,10 +37,10 @@ export function webSiteJsonLd(): Record<string, unknown> {
 	return {
 		"@context": "https://schema.org",
 		"@type": "WebSite",
-		name: siteConfig.name,
-		url: siteConfig.url,
-		inLanguage: "es-CL",
-		publisher: { "@id": ORGANIZATION_ID },
+		"name": siteConfig.name,
+		"url": siteConfig.url,
+		"inLanguage": "es-CL",
+		"publisher": { "@id": ORGANIZATION_ID },
 	}
 }
 
@@ -52,11 +53,11 @@ export function breadcrumbJsonLd(items: BreadcrumbItem[]): Record<string, unknow
 	return {
 		"@context": "https://schema.org",
 		"@type": "BreadcrumbList",
-		itemListElement: items.map((item, index) => ({
+		"itemListElement": items.map((item, index) => ({
 			"@type": "ListItem",
-			position: index + 1,
-			name: item.name,
-			item: `${siteConfig.url}${item.path}`,
+			"position": index + 1,
+			"name": item.name,
+			"item": `${siteConfig.url}${item.path}`,
 		})),
 	}
 }
@@ -70,10 +71,10 @@ export function faqJsonLd(items: FaqEntry[]): Record<string, unknown> {
 	return {
 		"@context": "https://schema.org",
 		"@type": "FAQPage",
-		mainEntity: items.map((item) => ({
+		"mainEntity": items.map((item) => ({
 			"@type": "Question",
-			name: item.question,
-			acceptedAnswer: { "@type": "Answer", text: item.answer },
+			"name": item.question,
+			"acceptedAnswer": { "@type": "Answer", "text": item.answer },
 		})),
 	}
 }
@@ -88,23 +89,23 @@ export function serviceJsonLd(service: Service): object[] {
 		{
 			"@context": "https://schema.org",
 			"@type": "Service",
-			serviceType: service.title,
-			provider: {
+			"serviceType": service.title,
+			"provider": {
 				"@type": "Organization",
-				name: "Ingeniería Simple SpA",
-				url: siteConfig.url,
+				"name": "Ingeniería Simple SpA",
+				"url": siteConfig.url,
 			},
-			areaServed: { "@type": "Country", name: "Chile" },
-			description: service.page.seoDescription,
-			url: `${siteConfig.url}${service.href}`,
+			"areaServed": { "@type": "Country", "name": "Chile" },
+			"description": service.page.seoDescription,
+			"url": `${siteConfig.url}${service.href}`,
 		},
 		{
 			"@context": "https://schema.org",
 			"@type": "FAQPage",
-			mainEntity: service.page.faq.map((item) => ({
+			"mainEntity": service.page.faq.map((item) => ({
 				"@type": "Question",
-				name: item.q,
-				acceptedAnswer: { "@type": "Answer", text: item.a },
+				"name": item.q,
+				"acceptedAnswer": { "@type": "Answer", "text": item.a },
 			})),
 		},
 	]
@@ -136,12 +137,30 @@ export function articleJsonLd(project: ProjectData): Record<string, unknown> {
 	return {
 		"@context": "https://schema.org",
 		"@type": "Article",
-		headline: project.title,
+		"headline": project.title,
 		description,
-		url: `${siteConfig.url}/casos/${project.id}`,
-		inLanguage: "es-CL",
-		author: { "@id": ORGANIZATION_ID },
-		publisher: { "@id": ORGANIZATION_ID },
+		"url": `${siteConfig.url}/casos/${project.id}`,
+		"inLanguage": "es-CL",
+		"author": { "@id": ORGANIZATION_ID },
+		"publisher": { "@id": ORGANIZATION_ID },
 		...(datePublished !== undefined && { datePublished }),
+	}
+}
+
+/** `Article` node for a `/guias/[slug]` guide detail page. */
+export function guiaJsonLd(meta: GuiaMeta): Record<string, unknown> {
+	return {
+		"@context": "https://schema.org",
+		"@type": "Article",
+		"headline": meta.title,
+		"description": meta.description,
+		"url": `${siteConfig.url}/guias/${meta.slug}`,
+		"inLanguage": "es-CL",
+		"author": { "@id": ORGANIZATION_ID },
+		"publisher": { "@id": ORGANIZATION_ID },
+		"datePublished": meta.publishedAt,
+		"dateModified": meta.updatedAt ?? meta.publishedAt,
+		"image": [`${siteConfig.url}${meta.portada}`],
+		...(meta.tags.length > 0 && { keywords: meta.tags.join(", ") }),
 	}
 }
