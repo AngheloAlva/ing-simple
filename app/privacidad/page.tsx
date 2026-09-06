@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = createMetadata({
-  title: "Política de Privacidad",
+  title: "Política de privacidad",
   description:
     "Cómo Ingeniería Simple SpA trata los datos personales que recibe a través del sitio y el formulario de contacto, de acuerdo con la Ley N° 19.628.",
   path: "/privacidad",
@@ -52,7 +52,7 @@ export default function PrivacidadPage(): ReactNode {
           <div className="mx-auto max-w-3xl">
             <Kicker>Legal</Kicker>
             <h1 className="mt-5 text-balance font-serif text-4xl font-normal leading-[1.08] tracking-[-0.01em] sm:text-5xl">
-              Política de Privacidad
+              Política de privacidad
             </h1>
             <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
               Última actualización: {VIGENCIA}

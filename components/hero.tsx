@@ -54,9 +54,9 @@ export function Hero(): ReactNode {
 						className="font-sans text-4xl leading-[1.1] font-normal tracking-tight text-balance sm:text-5xl lg:text-[3.5rem]"
 					>
 						<GradientText inline className="font-medium" colors={brandGradient} animationSpeed={6}>
-							Soluciones Simples
+							Soluciones simples
 						</GradientText>{" "}
-						para un Mundo Digital Complejo
+						para un mundo digital complejo
 					</motion.h1>
 
 					<motion.p
@@ -64,8 +64,8 @@ export function Hero(): ReactNode {
 						transition={itemTransition}
 						className="text-muted-foreground mt-4 max-w-xl text-[15px] leading-relaxed text-balance sm:text-base"
 					>
-						Acompañamos a tu organización con tecnología, análisis y capacitación para optimizar
-						procesos y tomar mejores decisiones.
+						Dashboards en Power BI, automatizaciones, sistemas web a medida y capacitaciones para
+						empresas que hoy operan con planillas, correos y WhatsApp.
 					</motion.p>
 
 					<motion.div
@@ -77,7 +77,7 @@ export function Hero(): ReactNode {
 							Explorar servicios
 						</CutButton>
 						<CutButton variant="outline" href="/contacto" className="dark:text-white">
-							Contáctanos
+							Conversemos
 						</CutButton>
 					</motion.div>
 				</motion.div>

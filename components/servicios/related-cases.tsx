@@ -132,8 +132,8 @@ export function ServicioCases({ service }: { service: Service }): ReactNode {
 							Estamos documentando nuestros casos de {service.shortName.toLowerCase()}.
 						</p>
 						<p className="text-muted-foreground mt-3 max-w-md text-sm leading-relaxed text-balance">
-							Mientras tanto, cuéntanos tu situación: en una conversación de 30 minutos te decimos
-							qué haríamos en tu caso y con qué alcance.
+							Mientras tanto, cuéntanos tu situación: en menos de 24 horas hábiles te decimos qué
+							haríamos en tu caso y con qué alcance.
 						</p>
 						<div className="mt-7 flex flex-wrap items-center justify-center gap-3">
 							<CutButton variant="solid" icon="send" href={contactHref(service.slug)}>

@@ -19,11 +19,11 @@ const values: Value[] = [
 		desc: "Sin letra pequeña, sin sorpresas. Comunicamos con claridad cada paso del proceso, los plazos y los costos desde el día uno.",
 	},
 	{
-		title: "Impacto Real",
+		title: "Impacto real",
 		desc: "No hacemos tecnología por hacer tecnología. Cada proyecto tiene un objetivo claro y un resultado medible para tu organización.",
 	},
 	{
-		title: "Aprendizaje Continuo",
+		title: "Aprendizaje continuo",
 		desc: "Capacitamos a tu equipo para que sea autónomo. No creamos dependencia: transferimos conocimiento y construimos capacidades internas.",
 	},
 ]
@@ -48,7 +48,7 @@ export function NosotrosValues() {
 	return (
 		<section className="mx-auto w-full max-w-[1440px] px-5 py-16 sm:px-8 sm:py-20 lg:px-10">
 			<div className="max-w-2xl">
-				<Kicker>Nuestros Valores</Kicker>
+				<Kicker>Nuestros valores</Kicker>
 				<h2 className="mt-5 font-serif text-3xl leading-[1.12] font-normal tracking-[-0.01em] text-balance sm:text-4xl lg:text-[2.75rem]">
 					Lo que nos <span className="font-sans font-semibold tracking-tight">define</span>
 				</h2>

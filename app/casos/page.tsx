@@ -4,9 +4,11 @@ import { CasosHero } from "@/components/casos/hero";
 import { CasosStats } from "@/components/casos/stats";
 import { FinalCta } from "@/components/final-cta";
 import { Footer } from "@/components/footer";
+import { JsonLd } from "@/components/json-ld";
 import { Nav } from "@/components/nav";
 import { InView } from "@/lib/motion";
 import { createMetadata } from "@/lib/metadata";
+import { breadcrumbJsonLd } from "@/lib/seo/json-ld";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
@@ -20,6 +22,12 @@ export const metadata: Metadata = createMetadata({
 export default function CasosPage(): ReactNode {
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Inicio", path: "/" },
+          { name: "Casos", path: "/casos" },
+        ])}
+      />
       <span id="top" className="sr-only" />
       <Nav />
       <main id="main-content" className="flex-1">

@@ -37,7 +37,7 @@ const ITEMS: ShowcaseItem[] = [
   {
     id: "web",
     label: "ERP a medida",
-    service: "Desarrollo Web",
+    service: "Desarrollo web",
     Panel: PanelWeb,
   },
   {
@@ -172,7 +172,7 @@ export function HeroShowcase(): ReactNode {
       {/* Indicators */}
       <div
         role="tablist"
-        aria-label="Servicios de IngSimple"
+        aria-label="Servicios de Ingeniería Simple"
         className="mx-auto mt-6 grid max-w-[1100px] grid-cols-2 gap-3 sm:grid-cols-4"
       >
         {ITEMS.map((item, index) => {

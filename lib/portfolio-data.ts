@@ -63,6 +63,8 @@ export interface CaseStudyHeadline {
 
 export interface CaseStudy {
 	pitch: string
+	/** Short "what it is" label (<=40 chars) used to build the case's SEO title when title + shortDescription would be too long. */
+	seoLabel?: string
 	duration: string
 	inProductionSince: string
 	clientName: string
@@ -103,7 +105,7 @@ export interface ProjectData {
 
 export const CATEGORY_LABELS: Record<"todos" | ProjectCategory, string> = {
 	"todos": "Todos",
-	"desarrollo-web": "Desarrollo Web",
+	"desarrollo-web": "Desarrollo web",
 	"power-platform": "Automatizaciones",
 	"capacitaciones": "Capacitaciones",
 	"reportabilidad": "Reportabilidad",
@@ -140,6 +142,7 @@ export const portfolioProjects: ProjectData[] = [
 		clientLogo: "/img/logos/otc.svg",
 		caseStudy: {
 			visualPrivacy: "confidential-ui",
+			seoLabel: "control operacional para oleoducto",
 			pitch:
 				"Plataforma de control operacional que reemplazó papel, correos y Excel por un único sistema para gestionar órdenes de trabajo, permisos, planes de mantenimiento y carpetas de contratistas, con indicadores en vivo.",
 			duration: "≈3 meses de desarrollo, con visitas en planta en Concepción",
@@ -324,6 +327,7 @@ export const portfolioProjects: ProjectData[] = [
 		clientLogo: "/img/logos/bimakers.avif",
 		caseStudy: {
 			visualPrivacy: "confidential-ui",
+			seoLabel: "coordinación de cuadrillas en planta",
 			pitch:
 				'Plataforma multi-rol que reemplaza la coordinación por Teams y WhatsApp con un único sistema para asignar cuadrillas, gestionar tareas en planta y auditar cada cambio. Sin chats perdidos, sin planillas paralelas, sin "¿quién dijo qué?".',
 			duration: "~4 meses, desde relevamiento hasta producción",
@@ -550,6 +554,7 @@ export const portfolioProjects: ProjectData[] = [
 		clientLogo: "/img/logos/busanc.avif",
 		caseStudy: {
 			visualPrivacy: "confidential-ui",
+			seoLabel: "ERP a medida para manufactura",
 			pitch:
 				"Busanc es una plataforma a medida que digitaliza y orquesta el flujo end-to-end de una empresa industrial: desde que Comercial recibe el requerimiento del cliente hasta que Despacho genera la guía. Reemplaza un ecosistema fragmentado de Excel, correos y una intranet legada por un único sistema con trazabilidad, paralelismo entre áreas y visibilidad operativa real.",
 			duration:
@@ -738,6 +743,7 @@ export const portfolioProjects: ProjectData[] = [
 		clientLogo: "/img/logos/turismochiletours.svg",
 		caseStudy: {
 			visualPrivacy: "public",
+			seoLabel: "sitio corporativo para tour operador",
 			pitch:
 				"Sitio institucional multilingüe para TurismoChileTours, tour operador en San Pedro de Atacama. Presenta el catálogo de programas y destinos y canaliza solicitudes de tours privados y postulaciones laborales, sumando un canal corporativo en español, inglés, francés y portugués brasilero.",
 			duration: "≈3 meses de desarrollo (agosto–noviembre 2024). Coordinación 100% remota.",
@@ -916,6 +922,7 @@ export const portfolioProjects: ProjectData[] = [
 		clientLogo: "/img/logos/turismochiletours.svg",
 		caseStudy: {
 			visualPrivacy: "public",
+			seoLabel: "ecommerce de tours en Atacama",
 			pitch:
 				"Ecommerce multilingüe para que TurismoChileTours venda directamente excursiones y programas en San Pedro de Atacama, con tres pasarelas de pago, conversión automática CLP↔USD y un panel administrativo completo para gestionar catálogo, reservas y traducciones a cuatro idiomas.",
 			duration: "≈2 meses de desarrollo (octubre–diciembre 2024). Coordinación 100% remota.",
@@ -1171,6 +1178,7 @@ export const portfolioProjects: ProjectData[] = [
 		clientLogo: "/img/logos/turismochiletours.svg",
 		caseStudy: {
 			visualPrivacy: "confidential-ui",
+			seoLabel: "dashboard operativo para turismo",
 			pitch:
 				"Una sola herramienta para correr toda la operación diaria de una agencia de turismo en pleno desierto de Atacama. Migra los flujos atrapados en Power Apps a una web moderna, suma módulos que antes vivían en Excel y WhatsApp, y le da al equipo una fuente de verdad común. Diseñado para que ventas, operaciones, guías y administración trabajen sobre los mismos datos — con permisos, auditoría y exportes pensados para el día a día real, no para una demo.",
 			duration:
@@ -1348,7 +1356,7 @@ export const portfolioProjects: ProjectData[] = [
 		shortDescription:
 			"Sitio institucional multilingüe con publicación de noticias semanales para empresa de inspección y calibración de tanques de almacenamiento.",
 		fullDescription:
-			"Sitio corporativo bilingüe (ES/EN) para BZ Consulting, organismo de inspección certificado ISO 17020 especializado en calibración de estanques de almacenamiento y medición de graneles líquidos para el sector petróleo y gas. Construido con Astro como sitio estático puro, con un flujo de publicación de noticias semanales gestionado vía content collections MDX, sin CMS de por medio. Primer proyecto web entregado por IngSimple, en producción y mantenimiento continuo desde 2024.",
+			"Sitio corporativo bilingüe (ES/EN) para BZ Consulting, organismo de inspección certificado ISO 17020 especializado en calibración de estanques de almacenamiento y medición de graneles líquidos para el sector petróleo y gas. Construido con Astro como sitio estático puro, con un flujo de publicación de noticias semanales gestionado vía content collections MDX, sin CMS de por medio. Primer proyecto web entregado por Ingeniería Simple, en producción y mantenimiento continuo desde 2024.",
 		category: "desarrollo-web",
 		technologies: [
 			"Astro 4",
@@ -1370,8 +1378,9 @@ export const portfolioProjects: ProjectData[] = [
 		clientLogo: "/img/logos/bzconsulting.png",
 		caseStudy: {
 			visualPrivacy: "public",
+			seoLabel: "sitio institucional con noticias",
 			pitch:
-				"Primer proyecto web entregado por IngSimple, hoy con más de dos años en producción. Un sitio institucional bilingüe ultra-liviano sobre Astro, con un flujo de publicación de noticias semanales que el equipo de BZ usa para sostener su presencia digital sin depender de un CMS ni de un developer cada vez que sale una novedad.",
+				"Primer proyecto web entregado por Ingeniería Simple, hoy con más de dos años en producción. Un sitio institucional bilingüe ultra-liviano sobre Astro, con un flujo de publicación de noticias semanales que el equipo de BZ usa para sostener su presencia digital sin depender de un CMS ni de un developer cada vez que sale una novedad.",
 			duration:
 				"≈4 semanas de desarrollo inicial (abril–mayo 2024). Mantenimiento continuo desde el lanzamiento.",
 			inProductionSince:
@@ -1382,13 +1391,13 @@ export const portfolioProjects: ProjectData[] = [
 			problem: [
 				"BZ Consulting es un organismo de inspección certificado ISO 17020 con clientes pesados del sector petróleo y gas (ENAP, ENEX, SONACOL, ANCAP, operadores portuarios) y presencia en Chile —Quintero, Talcahuano, San Vicente— y Uruguay. A pesar del peso técnico de la operación, no tenían un canal digital institucional que reflejara ni la trayectoria del equipo ni el nivel de los proyectos que ejecutan.",
 				"El requerimiento se planteó simple en superficie pero exigente en práctica: un sitio bilingüe (español e inglés), rápido, sobrio, que comunicara servicios, certificaciones y centro de operaciones, con un canal de contacto operativo para clientes corporativos. Y, sobre todo, una sección de noticias que el equipo de BZ pudiera alimentar con frecuencia para mantener al sitio vivo — sin necesidad de aprender un CMS ni pagar uno.",
-				"Era además el PRIMER proyecto web de IngSimple, así que las decisiones técnicas tenían que envejecer bien: stack mantenible por una sola persona, costos operativos cercanos a cero y un flujo de publicación que sobreviviera dos años sin reescribir nada.",
+				"Era además el PRIMER proyecto web de Ingeniería Simple, así que las decisiones técnicas tenían que envejecer bien: stack mantenible por una sola persona, costos operativos cercanos a cero y un flujo de publicación que sobreviviera dos años sin reescribir nada.",
 			],
 			solution: [
 				"Sitio construido en Astro como SSG puro: cada página se precompila a HTML estático, React solo se hidrata en las islas que lo necesitan (formulario de contacto, selector de idioma, carrusel). El resultado es un sitio que rinde como un sitio del 2010 y se ve como uno del 2026.",
 				"La sección de noticias se modela como content collection de Astro con esquema Zod (título, cover, lang, fecha): cada noticia es un archivo MDX dentro del repo. Para publicar, basta con sumar un par de archivos (uno en ES, uno en EN), commitear, y Cloudflare Pages dispara el deploy automático. Sin CMS, sin login, sin costos extra — y con todo el historial editorial versionado en git.",
 				"El formulario de contacto va a un Cloudflare Worker que reenvía vía Resend, manteniendo el modelo 100% serverless y permitiendo hostear todo el sitio en el tier gratuito de Cloudflare Pages. El multilenguaje (ES/EN) se resuelve con @astrolicious/i18n, con URLs traducidas por idioma (/empresa ↔ /company, /noticias ↔ /news, etc.) para SEO limpio en ambos mercados.",
-				"Dos años después, el flujo sigue intacto: BZ pide la noticia, IngSimple agrega los dos MDX, push a main, y Cloudflare Pages publica. Más de 190 artículos publicados de esta forma — sin tocar una línea de código.",
+				"Dos años después, el flujo sigue intacto: BZ pide la noticia, Ingeniería Simple agrega los dos MDX, push a main, y Cloudflare Pages publica. Más de 190 artículos publicados de esta forma — sin tocar una línea de código.",
 			],
 			architectureDescription:
 				"Astro 4 en modo Static Site Generation puro, sin adapter SSR. React 18 solo en las islas interactivas (formulario de contacto, selector de idioma, carruseles con Embla). Tailwind CSS + Radix UI siguiendo el patrón shadcn (componentes accesibles, estilo propio). Multilenguaje con @astrolicious/i18n y URLs traducidas por locale. Las noticias viven como content collections MDX con validación Zod en el frontmatter — el bilingüismo se modela como dos archivos por noticia (uno con lang: es, otro con lang: en). Sitemap generado con @astrojs/sitemap, robots.txt dinámico, ViewTransitions nativas de Astro para navegación sin recargar. Hosting en Cloudflare Pages con auto-deploy desde main; el formulario de contacto delega en un Cloudflare Worker que reenvía a Resend, manteniendo el costo operativo cercano a cero. Imágenes servidas en AVIF + WebP con fallback.",
@@ -1396,7 +1405,7 @@ export const portfolioProjects: ProjectData[] = [
 				{
 					name: "Astro 4 (SSG)",
 					reason:
-						"Para un sitio institucional con noticias, Astro es la decisión obvia: HTML estático prerenderizado, JavaScript opcional, y un modelo mental simple. Cero runtime overhead, deploys que caben en el tier gratuito de cualquier hosting estático, y un Lighthouse alto sin tener que pelearlo. Para el primer proyecto de IngSimple, era la apuesta más conservadora y a la vez la más correcta.",
+						"Para un sitio institucional con noticias, Astro es la decisión obvia: HTML estático prerenderizado, JavaScript opcional, y un modelo mental simple. Cero runtime overhead, deploys que caben en el tier gratuito de cualquier hosting estático, y un Lighthouse alto sin tener que pelearlo. Para el primer proyecto de Ingeniería Simple, era la apuesta más conservadora y a la vez la más correcta.",
 				},
 				{
 					name: "Content Collections + MDX",
@@ -1416,7 +1425,7 @@ export const portfolioProjects: ProjectData[] = [
 				{
 					name: "Tailwind CSS + Radix UI",
 					reason:
-						"Patrón shadcn-like: Radix aporta accesibilidad por defecto (foco, ARIA, teclado) y Tailwind da control total del estilo. Sistema reutilizable que después aplicamos en proyectos posteriores de IngSimple.",
+						"Patrón shadcn-like: Radix aporta accesibilidad por defecto (foco, ARIA, teclado) y Tailwind da control total del estilo. Sistema reutilizable que después aplicamos en proyectos posteriores de Ingeniería Simple.",
 				},
 				{
 					name: "Cloudflare Pages",
@@ -1493,7 +1502,7 @@ export const portfolioProjects: ProjectData[] = [
 					date: "Abril 2024",
 					title: "Kickoff",
 					description:
-						"Primer proyecto web de IngSimple. Definición de scope, arquitectura sobre Astro y configuración multilenguaje en los primeros días.",
+						"Primer proyecto web de Ingeniería Simple. Definición de scope, arquitectura sobre Astro y configuración multilenguaje en los primeros días.",
 					icon: "kickoff",
 				},
 				{
@@ -1555,6 +1564,7 @@ export const portfolioProjects: ProjectData[] = [
 			clientName: "Grupo CAEMP",
 			clientIndustry: "Seguridad laboral, capacitación y EPP",
 			visualPrivacy: "public",
+			seoLabel: "tres marcas, un solo despliegue",
 			team: "Desarrollo full-stack end-to-end",
 			problem: [
 				"Grupo CAEMP agrupa tres líneas de negocio claramente diferenciadas: CAEMP OTEC (capacitación certificada SENCE para minería, energía y telecomunicaciones), CAEMP PLUS (comercialización de equipos de protección personal) y Crecimiento (habilidades blandas, liderazgo y talleres vivenciales). Cada una se dirige a un público distinto y necesitaba presentarse con identidad propia —su color, su logotipo y su dominio— para no diluir su propuesta dentro de una marca paraguas genérica.",
@@ -1846,6 +1856,7 @@ export const portfolioProjects: ProjectData[] = [
 		clientLogo: "/img/logos/aiep.svg",
 		caseStudy: {
 			visualPrivacy: "confidential-ui",
+			seoLabel: "juego educativo en tiempo real",
 			pitch:
 				'"Desafío PEI" es un juego tipo Kahoot construido a medida para que AIEP evaluara —en vivo, simultáneamente y en todo Chile— el entendimiento de su nuevo Plan Educativo Institucional. Soportó 600-700 trabajadores conectados desde 26 sedes en un único evento, sin caídas, sin WebSockets, y con un admin que orquestaba el flujo desde una pantalla.',
 			duration:

@@ -94,7 +94,7 @@ export const SERVICES: Service[] = [
 	{
 		number: "01",
 		shortName: "Reportabilidad",
-		title: "Reportabilidad, Dashboards y Analítica",
+		title: "Reportabilidad y dashboards",
 		desc: "Dashboards dinámicos y reportes automatizados para decidir con datos.",
 		href: "/servicios/reportabilidad",
 		slug: "reportabilidad",
@@ -110,7 +110,7 @@ export const SERVICES: Service[] = [
 			"Métricas operativas y ejecutivas en un solo lugar",
 		],
 		page: {
-			seoTitle: "Dashboards y Reportabilidad con Power BI",
+			seoTitle: "Dashboards y reportabilidad con Power BI en Chile",
 			seoDescription:
 				"Dashboards en Power BI y reportes automatizados para empresas en Chile. Centraliza tus datos y toma decisiones con información siempre al día.",
 			pageTitle: "Reportabilidad y dashboards en Power BI",
@@ -181,7 +181,7 @@ export const SERVICES: Service[] = [
 			],
 			ctaTitle: "¿Listo para decidir con datos?",
 			ctaBody:
-				"En una conversación de 30 minutos vemos qué fuentes tienes y cómo se vería un dashboard para tu caso.",
+				"Cuéntanos qué fuentes tienes y en menos de 24 horas hábiles te respondemos con cómo se vería un dashboard para tu caso.",
 			caseCategory: "reportabilidad",
 			faq: [
 				{
@@ -210,7 +210,7 @@ export const SERVICES: Service[] = [
 	{
 		number: "02",
 		shortName: "Capacitaciones",
-		title: "Cursos y Capacitaciones",
+		title: "Capacitaciones",
 		desc: "Formación en Power BI, Power Apps, Excel avanzado y más.",
 		href: "/servicios/capacitaciones",
 		slug: "capacitaciones",
@@ -225,7 +225,7 @@ export const SERVICES: Service[] = [
 			"Acompañamiento continuo post-capacitación",
 		],
 		page: {
-			seoTitle: "Capacitaciones en Power BI, Power Apps y Excel",
+			seoTitle: "Capacitaciones en Power BI y Excel en Chile",
 			seoDescription:
 				"Capacitación práctica en Power BI, Power Apps y Excel avanzado para equipos en Chile, online o presencial. Programas a medida con datos reales.",
 			pageTitle: "Capacitaciones en Power BI y Excel",
@@ -296,7 +296,7 @@ export const SERVICES: Service[] = [
 			],
 			ctaTitle: "¿Listo para que tu equipo sea autónomo?",
 			ctaBody:
-				"En una conversación de 30 minutos revisamos el nivel de tu equipo y te proponemos un programa a su medida.",
+				"Cuéntanos el nivel de tu equipo y en menos de 24 horas hábiles te respondemos con un programa a su medida.",
 			caseCategory: "capacitaciones",
 			faq: [
 				{
@@ -324,8 +324,8 @@ export const SERVICES: Service[] = [
 	},
 	{
 		number: "03",
-		shortName: "Desarrollo Web",
-		title: "Desarrollo Web",
+		shortName: "Desarrollo web",
+		title: "Desarrollo web",
 		desc: "Sitios y sistemas web modernos, rápidos y a medida.",
 		href: "/servicios/desarrollo-web",
 		slug: "desarrollo-web",
@@ -340,7 +340,7 @@ export const SERVICES: Service[] = [
 			"Enfoque en experiencia de usuario y performance",
 		],
 		page: {
-			seoTitle: "Desarrollo web a medida y sitios corporativos",
+			seoTitle: "Desarrollo web a medida en Chile",
 			seoDescription:
 				"Desarrollo web a medida en Chile: sitios corporativos, portales y sistemas de gestión modernos, rápidos y diseñados para tus procesos reales.",
 			pageTitle: "Desarrollo web a medida",
@@ -411,7 +411,7 @@ export const SERVICES: Service[] = [
 			],
 			ctaTitle: "¿Listo para una herramienta que calce con tu proceso?",
 			ctaBody:
-				"En una conversación de 30 minutos entendemos tu operación y te decimos por dónde empezar y con qué alcance.",
+				"Cuéntanos tu operación y en menos de 24 horas hábiles te respondemos con por dónde empezar y con qué alcance.",
 			caseCategory: "desarrollo-web",
 			faq: [
 				{
@@ -420,7 +420,7 @@ export const SERVICES: Service[] = [
 				},
 				{
 					q: "¿Cómo cotizan un proyecto web?",
-					a: "Partimos con una conversación de diagnóstico gratuita para entender qué necesitas. Con eso preparamos una propuesta con alcance, etapas y cronograma claros, antes de comprometer nada.",
+					a: "Partimos con un diagnóstico gratuito por correo: nos cuentas qué necesitas y te respondemos con una propuesta con alcance, etapas y cronograma claros, antes de comprometer nada.",
 				},
 				{
 					q: "¿Cuánto tarda un proyecto?",
@@ -444,7 +444,7 @@ export const SERVICES: Service[] = [
 	{
 		number: "04",
 		shortName: "Automatizaciones",
-		title: "Automatizaciones de procesos",
+		title: "Automatización de procesos",
 		desc: "Automatizamos tareas y flujos repetitivos para ganar eficiencia.",
 		href: "/servicios/automatizaciones",
 		slug: "automatizaciones",
@@ -460,7 +460,7 @@ export const SERVICES: Service[] = [
 			"Menos errores y más tiempo para tu equipo",
 		],
 		page: {
-			seoTitle: "Automatización de procesos para empresas",
+			seoTitle: "Automatización de procesos para empresas en Chile",
 			seoDescription:
 				"Automatizamos tareas repetitivas y conectamos tus sistemas: aprobaciones, reportes e integraciones sin errores manuales, para empresas en Chile.",
 			pageTitle: "Automatización de procesos",
@@ -531,7 +531,7 @@ export const SERVICES: Service[] = [
 			],
 			ctaTitle: "¿Listo para recuperar esas horas?",
 			ctaBody:
-				"En una conversación de 30 minutos identificamos el proceso que más tiempo te quita y cómo automatizarlo.",
+				"Cuéntanos el proceso que más tiempo te quita y en menos de 24 horas hábiles te respondemos con cómo automatizarlo.",
 			caseCategory: "power-platform",
 			faq: [
 				{

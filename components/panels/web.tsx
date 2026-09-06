@@ -539,9 +539,9 @@ export function PanelWeb(): ReactNode {
           {/* Page heading */}
           <div className="flex shrink-0 flex-wrap items-start justify-between gap-3">
             <div className="flex min-w-0 flex-col gap-1">
-              <h1 className="text-xl font-bold tracking-tight">
+              <p className="text-xl font-bold tracking-tight">
                 Solicitudes Comerciales
-              </h1>
+              </p>
               <p className="text-[13px] text-muted-foreground">
                 Gestiona y revisa las solicitudes de nuevos proyectos.
               </p>

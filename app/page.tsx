@@ -2,6 +2,7 @@ import { CaseStudy } from "@/components/case-study-feature"
 import { Hero } from "@/components/hero"
 import { HeroWaves } from "@/components/hero-waves"
 import { Faq } from "@/components/faq"
+import { JsonLd } from "@/components/json-ld"
 import { ServicesStack } from "@/components/services-stack"
 import { HowItWorks } from "@/components/how-it-works"
 import { FinalCta } from "@/components/final-cta"
@@ -10,21 +11,19 @@ import { Nav } from "@/components/nav"
 import { TrustedBy } from "@/components/trusted-by"
 import { Challenge } from "@/components/challenge"
 import { HeroShowcase } from "@/components/hero-showcase"
+import { HOME_FAQ } from "@/lib/home-faq"
 import { InView, MotionSection } from "@/lib/motion"
-import { createMetadata, siteConfig } from "@/lib/metadata"
+import { createMetadata } from "@/lib/metadata"
+import { faqJsonLd } from "@/lib/seo/json-ld"
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
 
-export const metadata: Metadata = {
-	...createMetadata({
-		title: "Home",
-		description: `Welcome to ${siteConfig.name}. ${siteConfig.description}`,
-		path: "/",
-	}),
-	title: {
-		absolute: "IngSimple — Soluciones simples para un mundo digital complejo",
-	},
-}
+export const metadata: Metadata = createMetadata({
+	absoluteTitle: "Ingeniería Simple | Power BI, automatización y desarrollo web en Chile",
+	description:
+		"Ingeniería Simple: transformación digital para empresas en Chile. Reportabilidad y dashboards, automatización de procesos, desarrollo web a medida y capacitaciones.",
+	path: "/",
+})
 
 // Plain literals (built server-side) passed as props to the client motion
 // wrappers — kept inline to avoid importing values from a "use client" module.
@@ -37,6 +36,7 @@ const RISE_IN = {
 export default function HomePage(): ReactNode {
 	return (
 		<>
+			<JsonLd data={faqJsonLd(HOME_FAQ)} />
 			<span id="top" className="sr-only" />
 			<Nav />
 			<main id="main-content" className="flex-1">

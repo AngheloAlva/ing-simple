@@ -54,7 +54,7 @@ const LINES: Line[] = [
 		],
 	},
 	{
-		service: "Desarrollo Web",
+		service: "Desarrollo web",
 		href: "/servicios/desarrollo-web",
 		tools: [
 			{ name: "Next.js", use: "El framework de todo lo que ponemos en producción", glyph: true },

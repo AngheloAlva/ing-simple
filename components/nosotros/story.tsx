@@ -29,9 +29,9 @@ const chapters: Chapter[] = [
 	},
 	{
 		year: "2024",
-		title: "Power Platform",
+		title: "Automatización de procesos",
 		detail:
-			"Escalamos hacia Power Apps, Power Automate y SharePoint. Empezamos a digitalizar formularios, automatizar flujos y reemplazar procesos manuales con soluciones rápidas y escalables.",
+			"Escalamos hacia la automatización de procesos con Power Apps, Power Automate y SharePoint. Empezamos a digitalizar formularios, automatizar flujos y reemplazar procesos manuales con soluciones rápidas y escalables.",
 		image: "/img/about/power-platform.png",
 		imageAlt: "Automatización de procesos con Power Platform",
 	},
@@ -45,7 +45,7 @@ const chapters: Chapter[] = [
 	},
 	{
 		year: "2025",
-		title: "Desarrollo Web",
+		title: "Desarrollo web",
 		detail:
 			"Incorporamos el desarrollo de sitios web modernos y funcionales. Landing pages, sitios corporativos y portales enfocados en experiencia de usuario y resultados concretos.",
 		image: "/img/about/web.png",
@@ -100,7 +100,7 @@ export function NosotrosStory() {
 						viewport={{ once: true, margin: "-80px" }}
 					>
 						<motion.div variants={item}>
-							<Kicker>Sobre Nosotros</Kicker>
+							<Kicker>Sobre nosotros</Kicker>
 						</motion.div>
 						<motion.h1
 							variants={item}

@@ -19,7 +19,7 @@ const pillars: Pillar[] = [
 	{
 		label: "Visión",
 		title: "Potencia sin complejidad",
-		body: "Ser el referente en transformación digital para organizaciones que buscan simplicidad sin sacrificar potencia. Que cada empresa pueda acceder a tecnología de primer nivel, sin complejidad innecesaria.",
+		body: "Que las empresas medianas en Chile tengan sus datos, sus automatizaciones y sus sistemas propios, sin proyectos eternos ni dependencia de terceros.",
 	},
 ]
 

@@ -1,39 +1,14 @@
 "use client"
 
 import { CornerPlus } from "@/components/corner-plus"
+import { HOME_FAQ, type HomeFaqItem } from "@/lib/home-faq"
 import { ChevronDown } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import { useEffect, useRef, useState, type ReactNode } from "react"
 
-type QA = { question: string; answer: string }
+type QA = HomeFaqItem
 
-const FAQS: QA[] = [
-	{
-		question: "¿Qué tipo de empresas atienden?",
-		answer:
-			"Trabajamos con empresas de todos los tamaños, desde startups hasta organizaciones consolidadas. Nuestras soluciones se adaptan a las necesidades específicas de cada cliente, sin importar su industria o complejidad.",
-	},
-	{
-		question: "¿Cuánto tiempo toma implementar una solución?",
-		answer:
-			"Depende del alcance del proyecto. Un dashboard puede estar listo en 1-2 semanas, mientras que una automatización que cruza varios sistemas puede tomar 4-6 semanas. Siempre entregamos cronogramas claros antes de comenzar.",
-	},
-	{
-		question: "¿Las capacitaciones son presenciales o online?",
-		answer:
-			"Ofrecemos ambas modalidades. Las sesiones online son ideales para equipos distribuidos, mientras que las presenciales funcionan mejor para grupos pequeños en una misma ubicación. Adaptamos el formato a tus necesidades.",
-	},
-	{
-		question: "¿Necesito tener conocimientos técnicos previos?",
-		answer:
-			"No es necesario. Nuestro enfoque es hacer la tecnología accesible. Te acompañamos desde lo básico hasta el dominio de las herramientas, adaptando el ritmo a tu nivel de conocimiento previo.",
-	},
-	{
-		question: "¿Cómo puedo comenzar a trabajar con ustedes?",
-		answer:
-			"Agenda una llamada de diagnóstico gratuita. En 30 minutos entenderemos tus necesidades y te propondremos un plan de acción. Sin compromisos, solo una conversación para explorar cómo podemos ayudarte.",
-	},
-]
+const FAQS: QA[] = HOME_FAQ
 
 const EASE = [0.22, 1, 0.36, 1] as const
 

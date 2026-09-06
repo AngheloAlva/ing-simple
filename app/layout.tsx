@@ -1,7 +1,9 @@
+import { JsonLd } from "@/components/json-ld"
 import { Providers } from "@/components/providers"
 import { SkipToContent } from "@/components/skip-to-content"
 import { ThemeSwitch } from "@/components/theme-switch"
 import { baseMetadata } from "@/lib/metadata"
+import { organizationJsonLd, webSiteJsonLd } from "@/lib/seo/json-ld"
 import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import type { ReactNode } from "react"
@@ -38,11 +40,12 @@ export default function RootLayout({
 }>): ReactNode {
 	return (
 		<html
-			lang="es"
+			lang="es-CL"
 			suppressHydrationWarning
 			className={`${geistSans.variable} ${geistMono.variable}`}
 		>
 			<body className="bg-background text-foreground selection:bg-brand-green min-h-screen overflow-x-clip font-sans antialiased selection:text-white">
+				<JsonLd data={[organizationJsonLd(), webSiteJsonLd()]} />
 				<Providers>
 					<SkipToContent />
 					{children}

@@ -3,7 +3,7 @@ import { Resend } from "resend"
 import { siteConfig } from "@/lib/metadata"
 
 // Sender must be a domain verified in Resend (SPF/DKIM for ingsimple.cl).
-const FROM = "IngSimple <noreply@ingsimple.cl>"
+const FROM = "Ingeniería Simple <noreply@ingsimple.cl>"
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 // Field limits, enforced after trim. Mirrored by `maxLength` on the form.

@@ -86,7 +86,7 @@ export function ServicesStack(): ReactNode {
 
 									<div className="mt-8">
 										<CutButton href={service.href} variant="solid" icon="arrow">
-											Ver más
+											Ver {service.shortName.toLowerCase()}
 										</CutButton>
 									</div>
 								</div>

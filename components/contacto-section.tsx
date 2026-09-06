@@ -222,7 +222,7 @@ export function ContactoSection({ initialServicio = "" }: ContactoSectionProps =
 					</p>
 
 					<p className="text-foreground mt-12 text-sm font-semibold tracking-tight">
-						Qué esperar de la conversación
+						Qué esperar de nuestra respuesta
 					</p>
 					<ul className="mt-4 space-y-3">
 						{EXPECTATIVAS.map((text, i) => (
@@ -263,7 +263,8 @@ export function ContactoSection({ initialServicio = "" }: ContactoSectionProps =
 							</span>
 							<p className="mt-6 font-serif text-2xl font-normal tracking-tight">Mensaje enviado</p>
 							<p className="text-muted-foreground mt-3 max-w-xs text-sm leading-relaxed">
-								Te responderemos a la brevedad. Revisa tu correo: te enviamos una confirmación.
+								Te respondemos en menos de 24 horas hábiles. Revisa tu correo: te enviamos una
+								confirmación.
 							</p>
 						</div>
 					) : (

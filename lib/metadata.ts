@@ -29,14 +29,14 @@ export const isIndexable =
   process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true";
 
 export const siteConfig = {
-  name: "IngSimple",
+  name: "Ingeniería Simple",
+  shortName: "IngSimple",
   description: "Soluciones simples para un mundo digital complejo",
   url: resolveSiteUrl(),
-  ogImage: "/og-image.png",
   creator: "@ingsimple",
   authors: [
     {
-      name: "IngSimple",
+      name: "Ingeniería Simple",
       url: PRODUCTION_URL,
     },
   ],
@@ -49,6 +49,11 @@ export const siteConfig = {
     "automatización de procesos",
     "desarrollo web",
     "consultoría",
+    "Power BI Chile",
+    "automatización de procesos Chile",
+    "desarrollo web Chile",
+    "capacitación Power BI",
+    "Power Apps",
   ],
 } as const;
 
@@ -79,69 +84,65 @@ export const baseMetadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "es_CL",
     url: siteConfig.url,
     title: siteConfig.name,
     description: siteConfig.description,
     siteName: siteConfig.name,
-    images: [
-      {
-        url: siteConfig.ogImage,
-        width: 1200,
-        height: 630,
-        alt: siteConfig.name,
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
-    images: [siteConfig.ogImage],
     creator: siteConfig.creator,
   },
   manifest: "/site.webmanifest",
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION !== undefined &&
+    process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION !== "" && {
+      verification: {
+        google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+      },
+    }),
 };
 
 export function createMetadata({
   title,
+  absoluteTitle,
   description,
   path = "/",
-  image,
   noIndex = false,
 }: {
+  /** Page title, rendered through the `%s | Ingeniería Simple` template. */
   title?: string;
+  /** Full title used verbatim, bypassing the template (home page). */
+  absoluteTitle?: string;
   description?: string;
   path?: string;
-  image?: string;
   noIndex?: boolean;
 }): Metadata {
   const url = `${siteConfig.url}${path}`;
-  const ogImage = image ?? siteConfig.ogImage;
+  const socialTitle = absoluteTitle ?? title ?? siteConfig.name;
+  const socialDescription = description ?? siteConfig.description;
 
+  // Next.js merges metadata per top-level key: a page's `openGraph` or
+  // `twitter` object replaces the layout's one wholesale, so the shared
+  // fields (locale, siteName, card…) must be restated here on every page.
   return {
-    title,
+    title: absoluteTitle !== undefined ? { absolute: absoluteTitle } : title,
     description,
     alternates: {
       canonical: path,
     },
     openGraph: {
-      title: title ?? siteConfig.name,
-      description: description ?? siteConfig.description,
+      ...baseMetadata.openGraph,
+      title: socialTitle,
+      description: socialDescription,
       url,
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: title ?? siteConfig.name,
-        },
-      ],
     },
     twitter: {
-      title: title ?? siteConfig.name,
-      description: description ?? siteConfig.description,
-      images: [ogImage],
+      ...baseMetadata.twitter,
+      title: socialTitle,
+      description: socialDescription,
     },
     ...(noIndex && {
       robots: {

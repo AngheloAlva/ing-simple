@@ -69,7 +69,7 @@ export function TrustedBy(): ReactNode {
 				<div className="flex flex-col items-stretch md:flex-row">
 					<div className="border-border flex shrink-0 items-center justify-center border-b px-6 py-5 md:border-r md:border-b-0 md:py-7">
 						<span className="text-muted-foreground text-xs font-medium">
-							Empresas que confían en nosotros
+							Empresas que operan con lo que construimos
 						</span>
 					</div>
 
@@ -84,7 +84,7 @@ export function TrustedBy(): ReactNode {
 							scaleOnHover
 							fadeOut
 							fadeOutColor="var(--background)"
-							ariaLabel="Empresas que confían en IngSimple"
+							ariaLabel="Empresas que operan con sistemas de Ingeniería Simple"
 							className="[&_img]:opacity-55 [&_img]:transition-opacity [&_img]:duration-200 [&_li:hover_img]:opacity-100"
 						/>
 					</div>

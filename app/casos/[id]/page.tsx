@@ -10,10 +10,13 @@ import { DetailTechStack } from "@/components/case-study/detail-tech-stack"
 import { DetailTimeline } from "@/components/case-study/detail-timeline"
 import { FinalCta } from "@/components/final-cta"
 import { Footer } from "@/components/footer"
+import { JsonLd } from "@/components/json-ld"
 import { Nav } from "@/components/nav"
 import { createMetadata } from "@/lib/metadata"
 import { InView } from "@/lib/motion"
 import { portfolioProjects } from "@/lib/portfolio-data"
+import { articleJsonLd, breadcrumbJsonLd } from "@/lib/seo/json-ld"
+import { caseStudyTitle } from "@/lib/seo/titles"
 import { contactHref, serviceSlugForCategory } from "@/lib/services"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
@@ -42,7 +45,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 	}
 
 	return createMetadata({
-		title: `${project.title} — Caso de estudio`,
+		title: caseStudyTitle(project),
 		description: project.caseStudy.pitch,
 		path: `/casos/${id}`,
 	})
@@ -60,6 +63,16 @@ export default async function CaseStudyDetailPage({ params }: PageProps): Promis
 
 	return (
 		<>
+			<JsonLd
+				data={[
+					breadcrumbJsonLd([
+						{ name: "Inicio", path: "/" },
+						{ name: "Casos", path: "/casos" },
+						{ name: project.title, path: `/casos/${project.id}` },
+					]),
+					articleJsonLd(project),
+				]}
+			/>
 			<span id="top" className="sr-only" />
 			<Nav />
 			<main id="main-content" className="flex-1">

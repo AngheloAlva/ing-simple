@@ -27,9 +27,9 @@ const item: Variants = {
 	visible: { opacity: 1, y: 0 },
 }
 
-const DEFAULT_TITLE = "¿Listo para transformar tu negocio?"
+const DEFAULT_TITLE = "¿Qué proceso te quita más tiempo hoy?"
 const DEFAULT_BODY =
-	"Agenda una consulta gratuita y descubre cómo podemos ayudarte a optimizar procesos, capacitar a tu equipo y potenciar tu presencia digital."
+	"Cuéntanos tu situación y en menos de 24 horas hábiles te respondemos con un diagnóstico y por dónde empezar."
 
 export function FinalCta({
 	title = DEFAULT_TITLE,
@@ -127,7 +127,7 @@ export function FinalCta({
 						className="mt-8 flex flex-wrap items-center justify-center gap-3"
 					>
 						<CutButton variant="solid" icon="send" href={href}>
-							Agenda tu consulta gratis
+							Pide tu diagnóstico gratis
 						</CutButton>
 					</motion.div>
 				</motion.div>

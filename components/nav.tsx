@@ -219,13 +219,13 @@ export function Nav(): ReactNode {
 
 				<div className="hidden items-center gap-3 lg:flex">
 					<CutButton variant="solid" icon="send" href="/contacto">
-						Contáctanos
+						Conversemos
 					</CutButton>
 				</div>
 
 				<div className="flex items-center gap-2.5 lg:hidden">
 					<CutButton variant="solid" icon="send" href="/contacto">
-						Contáctanos
+						Conversemos
 					</CutButton>
 					<CutButton
 						variant="outline"
@@ -308,7 +308,7 @@ export function Nav(): ReactNode {
 
 							<div className="border-border/50 mt-3 border-t pt-4">
 								<CutButton variant="solid" icon="send" href="/contacto" fullWidth>
-									Contáctanos
+									Conversemos
 								</CutButton>
 							</div>
 						</div>

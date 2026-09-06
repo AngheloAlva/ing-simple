@@ -84,7 +84,7 @@ export function ServicioHero(service: ServicioHeroProps): ReactNode {
 								Conversemos
 							</CutButton>
 							<CutButton variant="outline" href="#incluye">
-								Qué incluye
+								Ver qué incluye
 							</CutButton>
 						</motion.div>
 					</motion.div>
