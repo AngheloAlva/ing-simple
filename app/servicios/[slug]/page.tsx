@@ -75,7 +75,12 @@ export default async function ServicePage({ params }: PageProps): Promise<ReactN
 					href={service.href}
 					page={service.page}
 				/>
-				<ServicioProblem problem={service.page.problem} audience={service.page.audience} />
+				<ServicioProblem
+					title={service.page.problemTitle}
+					titleAccent={service.page.problemTitleAccent}
+					problem={service.page.problem}
+					audience={service.page.audience}
+				/>
 				{Module ? (
 					<InView>
 						<Module contactHref={contact} />

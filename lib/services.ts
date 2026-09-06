@@ -45,6 +45,10 @@ export type ServicePage = {
 	/** Sans-semibold accent part of the H1. */
 	pageTitleAccent: string
 	pageSubtitle: string
+	/** Serif part of the problem-section H2: the pain, stated as a stance. */
+	problemTitle: string
+	/** Accent part of the problem-section H2: the claim the reader scans. */
+	problemTitleAccent: string
 	/** Pain the service solves, framed from the visitor's side. */
 	problem: string
 	/** Profiles that should recognize themselves in the page. */
@@ -117,6 +121,8 @@ export const SERVICES: Service[] = [
 			pageTitleAccent: "para decidir con datos, no con intuición",
 			pageSubtitle:
 				"Centralizamos tus fuentes de información en dashboards claros y reportes que se actualizan solos, para que el informe mensual deje de armarse a mano.",
+			problemTitle: "El informe del mes se arma a mano y",
+			problemTitleAccent: "la decisión ya se tomó",
 			problem:
 				"Los datos existen, pero viven repartidos en planillas, correos y sistemas que no conversan entre sí. Armar el informe del mes toma días, cada área maneja su propia versión de los números y, cuando por fin llega el reporte, la decisión ya se tomó por intuición. La reportabilidad no es un problema de falta de datos: es un problema de orden, automatización y visibilidad.",
 			audience: [
@@ -232,6 +238,8 @@ export const SERVICES: Service[] = [
 			pageTitleAccent: "que hacen a tu equipo autónomo",
 			pageSubtitle:
 				"Programas prácticos y a medida, con ejercicios sobre datos reales de tu operación, para que tu equipo deje de depender de terceros en cada reporte.",
+			problemTitle: "Pagas por herramientas potentes y",
+			problemTitleAccent: "usas una fracción",
 			problem:
 				"Tu empresa ya paga por herramientas potentes —Excel, Power BI, Power Apps— pero el equipo las usa a una fracción de su potencial. Los reportes dependen de una sola persona, cada análisis nuevo se externaliza y el conocimiento no queda en la organización. Un curso genérico no arregla eso: se olvida a la semana porque no se conecta con el trabajo real de cada uno.",
 			audience: [
@@ -347,6 +355,8 @@ export const SERVICES: Service[] = [
 			pageTitleAccent: "para tus procesos reales",
 			pageSubtitle:
 				"Sitios corporativos, portales y sistemas de gestión construidos desde cero para tu operación: rápidos, mantenibles y en producción, no en promesas.",
+			problemTitle: "La operación creció y",
+			problemTitleAccent: "las herramientas no acompañaron",
 			problem:
 				"La operación creció y las herramientas no acompañaron: planillas compartidas, aprobaciones por correo, información en WhatsApp y un software genérico que obliga a torcer el proceso para que calce. El resultado es tiempo perdido, errores difíciles de rastrear y una imagen digital que no refleja lo que la empresa realmente es. Un sistema a medida invierte esa ecuación: la herramienta se adapta a tu proceso, no al revés.",
 			audience: [
@@ -467,6 +477,8 @@ export const SERVICES: Service[] = [
 			pageTitleAccent: "que le devuelve horas a tu equipo",
 			pageSubtitle:
 				"Convertimos tareas repetitivas —copiar datos, pedir aprobaciones, armar documentos— en flujos automáticos que corren solos y sin errores.",
+			problemTitle: "Horas de tu equipo en trabajo que",
+			problemTitleAccent: "una máquina haría mejor",
 			problem:
 				"Cada día tu equipo pierde horas en trabajo que una máquina haría mejor: copiar datos de un sistema a otro, perseguir aprobaciones por correo, armar el mismo documento una y otra vez. Además del tiempo, cada paso manual es una oportunidad de error que después cuesta encontrar y corregir. Ese trabajo repetitivo no escala contratando más gente: escala automatizando el proceso.",
 			audience: [

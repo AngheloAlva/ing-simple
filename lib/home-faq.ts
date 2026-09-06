@@ -17,7 +17,7 @@ export const HOME_FAQ: HomeFaqItem[] = [
 	{
 		question: "¿Cuánto tiempo toma implementar una solución?",
 		answer:
-			"Depende del alcance del proyecto. Un dashboard puede estar listo en 1-2 semanas, mientras que una automatización que cruza varios sistemas puede tomar 4-6 semanas. Siempre entregamos cronogramas claros antes de comenzar.",
+			"Depende del alcance. Un dashboard puede estar listo en 1 a 2 semanas; una automatización que cruza varios sistemas, en 4 a 6 semanas; un sitio corporativo, en pocas semanas, y la primera versión útil de un sistema a medida, en uno a tres meses. Siempre entregamos un cronograma claro antes de comenzar.",
 	},
 	{
 		question: "¿Las capacitaciones son presenciales o online?",

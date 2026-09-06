@@ -1,14 +1,20 @@
 "use client"
 
 import { CornerPlus, Kicker, PlusSvg } from "@/components/corner-plus"
+import GradientText from "@/components/gradient-text"
+import { brandGradient } from "@/lib/gradient"
 import { useStaggerEntrance } from "@/lib/motion"
 import { motion } from "motion/react"
 import type { ReactNode } from "react"
 
 export function ServicioProblem({
+	title,
+	titleAccent,
 	problem,
 	audience,
 }: {
+	title: string
+	titleAccent: string
 	problem: string
 	audience: string[]
 }): ReactNode {
@@ -38,7 +44,15 @@ export function ServicioProblem({
 						transition={itemTransition}
 						className="mt-4 max-w-lg font-serif text-3xl leading-[1.1] font-normal tracking-[-0.01em] text-balance sm:text-4xl"
 					>
-						Te suena, ¿verdad?
+						{title}{" "}
+						<GradientText
+							inline
+							className="font-sans font-semibold tracking-tight"
+							colors={brandGradient}
+							animationSpeed={6}
+						>
+							{titleAccent}
+						</GradientText>
 					</motion.h2>
 					<motion.p
 						variants={item}
