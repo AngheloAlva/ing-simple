@@ -18,3 +18,6 @@ yarn.lock
 # Generated files
 *.min.js
 *.min.css
+
+# Guide content: Prettier collapses markdown inside MDX components
+content/guias

@@ -1,0 +1,80 @@
+---
+title: Título de la guía (1–90 caracteres)
+description: Resumen de una o dos frases, 1–200 caracteres.
+publishedAt: "2026-01-01"
+tema: ia
+servicio: automatizaciones
+tags: []
+draft: true
+portada: /img/guias/nombre-del-archivo.jpg
+portadaAlt: Describe lo que se ve en la foto (1–160 caracteres, obligatorio)
+# portadaCredito: "Foto: nombre o banco de imágenes"
+---
+
+{/*
+  Instrucciones para quien escribe (bórralas antes de publicar):
+
+  - Los archivos que empiezan con "_" (como este) no aparecen en /guias.
+    Copia este archivo con otro nombre para crear una guía real.
+  - Completa el frontmatter de arriba: revisa content/guias/README.md para
+    el significado de cada campo.
+  - Toda guía necesita una foto de portada real: guárdala en
+    public/img/guias/ y apunta "portada" a esa ruta (siempre empieza con
+    "/img/guias/"). "portadaAlt" es obligatorio; "portadaCredito" solo si
+    corresponde dar crédito a la fuente de la foto.
+  - Mantén draft: true mientras escribes. Cámbialo a false (o bórralo) solo
+    cuando la guía esté lista para publicarse.
+  - Reemplaza cada sección de abajo. Los títulos "##" son parte de la
+    estructura esperada; el texto en cursiva bajo cada uno es la
+    instrucción, no contenido real.
+*/}
+
+## El problema
+
+_A quién le pasa esto y cómo se nota en el día a día. Sin estadísticas
+inventadas: describe la situación concreta, no un dato que no puedas
+respaldar._
+
+## Lo que hay que saber
+
+_La norma, el concepto o el criterio, explicado simple. Si hay algo que
+conviene remarcar sin que corte el flujo del texto, usa `Nota`:_
+
+<Nota tipo="info" titulo="Para tener en cuenta">
+	Un dato o matiz que ayuda a entender el punto anterior, sin ser el foco principal del párrafo.
+</Nota>
+
+## Por dónde empezar
+
+_Pasos concretos y accionables. Usa `Pasos`/`Paso` para la secuencia:_
+
+<Pasos>
+	<Paso titulo="Primer paso">Qué hacer primero y por qué.</Paso>
+	<Paso titulo="Segundo paso">Qué sigue una vez hecho lo anterior.</Paso>
+	<Paso titulo="Tercer paso">Cómo saber que quedó bien hecho.</Paso>
+</Pasos>
+
+Si el paso tiene una lista de verificación puntual, usa `Checklist`:
+
+<Checklist>
+
+- Primer punto a confirmar antes de seguir
+- Segundo punto a confirmar antes de seguir
+
+</Checklist>
+
+_Si una captura o foto ayuda más que el texto, usa `Figura` (ver
+content/guias/README.md para las opciones); si el punto se explica mejor con
+uno de los diagramas del sitio, usa `Diagrama`:_
+
+<Diagrama nombre="flujo-automatizacion" />
+
+## Errores comunes
+
+_Lo que la gente hace mal al intentarlo sola, y por qué pasa._
+
+## Cuándo conviene pedir ayuda
+
+_Cierre que conecta el tema con el servicio correspondiente
+(`servicio` en el frontmatter), sin sonar a venta forzada: nombra la señal
+concreta que indica que ya no vale la pena resolverlo por cuenta propia._
