@@ -14,6 +14,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react"
 
 const SIMPLE_LINKS = [
 	{ label: "Casos", href: "/casos" },
+	{ label: "Guías", href: "/guias" },
 	{ label: "Sobre nosotros", href: "/sobre-nosotros" },
 ]
 
