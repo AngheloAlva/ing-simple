@@ -1,35 +1,41 @@
 ---
 title: IA en procesos, por dónde empezar
 description: Una guía práctica para pymes que quieren usar IA en sus procesos sin perderse en herramientas ni promesas exageradas.
-publishedAt: "2026-09-06"
+publishedAt: "2026-09-08"
 tema: ia
 servicio: automatizaciones
-tags: ["ia", "pymes"]
+tags: ["ia", "automatizacion", "pymes"]
 draft: true
 portada: /img/guias/ia-en-procesos-por-donde-empezar.png
 portadaAlt: Persona trabajando en un computador portátil junto a una libreta de notas
 ---
 
 {/*
-  La portada de esta guía es un placeholder (copia de public/img/about/web.png):
-  reemplázala por una foto real antes de publicar. Ver content/guias/README.md
-  para el tamaño recomendado.
+  La portada es un placeholder temporal (copia de public/img/about/web.png):
+  reemplázala por la foto real antes de publicar y cambia draft a false.
+  Ver content/guias/README.md para el tamaño recomendado.
 */}
 
 ## El problema
 
 En muchas pymes, "usar IA" quedó como una idea suelta: alguien probó un
-chatbot una tarde, no conectó con ningún proceso real y ahí quedó. El
-problema no es la tecnología, es que nadie definió qué proceso concreto
-debía mejorar. Sin ese punto de partida, cualquier herramienta se siente
-prometedora en la demo y decepcionante en el uso diario.
+chatbot una tarde, quedó impresionado, no lo conectó con ningún proceso
+real y ahí quedó. Meses después la conversación sigue igual: hay que hacer
+algo con IA, pero nadie sabe qué, y cada proveedor que llega trae una demo
+distinta.
+
+El problema no es la tecnología, es que nadie definió qué proceso concreto
+debía mejorar ni cómo se iba a medir. Sin ese punto de partida, cualquier
+herramienta se siente prometedora en la demo y decepcionante en el uso
+diario.
 
 ## Lo que hay que saber
 
 La IA rinde mejor en tareas repetitivas con información desestructurada:
-leer correos, clasificar solicitudes, resumir documentos, redactar
-primeras versiones de textos. No es magia y tampoco reemplaza el criterio
-de quien revisa el resultado final.
+leer correos, clasificar solicitudes, extraer datos de documentos, resumir
+reuniones, redactar primeras versiones de textos. Rinde peor donde las
+reglas ya son claras y exactas (ahí una automatización tradicional es más
+barata y más confiable) y donde el error cuesta caro y nadie revisa.
 
 <Nota tipo="importante" titulo="No es un reemplazo del criterio humano">
 	Trata cada resultado de IA como un primer borrador, no como una decisión tomada. Alguien de tu
@@ -45,35 +51,85 @@ enfoques típicos:
 | Automatización con IA  | Clasificar, extraer datos de documentos | Conectar sistemas      |
 | Modelo a medida        | Casos muy específicos del negocio       | Datos propios y tiempo |
 
-Así se ve un flujo de automatización con IA una vez que ya está corriendo,
-con las solicitudes moviéndose solas por las reglas del negocio:
+Para saber si un proceso es candidato bastan dos preguntas:
 
-<Diagrama nombre="flujo-automatizacion" />
+<Diagrama
+	nombre="ia-que-proceso"
+	pie="Dos preguntas para saber si un proceso es candidato a IA"
+/>
+
+### Qué devuelve una extracción
+
+Cuando la tarea es "extraer datos de un documento", esto es lo que
+normalmente recibes de vuelta, por ejemplo al procesar una factura:
+
+```json
+{
+	"proveedor": "Suministros del Sur SpA",
+	"rut": "76.123.456-7",
+	"folio": "48213",
+	"fecha": "2026-08-14",
+	"neto": 812450,
+	"iva": 154366,
+	"total": 966816,
+	"confianza": 0.93,
+	"revisar": false
+}
+```
+
+`confianza` es qué tan segura está la IA de haber leído bien cada dato.
+Cuando cae bajo un umbral que tú defines, `revisar` pasa a `true` y ese
+caso se enruta a una persona en vez de seguir solo hacia el sistema.
+
+La mayoría de las pymes obtiene el mayor retorno en la fila del medio:
+una automatización normal (un correo llega, algo se registra, alguien
+recibe una tarea) a la que la IA le agrega el paso que antes requería a una
+persona leyendo e interpretando. Lo que cambia no es cuántos pasos tiene el
+flujo, sino cuánto tiempo toma cada caso: el mismo correo pasa por más
+pasos, pero llega al final mucho más rápido, y el rato que la lectura
+manual se tomaba queda libre:
+
+<Diagrama
+	nombre="ia-paso-que-cambia"
+	pie="Menos tiempo por caso y el criterio humano concentrado en la revisión"
+/>
+
+<Nota tipo="advertencia" titulo="Cuidado con los datos que le entregas">
+	Si el proceso maneja datos de clientes o trabajadores, revisa qué hace la herramienta con lo que le
+	envías y dónde se almacena. Desde diciembre de 2026 rige la nueva ley de datos personales; tenemos
+	una guía sobre [qué hacer antes del 1 de diciembre](/guias/ley-21719-que-hacer-antes-del-1-de-diciembre).
+</Nota>
 
 ## Por dónde empezar
 
 <Pasos>
 	<Paso titulo="Elige un proceso, no una herramienta">
-		Parte por el proceso que más tiempo consume y tiene reglas claras, como clasificar solicitudes
-		que llegan por correo.
+		Parte por el proceso que más tiempo consume y tiene un resultado fácil de verificar, como
+		clasificar las solicitudes que llegan por correo o extraer los datos de las facturas de
+		proveedores. Deja para después los procesos donde un error se nota recién semanas más tarde.
+	</Paso>
+	<Paso titulo="Anota cómo se hace hoy, paso por paso">
+		Antes de tocar nada, describe el proceso actual: qué llega, quién lo lee, qué decide, dónde lo
+		registra. Ahí aparece el paso exacto donde la IA aporta, y también los que no hace falta tocar.
 	</Paso>
 	<Paso titulo="Prueba con datos reales, no de ejemplo">
-		Usa casos reales de tu operación de la última semana. Los ejemplos genéricos esconden los
-		problemas que sí vas a tener en producción.
+		Usa casos reales de tu operación de la última semana, incluidos los raros y los mal escritos. Los
+		ejemplos genéricos esconden los problemas que sí vas a tener en producción.
 	</Paso>
 	<Paso titulo="Mide antes y después">
-		Anota cuánto tiempo toma el proceso hoy. Es la única forma de saber si la IA realmente ayudó, en
-		vez de asumirlo.
+		Anota cuánto tiempo toma el proceso hoy y cuántos errores tiene. Es la única forma de saber si la
+		IA realmente ayudó, en vez de asumirlo porque la demo se veía bien.
 	</Paso>
 </Pasos>
 
-{/* Imagen de ejemplo: reemplázala por una captura real del piloto cuando exista. */}
+### Qué medir en el piloto
 
-<Figura
-	src="/img/guias/ia-en-procesos-por-donde-empezar.png"
-	alt="Ejemplo de tablero de seguimiento de un piloto de IA en un proceso"
-	pie="Ejemplo ilustrativo, no una captura real del piloto"
-/>
+| Qué medir                            | Cómo se mide                                            |
+| ------------------------------------- | -------------------------------------------------------- |
+| Tiempo por caso                       | Cronómetro sobre el mismo tipo de caso, antes y después   |
+| Casos clasificados correctamente      | Revisión manual de una muestra, semana a semana           |
+| Casos enviados a revisión             | Los que el sistema marca bajo el umbral de confianza      |
+| Errores que llegaron al cliente       | Reclamos o correcciones posteriores al envío              |
 
 Antes de dar por bueno un piloto, revisa que cumpla lo básico:
 
@@ -82,6 +138,7 @@ Antes de dar por bueno un piloto, revisa que cumpla lo básico:
 - El proceso se repite de forma parecida cada vez
 - Alguien puede revisar el resultado antes de que se use
 - Puedes medir el tiempo que ahorra, no solo intuirlo
+- Sabes qué pasa con los datos que le entregas a la herramienta
 
 </Checklist>
 
@@ -91,12 +148,17 @@ El más frecuente es partir por la herramienta de moda en vez del proceso.
 El segundo es probar con un caso demasiado fácil, que no representa el
 trabajo real, y sacar conclusiones optimistas que no se sostienen después.
 
-> Un piloto que no se mide es solo una demo con otro nombre.
+El tercero es dejar el piloto en manos de una sola persona entusiasta. Si
+esa persona cambia de área, el flujo queda huérfano y nadie sabe cómo
+funciona ni cómo apagarlo cuando falla.
+
+> Un piloto que no se mide es **solo una demo con otro nombre**.
 
 ## Cuándo conviene pedir ayuda
 
 Si ya identificaste el proceso pero no sabes cómo conectarlo con tus
 sistemas actuales, o el piloto funcionó y ahora necesitas llevarlo a
-producción de forma confiable, ahí es donde conviene una mano externa.
-Puedes revisar cómo trabajamos [automatización de procesos](/servicios/automatizaciones)
+producción de forma confiable, con registro de lo que hizo y alguien que
+lo mantenga, ahí es donde conviene una mano externa. Puedes revisar cómo
+trabajamos la [automatización de procesos](/servicios/automatizaciones)
 o simplemente contarnos tu caso.

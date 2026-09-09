@@ -1,11 +1,14 @@
+import { ARTICLE_VIEWPORT } from "@/components/guias/mdx-motion"
+import { InView } from "@/lib/motion"
 import Image from "next/image"
 import type { ReactNode } from "react"
 
 /**
  * `Figura` MDX block (`content/guias/README.md`): a captioned image inside a
- * guide's body, framed with the site's chrome. Server component — guides
- * compile on the server (`lib/guias/render.tsx`), so this never needs
- * client-side state.
+ * guide's body, framed with the site's chrome. Stays a server component —
+ * guides compile on the server (`lib/guias/render.tsx`) and this never needs
+ * client-side state — but renders `InView` (a client component) around its
+ * own output to reveal on scroll, which is plain RSC composition.
  */
 export function Figura({
 	src,
@@ -30,21 +33,23 @@ export function Figura({
 	}
 
 	return (
-		<figure className={ancho === "ancha" ? "mt-6 lg:-mx-8" : "mt-6"}>
-			<div className="border-border bg-muted/40 relative aspect-video overflow-hidden rounded-sm border">
-				<Image
-					src={src}
-					alt={alt}
-					fill
-					sizes="(min-width: 1024px) 48rem, 100vw"
-					className="object-cover"
-				/>
-			</div>
-			{pie !== undefined ? (
-				<figcaption className="text-muted-foreground mt-2 font-mono text-[11px] tracking-[0.02em]">
-					{pie}
-				</figcaption>
-			) : null}
-		</figure>
+		<InView className={ancho === "ancha" ? "mt-6 lg:-mx-8" : "mt-6"} viewport={ARTICLE_VIEWPORT}>
+			<figure>
+				<div className="border-border bg-muted/40 relative aspect-video overflow-hidden rounded-sm border">
+					<Image
+						src={src}
+						alt={alt}
+						fill
+						sizes="(min-width: 1024px) 48rem, 100vw"
+						className="object-cover"
+					/>
+				</div>
+				{pie !== undefined ? (
+					<figcaption className="text-muted-foreground mt-2 font-mono text-[11px] tracking-[0.02em]">
+						{pie}
+					</figcaption>
+				) : null}
+			</figure>
+		</InView>
 	)
 }

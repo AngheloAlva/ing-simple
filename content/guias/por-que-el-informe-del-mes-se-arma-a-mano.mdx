@@ -1,0 +1,169 @@
+---
+title: Por qué el informe del mes se arma a mano (y cómo dejar de hacerlo)
+description: Si cada cierre de mes alguien pasa días copiando planillas para armar el mismo reporte, el problema no es la gente. Es cómo están ordenados los datos.
+publishedAt: "2026-09-08"
+tema: reportabilidad
+servicio: reportabilidad
+tags: ["reportabilidad", "power bi", "dashboards", "kpi", "pymes"]
+draft: true
+portada: /img/guias/por-que-el-informe-del-mes-se-arma-a-mano.jpg
+portadaAlt: Persona frente a dos pantallas comparando una planilla de cálculo con un gráfico impreso sobre el escritorio
+---
+
+{/*
+  La portada es un placeholder temporal: reemplázala por la foto real
+  (mismo nombre de archivo) antes de publicar y cambia draft a false.
+*/}
+
+## El problema
+
+Los primeros días de cada mes se repite la misma escena. Alguien de
+control de gestión, administración o la misma gerencia exporta ventas del
+sistema de facturación, pide a operaciones su planilla, copia los costos
+desde contabilidad, pega todo en un Excel maestro, corrige a mano los
+nombres de clientes que vienen distintos en cada fuente, arma cinco
+gráficos y manda un PDF por correo. Toma dos, tres, a veces cinco días.
+
+Cuando el informe por fin llega, la reunión donde se iba a usar ya pasó o
+la decisión ya se tomó por intuición. Y al mes siguiente el ciclo vuelve a
+empezar desde cero, porque la planilla del mes pasado se rompió con una
+columna nueva o porque la persona que sabía armarla está de vacaciones.
+
+## Lo que hay que saber
+
+El informe se arma a mano por razones que no tienen que ver con la
+herramienta. Estas son las más comunes, y lo que suele haber detrás:
+
+| Síntoma                                           | Causa real                                                         |
+| ------------------------------------------------- | ------------------------------------------------------------------ |
+| Cada área maneja "su" versión de las ventas       | No hay una definición única de cada indicador ni un dueño del dato |
+| El Excel maestro se rompe cada mes                | El reporte y los datos viven en el mismo archivo                   |
+| Hay que corregir nombres, fechas y montos a mano  | Las fuentes no comparten códigos ni formatos                       |
+| Solo una persona sabe armarlo                     | El proceso no está documentado; vive en la cabeza de alguien       |
+| El reporte tiene 40 páginas y nadie lo lee entero | Se reporta todo lo que se puede medir, no lo que se necesita decidir |
+
+Automatizar la reportabilidad no es "pasar el Excel a Power BI". Es
+separar tres capas que hoy están mezcladas en un solo archivo: las fuentes
+(de dónde salen los datos), el modelo (cómo se limpian, cruzan y calculan)
+y la presentación (lo que la gente ve). Cuando esas capas están separadas,
+el dashboard se actualiza solo porque el modelo hace cada mes lo que hoy
+hace una persona.
+
+<Nota tipo="info" titulo="La herramienta importa menos de lo que parece">
+	Power BI es lo que usamos y recomendamos en la mayoría de los casos, pero el mismo orden se puede
+	lograr con otras herramientas. Lo que no se puede saltar es la parte del medio: definir los
+	indicadores y construir un modelo confiable. Sin eso, cualquier dashboard es el mismo Excel con
+	colores.
+</Nota>
+
+Así se ve la diferencia entre las dos formas de trabajar: hoy, todo
+mezclado en un mismo archivo; después, tres capas separadas donde el
+modelo hace el trabajo solo:
+
+<Diagrama
+	nombre="reporte-tres-capas"
+	pie="De un archivo mezclado a tres capas separadas: fuentes, modelo y presentación"
+/>
+
+## Por dónde empezar
+
+<Pasos>
+	<Paso titulo="Anota las preguntas antes que los gráficos">
+		Escribe las cinco o seis preguntas que la gerencia realmente hace cada mes: cuánto vendimos y
+		contra qué meta, qué margen dejó cada línea, qué clientes cayeron, cuánto tenemos por cobrar. Si
+		un gráfico del informe actual no responde ninguna de esas preguntas, no lo migres.
+	</Paso>
+	<Paso titulo="Define cada indicador una sola vez, por escrito">
+		Para cada pregunta, fija el indicador con su fórmula exacta, la fuente de la que sale, la
+		periodicidad y quién es el dueño del dato. "Ventas" tiene que significar lo mismo con o sin IVA,
+		con o sin notas de crédito, para todos. Esa hoja de definiciones evita la mitad de las discusiones
+		de la reunión mensual.
+	</Paso>
+	<Paso titulo="Inventaria las fuentes y decide cuáles quedan">
+		Lista de dónde sale hoy cada dato: sistema de facturación, ERP, planillas compartidas, formularios,
+		bancos. Para cada fuente anota cómo se obtiene (exportación manual, conexión directa, correo) y
+		qué tan confiable es. Las planillas que solo existen para "arreglar" datos de otro sistema son las
+		primeras candidatas a desaparecer.
+	</Paso>
+	<Paso titulo="Construye un modelo, no un reporte">
+		Conecta las fuentes que quedaron en un modelo único: tablas limpias, códigos homologados, cálculos
+		centralizados. Todo lo que hoy se corrige a mano se transforma en una regla que corre sola. Este
+		paso es el que más tiempo toma y el que más vale, porque de él se cuelgan todos los reportes
+		futuros, no solo el del mes.
+	</Paso>
+	<Paso titulo="Publica lo esencial y programa la actualización">
+		Arma primero un tablero con las respuestas a las preguntas del paso uno, nada más. Programa el
+		refresco de datos con la frecuencia que la operación necesita y define quién ve qué. El detalle
+		se agrega después, cuando el equipo ya confía en los números.
+	</Paso>
+	<Paso titulo="Retira la versión manual">
+		Durante uno o dos cierres, corre ambos en paralelo y compara. Cuando cuadran, deja de armar el
+		Excel. Si mantienes los dos, el equipo va a seguir confiando en el de siempre y el dashboard
+		queda de adorno.
+	</Paso>
+</Pasos>
+
+### Cómo se ve una definición
+
+| Indicador                      | Fórmula                                      | Fuente       | Dueño         | Frecuencia |
+| ------------------------------- | --------------------------------------------- | ------------ | ------------- | ---------- |
+| Ventas netas                    | Ventas facturadas menos notas de crédito      | Facturación  | Comercial      | Diaria     |
+| Margen por línea                | Ventas netas menos costo directo de la línea  | ERP          | Operaciones    | Mensual    |
+| Cuentas por cobrar vencidas     | Facturas con vencimiento pasado y sin pago    | Facturación  | Administración | Diaria     |
+
+```dax
+Ventas netas =
+    SUM ( Ventas[Monto neto] )
+  - SUM ( 'Notas de crédito'[Monto neto] )
+```
+
+Esa fórmula vive en un solo lugar: el modelo, no un archivo distinto por
+área. El refresco se programa (a diario a las 06:00 es lo habitual), así
+que el modelo hace a esa hora lo que antes le tomaba a una persona tres
+días.
+
+Antes de partir con el modelo, confirma que tienes lo mínimo resuelto:
+
+<Checklist>
+
+- Las preguntas del mes están escritas y acordadas con quien toma las decisiones
+- Cada indicador tiene una definición única, con fórmula y dueño
+- Sabes de qué sistema sale cada dato y cómo se accede a él
+- Existe una persona responsable de que las fuentes se mantengan limpias
+- Hay acuerdo de que la versión manual se retira una vez validada la automática
+
+</Checklist>
+
+## Errores comunes
+
+El más habitual es replicar el Excel actual, gráfico por gráfico, en la
+herramienta nueva. Se hereda el mismo desorden con mejor apariencia, y el
+equipo termina exportando el dashboard a Excel para seguir trabajando como
+antes.
+
+El segundo es partir por el diseño del tablero. Se dedican semanas a
+colores, logos y disposición de gráficos sobre datos que todavía no
+cuadran. El orden correcto es el inverso: primero números en los que todos
+confíen, después cómo se ven.
+
+El tercero es no nombrar un dueño para cada dato. Cuando una fuente se
+degrada y nadie es responsable de ella, el dashboard empieza a mostrar
+cifras raras, el equipo deja de mirarlo y a los tres meses alguien vuelve a
+armar el informe a mano.
+
+> Un dashboard que nadie usa para decidir no ahorró tiempo: **solo cambió de
+> lugar el trabajo manual**.
+
+## Cuándo conviene pedir ayuda
+
+Los primeros tres pasos los puede hacer tu equipo, y conviene que los haga,
+porque nadie conoce mejor las preguntas del negocio. Donde suele trabarse
+es en el modelo: conectar un ERP con planillas y un sistema de facturación,
+homologar códigos de clientes que vienen distintos en cada fuente, y dejar
+la actualización corriendo sola sin que se rompa con el primer cambio.
+
+Si ya tienes claras las preguntas y las fuentes, pero el informe sigue
+tomando días porque unir los datos es un trabajo en sí mismo, esa es la
+señal de que llegó el momento de resolverlo bien una vez. Puedes revisar
+cómo trabajamos la [reportabilidad y dashboards](/servicios/reportabilidad)
+o simplemente contarnos cómo se arma hoy tu informe.

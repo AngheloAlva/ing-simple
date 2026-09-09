@@ -80,7 +80,7 @@ export default async function GuiaDetailPage({ params }: PageProps): Promise<Rea
 				/>
 
 				<div className="mx-auto max-w-360 px-5 pt-10 pb-16 sm:px-8 lg:px-10">
-					<div className="mx-auto max-w-3xl lg:grid lg:max-w-none lg:grid-cols-[minmax(0,48rem)_16rem] lg:justify-between lg:gap-16">
+					<div className="mx-auto max-w-prose lg:grid lg:max-w-[calc(65ch+20rem)] lg:grid-cols-[minmax(0,65ch)_16rem] lg:gap-16">
 						<div className="min-w-0">
 							<ArticleHeader meta={guia.meta} />
 							<div className="mb-8">

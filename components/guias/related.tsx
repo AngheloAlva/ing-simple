@@ -8,7 +8,7 @@ export function GuiasRelated({ guias }: { guias: GuiaMeta[] }): ReactNode {
 	if (guias.length === 0) return null
 
 	return (
-		<section className="mx-auto max-w-3xl px-5 pb-16 sm:px-8 lg:px-0">
+		<section className="mx-auto max-w-prose px-5 pb-16 sm:px-8 lg:max-w-[calc(65ch+20rem)] lg:px-0">
 			<h2 className="text-lg font-semibold tracking-tight">Sigue leyendo</h2>
 
 			<div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">

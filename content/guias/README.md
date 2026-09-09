@@ -165,24 +165,40 @@ frontmatter).
 
 ### `Diagrama`
 
-Inserta uno de los diagramas animados que ya existen en el sitio (los mismos
-que se usan en las páginas de servicios). No recibe más que el nombre: no hay
-que configurar datos ni tamaños.
+Inserta uno de los diagramas propios de las guías, vive en
+`components/guias/diagramas/`. Cada uno explica un concepto puntual de la
+guía que lo usa — nunca reutilices un visual de héroe de servicio (el flujo
+corriendo, el reporte gerencial): esos venden el producto, no explican una
+idea. `nombre` es obligatorio; `pie` es opcional, un pie de foto en mono
+que se muestra bajo el diagrama.
 
 ```mdx
-<Diagrama nombre="flujo-automatizacion" />
+<Diagrama nombre="ia-que-proceso" pie="Dos preguntas para saber si un proceso es candidato a IA" />
 ```
 
 Nombres disponibles hoy (ver `components/guias/diagramas.tsx` para la lista
 autoritativa, que puede crecer):
 
-- `flujo-automatizacion` — el flujo de una automatización corriendo.
-- `reporte-gerencial` — un reporte de gestión con sus fuentes conectadas.
-- `programa-capacitacion` — un programa de capacitación con sus sesiones.
+- `ia-que-proceso` — dos preguntas (regla exacta, alguien revisa) que llevan a una de tres salidas.
+- `ia-paso-que-cambia` — el mismo flujo, con el paso que la IA reemplaza y el de revisión.
+- `ley-linea-de-tiempo` — los hitos entre la publicación de la ley y el régimen de sanciones.
+- `ley-inventario` — las fuentes de datos dispersas convergiendo en un registro de tratamiento.
+- `reporte-tres-capas` — un archivo mezclado versus fuentes, modelo y presentación separados.
 
 Si escribes un nombre que no existe, en `pnpm dev` ves una advertencia en la
 página; en producción esa guía simplemente no muestra nada ahí, así que
 revisa el nombre antes de publicar.
+
+### Citas (`>`)
+
+Una cita de markdown normal (`> texto`) se renderiza como una cita
+tipográfica (sin fondo, sin borde, sin cursiva), no como una tarjeta.
+Cierra siempre la frase con la parte que quieres remarcar en `**negrita**`:
+esa negrita es el único énfasis visual de la cita.
+
+```mdx
+> Un piloto que no se mide es **solo una demo con otro nombre**.
+```
 
 ### `Demo` (todavía no existe)
 
