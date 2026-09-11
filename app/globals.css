@@ -10,7 +10,7 @@
 	--muted: oklch(0.97 0 0);
 	--muted-foreground: oklch(0.556 0 0);
 	--border: oklch(0.922 0 0);
-	--ring: oklch(0.3754 0.151 259.74);
+	--ring: oklch(0.374509 0.149664 259.6115);
 	--accent: oklch(0.97 0 0);
 	--accent-foreground: oklch(0.205 0 0);
 	--font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
@@ -24,7 +24,7 @@
 	--card-foreground: oklch(0.145 0 0);
 	--popover: oklch(1 0 0);
 	--popover-foreground: oklch(0.145 0 0);
-	--primary: oklch(0.3754 0.151 259.74);
+	--primary: oklch(0.374509 0.149664 259.6115);
 	--primary-foreground: oklch(0.985 0 0);
 	--secondary: oklch(0.97 0 0);
 	--secondary-foreground: oklch(0.205 0 0);
@@ -67,14 +67,14 @@
 	--muted: oklch(0.269 0 0);
 	--muted-foreground: oklch(0.708 0 0);
 	--border: oklch(1 0 0 / 10%);
-	--ring: oklch(0.62 0.15 259.74);
+	--ring: oklch(0.62 0.19 259.6115);
 	--accent: oklch(0.269 0 0);
 	--accent-foreground: oklch(0.985 0 0);
 	--card: oklch(0.205 0 0);
 	--card-foreground: oklch(0.985 0 0);
 	--popover: oklch(0.205 0 0);
 	--popover-foreground: oklch(0.985 0 0);
-	--primary: oklch(0.55 0.16 259.74);
+	--primary: oklch(0.62 0.19 259.6115);
 	--primary-foreground: oklch(0.985 0 0);
 	--secondary: oklch(0.269 0 0);
 	--secondary-foreground: oklch(0.985 0 0);
@@ -96,7 +96,7 @@
 
 	/* Brand — IngSimple (dark). Lifted lightness so blue/green stay legible
      against the dark background. */
-	--brand-blue: oklch(0.374509 0.149664 259.6115);
+	--brand-blue: oklch(0.62 0.19 259.6115);
 	--brand-blue-foreground: oklch(0.985 0 0);
 	--brand-green: oklch(0.72 0.17 153.4541);
 	--brand-green-foreground: oklch(0.205 0 0);
