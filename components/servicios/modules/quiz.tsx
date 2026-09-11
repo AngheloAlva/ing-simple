@@ -141,7 +141,7 @@ function MeterRow({
 				<motion.div
 					className={cn(
 						"h-1 rounded-full",
-						weight === 0 ? "bg-brand-green" : weight >= 2 ? "bg-primary" : "bg-primary/50"
+						weight === 0 ? "bg-brand-green" : weight >= 2 ? "bg-brand-blue" : "bg-brand-blue/50"
 					)}
 					initial={false}
 					// A healthy answer keeps a short mark rather than an empty track, so
@@ -216,7 +216,7 @@ export function ModuleQuiz({ contactHref }: ModuleProps): ReactNode {
 										key={entry.q}
 										className={cn(
 											"h-1 w-8 transition-colors duration-300",
-											i < step || done ? "bg-primary" : "bg-border"
+											i < step || done ? "bg-brand-blue" : "bg-border"
 										)}
 									/>
 								))}
@@ -242,7 +242,7 @@ export function ModuleQuiz({ contactHref }: ModuleProps): ReactNode {
 													key={option}
 													type="button"
 													onClick={() => setAnswers((prev) => [...prev, index])}
-													className="focus-ring group border-border hover:border-primary hover:bg-primary/5 hover:text-primary flex items-center justify-between gap-4 rounded-sm border border-dotted px-4 py-3 text-left text-sm font-medium transition-colors hover:border-solid"
+													className="focus-ring group border-border hover:border-brand-blue hover:bg-brand-blue/5 hover:text-primary flex items-center justify-between gap-4 rounded-sm border border-dotted px-4 py-3 text-left text-sm font-medium transition-colors hover:border-solid"
 												>
 													{option}
 													<span

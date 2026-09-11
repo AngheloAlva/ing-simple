@@ -274,7 +274,7 @@ export function ModuleProcessToSystem({ contactHref }: ModuleProps): ReactNode {
 								className={cn(
 									"focus-ring rounded-sm border px-2 py-1 text-[11px] font-medium transition-colors duration-200",
 									index === processIndex
-										? "border-primary/30 bg-primary/10 text-primary"
+										? "border-brand-blue/30 bg-brand-blue/10 text-primary"
 										: "border-border/60 text-muted-foreground hover:text-foreground hover:border-border"
 								)}
 							>
@@ -305,7 +305,7 @@ export function ModuleProcessToSystem({ contactHref }: ModuleProps): ReactNode {
 											className={cn(
 												"focus-ring relative flex w-full items-start gap-3 overflow-hidden rounded-sm border p-3 text-left transition-colors duration-200",
 												active
-													? "border-primary/30 bg-primary/5"
+													? "border-brand-blue/30 bg-brand-blue/5"
 													: "hover:bg-muted/50 border-transparent"
 											)}
 										>
@@ -313,7 +313,7 @@ export function ModuleProcessToSystem({ contactHref }: ModuleProps): ReactNode {
 												className={cn(
 													"mt-px grid h-5 w-5 shrink-0 place-items-center rounded-sm text-[10px] font-semibold tabular-nums transition-colors duration-200",
 													active
-														? "bg-primary text-primary-foreground"
+														? "bg-brand-blue text-brand-blue-foreground"
 														: "bg-muted text-muted-foreground"
 												)}
 												aria-hidden="true"
@@ -339,7 +339,7 @@ export function ModuleProcessToSystem({ contactHref }: ModuleProps): ReactNode {
 												<motion.span
 													key={`${process.id}-${index}`}
 													aria-hidden="true"
-													className="bg-primary absolute right-0 bottom-0 left-0 h-0.5 origin-left"
+													className="bg-brand-blue absolute right-0 bottom-0 left-0 h-0.5 origin-left"
 													initial={{ scaleX: 0 }}
 													animate={{ scaleX: 1 }}
 													transition={{ duration: AUTOPLAY_MS / 1000, ease: "linear" }}
@@ -373,7 +373,7 @@ export function ModuleProcessToSystem({ contactHref }: ModuleProps): ReactNode {
 										"inline-flex items-center gap-1.5 rounded-sm border px-1.5 py-0.5 text-[11px] font-medium",
 										isLastStep
 											? "border-brand-green/50 bg-brand-green/15 text-brand-green-text"
-											: "border-primary/30 bg-primary/5 text-primary"
+											: "border-brand-blue/30 bg-brand-blue/5 text-primary"
 									)}
 								>
 									{step.state}
@@ -412,7 +412,7 @@ export function ModuleProcessToSystem({ contactHref }: ModuleProps): ReactNode {
 											active &&
 												isLast &&
 												"border-brand-green/50 bg-brand-green/15 text-brand-green-text",
-											active && !isLast && "border-primary/30 bg-primary/10 text-primary"
+											active && !isLast && "border-brand-blue/30 bg-brand-blue/10 text-primary"
 										)}
 									>
 										{entry.state}

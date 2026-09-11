@@ -72,14 +72,14 @@ function IncludeCard({
 			transition={itemTransition}
 			onHoverStart={() => setHovered(true)}
 			onHoverEnd={() => setHovered(false)}
-			className="border-border bg-background hover:border-primary/40 rounded-sm border p-6 transition-colors duration-200 sm:p-7"
+			className="border-border bg-background hover:border-brand-blue/40 rounded-sm border p-6 transition-colors duration-200 sm:p-7"
 		>
 			<div className="flex items-start justify-between gap-4">
 				<p className="text-muted-foreground text-[11px] font-medium tracking-widest uppercase">
 					{String(index + 1).padStart(2, "0")}
 				</p>
 				<div
-					className="text-primary flex h-7 w-10 shrink-0 items-end justify-end gap-[3px]"
+					className="text-brand-blue flex h-7 w-10 shrink-0 items-end justify-end gap-[3px]"
 					aria-hidden="true"
 				>
 					{Glyph ? (
@@ -188,7 +188,7 @@ function BrowserLayout({ items }: { items: ServiceInclude[] }): ReactNode {
 					<div className="border-border/60 flex items-center gap-1.5 border-b px-3 py-2">
 						<span className="bg-border h-2 w-2 rounded-full" />
 						<span className="bg-border h-2 w-2 rounded-full" />
-						<span className="bg-primary/60 h-2 w-2 rounded-full" />
+						<span className="bg-brand-blue/60 h-2 w-2 rounded-full" />
 						<span className="bg-muted/60 text-muted-foreground ml-2 truncate rounded px-2 py-0.5 text-[10px]">
 							{entry.address ?? "tu-empresa.cl"}
 						</span>

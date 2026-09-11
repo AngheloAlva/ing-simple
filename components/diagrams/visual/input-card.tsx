@@ -39,7 +39,7 @@ export function InputCard({
 				<span
 					className={cn(
 						"flex h-6 w-6 shrink-0 items-center justify-center rounded-sm transition-colors duration-300 sm:h-8 sm:w-8",
-						connected ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground/60"
+						connected ? "bg-brand-blue/10 text-primary" : "bg-muted text-muted-foreground/60"
 					)}
 				>
 					<Icon className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />

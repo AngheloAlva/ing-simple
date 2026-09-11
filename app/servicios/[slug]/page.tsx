@@ -68,7 +68,7 @@ export default async function ServicePage({ params }: PageProps): Promise<ReactN
 			/>
 			<span id="top" className="sr-only" />
 			<Nav />
-			<main id="main-content" className="flex-1">
+			<main id="main-content" className="flex-1" data-service={service.slug}>
 				<ServicioHero
 					shortName={service.shortName}
 					slug={service.slug}

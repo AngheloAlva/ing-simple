@@ -210,13 +210,13 @@ export function ModuleAnatomy(): ReactNode {
 										animate={{ opacity: 1 }}
 										exit={{ opacity: 0 }}
 										transition={fade}
-										className="border-primary/70 bg-primary/[0.04] absolute border-2"
+										className="border-brand-blue/70 bg-brand-blue/[0.04] absolute border-2"
 										style={active.box}
 									>
-										<span className="border-primary absolute -top-px -left-px h-2 w-2 border-t-2 border-l-2" />
-										<span className="border-primary absolute -top-px -right-px h-2 w-2 border-t-2 border-r-2" />
-										<span className="border-primary absolute -bottom-px -left-px h-2 w-2 border-b-2 border-l-2" />
-										<span className="border-primary absolute -right-px -bottom-px h-2 w-2 border-r-2 border-b-2" />
+										<span className="border-brand-blue absolute -top-px -left-px h-2 w-2 border-t-2 border-l-2" />
+										<span className="border-brand-blue absolute -top-px -right-px h-2 w-2 border-t-2 border-r-2" />
+										<span className="border-brand-blue absolute -bottom-px -left-px h-2 w-2 border-b-2 border-l-2" />
+										<span className="border-brand-blue absolute -right-px -bottom-px h-2 w-2 border-r-2 border-b-2" />
 									</motion.div>
 								</AnimatePresence>
 							</div>
@@ -243,7 +243,7 @@ export function ModuleAnatomy(): ReactNode {
 								key={zone.id}
 								className={cn(
 									"border-border relative border-t border-l-2 transition-colors duration-200",
-									isActive ? "border-l-primary" : "border-l-transparent"
+									isActive ? "border-l-brand-blue" : "border-l-transparent"
 								)}
 							>
 								<button
@@ -305,7 +305,7 @@ export function ModuleAnatomy(): ReactNode {
 									<motion.span
 										key={zone.id}
 										aria-hidden="true"
-										className="bg-primary absolute right-0 bottom-0 left-0 h-0.5 origin-left"
+										className="bg-brand-blue absolute right-0 bottom-0 left-0 h-0.5 origin-left"
 										initial={{ scaleX: 0 }}
 										animate={{ scaleX: 1 }}
 										transition={{ duration: AUTOPLAY_MS / 1000, ease: "linear" }}

@@ -23,7 +23,7 @@ export function Tile({
 			className={cn(
 				"focus-ring h-6 rounded-sm px-2.5 text-[11px] font-medium tabular-nums transition-colors duration-200",
 				active
-					? "bg-primary text-primary-foreground"
+					? "bg-brand-blue text-brand-blue-foreground"
 					: "bg-muted text-muted-foreground hover:bg-border hover:text-foreground",
 				className
 			)}

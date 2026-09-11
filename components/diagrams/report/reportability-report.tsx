@@ -135,13 +135,13 @@ function MonthGroup({
 			aria-label={`${point.label}: plan ${formatAmount(point.plan, unit)}, gestión ${formatAmount(point.gestion, unit)}, diferencia ${formatPct(pct)}`}
 		>
 			<motion.div
-				className="bg-primary/40 w-3 rounded-t-xs"
+				className="bg-brand-blue/40 w-3 rounded-t-xs"
 				initial={{ height: 0 }}
 				animate={{ height: bar(point.plan, showPlan) }}
 				transition={barTransition}
 			/>
 			<motion.div
-				className="bg-primary w-3 rounded-t-xs"
+				className="bg-brand-blue w-3 rounded-t-xs"
 				initial={{ height: 0 }}
 				animate={{ height: bar(point.gestion, showGestion) }}
 				transition={barTransition}
@@ -182,11 +182,11 @@ function MonthGroup({
 				>
 					<p className="font-semibold">{point.label}</p>
 					<p className="text-muted-foreground mt-0.5 flex items-center gap-1.5 tabular-nums">
-						<span className="bg-primary/40 h-1.5 w-1.5 rounded-[1px]" /> Plan{" "}
+						<span className="bg-brand-blue/40 h-1.5 w-1.5 rounded-[1px]" /> Plan{" "}
 						{formatAmount(point.plan, unit)}
 					</p>
 					<p className="text-muted-foreground flex items-center gap-1.5 tabular-nums">
-						<span className="bg-primary h-1.5 w-1.5 rounded-[1px]" /> Gestión{" "}
+						<span className="bg-brand-blue h-1.5 w-1.5 rounded-[1px]" /> Gestión{" "}
 						{formatAmount(point.gestion, unit)}
 					</p>
 					<p className="mt-0.5 font-medium tabular-nums">Dif. {formatPct(pct)}</p>
@@ -404,7 +404,7 @@ export function ReportabilityReport(): ReactNode {
 								id="report-service"
 								value={service}
 								onChange={(event) => setService(event.target.value)}
-								className="focus-ring border-border bg-background text-foreground hover:border-primary/60 h-6 w-full cursor-pointer appearance-none rounded-sm border pr-5 pl-1.5 text-[11px] transition-colors"
+								className="focus-ring border-border bg-background text-foreground hover:border-brand-blue/60 h-6 w-full cursor-pointer appearance-none rounded-sm border pr-5 pl-1.5 text-[11px] transition-colors"
 							>
 								{SERVICES.map((option) => (
 									<option key={option} value={option}>
@@ -464,14 +464,14 @@ export function ReportabilityReport(): ReactNode {
 								<LegendToggle
 									active={showPlan}
 									onClick={() => setShowPlan((v) => !v)}
-									swatch="bg-primary/40"
+									swatch="bg-brand-blue/40"
 								>
 									Plan
 								</LegendToggle>
 								<LegendToggle
 									active={showGestion}
 									onClick={() => setShowGestion((v) => !v)}
-									swatch="bg-primary"
+									swatch="bg-brand-blue"
 								>
 									Gestión
 								</LegendToggle>
@@ -527,7 +527,7 @@ export function ReportabilityReport(): ReactNode {
 
 					<table className="w-full border-collapse text-[11px]">
 						<thead>
-							<tr className="bg-primary text-primary-foreground">
+							<tr className="bg-brand-blue text-brand-blue-foreground">
 								<th className="hidden rounded-l-sm py-1 pr-2 pl-2 text-left text-[10px] font-medium sm:table-cell">
 									CECO
 								</th>

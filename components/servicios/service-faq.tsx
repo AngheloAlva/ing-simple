@@ -26,7 +26,7 @@ function FaqItem({
 		<motion.div
 			variants={entrance}
 			transition={itemTransition}
-			className="group border-border hover:border-primary/40 border-dotted transition-colors duration-200 [&:not(:first-child)]:border-t"
+			className="group border-border hover:border-brand-blue/40 border-dotted transition-colors duration-200 [&:not(:first-child)]:border-t"
 		>
 			<h3>
 				<button

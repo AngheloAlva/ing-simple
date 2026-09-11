@@ -155,7 +155,7 @@ export function ServicioProcess({
 									transition={itemTransition}
 									className={cn(
 										"border-border relative border-t border-l-2 transition-colors duration-200",
-										isActive ? "border-l-primary" : "border-l-transparent"
+										isActive ? "border-l-brand-blue" : "border-l-transparent"
 									)}
 								>
 									<button

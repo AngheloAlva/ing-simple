@@ -59,6 +59,12 @@
 	--brand-green: oklch(0.6864 0.175052 153.4541);
 	--brand-green-foreground: oklch(0.205 0 0);
 	--brand-green-text: oklch(0.52 0.132 153.4541);
+
+	/* First stop of the highlight gradient (lib/gradient.ts). Same value as
+	   Tailwind's `blue-400` so the default look is unchanged; kept as its own
+	   token so a per-service override (below) can swap it independently of
+	   `--primary`. */
+	--brand-tint: oklch(0.707 0.165 254.624);
 }
 
 .dark {
@@ -102,6 +108,50 @@
 	--brand-green-foreground: oklch(0.205 0 0);
 	/* On the dark surface the fill green already clears AA (7.7:1). */
 	--brand-green-text: oklch(0.72 0.17 153.4541);
+
+	/* Same value as :root — blue-400 is deliberately identical in both
+	   themes (see the --brand-blue comment above), and this keeps the
+	   current gradient look unchanged in dark mode too. */
+	--brand-tint: oklch(0.707 0.165 254.624);
+}
+
+/* Per-service accent override (phase 1 of "one accent color per service").
+   `app/servicios/[slug]/page.tsx` stamps `data-service` on `<main>`; every
+   component inside reads only `primary`/`brand-blue` tokens (never a
+   hard-coded blue), so redefining them here recolors the whole page. Two
+   roles: `--primary` is the text-safe accent (headline gradient end stop,
+   kickers, chip text, focus ring); `--brand-blue` is the surface/fill token
+   (chip and panel backgrounds), which does not need to carry its own text
+   contrast because it always pairs with `--brand-blue-foreground`.
+   Reportabilidad = Power BI yellow: a dark-text-on-yellow surface plus an
+   amber tone for anything rendered as text. Light mode is pushed as yellow
+   as the two roles allow: `--primary` sits at the AA ceiling on white
+   (4.69:1, verified against WCAG 2 — see lib/service-accent.test.ts) so
+   every word, number and label stays readable, while `--brand-tint` and
+   `--brand-blue` carry the fills, chart bars and panels toward full yellow
+   since they never sit under body text. Dark mode has no such ceiling — the
+   dark surface behind the text clears AA by a wide margin even at full
+   yellow — so `--primary` and `--brand-blue` deliberately collapse onto the
+   same yellow there; the two-role split only matters in light mode.
+   Selectors must win over both `:root` and `.dark` above, so this block is
+   plain CSS placed after them and before `@theme inline`, not inside
+   `@theme`. */
+[data-service="reportabilidad"] {
+	--brand-tint: oklch(0.8 0.17 90);
+	--primary: oklch(0.56 0.135 85);
+	--primary-foreground: oklch(0.985 0 0);
+	--brand-blue: oklch(0.85 0.17 92);
+	--brand-blue-foreground: oklch(0.145 0 0);
+	--ring: oklch(0.56 0.135 85);
+}
+
+.dark [data-service="reportabilidad"] {
+	--brand-tint: oklch(0.92 0.16 95);
+	--primary: oklch(0.85 0.17 92);
+	--primary-foreground: oklch(0.145 0 0);
+	--brand-blue: oklch(0.85 0.17 92);
+	--brand-blue-foreground: oklch(0.145 0 0);
+	--ring: oklch(0.85 0.17 92);
 }
 
 @theme inline {

@@ -4,8 +4,15 @@
  * Lives here, not in gradient-text.tsx: that file is `"use client"`, and a value
  * exported from a client module becomes a client reference that a Server
  * Component (challenge.tsx) cannot read to pass as a prop.
+ *
+ * Stops are `--brand-tint` and `--primary`, not `--brand-blue`: today all
+ * three tokens resolve identically in both themes, so nothing changes
+ * site-wide. But a per-service page overrides these tokens to swap the
+ * whole page's accent, and it splits them by role — `--primary` is the
+ * text-safe token, `--brand-blue` is a surface/fill token that may not have
+ * enough contrast as text. A text gradient must end on the text-safe one.
  */
-export const brandGradient = ["var(--color-blue-400)", "var(--brand-blue)"]
+export const brandGradient = ["var(--brand-tint)", "var(--primary)"]
 
 /** Green variant, for the outcomes/case-study section. Deliberate trade-off:
  * on a light surface these stops are 1.8:1 and 2.6:1, so the phrase fails WCAG

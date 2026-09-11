@@ -23,7 +23,7 @@ function CaseCard({ project }: { project: ProjectData }): ReactNode {
 	return (
 		<a
 			href={`/casos/${project.id}`}
-			className="focus-ring group bg-border hover:bg-primary/40 block p-px transition-colors duration-200"
+			className="focus-ring group bg-border hover:bg-brand-blue/40 block p-px transition-colors duration-200"
 			style={clip}
 		>
 			<article className="bg-background flex h-full flex-col overflow-hidden" style={clip}>

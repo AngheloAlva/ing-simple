@@ -34,7 +34,7 @@ function Chip({
 			className={cn(
 				"inline-flex shrink-0 items-center gap-1 rounded-sm border px-1.5 py-0.5 text-[10px] font-medium whitespace-nowrap",
 				tone === "muted" && "border-border/60 bg-muted/40 text-muted-foreground",
-				tone === "primary" && "border-primary/30 bg-primary/5 text-primary",
+				tone === "primary" && "border-brand-blue/30 bg-brand-blue/5 text-primary",
 				tone === "green" && "border-brand-green/50 bg-brand-green/15 text-brand-green-text"
 			)}
 		>
@@ -55,7 +55,7 @@ function CheckMark({ className }: { className?: string }): ReactNode {
 	return (
 		<span
 			className={cn(
-				"bg-primary/10 text-primary inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full",
+				"bg-brand-blue/10 text-primary inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full",
 				className
 			)}
 			aria-hidden="true"
@@ -189,7 +189,7 @@ const DIMS: Array<Table & { position: string }> = [
 
 function TableBox({ table, fact = false }: { table: Table; fact?: boolean }): ReactNode {
 	return (
-		<Tile className={cn("px-2 py-1.5", fact && "border-primary/40 shadow-sm")}>
+		<Tile className={cn("px-2 py-1.5", fact && "border-brand-blue/40 shadow-sm")}>
 			<p
 				className={cn(
 					"truncate text-[10px] font-semibold tracking-tight",
@@ -222,7 +222,7 @@ function ModeladoPanel(): ReactNode {
 				<svg
 					viewBox="0 0 100 100"
 					preserveAspectRatio="none"
-					className="text-primary absolute inset-0 h-full w-full"
+					className="text-brand-blue absolute inset-0 h-full w-full"
 					aria-hidden="true"
 				>
 					{[
@@ -314,7 +314,7 @@ function WireframeThumb({ frame }: { frame: Wireframe }): ReactNode {
 			<Tile
 				className={cn(
 					"grid aspect-[4/3] grid-cols-6 grid-rows-6 gap-[3px] p-1.5",
-					frame.final && "border-primary/50"
+					frame.final && "border-brand-blue/50"
 				)}
 			>
 				{frame.blocks.map((block, index) => (
@@ -323,7 +323,7 @@ function WireframeThumb({ frame }: { frame: Wireframe }): ReactNode {
 						className={cn(
 							"rounded-[2px]",
 							block,
-							frame.final ? (index === 0 ? "bg-primary/25" : "bg-primary/10") : "bg-muted"
+							frame.final ? (index === 0 ? "bg-brand-blue/25" : "bg-brand-blue/10") : "bg-muted"
 						)}
 					/>
 				))}
@@ -596,7 +596,7 @@ function NivelPanel(): ReactNode {
 										</span>
 									</div>
 									<div className="bg-border/60 mt-1 h-1 w-full rounded-full">
-										<div className="bg-primary h-1 rounded-full" style={{ width: `${gap.now}%` }} />
+										<div className="bg-brand-blue h-1 rounded-full" style={{ width: `${gap.now}%` }} />
 									</div>
 								</div>
 							))}
@@ -851,7 +851,7 @@ function AcompanamientoPanel(): ReactNode {
 									</span>
 									<span className="bg-border/60 h-1 flex-1 rounded-full">
 										<span
-											className="bg-primary block h-1 rounded-full"
+											className="bg-brand-blue block h-1 rounded-full"
 											style={{ width: `${(row.asked / peak) * 100}%` }}
 										/>
 									</span>
@@ -954,7 +954,7 @@ function MapeoPanel(): ReactNode {
 										</span>
 									</div>
 									<div className="bg-border/60 mt-1 h-1 w-full rounded-full">
-										<div className="bg-primary h-1 rounded-full" style={{ width: `${row.pct}%` }} />
+										<div className="bg-brand-blue h-1 rounded-full" style={{ width: `${row.pct}%` }} />
 									</div>
 								</div>
 							))}
@@ -1250,7 +1250,7 @@ function MarchaPanel(): ReactNode {
 									<span className="text-muted-foreground text-[10px] tabular-nums">{row.runs}</span>
 									<div className="flex w-full flex-1 items-end">
 										<div
-											className="bg-primary mx-auto w-full max-w-8 rounded-t-sm"
+											className="bg-brand-blue mx-auto w-full max-w-8 rounded-t-sm"
 											style={{ height: `${(row.runs / WEEK_PEAK) * 100}%` }}
 										/>
 									</div>
@@ -1394,7 +1394,7 @@ function PropuestaPanel(): ReactNode {
 									<div className="flex items-center gap-1" aria-hidden="true">
 										<span className="bg-border h-1 w-1 rounded-full" />
 										<span className="bg-border h-1 w-1 rounded-full" />
-										<span className="bg-primary/60 h-1 w-1 rounded-full" />
+										<span className="bg-brand-blue/60 h-1 w-1 rounded-full" />
 									</div>
 									<p className="mt-1 text-[10px] leading-snug font-medium">{screen}</p>
 								</div>
@@ -1655,15 +1655,15 @@ export function FallbackPanel({
 								<span
 									className={cn(
 										"h-px flex-1 transition-colors duration-200",
-										index <= active ? "bg-primary/50" : "bg-border"
+										index <= active ? "bg-brand-blue/50" : "bg-border"
 									)}
 								/>
 							) : null}
 							<span
 								className={cn(
 									"inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-[10px] font-medium tabular-nums transition-colors duration-200",
-									current && "bg-primary border-primary text-primary-foreground",
-									done && "border-primary/50 text-primary",
+									current && "bg-brand-blue border-brand-blue text-brand-blue-foreground",
+									done && "border-brand-blue/50 text-primary",
 									!current && !done && "border-border text-muted-foreground"
 								)}
 							>

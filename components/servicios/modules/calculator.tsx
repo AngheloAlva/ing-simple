@@ -69,17 +69,17 @@ function SliderRow({
 					"focus-ring mt-3 h-5 w-full cursor-pointer appearance-none bg-transparent",
 					// Track
 					"[&::-webkit-slider-runnable-track]:h-1 [&::-webkit-slider-runnable-track]:rounded-full",
-					"[&::-webkit-slider-runnable-track]:bg-[linear-gradient(to_right,var(--primary)_var(--pct),var(--border)_var(--pct))]",
+					"[&::-webkit-slider-runnable-track]:bg-[linear-gradient(to_right,var(--brand-blue)_var(--pct),var(--border)_var(--pct))]",
 					"[&::-moz-range-track]:h-1 [&::-moz-range-track]:rounded-full",
-					"[&::-moz-range-track]:bg-[linear-gradient(to_right,var(--primary)_var(--pct),var(--border)_var(--pct))]",
+					"[&::-moz-range-track]:bg-[linear-gradient(to_right,var(--brand-blue)_var(--pct),var(--border)_var(--pct))]",
 					// Thumb: square with the chrome radius, lifted onto the 4px track
 					"[&::-webkit-slider-thumb]:-mt-[5px] [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:w-3.5",
 					"[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-sm",
-					"[&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:ring-background",
+					"[&::-webkit-slider-thumb]:bg-brand-blue [&::-webkit-slider-thumb]:ring-background",
 					"[&::-webkit-slider-thumb]:ring-2 [&::-webkit-slider-thumb]:transition-transform",
 					"hover:[&::-webkit-slider-thumb]:scale-110 active:[&::-webkit-slider-thumb]:scale-110",
 					"[&::-moz-range-thumb]:h-3.5 [&::-moz-range-thumb]:w-3.5 [&::-moz-range-thumb]:rounded-sm",
-					"[&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:border-0",
+					"[&::-moz-range-thumb]:bg-brand-blue [&::-moz-range-thumb]:border-0",
 				].join(" ")}
 			/>
 			<div className="text-muted-foreground mt-1 flex justify-between text-[11px] tabular-nums">

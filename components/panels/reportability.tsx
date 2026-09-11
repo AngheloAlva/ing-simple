@@ -13,9 +13,10 @@ import type { ReactNode } from "react"
  * `PHASING`. KPIs, series, bridge and table are computed, never hand-typed,
  * so they always agree with each other.
  *
- * Vocabulary and swatches follow the hero report: "Plan" is primary at 40 %,
- * "Gestión" is solid primary. Brand green is the single accent, reserved for
- * favourable contributions in the waterfall. No red.
+ * Vocabulary and swatches follow the hero report: "Plan" is brand-blue at
+ * 40 %, "Gestión" is solid brand-blue — decorative chart fills, never text.
+ * Brand green is the single accent, reserved for favourable contributions in
+ * the waterfall. No red.
  * ------------------------------------------------------------------------ */
 
 type Area = {
@@ -234,7 +235,7 @@ function KpiTile({ kpi }: { kpi: Kpi }): ReactNode {
 					<svg
 						viewBox="0 0 60 20"
 						preserveAspectRatio="none"
-						className="text-primary h-4 w-14"
+						className="text-brand-blue h-4 w-14"
 						aria-hidden="true"
 					>
 						<polyline
@@ -294,8 +295,8 @@ function ExecutionTile(): ReactNode {
 	return (
 		<Tile title="Ejecución mensual" subtitle="Plan vs. gestión" className="lg:col-span-2">
 			<div className="flex shrink-0 flex-wrap items-center gap-x-4 gap-y-1 pb-1">
-				<Legend swatch={<span className="bg-primary/40 h-1.5 w-1.5 rounded-full" />}>Plan</Legend>
-				<Legend swatch={<span className="bg-primary h-1.5 w-1.5 rounded-full" />}>Gestión</Legend>
+				<Legend swatch={<span className="bg-brand-blue/40 h-1.5 w-1.5 rounded-full" />}>Plan</Legend>
+				<Legend swatch={<span className="bg-brand-blue h-1.5 w-1.5 rounded-full" />}>Gestión</Legend>
 				<Legend
 					swatch={<span className="border-muted-foreground/60 h-px w-4 border-t border-dashed" />}
 				>
@@ -303,7 +304,7 @@ function ExecutionTile(): ReactNode {
 				</Legend>
 			</div>
 
-			<div className="text-primary relative min-h-36 flex-1">
+			<div className="text-brand-blue relative min-h-36 flex-1">
 				<svg
 					viewBox={`0 0 ${W} ${H}`}
 					preserveAspectRatio="none"
@@ -474,9 +475,9 @@ function WaterfallTile(): ReactNode {
 	const centerOf = (i: number): number => i * slot + slot / 2
 
 	const fillFor = (kind: BridgeKind): string => {
-		if (kind === "anchor") return "fill-primary"
+		if (kind === "anchor") return "fill-brand-blue"
 		if (kind === "favorable") return "fill-brand-green"
-		return "fill-primary/40"
+		return "fill-brand-blue/40"
 	}
 
 	return (
@@ -485,7 +486,7 @@ function WaterfallTile(): ReactNode {
 				<Legend swatch={<span className="bg-brand-green h-1.5 w-1.5 rounded-full" />}>
 					Favorable
 				</Legend>
-				<Legend swatch={<span className="bg-primary/40 h-1.5 w-1.5 rounded-full" />}>
+				<Legend swatch={<span className="bg-brand-blue/40 h-1.5 w-1.5 rounded-full" />}>
 					Adverso
 				</Legend>
 			</div>
@@ -586,7 +587,7 @@ function AreaTableTile(): ReactNode {
 						>
 							<span className="flex items-center gap-1.5 truncate">
 								<span
-									className="bg-primary h-1.5 w-1.5 shrink-0 rounded-full"
+									className="bg-brand-blue h-1.5 w-1.5 shrink-0 rounded-full"
 									style={{ opacity: 0.35 + intensity * 0.65 }}
 									aria-hidden="true"
 								/>
@@ -600,7 +601,7 @@ function AreaTableTile(): ReactNode {
 								<span className="bg-muted relative hidden h-1.5 w-14 overflow-hidden rounded-full sm:block">
 									<span
 										className={`absolute inset-y-0 rounded-full ${
-											row.dev >= 0 ? "bg-brand-green left-1/2" : "bg-primary/45 right-1/2"
+											row.dev >= 0 ? "bg-brand-green left-1/2" : "bg-brand-blue/45 right-1/2"
 										}`}
 										style={{ width: `${barW / 2}%` }}
 										aria-hidden="true"
