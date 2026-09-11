@@ -101,7 +101,7 @@ export function Footer(): ReactNode {
 		<footer className="mx-auto max-w-[1440px] px-5 pb-10 sm:px-8 lg:px-10">
 			<div className="bg-border p-px" style={clip}>
 				<div className="bg-background p-8 sm:p-10 lg:p-14" style={clip}>
-					<Logo />
+					<Logo draw="in-view" />
 
 					<div className="mt-12 grid grid-cols-2 gap-x-8 gap-y-10 md:mt-14 md:grid-cols-4 md:gap-x-0">
 						{COLUMNS.map((col, i) => (

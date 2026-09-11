@@ -118,7 +118,7 @@ export function Nav(): ReactNode {
 			<div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-10">
 				{/* Left: logo + desktop links */}
 				<div className="flex items-center gap-8">
-					<Logo />
+					<Logo draw />
 
 					<nav className="hidden items-center gap-1 lg:flex">
 						{/* Expandable */}
