@@ -7,6 +7,7 @@ import {
   portfolioProjects,
   type ProjectCategory,
 } from "@/lib/portfolio-data";
+import { serviceSlugForCategory } from "@/lib/services";
 import { ArrowUpRight, Lock } from "lucide-react";
 import { AnimatePresence, motion, type Variants } from "motion/react";
 import Image from "next/image";
@@ -85,7 +86,10 @@ function CaseCard({
               {caseStudy.clientName}
             </span>
           )}
-          <span className="font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
+          <span
+            className="font-mono text-[11px] uppercase tracking-[0.1em] text-primary"
+            data-service={serviceSlugForCategory(project.category)}
+          >
             {CATEGORY_LABELS[project.category]}
           </span>
         </div>

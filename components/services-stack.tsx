@@ -54,6 +54,7 @@ export function ServicesStack(): ReactNode {
 							<div
 								className="bg-muted dark:bg-card grid w-full items-center gap-8 overflow-hidden p-8 sm:p-10 lg:h-full lg:grid-cols-[minmax(0,0.76fr)_minmax(0,1.24fr)] lg:gap-14 lg:p-14"
 								style={clip}
+								data-service={service.slug}
 							>
 								<div className="min-w-0">
 									<p className="text-muted-foreground text-xs font-medium tracking-wide">

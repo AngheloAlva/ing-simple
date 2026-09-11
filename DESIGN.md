@@ -63,6 +63,51 @@ Rules
 - Ambient backgrounds are radial gradients built from `var(--foreground)` or
   `var(--background)` with `color-mix`, never a second hue (`components/hero.tsx`).
 
+### Service accents
+
+Each of the four service lines gets one distinctive hue, defined once in
+`app/globals.css` and mirrored in `lib/service-accent.ts` for consumers that
+can't read a CSS custom property (`lib/service-accent-map.test.ts` guards the
+two from drifting apart):
+
+| Service            | Light (`--primary` / `--brand-blue`)     | Dark (`--primary` / `--brand-blue`)      |
+| ------------------- | ----------------------------------------- | ----------------------------------------- |
+| Reportabilidad      | `oklch(0.56 0.135 85)` / `oklch(0.85 0.17 92)` (Power BI amber/yellow) | `oklch(0.85 0.17 92)` / same |
+| Capacitaciones      | `oklch(0.3745 0.1497 305)` (violeta)       | `oklch(0.62 0.19 305)`                    |
+| Desarrollo web      | `oklch(0.3745 0.1497 350)` (magenta)       | `oklch(0.62 0.21 350)`                    |
+| Automatizaciones    | `oklch(0.5 0.085 205)` (turquesa)          | `oklch(0.66 0.11 205)`                    |
+
+Same two-role split as the base tokens: `--primary` is text-safe (headline
+gradient end stop, kickers, chip text, focus ring), `--brand-blue` is the
+surface/fill token (buttons, panels, decorative fills), always paired with
+`--brand-blue-foreground`. Reportabilidad is the only service where the two
+roles differ in light mode — the surface goes full Power BI yellow while the
+text stays at an amber dark enough for AA contrast. In dark mode, and for
+every other service, `--primary` and `--brand-blue` collapse onto the same
+value, the same trade-off the base `brand-blue` token already makes (see the
+rule above).
+
+**Mechanism:** any element carrying `data-service="<slug>"` scopes
+`--brand-tint`, `--primary`, `--primary-foreground`, `--brand-blue`,
+`--brand-blue-foreground` and `--ring` to that service's accent for its whole
+subtree — the CSS is a plain attribute selector, so it recolours every
+descendant that reads those tokens without those components knowing about
+services at all.
+
+Applied on: the service page's `<main>` (`app/servicios/[slug]/page.tsx`,
+the "as yellow as possible" tree), the home services card's copy column —
+number, check marks, CTA hover (`components/services-stack.tsx`, scoped to
+the copy column only, not the diagram), the category chip on `/casos` cards
+and the `/casos/[id]` hero (`serviceSlugForCategory`), the per-service filter
+chips in the guías explorer, the nav dropdown's preview tile
+(`components/nav-visual.tsx`), and the per-service OG image
+(`app/servicios/[slug]/opengraph-image.tsx`, via `oklchToHex` since
+`ImageResponse` can't parse `oklch()`).
+
+Deliberately **not** applied: the nav chrome outside the dropdown preview
+tile, the footer, `/contacto`, and `/casos/[id]` beyond its one chip — all
+stay brand blue.
+
 ## 3. Typography
 
 Fonts (`app/layout.tsx`): `Geist` → `--font-geist-sans`, `Geist_Mono` → `--font-geist-mono`,

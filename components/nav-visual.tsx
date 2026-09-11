@@ -8,24 +8,29 @@ import type { ReactNode } from "react";
  * greyscaled photo sits on top in `mix-blend-mode: luminosity`, so the result
  * keeps the photo's lightness and takes the backdrop's hue. One PNG per
  * service covers both themes and both accent colours.
+ *
+ * The tile is scoped to the active service via `data-service`: it always
+ * reads `--brand-blue`, but that token is redefined by the
+ * `[data-service="<slug>"]` override in `app/globals.css`, so the wash
+ * becomes that service's accent instead of brand blue. The nav chrome
+ * outside this tile is untouched and stays brand blue.
  */
 export function NavVisual({
   src,
   alt,
-  tone,
+  slug,
 }: {
   src: string;
   alt: string;
-  /** Brand colour the photo is tinted with. */
-  tone: "blue" | "green";
+  /** Active service in the dropdown; scopes the tint to its accent colour. A
+   * slug without an override falls back to brand blue. */
+  slug: string;
 }): ReactNode {
   return (
     <div
       className="absolute inset-0 overflow-hidden"
-      style={{
-        backgroundColor:
-          tone === "blue" ? "var(--brand-blue)" : "var(--brand-green)",
-      }}
+      data-service={slug}
+      style={{ backgroundColor: "var(--brand-blue)" }}
     >
       <Image
         src={src}

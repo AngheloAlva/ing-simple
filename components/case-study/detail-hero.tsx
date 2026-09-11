@@ -67,7 +67,15 @@ export function DetailHero({ project, caseStudy }: DetailHeroProps): ReactNode {
 								transition={itemTransition}
 								className="text-muted-foreground font-mono text-[11px] tracking-[0.14em] uppercase"
 							>
-								Caso de estudio · {CATEGORY_LABELS[project.category]}
+								Caso de estudio ·{" "}
+								{/* Only this chip takes the service accent; the rest of the
+								    detail page stays brand blue. */}
+								<span
+									className="text-primary"
+									data-service={serviceSlugForCategory(project.category)}
+								>
+									{CATEGORY_LABELS[project.category]}
+								</span>
 							</motion.p>
 
 							<motion.h1

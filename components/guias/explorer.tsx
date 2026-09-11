@@ -148,12 +148,16 @@ export function GuiasExplorer({
 				<div className="flex flex-wrap gap-2" aria-label="Filtrar por servicio">
 					{SERVICIO_CHIPS.map((chip) => {
 						const isActive = servicio === chip.slug
+						// "todos" has no accent to scope to; the other chips pick up
+						// their own service's colour for the active/hover state.
+						const accentAttr = chip.slug === "todos" ? {} : { "data-service": chip.slug }
 						return (
 							<button
 								key={chip.slug}
 								type="button"
 								aria-pressed={isActive}
 								onClick={() => setServicio(chip.slug)}
+								{...accentAttr}
 								className={`focus-ring rounded-sm px-3.5 py-1.5 text-sm font-medium tracking-wide transition-colors duration-200 ${
 									isActive
 										? "bg-primary text-primary-foreground"

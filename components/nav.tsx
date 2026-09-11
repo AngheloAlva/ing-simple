@@ -176,7 +176,7 @@ export function Nav(): ReactNode {
 															<NavVisual
 																src={active.image}
 																alt=""
-																tone={activeItem % 2 === 0 ? "blue" : "green"}
+																slug={active.slug}
 															/>
 														</motion.div>
 													</AnimatePresence>
