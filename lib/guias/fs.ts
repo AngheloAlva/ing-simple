@@ -42,11 +42,18 @@ async function readGuiaFiles(): Promise<Array<{ slug: string; raw: string }>> {
 	)
 }
 
+async function assertCoversExist(meta: GuiaMeta): Promise<void> {
+	await assertCoverExists(meta.slug, meta.portada)
+	if (meta.portadaRelieve !== undefined) {
+		await assertCoverExists(meta.slug, meta.portadaRelieve)
+	}
+}
+
 /** All published guides (drafts included outside production), newest first. */
 export async function getAllGuias(): Promise<GuiaMeta[]> {
 	const files = await readGuiaFiles()
 	const metas = listGuias(files, { includeDrafts: includeDrafts() })
-	await Promise.all(metas.map((meta) => assertCoverExists(meta.slug, meta.portada)))
+	await Promise.all(metas.map((meta) => assertCoversExist(meta)))
 	return metas
 }
 
@@ -65,7 +72,7 @@ export async function getGuiaBySlug(
 		const parsed = parseGuia(slug, raw)
 
 		if (!includeDrafts() && parsed.meta.draft) return undefined
-		await assertCoverExists(parsed.meta.slug, parsed.meta.portada)
+		await assertCoversExist(parsed.meta)
 		return parsed
 	} catch (error) {
 		if (isEnoentError(error)) return undefined

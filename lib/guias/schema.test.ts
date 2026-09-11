@@ -103,4 +103,22 @@ describe("guiaFrontmatterSchema", () => {
 		)
 		expect(result.portadaCredito).toBe("Foto: Banco de imágenes")
 	})
+
+	it("accepts an optional portadaRelieve under /img/guias/", () => {
+		const result = guiaFrontmatterSchema.parse(
+			validInput({ portadaRelieve: "/img/guias/ia-en-procesos-relieve.png" })
+		)
+		expect(result.portadaRelieve).toBe("/img/guias/ia-en-procesos-relieve.png")
+	})
+
+	it("leaves portadaRelieve undefined when absent", () => {
+		const result = guiaFrontmatterSchema.parse(validInput())
+		expect(result.portadaRelieve).toBeUndefined()
+	})
+
+	it("rejects a portadaRelieve that does not start with /img/guias/", () => {
+		expect(() =>
+			guiaFrontmatterSchema.parse(validInput({ portadaRelieve: "/img/lab/portada-hoja.png" }))
+		).toThrow()
+	})
 })
