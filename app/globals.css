@@ -278,3 +278,13 @@ body {
 		stroke: none;
 	}
 }
+
+/* Without scripting nothing flips `wait` to `in-view` (components/logo-in-view.tsx),
+   so the footer logo would stay invisible: show its final frame instead. */
+@media (scripting: none) {
+	[data-draw="wait"] [data-part] {
+		animation: none;
+		fill-opacity: 1;
+		stroke: none;
+	}
+}
