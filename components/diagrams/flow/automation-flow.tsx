@@ -201,7 +201,7 @@ function StepNode({
 					aria-label={`${step.name}: ${step.rule}`}
 					className={cn(
 						"focus-ring flex min-h-8 w-full items-center justify-center rounded-sm border px-1 py-1 text-center transition-colors duration-300 sm:px-1.5",
-						active ? "border-primary bg-primary/10" : "border-border bg-background"
+						active ? "border-brand-blue bg-brand-blue/10" : "border-border bg-background"
 					)}
 				>
 					<p className="text-[9px] leading-tight font-medium break-words sm:truncate sm:text-[10px] sm:leading-normal">
@@ -226,7 +226,7 @@ function StepNode({
 			{!isLast && (
 				<span className="bg-border relative h-px w-2 shrink-0 sm:w-3" aria-hidden="true">
 					<motion.span
-						className="bg-primary absolute inset-0"
+						className="bg-brand-blue absolute inset-0"
 						animate={{ opacity: active ? 1 : 0 }}
 						transition={{ duration: 0.3 }}
 					/>
@@ -287,7 +287,7 @@ function RequestRow({
 							? "text-brand-green-foreground"
 							: waiting
 								? "bg-muted text-foreground"
-								: "bg-primary/10 text-primary"
+								: "bg-brand-blue/10 text-primary"
 					)}
 					style={item.done ? { background: GREEN } : {}}
 				>
@@ -297,7 +297,7 @@ function RequestRow({
 						<UserRound className="h-2.5 w-2.5" strokeWidth={2.25} aria-hidden="true" />
 					) : (
 						<span
-							className="bg-primary h-1.5 w-1.5 animate-pulse rounded-full"
+							className="bg-brand-blue h-1.5 w-1.5 animate-pulse rounded-full"
 							aria-hidden="true"
 						/>
 					)}
@@ -329,7 +329,7 @@ function RequestRow({
 									/>
 								) : (
 									<span
-										className={cn("h-1.5 w-1.5 rounded-full", current ? "bg-primary" : "bg-border")}
+										className={cn("h-1.5 w-1.5 rounded-full", current ? "bg-brand-blue" : "bg-border")}
 										aria-hidden="true"
 									/>
 								)}

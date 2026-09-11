@@ -154,6 +154,72 @@
 	--ring: oklch(0.85 0.17 92);
 }
 
+/* The other three services (phase 2, 2026-09-10): unlike reportabilidad's
+   yellow, these three hues stay dark enough at the shared lightness/chroma to
+   carry white text, so `--primary` and `--brand-blue` collapse onto one value
+   per theme in every one of them (same trade-off `--brand-blue` already makes
+   — see its comment above), with `--primary-foreground` /
+   `--brand-blue-foreground` = white and `--ring` = that same value.
+   Capacitaciones = violet (305°). Desarrollo-web = magenta (350°). Automatizaciones
+   = turquoise (205°); its light value drops chroma to 0.085 because at this
+   lightness cyan only reaches that much chroma before leaving sRGB, so pushing
+   further just clips instead of reading more saturated. */
+[data-service="capacitaciones"] {
+	--brand-tint: oklch(0.7 0.16 305);
+	--primary: oklch(0.3745 0.1497 305);
+	--primary-foreground: oklch(0.985 0 0);
+	--brand-blue: oklch(0.3745 0.1497 305);
+	--brand-blue-foreground: oklch(0.985 0 0);
+	--ring: oklch(0.3745 0.1497 305);
+}
+
+.dark [data-service="capacitaciones"] {
+	/* Tint chroma clamped from 0.13 to 0.126 — 0.13 left sRGB at this
+	   lightness/hue (verified with an OKLCH → linear sRGB check). */
+	--brand-tint: oklch(0.8 0.126 305);
+	--primary: oklch(0.62 0.19 305);
+	--primary-foreground: oklch(0.985 0 0);
+	--brand-blue: oklch(0.62 0.19 305);
+	--brand-blue-foreground: oklch(0.985 0 0);
+	--ring: oklch(0.62 0.19 305);
+}
+
+[data-service="desarrollo-web"] {
+	--brand-tint: oklch(0.7 0.18 350);
+	--primary: oklch(0.3745 0.1497 350);
+	--primary-foreground: oklch(0.985 0 0);
+	--brand-blue: oklch(0.3745 0.1497 350);
+	--brand-blue-foreground: oklch(0.985 0 0);
+	--ring: oklch(0.3745 0.1497 350);
+}
+
+.dark [data-service="desarrollo-web"] {
+	--brand-tint: oklch(0.8 0.13 350);
+	--primary: oklch(0.62 0.21 350);
+	--primary-foreground: oklch(0.985 0 0);
+	--brand-blue: oklch(0.62 0.21 350);
+	--brand-blue-foreground: oklch(0.985 0 0);
+	--ring: oklch(0.62 0.21 350);
+}
+
+[data-service="automatizaciones"] {
+	--brand-tint: oklch(0.75 0.11 205);
+	--primary: oklch(0.5 0.085 205);
+	--primary-foreground: oklch(0.985 0 0);
+	--brand-blue: oklch(0.5 0.085 205);
+	--brand-blue-foreground: oklch(0.985 0 0);
+	--ring: oklch(0.5 0.085 205);
+}
+
+.dark [data-service="automatizaciones"] {
+	--brand-tint: oklch(0.86 0.09 205);
+	--primary: oklch(0.66 0.11 205);
+	--primary-foreground: oklch(0.985 0 0);
+	--brand-blue: oklch(0.66 0.11 205);
+	--brand-blue-foreground: oklch(0.985 0 0);
+	--ring: oklch(0.66 0.11 205);
+}
+
 @theme inline {
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);

@@ -114,14 +114,14 @@ function SiteInicio({
 						<button
 							type="button"
 							onClick={onQuote}
-							className="focus-ring bg-primary text-primary-foreground mt-1.5 rounded-sm px-2 py-1 text-[9px] font-medium transition-opacity hover:opacity-90"
+							className="focus-ring bg-brand-blue text-brand-blue-foreground mt-1.5 rounded-sm px-2 py-1 text-[9px] font-medium transition-opacity hover:opacity-90"
 						>
 							{SITE.hero.cta}
 						</button>
 					</div>
 					<div
 						className={cn(
-							"bg-primary/10 text-primary flex items-center justify-center rounded-sm",
+							"bg-brand-blue/10 text-primary flex items-center justify-center rounded-sm",
 							mobile ? "h-12" : "h-16"
 						)}
 						aria-hidden="true"
@@ -135,7 +135,7 @@ function SiteInicio({
 					{SITE.tours.map((tour) => (
 						<div
 							key={tour.name}
-							className="border-border hover:border-primary/60 rounded-sm border px-2 py-1.5 transition-colors"
+							className="border-border hover:border-brand-blue/60 rounded-sm border px-2 py-1.5 transition-colors"
 						>
 							<p className="truncate text-[9px] font-medium">{tour.name}</p>
 							<p className="text-muted-foreground truncate text-[8px]">{tour.meta}</p>
@@ -163,9 +163,9 @@ function SiteTours({
 			</Block>
 			{SITE.tours.map((tour, i) => (
 				<Block key={tour.name} index={i + 2} show={show} reduced={reduced}>
-					<div className="border-border hover:border-primary/60 flex items-center gap-2 rounded-sm border px-2 py-1.5 transition-colors">
+					<div className="border-border hover:border-brand-blue/60 flex items-center gap-2 rounded-sm border px-2 py-1.5 transition-colors">
 						<span
-							className="bg-primary/10 text-primary flex h-6 w-6 shrink-0 items-center justify-center rounded-sm"
+							className="bg-brand-blue/10 text-primary flex h-6 w-6 shrink-0 items-center justify-center rounded-sm"
 							aria-hidden="true"
 						>
 							<Mountain className="h-3 w-3" strokeWidth={1.5} />
@@ -236,7 +236,7 @@ function SiteCotizar({
 				<button
 					type="button"
 					onClick={onSend}
-					className="focus-ring bg-primary text-primary-foreground w-full rounded-sm py-1.5 text-[9px] font-medium transition-opacity hover:opacity-90"
+					className="focus-ring bg-brand-blue text-brand-blue-foreground w-full rounded-sm py-1.5 text-[9px] font-medium transition-opacity hover:opacity-90"
 				>
 					{SITE.quote.submit}
 				</button>

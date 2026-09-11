@@ -26,21 +26,24 @@ const REQUIRED_ACCENT_TOKENS = [
 	"--ring",
 ]
 
+/** Every service that has its own accent override (see lib/services.ts). */
+const SERVICE_SLUGS = ["reportabilidad", "capacitaciones", "desarrollo-web", "automatizaciones"]
+
 describe("app/globals.css service accent tokens", () => {
 	it("defines --brand-tint in both the light and dark root blocks", () => {
 		expect(extractBlock(":root")).toContain("--brand-tint:")
 		expect(extractBlock(".dark")).toContain("--brand-tint:")
 	})
 
-	it("defines every accent token in the reportabilidad light override", () => {
-		const block = extractBlock('[data-service="reportabilidad"]')
+	it.each(SERVICE_SLUGS)("defines every accent token in the %s light override", (slug) => {
+		const block = extractBlock(`[data-service="${slug}"]`)
 		for (const token of REQUIRED_ACCENT_TOKENS) {
 			expect(block).toContain(`${token}:`)
 		}
 	})
 
-	it("defines every accent token in the reportabilidad dark override", () => {
-		const block = extractBlock('.dark [data-service="reportabilidad"]')
+	it.each(SERVICE_SLUGS)("defines every accent token in the %s dark override", (slug) => {
+		const block = extractBlock(`.dark [data-service="${slug}"]`)
 		for (const token of REQUIRED_ACCENT_TOKENS) {
 			expect(block).toContain(`${token}:`)
 		}
@@ -61,13 +64,17 @@ describe("app/globals.css service accent tokens", () => {
  */
 describe("service page components have no decorative `primary` surfaces", () => {
 	// `components/diagrams/report` is the hero visual of the reportabilidad page
-	// (see components/service-diagrams.tsx). The other three diagram folders
-	// join this list when their services get an accent.
+	// (see components/service-diagrams.tsx); `components/diagrams/flow`,
+	// `components/diagrams/program` and `components/diagrams/site` are the hero
+	// visuals of automatizaciones, capacitaciones and desarrollo-web respectively.
 	// `components/diagrams/visual` holds the tiles, input cards and frames every
 	// hero diagram is built from, so it is scanned as well.
 	const SCAN_DIRS = [
 		"components/servicios",
 		"components/diagrams/report",
+		"components/diagrams/flow",
+		"components/diagrams/program",
+		"components/diagrams/site",
 		"components/diagrams/visual",
 	]
 	// `components/panels/reportability.tsx` is the dashboard mock the
