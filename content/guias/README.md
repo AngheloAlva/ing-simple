@@ -35,6 +35,8 @@ Todos los campos van entre `---` al inicio del archivo.
 | `portada`         | Sí | ruta bajo `/img/guias/`         | Foto de portada de la guía. Toda guía necesita una: ver "La foto de portada" más abajo.                                                                                                                       |
 | `portadaAlt`      | Sí | texto, 1–160 caracteres         | Texto alternativo de la portada. Describe lo que se ve en la foto, no repite el título.                                                                                                                       |
 | `portadaCredito`  | No | texto                           | Crédito de la foto (fotógrafo, banco de imágenes), si corresponde. Se muestra como una etiqueta pequeña sobre la esquina de la portada.                                                                       |
+| `portadaRelieve`  | No | ruta bajo `/img/guias/`         | Foto de fondo plano y sin sombra para renderizarla como relieve interactivo de teselas. Si existe, `portada` debe ser la captura transparente de ese mismo relieve en reposo.                                |
+| `portadaRelieveRecorte` | No (por defecto `true`) | `true`/`false` | Solo aplica junto con `portadaRelieve`. Con `true` se recorta el fondo gris de la foto y solo flotan los objetos; con `false` la foto completa pasa a ser el campo de teselas (úsalo para fotos de encuadre completo). |
 
 Ejemplo completo:
 

@@ -79,6 +79,7 @@ export default async function GuiaDetailPage({ params }: PageProps): Promise<Rea
 						src={guia.meta.portadaRelieve}
 						stillSrc={guia.meta.portada}
 						alt={guia.meta.portadaAlt}
+						removeBackground={guia.meta.portadaRelieveRecorte}
 						{...(guia.meta.portadaCredito !== undefined
 							? { credito: guia.meta.portadaCredito }
 							: {})}

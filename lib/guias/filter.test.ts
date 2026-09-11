@@ -15,6 +15,7 @@ function meta(overrides: Partial<GuiaMeta>): GuiaMeta {
 		readingTimeMinutes: 4,
 		portada: "/img/guias/ia-en-procesos.png",
 		portadaAlt: "Descripción de la portada",
+		portadaRelieveRecorte: true,
 		...overrides,
 	}
 }

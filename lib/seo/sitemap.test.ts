@@ -54,6 +54,7 @@ function guia(overrides: Partial<GuiaMeta> = {}): GuiaMeta {
 		readingTimeMinutes: 4,
 		portada: "/img/guias/ia-en-procesos-por-donde-empezar.png",
 		portadaAlt: "Persona revisando un panel con procesos automatizados",
+		portadaRelieveRecorte: true,
 		...overrides,
 	}
 }

@@ -33,6 +33,7 @@ export function GuiaCoverRelieve({
 	stillSrc,
 	alt,
 	credito,
+	removeBackground = true,
 }: {
 	/** Source photo sampled into the tile field (`portadaRelieve`). */
 	src: string
@@ -40,6 +41,8 @@ export function GuiaCoverRelieve({
 	stillSrc: string
 	alt: string
 	credito?: string
+	/** Key out the source background (`portadaRelieveRecorte`). Off for full-frame photos. */
+	removeBackground?: boolean
 }): ReactNode {
 	const reducedMotion = useReducedMotion()
 	const [sculptReady, setSculptReady] = useState(false)
@@ -49,31 +52,37 @@ export function GuiaCoverRelieve({
 			<div
 				className={`border-border relative aspect-video max-h-[60vh] w-full overflow-hidden rounded-sm border ${BACKDROP}`}
 			>
-				<Image
-					src={stillSrc}
-					alt={alt}
-					fill
-					priority
-					sizes="100vw"
-					className={`object-cover transition-[visibility] duration-500 ${isStillVisible({ sculptReady, reducedMotion }) ? "visible" : "invisible"}`}
-				/>
+				{/* 16:9 stage that covers the frame: the still (captured at 16:9) and the
+				    sculpture (whose camera fits the whole slab into its canvas) share one
+				    box, so the slab keeps the same size when they cross-fade even when
+				    `max-h-[60vh]` makes the frame wider than 16:9. */}
+				<div className="absolute inset-x-0 top-1/2 aspect-video w-full -translate-y-1/2">
+					<Image
+						src={stillSrc}
+						alt={alt}
+						fill
+						priority
+						sizes="100vw"
+						className={`object-contain transition-[visibility] duration-500 ${isStillVisible({ sculptReady, reducedMotion }) ? "visible" : "invisible"}`}
+					/>
 
-				{reducedMotion ? null : (
-					<ReliefBoundary onError={() => setSculptReady(false)}>
-						<PixelSculpt
-							src={src}
-							resolution={140}
-							removeBackground
-							backgroundColor="transparent"
-							tilt={32}
-							scale={1}
-							fallbackSrc={null}
-							onReady={() => setSculptReady(true)}
-							onError={() => setSculptReady(false)}
-							className={`absolute inset-0 transition-opacity duration-500 ${sculptReady ? "opacity-100" : "opacity-0"}`}
-						/>
-					</ReliefBoundary>
-				)}
+					{reducedMotion ? null : (
+						<ReliefBoundary onError={() => setSculptReady(false)}>
+							<PixelSculpt
+								src={src}
+								resolution={140}
+								removeBackground={removeBackground}
+								backgroundColor="transparent"
+								tilt={32}
+								scale={1}
+								fallbackSrc={null}
+								onReady={() => setSculptReady(true)}
+								onError={() => setSculptReady(false)}
+								className={`absolute inset-0 transition-opacity duration-500 ${sculptReady ? "opacity-100" : "opacity-0"}`}
+							/>
+						</ReliefBoundary>
+					)}
+				</div>
 
 				{credito !== undefined ? (
 					<>

@@ -121,6 +121,7 @@ describe("getRelatedGuias", () => {
 			readingTimeMinutes: 1,
 			portada: "/img/guias/placeholder.png",
 			portadaAlt: "Descripción de la portada",
+			portadaRelieveRecorte: true,
 			...overrides,
 		}
 	}

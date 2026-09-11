@@ -121,4 +121,18 @@ describe("guiaFrontmatterSchema", () => {
 			guiaFrontmatterSchema.parse(validInput({ portadaRelieve: "/img/lab/portada-hoja.png" }))
 		).toThrow()
 	})
+
+	it("defaults portadaRelieveRecorte to true when absent", () => {
+		const result = guiaFrontmatterSchema.parse(validInput())
+		expect(result.portadaRelieveRecorte).toBe(true)
+	})
+
+	it("accepts portadaRelieveRecorte: false", () => {
+		const result = guiaFrontmatterSchema.parse(validInput({ portadaRelieveRecorte: false }))
+		expect(result.portadaRelieveRecorte).toBe(false)
+	})
+
+	it("rejects a non-boolean portadaRelieveRecorte", () => {
+		expect(() => guiaFrontmatterSchema.parse(validInput({ portadaRelieveRecorte: "no" }))).toThrow()
+	})
 })
