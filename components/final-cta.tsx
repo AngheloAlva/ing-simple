@@ -1,10 +1,10 @@
 "use client"
 
-import AsciiWaves from "@/components/ascii-waves"
+import AsciiRipple from "@/components/react-bits/ascii-ripple"
 import { CutButton } from "@/components/cut-button"
 import { softEase, useReducedMotion } from "@/lib/motion"
 import { motion, type Variants } from "motion/react"
-import { useTheme } from "next-themes"
+import { usePathname } from "next/navigation"
 import { useSyncExternalStore, type ReactNode } from "react"
 
 function useIsMounted(): boolean {
@@ -31,6 +31,29 @@ const DEFAULT_TITLE = "¿Qué proceso te quita más tiempo hoy?"
 const DEFAULT_BODY =
 	"Cuéntanos tu situación y en menos de 24 horas hábiles te respondemos con un diagnóstico y por dónde empezar."
 
+export const finalCtaRippleColors = {
+	text: "var(--muted-foreground)",
+	ripple: "var(--primary)",
+	trough: "var(--primary)",
+} as const
+
+const RIPPLE_TEXT_BY_PATH = [
+	["/servicios/reportabilidad", "datos claros para decidir mejor dashboards que trabajan contigo"],
+	["/servicios/capacitaciones", "equipos que aprenden haciendo conocimiento que se queda"],
+	["/servicios/desarrollo-web", "software que acompaña procesos reales y equipos que avanzan"],
+	["/servicios/automatizaciones", "menos tareas manuales más tiempo para el trabajo que importa"],
+	["/guias", "ideas claras para mejorar procesos y tomar mejores decisiones"],
+	["/casos", "procesos que cambian resultados que se sostienen en el tiempo"],
+	["/contacto", "conversemos sobre el trabajo que quieres simplificar"],
+] as const
+
+export function rippleTextForPathname(pathname: string): string {
+	return (
+		RIPPLE_TEXT_BY_PATH.find(([prefix]) => pathname.startsWith(prefix))?.[1] ??
+		"procesos simples equipos que avanzan trabajo mejor conectado"
+	)
+}
+
 export function FinalCta({
 	title = DEFAULT_TITLE,
 	body = DEFAULT_BODY,
@@ -42,69 +65,65 @@ export function FinalCta({
 	href?: string
 } = {}): ReactNode {
 	const mounted = useIsMounted()
-	const { resolvedTheme } = useTheme()
+	const pathname = usePathname()
 	const prefersReducedMotion = useReducedMotion()
-
-	const isDark = resolvedTheme === "dark"
-	const color = isDark ? "#ffffff" : "#0a0a0a"
-
-	const hMask =
-		"linear-gradient(to right, transparent 0%, black 13%, black 27%, transparent 43%, transparent 57%, black 73%, black 87%, transparent 100%)"
-	const vMask = "linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)"
+	const rippleText = rippleTextForPathname(pathname)
 
 	const itemTransition = prefersReducedMotion
 		? { duration: 0.01 }
 		: { duration: 0.7, ease: softEase }
 
 	return (
-		<section className="relative overflow-hidden">
-			{mounted && !prefersReducedMotion && (
-				<div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-					<div className="mx-auto h-full max-w-[1440px]">
-						<motion.div
-							className="h-full w-full"
-							initial={{ opacity: 0 }}
-							whileInView={{ opacity: isDark ? 0.9 : 1 }}
-							viewport={{ once: true, margin: "-80px" }}
-							transition={{ duration: 1.4, ease: softEase }}
-							style={{
-								maskImage: vMask,
-								WebkitMaskImage: vMask,
-								filter: isDark ? "brightness(1.3)" : "saturate(2.6) contrast(1.35)",
-							}}
-						>
-							<div className="h-full w-full" style={{ maskImage: hMask, WebkitMaskImage: hMask }}>
-								<AsciiWaves
-									color={color}
-									intensity={0}
-									elementSize={12}
-									videoUrl="/sample-video-2.mp4"
-									noiseScale={25}
-									hasCursorInteraction={false}
-								/>
-							</div>
-						</motion.div>
-					</div>
-				</div>
-			)}
+		<section className="relative isolate mb-32 overflow-hidden sm:mb-44">
+			<div
+				aria-hidden="true"
+				className="absolute inset-y-0 left-1/2 z-0 w-full max-w-360 -translate-x-1/2 px-5 sm:px-8 lg:px-10"
+			>
+				{mounted && (
+					<AsciiRipple
+						rain={0.5}
+						dither={1}
+						speed={0.1}
+						interactive
+						vignette={0.5}
+						damping={0.035}
+						lineHeight={1.5}
+						text={rippleText}
+						textOpacity={0.35}
+						className="h-full w-full"
+						textColor={finalCtaRippleColors.text}
+						rippleColor={finalCtaRippleColors.ripple}
+						troughColor={finalCtaRippleColors.trough}
+					/>
+				)}
+			</div>
 
 			<div
 				aria-hidden="true"
-				className="pointer-events-none absolute top-1/2 left-1/2 -z-[1] h-[130%] w-[70%] -translate-x-1/2 -translate-y-1/2"
+				className="pointer-events-none absolute inset-0 z-1 dark:hidden"
 				style={{
 					background:
-						"radial-gradient(ellipse at center, var(--background) 0%, color-mix(in srgb, var(--background) 70%, transparent) 50%, transparent 78%)",
+						"radial-gradient(ellipse 52% 58% at center, var(--background) 0%, var(--background) 28%, color-mix(in srgb, var(--background) 92%, transparent) 42%, color-mix(in srgb, var(--background) 68%, transparent) 58%, transparent 78%)",
 				}}
 			/>
 
-			<div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-10">
+			<div className="pointer-events-none relative z-10 mx-auto max-w-360 px-5 sm:px-8 lg:px-10">
 				<motion.div
 					variants={prefersReducedMotion ? staticContainer : container}
 					initial="hidden"
 					whileInView="visible"
 					viewport={{ once: true, margin: "-80px" }}
-					className="mx-auto flex max-w-2xl flex-col items-center py-28 text-center sm:py-36 lg:py-44"
+					className="relative mx-auto flex max-w-2xl flex-col items-center py-28 text-center sm:py-36 lg:py-44"
 				>
+					<div
+						aria-hidden="true"
+						className="pointer-events-none absolute top-1/2 left-1/2 z-[-1] hidden h-[150%] w-[160%] -translate-x-1/2 -translate-y-1/2 dark:block"
+						style={{
+							background:
+								"radial-gradient(ellipse at center, var(--background) 0%, color-mix(in srgb, var(--background) 78%, transparent) 55%, transparent 72%)",
+						}}
+					/>
+
 					<motion.h2
 						variants={item}
 						transition={itemTransition}
@@ -124,7 +143,7 @@ export function FinalCta({
 					<motion.div
 						variants={item}
 						transition={itemTransition}
-						className="mt-8 flex flex-wrap items-center justify-center gap-3"
+						className="pointer-events-auto mt-8 flex flex-wrap items-center justify-center gap-3"
 					>
 						<CutButton variant="solid" icon="send" href={href}>
 							Pide tu diagnóstico gratis
