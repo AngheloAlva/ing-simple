@@ -1,8 +1,9 @@
 "use client"
 
-import React, { useRef, useEffect, useMemo } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import * as THREE from "three"
+import { useReducedMotion } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 
 const vertexShader = `
@@ -146,6 +147,39 @@ const fragmentShader = `
   }
 `
 
+const ASCII_WAVES_COLOR_FALLBACK = "#ffffff"
+
+export function resolveAsciiWavesColor(color: string, element: HTMLElement): string {
+	try {
+		const resolveVariables = (value: string, depth = 0): string => {
+			if (depth > 4) return value
+
+			return value.replace(
+				/var\(\s*(--[\w-]+)\s*(?:,\s*([^()]+))?\)/g,
+				(match, propertyName: string, fallback: string | undefined) => {
+					const resolved = getComputedStyle(element).getPropertyValue(propertyName).trim()
+					return resolved ? resolveVariables(resolved, depth + 1) : (fallback?.trim() ?? match)
+				},
+			)
+		}
+
+		const canvas = document.createElement("canvas")
+		canvas.width = canvas.height = 1
+		const context = canvas.getContext("2d")
+		if (!context) return ASCII_WAVES_COLOR_FALLBACK
+
+		// Invalid CSS values leave fillStyle unchanged, so initialize it to the
+		// safe fallback before asking the canvas to normalize the resolved value.
+		context.fillStyle = ASCII_WAVES_COLOR_FALLBACK
+		context.fillStyle = resolveVariables(color)
+		context.fillRect(0, 0, 1, 1)
+		const [red, green, blue] = context.getImageData(0, 0, 1, 1).data
+		return `rgb(${red ?? 255}, ${green ?? 255}, ${blue ?? 255})`
+	} catch {
+		return ASCII_WAVES_COLOR_FALLBACK
+	}
+}
+
 const createFontTexture = (chars: string, fontSize: number = 64): THREE.Texture => {
 	const canvas = document.createElement("canvas")
 	const ctx = canvas.getContext("2d")
@@ -194,6 +228,8 @@ interface SceneProps {
 	waveTwist: number
 	videoUrl?: string | undefined
 	active: boolean
+	visible: boolean
+	reducedMotion: boolean
 }
 
 interface WaveUniforms {
@@ -231,10 +267,12 @@ const Scene: React.FC<SceneProps> = ({
 	waveTwist,
 	videoUrl,
 	active,
+	visible,
+	reducedMotion,
 }) => {
 	const meshRef = useRef<THREE.Mesh>(null)
 	const materialRef = useRef<THREE.ShaderMaterial>(null)
-	const { size, viewport } = useThree()
+	const { size, viewport, invalidate } = useThree()
 
 	const safeCharacters = characters.length > 0 ? characters : " "
 
@@ -270,11 +308,49 @@ const Scene: React.FC<SceneProps> = ({
 		const texture = createFontTexture(safeCharacters)
 		texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping
 		fontTextureRef.current = texture
+
+		if (materialRef.current) {
+			const uniforms = materialRef.current.uniforms as unknown as WaveUniforms
+			uniforms.uFontTexture.value = texture
+			invalidate()
+		}
+
 		return () => {
 			texture.dispose()
 			fontTextureRef.current = null
 		}
-	}, [safeCharacters])
+	}, [invalidate, safeCharacters])
+
+	useEffect(() => {
+		if (!materialRef.current) return
+
+		const uniforms = materialRef.current.uniforms as unknown as WaveUniforms
+		uniforms.uColor.value.set(color)
+		uniforms.uInvert.value = invert
+		uniforms.uScale.value = scale
+		uniforms.uSize.value = elementSize
+		uniforms.uSpeed.value = speed
+		uniforms.uHasMouse.value = hasMouse ? 1.0 : 0.0
+		uniforms.uIntensity.value = intensity
+		uniforms.uInteractIntensity.value = interactionIntensity
+		uniforms.uWaveTension.value = waveTension
+		uniforms.uWaveTwist.value = waveTwist
+		uniforms.uCharCount.value = safeCharacters.length
+		invalidate()
+	}, [
+		color,
+		elementSize,
+		hasMouse,
+		intensity,
+		interactionIntensity,
+		invalidate,
+		invert,
+		safeCharacters.length,
+		scale,
+		speed,
+		waveTension,
+		waveTwist,
+	])
 
 	useEffect(() => {
 		if (!videoUrl) {
@@ -321,10 +397,14 @@ const Scene: React.FC<SceneProps> = ({
 		}
 	}, [active])
 
+	useEffect(() => {
+		if (visible) invalidate()
+	}, [invalidate, visible])
+
 	useFrame((state) => {
 		if (materialRef.current) {
 			const u = materialRef.current.uniforms as unknown as WaveUniforms
-			u.uTime.value = state.clock.elapsedTime
+			u.uTime.value = reducedMotion ? 0 : state.clock.elapsedTime
 			u.uResolution.value.set(size.width, size.height)
 			u.uColor.value.set(color)
 			u.uInvert.value = invert
@@ -402,19 +482,50 @@ const AsciiWaves: React.FC<AsciiWavesProps> = ({
 	videoUrl,
 }) => {
 	const mouse = useRef(new THREE.Vector2(0, 0))
-	const containerRef = useRef<HTMLDivElement>(null)
-	const [inView, setInView] = React.useState(true)
+	const [container, setContainer] = useState<HTMLDivElement | null>(null)
+	const [inView, setInView] = useState(false)
+	const [resolvedColor, setResolvedColor] = useState(ASCII_WAVES_COLOR_FALLBACK)
+	const prefersReducedMotion = useReducedMotion()
+	const isActive = inView && !prefersReducedMotion
+	const frameLoop = !inView ? "never" : prefersReducedMotion ? "demand" : "always"
+
+	const setContainerRef = React.useCallback(
+		(node: HTMLDivElement | null) => {
+			setContainer(node)
+			if (!node) return
+
+			setResolvedColor(resolveAsciiWavesColor(color, node))
+			if (typeof IntersectionObserver === "undefined") setInView(true)
+		},
+		[color],
+	)
 
 	useEffect(() => {
-		const el = containerRef.current
-		if (!el) return
+		if (!container) return
+
+		const updateColor = () => setResolvedColor(resolveAsciiWavesColor(color, container))
+		const root = document.documentElement
+		const observer = new MutationObserver(updateColor)
+		observer.observe(root, { attributes: true, attributeFilter: ["class", "style"] })
+
+		const colorScheme = window.matchMedia?.("(prefers-color-scheme: dark)")
+		colorScheme?.addEventListener("change", updateColor)
+		return () => {
+			observer.disconnect()
+			colorScheme?.removeEventListener("change", updateColor)
+		}
+	}, [color, container])
+
+	useEffect(() => {
+		if (!container || typeof IntersectionObserver === "undefined") return
+
 		const observer = new IntersectionObserver(
-			([entry]) => setInView(entry?.isIntersecting ?? true),
-			{ rootMargin: "120px" }
+			([entry]) => setInView(entry?.isIntersecting ?? false),
+			{ rootMargin: "0px" },
 		)
-		observer.observe(el)
+		observer.observe(container)
 		return () => observer.disconnect()
-	}, [])
+	}, [container])
 
 	const handleMouseMove = (e: React.MouseEvent) => {
 		const rect = e.currentTarget.getBoundingClientRect()
@@ -425,15 +536,19 @@ const AsciiWaves: React.FC<AsciiWavesProps> = ({
 
 	return (
 		<div
-			ref={containerRef}
-			className={cn("relative h-full w-full cursor-text overflow-hidden", className)}
-			onMouseMove={handleMouseMove}
+			ref={setContainerRef}
+			className={cn(
+				"relative h-full w-full overflow-hidden",
+				hasCursorInteraction && !prefersReducedMotion && "cursor-text",
+				className,
+			)}
+			onMouseMove={hasCursorInteraction && !prefersReducedMotion ? handleMouseMove : undefined}
 		>
 			<Canvas
 				orthographic
 				camera={{ position: [0, 0, 1], zoom: 1 }}
 				dpr={[1, 1.5]}
-				frameloop={inView ? "always" : "never"}
+				frameloop={frameLoop}
 				gl={{
 					alpha: true,
 					antialias: false,
@@ -443,18 +558,20 @@ const AsciiWaves: React.FC<AsciiWavesProps> = ({
 				<Scene
 					mouse={mouse}
 					characters={characters}
-					color={color}
+					color={resolvedColor}
 					invert={invert}
 					scale={noiseScale}
 					size={elementSize}
 					speed={speed}
-					hasMouse={hasCursorInteraction}
+					hasMouse={hasCursorInteraction && !prefersReducedMotion}
 					intensity={intensity}
 					interactionIntensity={interactionIntensity}
 					waveTension={waveTension}
 					waveTwist={waveTwist}
 					videoUrl={videoUrl}
-					active={inView}
+					active={isActive}
+					visible={inView}
+					reducedMotion={prefersReducedMotion}
 				/>
 			</Canvas>
 		</div>
