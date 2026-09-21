@@ -1,20 +1,22 @@
-import { CaseStudy } from "@/components/case-study-feature"
-import { Hero } from "@/components/hero"
-import { HeroWaves } from "@/components/hero-waves"
-import { Faq } from "@/components/faq"
-import { JsonLd } from "@/components/json-ld"
-import { ServicesStack } from "@/components/services-stack"
-import { HowItWorks } from "@/components/how-it-works"
-import { FinalCta } from "@/components/final-cta"
-import { Footer } from "@/components/footer"
-import { Nav } from "@/components/nav"
-import { TrustedBy } from "@/components/trusted-by"
-import { Challenge } from "@/components/challenge"
-import { HeroShowcase } from "@/components/hero-showcase"
-import { HOME_FAQ } from "@/lib/home-faq"
 import { InView, MotionSection } from "@/lib/motion"
 import { createMetadata } from "@/lib/metadata"
 import { faqJsonLd } from "@/lib/seo/json-ld"
+import { HOME_FAQ } from "@/lib/home-faq"
+
+import { ServicesStack } from "@/components/services-stack"
+import { CaseStudy } from "@/components/case-study-feature"
+import { HeroShowcase } from "@/components/hero-showcase"
+import { HowItWorks } from "@/components/how-it-works"
+import { HeroWaves } from "@/components/hero-waves"
+import { TrustedBy } from "@/components/trusted-by"
+import { Challenge } from "@/components/challenge"
+import { FinalCta } from "@/components/final-cta"
+import { JsonLd } from "@/components/json-ld"
+import { Footer } from "@/components/footer"
+import { Hero } from "@/components/hero"
+import { Faq } from "@/components/faq"
+import { Nav } from "@/components/nav"
+
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
 
@@ -37,7 +39,9 @@ export default function HomePage(): ReactNode {
 	return (
 		<>
 			<JsonLd data={faqJsonLd(HOME_FAQ)} />
+
 			<span id="top" className="sr-only" />
+
 			<Nav />
 			<main id="main-content" className="flex-1">
 				<div className="relative">
@@ -46,30 +50,35 @@ export default function HomePage(): ReactNode {
 					<MotionSection
 						variants={RISE_IN}
 						transition={{ duration: 0.85, delay: 0.55, ease: SOFT_EASE }}
-						className="relative px-5 pb-32 sm:px-8 lg:px-10"
+						className="relative px-5 pb-40 sm:px-8 lg:px-10"
 					>
 						<HeroShowcase />
 					</MotionSection>
 				</div>
+
 				<InView>
 					<TrustedBy />
 				</InView>
-				{/* Taller than the viewport: the default -80px margin fires while the
-				    section is still off screen, so the reveal is held until a real
-				    part of it has been read. */}
+
 				<InView viewport={{ once: true, margin: "0px 0px -30% 0px" }}>
 					<Challenge />
 				</InView>
+
 				<ServicesStack />
+
 				<HowItWorks />
+
 				<InView>
 					<CaseStudy />
 				</InView>
+
 				<InView>
 					<Faq />
 				</InView>
+
 				<FinalCta />
 			</main>
+
 			<InView>
 				<Footer />
 			</InView>
