@@ -1,3 +1,5 @@
+import { casesUnderReview } from "@/lib/case-studies-under-review"
+
 export type ProjectCategory =
 	"desarrollo-web" | "power-platform" | "capacitaciones" | "reportabilidad"
 
@@ -47,13 +49,7 @@ export type ParagraphBlock = string | { headline: string; body: string }
 export type CaseStudyVisualPrivacy = "public" | "confidential-ui"
 
 export type CaseStudySectionKey =
-	| "solution"
-	| "architecture"
-	| "techStack"
-	| "features"
-	| "timeline"
-	| "metrics"
-	| "beforeAfter"
+	"solution" | "architecture" | "techStack" | "features" | "timeline" | "metrics" | "beforeAfter"
 
 export interface CaseStudyHeadline {
 	lead: string
@@ -2080,4 +2076,5 @@ export const portfolioProjects: ProjectData[] = [
 			],
 		},
 	},
+	...casesUnderReview,
 ]

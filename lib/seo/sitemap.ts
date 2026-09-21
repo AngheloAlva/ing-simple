@@ -65,7 +65,12 @@ export function buildSitemap(
 	}))
 
 	const casePages: MetadataRoute.Sitemap = projects
-		.filter((project) => project.isFlagship === true && project.caseStudy !== undefined)
+		.filter(
+			(project) =>
+				project.isFlagship === true &&
+				project.caseStudy !== undefined &&
+				project.isProduction !== false
+		)
 		.map((project) => ({
 			url: `${base}/casos/${project.id}`,
 			priority: 0.7,

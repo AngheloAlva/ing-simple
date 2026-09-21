@@ -48,6 +48,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 		title: caseStudyTitle(project),
 		description: project.caseStudy.pitch,
 		path: `/casos/${id}`,
+		noIndex: project.isProduction === false,
 	})
 }
 

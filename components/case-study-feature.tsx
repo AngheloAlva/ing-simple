@@ -13,7 +13,7 @@ import { useState, type ReactNode } from "react"
 // Derived from the migrated portfolio data — only projects with a full case
 // study, capped for the home showcase. The full set lives on /casos.
 const STUDIES = portfolioProjects
-	.filter((project) => project.caseStudy)
+	.filter((project) => project.caseStudy && project.isProduction !== false)
 	.slice(0, 6)
 	.map((project, index) => {
 		const caseStudy = project.caseStudy!

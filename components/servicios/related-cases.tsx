@@ -72,7 +72,10 @@ export function ServicioCases({ service }: { service: Service }): ReactNode {
 	const related = portfolioProjects
 		.filter(
 			(project) =>
-				project.category === service.page.caseCategory && project.isFlagship && project.caseStudy
+				project.category === service.page.caseCategory &&
+				project.isFlagship &&
+				project.caseStudy &&
+				project.isProduction !== false
 		)
 		.slice(0, 3)
 

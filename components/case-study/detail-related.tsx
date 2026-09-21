@@ -17,9 +17,11 @@ const MotionLink = motion.create(Link)
 export function DetailRelated({ currentId }: DetailRelatedProps): ReactNode {
 	const reduce = useReducedMotion()
 	const { item, itemTransition, viewport } = useStaggerEntrance()
-	// Same gating as generateStaticParams: only cases that have a page.
+	// Related cases are production-only, so an editorial-review draft never shows
+	// up as delivered work next to a published case. This is intentionally
+	// stricter than generateStaticParams, which builds a page for every draft too.
 	const related = portfolioProjects
-		.filter((p) => p.isFlagship && p.caseStudy && p.id !== currentId)
+		.filter((p) => p.isFlagship && p.caseStudy && p.id !== currentId && p.isProduction !== false)
 		.slice(0, 3)
 
 	if (related.length === 0) return null
