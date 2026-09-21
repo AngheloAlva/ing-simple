@@ -1,17 +1,19 @@
-import { ChallengeCard } from "@/components/challenge-card"
-import GradientText from "@/components/gradient-text"
 import { brandGradient } from "@/lib/gradient"
-import { Kicker } from "@/components/corner-plus"
+
+import { DiagramScatteredData } from "@/components/diagrams/challenge/scattered-data"
 import { DiagramGenericTool } from "@/components/diagrams/challenge/generic-tool"
 import { DiagramManualSteps } from "@/components/diagrams/challenge/manual-steps"
-import { DiagramScatteredData } from "@/components/diagrams/challenge/scattered-data"
 import { DiagramSinglePoint } from "@/components/diagrams/challenge/single-point"
+import { ChallengeCard } from "@/components/challenge-card"
+import GradientText from "@/components/gradient-text"
+import { Kicker } from "@/components/corner-plus"
+
 import type { ReactNode } from "react"
 
 export function Challenge(): ReactNode {
 	return (
 		<section className="mx-auto max-w-360 px-5 pb-32 sm:px-8 sm:pb-44 lg:px-10">
-			<div className="grid gap-4 sm:gap-5 lg:grid-cols-3">
+			<div className="grid gap-2 lg:grid-cols-3">
 				{/* Voice tile: deliberately borderless so the four problems read as
             the only objects in the grid. */}
 				<div className="flex flex-col justify-center lg:col-span-2 lg:pr-10">

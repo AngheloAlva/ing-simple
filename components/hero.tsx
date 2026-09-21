@@ -37,7 +37,7 @@ export function Hero(): ReactNode {
 					variants={container}
 					initial="hidden"
 					animate="visible"
-					className="relative mx-auto flex max-w-2xl flex-col items-center pt-32 pb-12 text-center sm:pt-40"
+					className="relative mx-auto flex max-w-2xl flex-col items-center pt-32 pb-20 text-center sm:pt-40"
 				>
 					<div
 						aria-hidden="true"
