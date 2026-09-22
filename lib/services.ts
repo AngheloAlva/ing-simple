@@ -245,6 +245,7 @@ export const SERVICES: Service[] = [
 			problemTitleAccent: "usas una fracción",
 			problem:
 				"Tu empresa ya paga por herramientas potentes —Excel, Power BI, Power Apps— pero el equipo las usa a una fracción de su potencial. Los reportes dependen de una sola persona, cada análisis nuevo se externaliza y el conocimiento no queda en la organización. Un curso genérico no arregla eso: se olvida a la semana porque no se conecta con el trabajo real de cada uno.",
+			problemImage: "/img/problemas/capacitaciones.png",
 			audience: [
 				"Equipos que usan Excel o Power BI muy por debajo de su potencial",
 				"Áreas donde los reportes dependen de una sola persona",
