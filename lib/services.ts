@@ -51,8 +51,8 @@ export type ServicePage = {
 	problemTitleAccent: string
 	/** Pain the service solves, framed from the visitor's side. */
 	problem: string
-	/** Illustration of the client problem, shown as a full-width plate at the foot of the problem section. */
-	problemImage?: string
+	/** Illustration of the client problem, filling the left column of the problem section. Every service ships one. */
+	problemImage: string
 	/** Profiles that should recognize themselves in the page. */
 	audience: string[]
 	/** Extended "what's included" items — the bulk of indexable content. */

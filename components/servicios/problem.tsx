@@ -4,7 +4,6 @@ import { CornerPlus, Kicker, PlusSvg } from "@/components/corner-plus"
 import { IllustrationPlate } from "@/components/illustration-plate"
 import GradientText from "@/components/gradient-text"
 import { brandGradient } from "@/lib/gradient"
-import { cn } from "@/lib/utils"
 import { useStaggerEntrance } from "@/lib/motion"
 import { motion } from "motion/react"
 import type { ReactNode } from "react"
@@ -19,11 +18,10 @@ export function ServicioProblem({
 	title: string
 	titleAccent: string
 	problem: string
-	image?: string | undefined
+	image: string
 	audience: string[]
 }): ReactNode {
 	const { container, item, itemTransition, viewport } = useStaggerEntrance()
-	const hasImage = Boolean(image)
 
 	return (
 		<section className="mx-auto max-w-360 px-5 pb-24 sm:px-8 sm:pb-32 lg:px-10">
@@ -32,23 +30,15 @@ export function ServicioProblem({
 				initial="hidden"
 				whileInView="visible"
 				viewport={viewport}
-				className={cn(
-					"border-border relative grid border-y",
-					hasImage ? "lg:grid-cols-[0.8fr_0.9fr]" : "lg:grid-cols-[1.1fr_0.9fr]"
-				)}
+				className="border-border relative grid border-y lg:grid-cols-[0.8fr_0.9fr]"
 			>
 				<CornerPlus className="top-0 left-0 -translate-x-1/2 -translate-y-1/2" />
 				<CornerPlus className="top-0 right-0 translate-x-1/2 -translate-y-1/2" />
 				<CornerPlus className="bottom-0 left-0 -translate-x-1/2 translate-y-1/2" />
 				<CornerPlus className="right-0 bottom-0 translate-x-1/2 translate-y-1/2" />
 
-				{/* The pain this service removes. Takes the right column when an illustration is present. */}
-				<div
-					className={cn(
-						"border-border border-b py-10 lg:border-b-0 lg:py-16",
-						hasImage ? "lg:col-start-2 lg:row-start-1 lg:pl-14" : "lg:border-r lg:pr-14"
-					)}
-				>
+				{/* The pain this service removes. Takes the right column; the illustration fills the left one. */}
+				<div className="border-border border-b py-10 lg:col-start-2 lg:row-start-1 lg:border-b-0 lg:py-16 lg:pl-14">
 					<motion.div variants={item} transition={itemTransition}>
 						<Kicker>El problema</Kicker>
 					</motion.div>
@@ -77,35 +67,21 @@ export function ServicioProblem({
 				</div>
 
 				{/* Illustration: fills the left column on lg, sits between the two text blocks on small screens */}
-				{image ? (
-					<motion.div
-						variants={item}
-						transition={itemTransition}
-						className="border-border lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:border-r"
-					>
-						<IllustrationPlate
-							src={image}
-							alt=""
-							sizes="(max-width: 1024px) 100vw, 40vw"
-							frame="aspect-[2/3] lg:aspect-auto lg:h-full"
-						/>
-					</motion.div>
-				) : null}
+				<motion.div
+					variants={item}
+					transition={itemTransition}
+					className="border-border lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:border-r"
+				>
+					<IllustrationPlate
+						src={image}
+						alt=""
+						sizes="(max-width: 1024px) 100vw, 40vw"
+						frame="aspect-[2/3] lg:aspect-auto lg:h-full"
+					/>
+				</motion.div>
 
 				{/* Right: who should recognize themselves here */}
-				<div
-					className={cn(
-						"relative py-10 lg:py-16 lg:pl-14",
-						hasImage && "border-border border-t lg:col-start-2 lg:row-start-2"
-					)}
-				>
-					{!hasImage && (
-						<>
-							<CornerPlus className="top-0 left-0 hidden -translate-x-1/2 -translate-y-1/2 lg:block" />
-							<CornerPlus className="bottom-0 left-0 hidden -translate-x-1/2 translate-y-1/2 lg:block" />
-						</>
-					)}
-
+				<div className="relative py-10 lg:py-16 lg:pl-14 border-border border-t lg:col-start-2 lg:row-start-2">
 					<motion.h3
 						variants={item}
 						transition={itemTransition}
