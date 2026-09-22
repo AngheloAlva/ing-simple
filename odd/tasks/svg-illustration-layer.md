@@ -468,6 +468,140 @@ same URL returned the identical 47,292 bytes in 0.002 s.
   at 1080 is 107.5 KB. Capping the served width would also have worked, at a
   visible cost in sharpness, and is no longer needed.
 
+## Problem-scene family (second asset family, in progress)
+
+The four illustrations shipped so far depict the company's own milestones, and they
+live in exactly one place: the story timeline on `/sobre-nosotros`, plus the nav
+dropdown tile on hover. That is one page template out of nine, and about one real
+page out of roughly thirty-five. A visual register confined to a single page reads
+as a different site rather than as part of this one, which is what the user
+reported as "ahora se ve que rompen la página".
+
+Reusing the four existing assets on the service pages was considered and rejected.
+They depict 2023-2025 milestones, so placing one under the heading "El informe del
+mes se arma a mano y la decisión ya se tomó" asserts the opposite of what the
+section says. Cheap and wrong is worse than expensive and right.
+
+So: a second family, one per service page, depicting that service's client problem,
+for the section that opens with the `Kicker` "El problema"
+(`components/servicios/problem.tsx`). That section is two text columns and no image
+today.
+
+Same three series devices as before: identical framing, the shared prop kit, and one
+gesture where a key object escapes its own frame.
+
+Subjects, each taken from that service's own problem copy:
+
+- `reportabilidad` — "El informe del mes se arma a mano y la decisión ya se tomó":
+  one person alone at a long table at the end of the day, surrounded by leaning
+  stacks of printed reports, with three other chairs at the table pushed in and
+  empty. Gesture: the tallest stack stands higher than the monitor and spills over
+  the near edge of the table.
+- `capacitaciones` — "Pagas por herramientas potentes y usas una fracción": a person
+  kneeling in front of a large open tool case, holding one single tool while every
+  other one sits untouched.
+- `desarrollo-web` — "La operación creció y las herramientas no acompañaron": a
+  person walking with an absurd stack of folders, papers and a phone balanced on
+  top, already tipping over.
+- `automatizaciones` — "Horas de tu equipo en trabajo que una máquina haría mejor":
+  someone copying numbers with a pencil from a printed sheet into a laptop, an
+  oversized stack of identical forms beside them. Gesture: the column of numbers
+  leaves the edge of the printed sheet.
+
+Assets will live at `public/img/problemas/<slug>.png`.
+
+Pilot first. Two of the four assets in the first family needed a second generation,
+so this register gets validated on `reportabilidad` before the other three are
+produced.
+
+## The plate, and a test-config defect it surfaced
+
+Shipped together: `components/illustration-plate.tsx`, the shared framed plate that
+owns the duotone ground, the treatment filters and the three blend layers.
+`story.tsx` now renders through it instead of hand-rolling the same stack, and the
+service problem section renders its band through it too. Two call sites, one
+implementation.
+
+The plate takes `frame` for the aspect, border and margin, and merges `className`
+last so a call site can override the fit. That ordering is load-bearing: the service
+band needs `object-cover` where the story timeline needs `object-contain`. The
+resolved output is visible in the served HTML as
+`class="[filter:grayscale(1)_contrast(1.1)] dark:[filter:grayscale(1)_contrast(1.1)_invert(1)] object-cover"`,
+with no `object-contain` left, so the merge behaves as designed.
+
+Two deviations the writer had to make, both forced by `exactOptionalPropertyTypes`:
+`lineArt={chapter.lineArt ?? true}` in `story.tsx` and `image?: string | undefined`
+in `problem.tsx`. Neither changes behaviour.
+
+**A test-config defect surfaced while verifying.** The suite went from 22 files and
+200 tests to 44 and 400, exactly double. Cause: `vitest.config.ts` excluded
+`node_modules/**` and `.next/**` but not `.git/**`, and
+`.git/gentle-ai/candidate-views/<id>/` holds a full frozen copy of the tree from the
+native review of this session, including all 22 test files. The verbose reporter
+returned 200 lines from `candidate-views`. So the suite ran twice and one of the two
+runs tested a frozen snapshot instead of the working tree, which would make a stale
+copy's failure look like a real one. Fixed by adding `.git/**`; counts are back to 22
+and 200. The candidate view itself cannot be deleted, because `review dispose-result`
+is unsupported pending design, so the exclusion is the only defence.
+
+**Plate weight, measured.** In AVIF: 49.4 KB at 1080, 55.0 KB at 1200, 60.9 KB at
+1920 and 60.9 KB at 3840. The last two are identical because the source is 1254px, so
+Next cannot serve more than that and the plate's cost is capped near 61 KB whatever
+the browser asks for. The honest caveat: the band can reach 1360 CSS px from a 1254px
+source, so at DPR 2 it is undersampled by roughly half and will read slightly soft.
+That is an asset-resolution limit, not a bug; regenerating at 2048 would fix it.
+
+## The accent fix, and the second duotone
+
+The plate's overlays hardcoded `#3b76ff`, `#9bc0ff`, `#1466ff` and `#0a235c`. That
+broke two things at once. It contravened the contract stated at the top of the
+`data-service` section of `app/globals.css`, which says every component inside a
+service page reads only tokens and "never a hard-coded blue". And the blue it
+invented matched no token in the system at all: measured, `--brand-tint` base is
+`#51a2ff` and `--brand-blue` base is `#003a8e`, neither of them `#3b76ff`. The
+visible result was an illustration rendering blue on the Power BI yellow page.
+
+Fixed with two tokens. Their base values are the literal hexes, which is what keeps
+`/sobre-nosotros` unchanged, and one general rule remaps them from the accent:
+
+```css
+[data-service] {
+	--illustration-tint: var(--brand-tint);
+	--illustration-veil: color-mix(in oklab, var(--brand-tint) 48%, white);
+}
+
+.dark [data-service] {
+	--illustration-veil: color-mix(in oklab, var(--brand-tint) 49%, black);
+}
+```
+
+The 48% and 49% are derived, not guessed. In OKLab, mixing the base tint with white
+at 48% reproduces the base veil `#9bc0ff` and mixing it with black at 49% reproduces
+`#0a235c`. Verified numerically: the light veil lands at `#9fc1ff` against `#9bc0ff`,
+a delta of 4/255, and the dark veil at `#032260` against `#0a235c`, a delta of 7/255.
+Layer 1, which carries the hue at 90% opacity, is byte-identical because the token's
+base value *is* the same hex. Layer 2 is applied at 30-45% with multiply, so the
+effective shift is one or two units. The timeline does not visibly move.
+
+This needed no per-service block and no test change. `lib/service-accent.test.ts`
+asserts that six named tokens are *present* in each override, not that no others
+exist, and `lib/service-accent-map.test.ts` iterates only over the fields of
+`SERVICE_ACCENTS`. The general `[data-service]` rule leaves both untouched.
+
+The toolchain added a progressive-enhancement fallback on its own:
+`[data-service]{--illustration-veil:var(--brand-tint)}` inside an
+`@supports (color:color-mix(...))` guard. Only browsers older than 2023 reach it.
+
+**Second duotone, and it is dead.** `components/duotone.tsx` holds a parallel
+implementation with the same hardcoded blues. `DUOTONE_CONTAINER` is live, because
+the plate imports it. But `DuotoneOverlay` and `DUOTONE_BASE` are reached only from
+`components/coverage-grid.tsx`, which has **zero consumers**. So the contract is
+still violated in that file, with no user-facing effect. Worth knowing: the two
+implementations had diverged. `DuotoneOverlay` uses `opacity-25` on the white layer
+where the plate uses `opacity-15`, and it carries an extra blue screen layer in dark
+mode that the plate does not. They were two versions of one effect and nobody
+noticed, because one of them stopped being rendered.
+
 ## Native review gate — unresolved
 
 The implementation is complete and verified, but the native review **did not
