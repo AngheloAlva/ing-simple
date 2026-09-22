@@ -594,10 +594,9 @@ text and the audience list stack in the right column. The column ratio settled a
 **`lg:grid-cols-[0.8fr_0.9fr]`**, chosen by the user by eye: it brings the plate's
 natural height close to the text column's so the leftover band of ground is small.
 
-The component branches on `hasImage`, because only one of four services has an
-asset. With no image the section renders exactly as before. **That branch is
-temporary scaffolding**: once the other three assets exist it should collapse to a
-single layout and the old two-column path should be deleted.
+The component branches on `hasImage`, because only one of four services has an asset.
+With no image the section renders exactly as before. **That branch was temporary
+scaffolding**, and it has since been collapsed — see "The branch collapse" below.
 
 Measured cost: 53 KB at 640 and 78 KB from 1080 up, capped there because the source
 is 1024 wide. Also learned: replacing an asset at its existing path does not
@@ -658,6 +657,34 @@ alpha above zero and once at alpha above 64. All four assets have near-zero-alph
 pixels touching the canvas edge, including the approved `reportabilidad`, so the
 any-alpha box reports a 0.00% margin on every one of them and means nothing. Only the
 alpha-above-64 box describes the drawing.
+
+### The branch collapse
+
+`components/servicios/problem.tsx` no longer branches. `problemImage` is now a
+**required** field on the service `page` type and the `image` prop is required too, so
+"every service page ships a plate" is enforced by the compiler rather than by
+convention. Deleted with the branch: the alternative grid template
+`lg:grid-cols-[1.1fr_0.9fr]`, the text variant `lg:border-r lg:pr-14`, the two
+`CornerPlus` elements that rendered only when there was no image, the `image ? ... :
+null` wrapper, and the unused `cn` import.
+
+The consequence worth knowing: adding a fifth service now **fails to compile** until
+it has a `problemImage`. That is deliberate, because a plate in the problem section is
+part of the page pattern now, and it is the reason the field was made required instead
+of leaving a dead fallback path in the component.
+
+Verified after the collapse: `hasImage` and the old grid template are absent from
+`components`, `app` and `lib`; all four prerendered routes carry `0.8fr_0.9fr` and none
+carries `1.1fr_0.9fr`; the asset distribution is still a clean diagonal; and the test
+count holds at the 22 files / 200 tests baseline.
+
+One method note. The refactor was handed to a writer agent, and its report claimed the
+static `className` strings matched "class for class" what `cn` had produced. Reading
+the diff, one div did not: `lg:col-start-2 lg:row-start-1` now precedes
+`lg:border-b-0 lg:py-16`, where previously it followed. That is harmless — the order of
+tokens inside a `class` attribute does not affect rendering, because precedence comes
+from the order of the rules in the generated stylesheet, not from the attribute — but
+the claim was not accurate, and it was only visible by reading the diff.
 
 ## The plate, and a test-config defect it surfaced
 
