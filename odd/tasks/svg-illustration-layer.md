@@ -177,11 +177,12 @@ the mug). Under `mix-blend-luminosity` over `var(--brand-blue)` those regions
 become near-white on blue, so the nav tile may read pale instead of as a solid
 blue plate. That is a visible change to the dropdown and has to be looked at.
 
-**Correction owed.** The 6.4 MB argument was overstated. `next/image` re-encodes
-to WebP/AVIF, so the 1.6 MB source files almost certainly were not served at that
-weight, and page weight was already fine. The 6.4 MB is repository and optimizer
-weight. The real case for replacing them is the palette mismatch and the blend
-hack. Confirm the served weight during the pilot.
+**Correction, and a second one.** Two claims of mine were wrong here, in opposite
+directions. First I said the swap would cut the weight. Then I said the 6.4 MB
+never reached the user and that the page was already fine. Both were guesses.
+The measurement is in **Served weight, measured** below and it says the served
+weight went up 2.4-2.7x under the default WebP, and that enabling AVIF removes
+that cost entirely and turns the swap weight-neutral.
 
 ## Verification — all four assets
 
@@ -408,6 +409,64 @@ Three generation attempts, 2026-09-21, all rejected.
    three-quarter perspective; subject was a figure at a desk. Output: an empty
    SVG.
 3. **Route change.** Vector abandoned; OpenAI raster pilot adopted.
+
+## Served weight, measured
+
+Measured 2026-09-21 against a production build (`pnpm build`, `next start`) by
+requesting the optimizer endpoint directly for each asset at each width, both old
+and new. The originals were extracted from `31355b3` into a temporary directory
+under `public/`, so both sets went through the same optimizer at the same
+source dimensions: everything is 1254x1254. That directory was deleted after the
+measurement.
+
+### What the browser actually receives
+
+| Asset, w=1080 | old, WebP | new, WebP | new, AVIF |
+| --- | --- | --- | --- |
+| `power-bi` | 41.9 KB | 107.5 KB | **38.7 KB** |
+| `power-platform` | 56.6 KB | 110.8 KB | **42.0 KB** |
+| `training` | 49.1 KB | 123.5 KB | **47.3 KB** |
+| `web` | 47.1 KB | 125.4 KB | **47.3 KB** |
+
+Totals for the four: old WebP 194.7 KB, new WebP 467.2 KB, new AVIF 175.3 KB.
+
+### The finding, which inverted the argument twice
+
+**Under the default WebP the new illustrations are 2.4-2.7x heavier served than
+the rasters they replaced.** They are high-frequency line art on transparency:
+hard edges, hatching in the hair and foliage, and an alpha channel. That is the
+content WebP handles worst, and it is the opposite of the soft, low-detail,
+near-white renders it replaces, which compressed beautifully.
+
+The repository did not reveal this because `next.config.ts` has no `images` key
+at all, so Next defaults to `formats: ["image/webp"]` and never offered AVIF.
+
+**With AVIF enabled the picture reverses.** The new assets land at 38-47 KB
+against 107-125 KB as WebP, a 62% drop, and the four together total 175 KB against
+the 195 KB the rasters were costing. So the swap becomes weight-neutral to
+slightly positive, while delivering artwork that belongs to the design system.
+
+The old rasters also benefit, 14-24% lighter, so this is a site-wide win rather
+than a patch for this change.
+
+The usual objection to AVIF is encode cost. Measured here it is 0.13-0.20 s cold
+per image and 0.002 s once cached, on 1254px sources. The second request for the
+same URL returned the identical 47,292 bytes in 0.002 s.
+
+### Other measurements worth keeping
+
+- Non-negotiated fallback is PNG: new 102.8 KB against old 473.6 KB at w=1080, so
+  in the un-negotiated case the new art is 4.6x lighter. Without AVIF, WebP is
+  the format that decides, and there the new art is heavier.
+- `next/image` only accepts configured quality values. The default is `[75]`, so
+  `q=50` or `q=90` return a 44-byte error. Tuning quality needs
+  `images.qualities`, and the quality sweep could not run without it.
+- Local `cwebp` at q=75 reproduces Next's WebP output within 3% (109,966 against
+  107,508 bytes for `power-bi` new, 40,372 against 41,884 for old), which is why
+  the offline AVIF comparison was trusted before being confirmed through Next.
+- Width matters linearly: new `power-bi` at w=640 is 51.5 KB, at 828 is 75.9 KB,
+  at 1080 is 107.5 KB. Capping the served width would also have worked, at a
+  visible cost in sharpness, and is no longer needed.
 
 ## Native review gate — unresolved
 
