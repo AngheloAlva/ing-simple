@@ -363,6 +363,7 @@ export const SERVICES: Service[] = [
 			problemTitleAccent: "las herramientas no acompañaron",
 			problem:
 				"La operación creció y las herramientas no acompañaron: planillas compartidas, aprobaciones por correo, información en WhatsApp y un software genérico que obliga a torcer el proceso para que calce. El resultado es tiempo perdido, errores difíciles de rastrear y una imagen digital que no refleja lo que la empresa realmente es. Un sistema a medida invierte esa ecuación: la herramienta se adapta a tu proceso, no al revés.",
+			problemImage: "/img/problemas/desarrollo-web.png",
 			audience: [
 				"Empresas que operan con planillas, correo y WhatsApp y ya tocaron techo",
 				"Negocios donde el software genérico no calza con el proceso real",
