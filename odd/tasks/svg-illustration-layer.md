@@ -504,6 +504,28 @@ today.
 Same three series devices as before: identical framing, the shared prop kit, and one
 gesture where a key object escapes its own frame.
 
+### The four scenes are differentiated by device, not by objects
+
+All four problem copies say the same thing underneath — manual work with
+disconnected tools — so the objects repeat: paper, desks, screens. A family
+differentiated by object is therefore not available. What differentiates the four
+scenes is the **device**:
+
+| Service | Device |
+| --- | --- |
+| `reportabilidad` | **volume** — a tower of paper overflowing over the person |
+| `capacitaciones` | **unused capability** — identical workstations, intact and empty |
+| `desarrollo-web` | **disconnection** — three channels on one desk, nothing joining them |
+| `automatizaciones` | **repetition** — the same identical series, without end |
+
+Two consequences are load-bearing. `automatizaciones` must **not** be another
+chaotic pile of paper: its device is regularity, so the series it shows has to be
+perfectly even and march out of the frame. Chaos against regularity is the legible
+difference between it and `reportabilidad`. And the escape gesture only works at the
+**near** edge of the subject, because that is where the escaping object gets
+first-frame scale. Both `reportabilidad` and `capacitaciones` place it there, and the
+first capacitaciones brief failed precisely by placing it at the far edge.
+
 Subjects, each taken from that service's own problem copy:
 
 - `reportabilidad` — "El informe del mes se arma a mano y la decisión ya se tomó":
@@ -527,13 +549,31 @@ Subjects, each taken from that service's own problem copy:
   rejected on 2026-09-22: it literalised "herramientas" into a mechanic's kit, while
   the service's own copy names the referent — Excel, Power BI, Power Apps. See the
   attempt log.
-- `desarrollo-web` — "La operación creció y las herramientas no acompañaron": a
-  person walking with an absurd stack of folders, papers and a phone balanced on
-  top, already tipping over.
+- `desarrollo-web` — "La operación creció y las herramientas no acompañaron": an
+  office desk in three-quarter perspective carrying **three groups placed far apart,
+  with wide empty desk between them and nothing joining them** — a printed sheet of
+  ruled dash rows standing for the shared spreadsheet, a tray of envelopes and folded
+  letters for the email approvals, and a phone upright on a small stand for the
+  messages. One person seen from behind, both arms spread across the desk, carrying a
+  single loose sheet by hand from one group toward the next; there is no computer in
+  front of them. Gesture: that carried sheet slips and its outer corner crosses the
+  near front edge of the desk, hanging past the lip toward the viewer. The subject is
+  the **disconnection between three things**, not the volume of one, which is what
+  stops it from repeating reportabilidad. An earlier subject (a person walking under
+  an absurd stack of folders, papers and a phone, already tipping over) was dropped
+  before generation: it would have been the family's third person-carrying-paper
+  scene, and none of its objects appears in that page's copy, which names shared
+  spreadsheets, email approvals, WhatsApp and a generic tool that forces the process
+  to bend.
 - `automatizaciones` — "Horas de tu equipo en trabajo que una máquina haría mejor":
-  someone copying numbers with a pencil from a printed sheet into a laptop, an
-  oversized stack of identical forms beside them. Gesture: the column of numbers
-  leaves the edge of the printed sheet.
+  the device is **repetition**, so this scene is the opposite of reportabilidad's
+  chaos. A person copying by hand from one sheet into a laptop, and beside them an
+  enormous but **perfectly even** stack of identical completed forms marching away out
+  of the frame. Gesture: the column of marks on the source sheet continues past the
+  sheet's own edge — **marks, never digits**, because the constraints above ban
+  numbers in the artwork and the approved reportabilidad screen already settled this
+  with dash rows. An earlier version of this subject read "the column of numbers
+  leaves the edge of the printed sheet", which is not drawable as written.
 
 Assets live at `public/img/problemas/<slug>.png`.
 
@@ -583,18 +623,50 @@ three subjects survived contact with the generator unchanged.
   there. The first subject for
   this scene (a kneeling person and a large open tool case of untouched tools) was
   generated and rejected on 2026-09-22 for the reason in the attempt log.
-- `desarrollo-web` — "La operación creció y las herramientas no acompañaron": a
-  person walking with an absurd stack of folders, papers and a phone balanced on
-  top, already tipping over.
 - `automatizaciones` — "Horas de tu equipo en trabajo que una máquina haría mejor":
-  someone copying numbers with a pencil from a printed sheet into a laptop, an
-  oversized stack of identical forms beside them. Gesture: the column of numbers
-  leaves the edge of the printed sheet.
+  the device is **repetition**. A person copying by hand from one sheet into a laptop,
+  and beside them an enormous but **perfectly even** stack of identical completed
+  forms marching away out of the frame. Gesture: the column of marks on the source
+  sheet continues past the sheet's own edge — **marks, never digits**, because the
+  constraints above ban numbers in the artwork and the approved reportabilidad screen
+  already settled this with dash rows. Regularity is what separates this scene from
+  reportabilidad's chaos; a second chaotic pile would read as the same scene.
 
-Generate them **vertical 2:3** like the shipped one, not square: the frame is
+Generate it **vertical 2:3** like the shipped ones, not square: the frame is
 `aspect-[2/3]` and a square source would letterbox inside it. Two of the four
-first-family assets needed a second generation, so review each one's register before
-moving to the next.
+first-family assets needed a second generation, so review its register before
+integration.
+
+### Delivered for `capacitaciones` and `desarrollo-web`
+
+Both shipped on 2026-09-22, one commit pair each (`feat` + `docs`).
+
+`capacitaciones` took **two generations**. The first passed every measurable gate —
+1024x1536, real alpha, the prop kit, the tonal range — and still had to be redone, for
+two reasons worth keeping. Its escape gesture was placed at the far edge of the table
+and rendered as a laptop lying flat at its end, which reads as nothing; moving it to
+the near edge fixed it. And three identical closed laptops in a row rendered as three
+grey rounded slabs, which is the banned grid of rounded rectangles from the
+constraints above; two larger, closer laptops plus the row leaving the frame fixed
+that.
+
+`desarrollo-web` was validated on the first generation. The check that mattered was
+not the gesture but the **empty desk between the three groups**: the scene fails the
+moment anything joins them, because the subject is the disconnection. It is the
+lightest of the three assets and its potted plant reaches closer to the top edge, but
+both are within range and it was integrated as generated.
+
+| Asset | mean ink luminance | alpha 0 | tonal dark / mid / light | visible margins L/R/T/B |
+| --- | --- | --- | --- | --- |
+| `reportabilidad` | 108.9 | 45.4% | 45.2 / 27.3 / 27.5 | 2.34 / 2.15 / 0.85 / 0.72 |
+| `capacitaciones` | 100.9 | 44.2% | 46.7 / 30.7 / 22.6 | 0.78 / 0.00 / 0.85 / 0.07 |
+| `desarrollo-web` | 121.4 | 43.0% | 40.9 / 22.1 / 36.9 | 0.98 / 0.78 / 0.07 / 0.72 |
+
+Method note for anyone re-measuring: measure the bounding box twice, once at any
+alpha above zero and once at alpha above 64. All three assets have near-zero-alpha
+pixels touching the canvas edge, including the approved `reportabilidad`, so the
+any-alpha box reports a 0.00% margin that means nothing. Only the alpha-above-64 box
+describes the drawing.
 
 ## The plate, and a test-config defect it surfaced
 
