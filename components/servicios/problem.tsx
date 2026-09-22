@@ -1,6 +1,7 @@
 "use client"
 
 import { CornerPlus, Kicker, PlusSvg } from "@/components/corner-plus"
+import { IllustrationPlate } from "@/components/illustration-plate"
 import GradientText from "@/components/gradient-text"
 import { brandGradient } from "@/lib/gradient"
 import { useStaggerEntrance } from "@/lib/motion"
@@ -11,11 +12,13 @@ export function ServicioProblem({
 	title,
 	titleAccent,
 	problem,
+	image,
 	audience,
 }: {
 	title: string
 	titleAccent: string
 	problem: string
+	image?: string | undefined
 	audience: string[]
 }): ReactNode {
 	const { container, item, itemTransition, viewport } = useStaggerEntrance()
@@ -89,6 +92,22 @@ export function ServicioProblem({
 						))}
 					</ul>
 				</div>
+
+				{image ? (
+					<motion.div
+						variants={item}
+						transition={itemTransition}
+						className="border-border border-t lg:col-span-2"
+					>
+						<IllustrationPlate
+							src={image}
+							alt=""
+							sizes="(max-width: 1440px) 100vw, 1360px"
+							frame="aspect-[3/2]"
+							className="object-cover"
+						/>
+					</motion.div>
+				) : null}
 			</motion.div>
 		</section>
 	)

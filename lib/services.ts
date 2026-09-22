@@ -51,6 +51,8 @@ export type ServicePage = {
 	problemTitleAccent: string
 	/** Pain the service solves, framed from the visitor's side. */
 	problem: string
+	/** Illustration of the client problem, shown as a full-width plate at the foot of the problem section. */
+	problemImage?: string
 	/** Profiles that should recognize themselves in the page. */
 	audience: string[]
 	/** Extended "what's included" items — the bulk of indexable content. */
@@ -125,6 +127,7 @@ export const SERVICES: Service[] = [
 			problemTitleAccent: "la decisión ya se tomó",
 			problem:
 				"Los datos existen, pero viven repartidos en planillas, correos y sistemas que no conversan entre sí. Armar el informe del mes toma días, cada área maneja su propia versión de los números y, cuando por fin llega el reporte, la decisión ya se tomó por intuición. La reportabilidad no es un problema de falta de datos: es un problema de orden, automatización y visibilidad.",
+			problemImage: "/img/problemas/reportabilidad.png",
 			audience: [
 				"Gerencias que necesitan visibilidad del negocio sin pedir informes a cada área",
 				"Equipos de control de gestión que arman los mismos reportes a mano todos los meses",
