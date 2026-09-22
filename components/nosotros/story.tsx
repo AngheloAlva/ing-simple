@@ -15,7 +15,30 @@ interface Chapter {
 	detail: string
 	image: string
 	imageAlt: string
+	/** Line-art assets carry their own transparent ground and arrive already
+	 *  neutral, so they skip the tonal compression that the near-white 3D
+	 *  renders the other chapters still use. */
+	lineArt?: boolean
 }
+
+// Calibrated for 3D renders sitting on a near-white ground: grayscale leaves
+// them almost entirely white while mix-blend-color keeps the backdrop's
+// luminosity, so the tonal range has to be compressed first or the shared
+// values flatten every image into a solid blue rectangle.
+const RENDER_FILTER =
+	"object-cover [filter:grayscale(1)_contrast(1.2)_brightness(0.95)] dark:[filter:grayscale(1)_contrast(1.35)_brightness(0.4)]"
+
+// A line drawing needs the opposite treatment. Compressing its range drives the
+// ink down to pure black, and dark mode then composites that over a dark navy
+// plate: measured at roughly 1.1:1 against the ground, which is invisible.
+// Inverting in dark mode is the only arrangement that survives a dark ground,
+// so the ink becomes the light mass and the filled areas become the dark ones.
+// `object-contain` rather than `object-cover` because the asset is square and
+// the frame is 16/9: covering it would crop 44% of the height and cut off the
+// subject's feet. Contain costs nothing here, since a transparent asset has no
+// background to letterbox.
+const LINE_ART_FILTER =
+	"object-contain [filter:grayscale(1)_contrast(1.1)] dark:[filter:grayscale(1)_contrast(1.1)_invert(1)]"
 
 // The 4 real milestones of IngSimple, migrated from the previous site.
 const chapters: Chapter[] = [
@@ -26,6 +49,7 @@ const chapters: Chapter[] = [
 			"Comenzamos transformando datos en decisiones. Nuestros primeros dashboards y reportes en Power BI ayudaron a empresas a visualizar su información de forma clara y accionable.",
 		image: "/img/about/power-bi.png",
 		imageAlt: "Dashboards y reportes en Power BI",
+		lineArt: true,
 	},
 	{
 		year: "2024",
@@ -34,6 +58,7 @@ const chapters: Chapter[] = [
 			"Escalamos hacia la automatización de procesos con Power Apps, Power Automate y SharePoint. Empezamos a digitalizar formularios, automatizar flujos y reemplazar procesos manuales con soluciones rápidas y escalables.",
 		image: "/img/about/power-platform.png",
 		imageAlt: "Automatización de procesos con Power Platform",
+		lineArt: true,
 	},
 	{
 		year: "2024",
@@ -42,6 +67,7 @@ const chapters: Chapter[] = [
 			"Abrimos nuestra línea de formación. Cursos prácticos de Power BI, Power Apps y Excel avanzado adaptados al nivel de cada equipo, con ejercicios reales y acompañamiento continuo.",
 		image: "/img/about/training.png",
 		imageAlt: "Capacitación de equipos",
+		lineArt: true,
 	},
 	{
 		year: "2025",
@@ -50,6 +76,7 @@ const chapters: Chapter[] = [
 			"Incorporamos el desarrollo de sitios web modernos y funcionales. Landing pages, sitios corporativos y portales enfocados en experiencia de usuario y resultados concretos.",
 		image: "/img/about/web.png",
 		imageAlt: "Desarrollo web moderno",
+		lineArt: true,
 	},
 ]
 
@@ -185,21 +212,12 @@ export function NosotrosStory() {
 									<div
 										className={`border-border relative mt-6 aspect-[16/9] w-full overflow-hidden border ${DUOTONE_CONTAINER}`}
 									>
-										{/*
-										 * Tuned here instead of reusing DUOTONE_BASE: that one is
-										 * calibrated for dark product screenshots, and these are 3D
-										 * renders on a near-white ground. Grayscale leaves them almost
-										 * entirely white and mix-blend-color keeps the backdrop's
-										 * luminosity, so the shared values flattened every image into a
-										 * solid blue rectangle. Compressing the tonal range first is
-										 * what brings the illustration back.
-										 */}
 										<Image
 											src={chapter.image}
 											alt={chapter.imageAlt}
 											fill
 											sizes="(max-width: 1024px) 100vw, 55vw"
-											className="object-cover [filter:grayscale(1)_contrast(1.2)_brightness(0.95)] dark:[filter:grayscale(1)_contrast(1.35)_brightness(0.4)]"
+											className={chapter.lineArt ? LINE_ART_FILTER : RENDER_FILTER}
 											priority={i === 0}
 										/>
 										<div className="absolute inset-0 bg-[#3b76ff] opacity-90 mix-blend-color dark:bg-[#1466ff]" />
