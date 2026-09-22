@@ -486,6 +486,7 @@ export const SERVICES: Service[] = [
 			problemTitleAccent: "una máquina haría mejor",
 			problem:
 				"Cada día tu equipo pierde horas en trabajo que una máquina haría mejor: copiar datos de un sistema a otro, perseguir aprobaciones por correo, armar el mismo documento una y otra vez. Además del tiempo, cada paso manual es una oportunidad de error que después cuesta encontrar y corregir. Ese trabajo repetitivo no escala contratando más gente: escala automatizando el proceso.",
+			problemImage: "/img/problemas/automatizaciones.png",
 			audience: [
 				"Equipos que copian y pegan información entre sistemas todos los días",
 				"Aprobaciones y solicitudes que viven en correos y planillas compartidas",
