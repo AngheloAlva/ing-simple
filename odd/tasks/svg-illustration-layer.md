@@ -602,6 +602,37 @@ where the plate uses `opacity-15`, and it carries an extra blue screen layer in 
 mode that the plate does not. They were two versions of one effect and nobody
 noticed, because one of them stopped being rendered.
 
+## The optimizer cache trap
+
+Replacing an image **at its existing path** does not invalidate Next's image
+optimizer cache. It keys on URL, width and quality, so the same path with new bytes
+keeps serving the old ones. Measured 2026-09-21 after regenerating
+`public/img/problemas/reportabilidad.png` from landscape to portrait at the same
+path, with 44 files already cached:
+
+| Width | With the stale cache | After purging `.next/cache/images` |
+| --- | --- | --- |
+| 1080 | 49.4 KB | 78.3 KB |
+| 1200 | 55.0 KB | 78.3 KB |
+| 1920 | 60.9 KB | 78.3 KB |
+
+The 49.4 KB figure is the landscape asset's number from an earlier measurement.
+So the served bytes were the previous illustration, and it would have rendered in
+the new portrait frame, which looks like a layout bug and is not one.
+
+The thing to do before judging any replaced asset locally: `rm -rf .next`, or at
+minimum `rm -rf .next/cache/images`. This matters more than usual in this project,
+because replacing assets at their existing paths is now the established pattern:
+the four story illustrations were swapped the same way. That swap escaped the trap
+only by luck, since the old files were measured through a temporary copy under a
+different path precisely to keep the comparison fair.
+
+Two smaller findings from the same measurements. `w=1024` returns a 44-byte error,
+because Next only serves widths from its configured list and 1024 is in neither
+`deviceSizes` nor `imageSizes`; the `srcset` only offers valid widths so nothing
+breaks. And the vertical asset's real cost is 53 KB at 640 and 78 KB at 1080 and
+above, capped there because the source is 1024 wide and Next never upscales.
+
 ## Native review gate — unresolved
 
 The implementation is complete and verified, but the native review **did not
