@@ -398,7 +398,7 @@ line ended in an arrowhead).
 
 ## Attempt log
 
-Three generation attempts, 2026-09-21, all rejected.
+Three generation attempts on 2026-09-21, all rejected, plus one on 2026-09-22.
 
 1. **QuiverAI, icon brief.** Style block asked for "flat orthographic front
    view", "single uniform stroke weight", "no fills", "squared corners"; subject
@@ -409,6 +409,20 @@ Three generation attempts, 2026-09-21, all rejected.
    three-quarter perspective; subject was a figure at a desk. Output: an empty
    SVG.
 3. **Route change.** Vector abandoned; OpenAI raster pilot adopted.
+4. **Wrong domain, right register (2026-09-22).** The `capacitaciones` scene was
+   briefed as "a large open tool case on the floor, its moulded recesses full of
+   untouched tools, one tool held in the person's hand". The output was a mechanic's
+   tool case — wrenches, pliers, screwdrivers, a hammer — and the user rejected it:
+   "no tiene nada que ver las herramientas con el tipo de capacitaciones que
+   ofrecemos". The register was a perfect hit (real alpha, 2:3, the prop kit, the
+   black masses, and the frame-escape gesture all landed), so the prompt technique is
+   validated; the **subject domain** was wrong. Root cause: "herramientas" was read as
+   physical tools, when the same sentence of the copy names its referent — "Excel,
+   Power BI, Power Apps". Lesson: resolve every metaphor in the copy to a concrete
+   referent in the service's own world before writing the brief. A second, narrower
+   route was closed at the same time: translating the case into a launcher grid of app
+   tiles would need logos, and the constraints above ban text, numbers and logos in the
+   artwork.
 
 ## Served weight, measured
 
@@ -497,9 +511,22 @@ Subjects, each taken from that service's own problem copy:
   stacks of printed reports, with three other chairs at the table pushed in and
   empty. Gesture: the tallest stack stands higher than the monitor and spills over
   the near edge of the table.
-- `capacitaciones` — "Pagas por herramientas potentes y usas una fracción": a person
-  kneeling in front of a large open tool case, holding one single tool while every
-  other one sits untouched.
+- `capacitaciones` — "Pagas por herramientas potentes y usas una fracción": one long
+  table receding from the viewer with five identical workstations, four of them
+  untouched — closed laptops, pushed-in chairs, a mug each — and one person alone at
+  the only open laptop, its screen carrying a report that has barely been started.
+  Gesture: a closed laptop is shoved half past the **near** front edge of the table,
+  at the level of the viewer and just beyond the person's own open laptop, tipping
+  over the lip with one corner already hanging toward the viewer; the remaining
+  workstations recede off the far end of the table and out of the frame. The first
+  brief put this gesture at the *far* edge, where it rendered as a laptop lying flat
+  at the end of the table and read as nothing. The near edge is where it works, and
+  the reason is the same one that makes reportabilidad read: that is where the
+  escaping object gets first-frame scale. The earlier subject (a
+  kneeling person and a large open tool case full of unused tools) was generated and
+  rejected on 2026-09-22: it literalised "herramientas" into a mechanic's kit, while
+  the service's own copy names the referent — Excel, Power BI, Power Apps. See the
+  attempt log.
 - `desarrollo-web` — "La operación creció y las herramientas no acompañaron": a
   person walking with an absurd stack of folders, papers and a phone balanced on
   top, already tipping over.
@@ -538,13 +565,24 @@ image. That is recorded in its own section above.
 
 ### Remaining
 
-Three scenes, with the subjects already settled from each service's own problem
-copy. Same three series devices as the first family: identical framing, the shared
-prop kit, and one gesture where a key object escapes its own frame.
+Three scenes. Same three series devices as the first family: identical framing, the
+shared prop kit, and one gesture where a key object escapes its own frame. Two of the
+three subjects survived contact with the generator unchanged.
 
-- `capacitaciones` — "Pagas por herramientas potentes y usas una fracción": a person
-  kneeling in front of a large open tool case, holding one single tool while every
-  other one sits untouched.
+- `capacitaciones` — "Pagas por herramientas potentes y usas una fracción": one long
+  table receding from the viewer with five identical workstations, four of them
+  untouched — closed laptops, pushed-in chairs, a mug each — and one person alone at
+  the only open laptop, its screen carrying a report that has barely been started.
+  Gesture: a closed laptop is shoved half past the near front edge of the table, at
+  the level of the viewer and just beyond the person's own open laptop, tipping over
+  the lip with one corner hanging toward the viewer. The remaining closed laptops stay
+  few, large and close, with hinge, lid and tapered edge clearly visible in
+  three-quarter view, and the row of workstations recedes off the far end of the table
+  and out of the frame. Not three identical grey slabs lying flat in a row: that is
+  the banned grid of rounded rectangles, and the first attempt at this scene landed
+  there. The first subject for
+  this scene (a kneeling person and a large open tool case of untouched tools) was
+  generated and rejected on 2026-09-22 for the reason in the attempt log.
 - `desarrollo-web` — "La operación creció y las herramientas no acompañaron": a
   person walking with an absurd stack of folders, papers and a phone balanced on
   top, already tipping over.
