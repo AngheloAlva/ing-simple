@@ -65,6 +65,13 @@
 	   token so a per-service override (below) can swap it independently of
 	   `--primary`. */
 	--brand-tint: oklch(0.707 0.165 254.624);
+
+	/* The illustration duotone tokens keep literal hex values instead of
+	   referencing `--brand-tint`: they are the exact colours the blend stack
+	   was tuned around, and keeping them literal is what leaves pages without
+	   a service accent (e.g. /sobre-nosotros) pixel-identical. */
+	--illustration-tint: #3b76ff;
+	--illustration-veil: #9bc0ff;
 }
 
 .dark {
@@ -113,6 +120,10 @@
 	   themes (see the --brand-blue comment above), and this keeps the
 	   current gradient look unchanged in dark mode too. */
 	--brand-tint: oklch(0.707 0.165 254.624);
+
+	/* Literal values for the same reason as in `:root` above. */
+	--illustration-tint: #1466ff;
+	--illustration-veil: #0a235c;
 }
 
 /* Per-service accent override (phase 1 of "one accent color per service").
@@ -136,6 +147,22 @@
    Selectors must win over both `:root` and `.dark` above, so this block is
    plain CSS placed after them and before `@theme inline`, not inside
    `@theme`. */
+
+/* The illustration plate reads the duotone tokens above, which any element
+   carrying `data-service` remaps from that service's `--brand-tint`, so the
+   plate takes the page accent without knowing anything about services. The
+   mix ratios derive the veil the same way the base one was derived: 48%
+   white over the tint reproduces #9bc0ff in OKLab, 49% black reproduces
+   #0a235c, both within one or two RGB units. */
+[data-service] {
+	--illustration-tint: var(--brand-tint);
+	--illustration-veil: color-mix(in oklab, var(--brand-tint) 48%, white);
+}
+
+.dark [data-service] {
+	--illustration-veil: color-mix(in oklab, var(--brand-tint) 49%, black);
+}
+
 [data-service="reportabilidad"] {
 	--brand-tint: oklch(0.8 0.17 90);
 	--primary: oklch(0.56 0.135 85);

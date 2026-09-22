@@ -1,13 +1,12 @@
 "use client"
 
-import Image from "next/image"
 import { motion, type Variants } from "motion/react"
 import { softEase, useReducedMotion } from "@/lib/motion"
 import { CutButton } from "@/components/cut-button"
 import { Kicker } from "@/components/corner-plus"
 import GradientText from "@/components/gradient-text"
 import { brandGradient } from "@/lib/gradient"
-import { DUOTONE_CONTAINER } from "@/components/duotone"
+import { IllustrationPlate } from "@/components/illustration-plate"
 
 interface Chapter {
 	year: string
@@ -20,25 +19,6 @@ interface Chapter {
 	 *  renders the other chapters still use. */
 	lineArt?: boolean
 }
-
-// Calibrated for 3D renders sitting on a near-white ground: grayscale leaves
-// them almost entirely white while mix-blend-color keeps the backdrop's
-// luminosity, so the tonal range has to be compressed first or the shared
-// values flatten every image into a solid blue rectangle.
-const RENDER_FILTER =
-	"object-cover [filter:grayscale(1)_contrast(1.2)_brightness(0.95)] dark:[filter:grayscale(1)_contrast(1.35)_brightness(0.4)]"
-
-// A line drawing needs the opposite treatment. Compressing its range drives the
-// ink down to pure black, and dark mode then composites that over a dark navy
-// plate: measured at roughly 1.1:1 against the ground, which is invisible.
-// Inverting in dark mode is the only arrangement that survives a dark ground,
-// so the ink becomes the light mass and the filled areas become the dark ones.
-// `object-contain` rather than `object-cover` because the asset is square and
-// the frame is 16/9: covering it would crop 44% of the height and cut off the
-// subject's feet. Contain costs nothing here, since a transparent asset has no
-// background to letterbox.
-const LINE_ART_FILTER =
-	"object-contain [filter:grayscale(1)_contrast(1.1)] dark:[filter:grayscale(1)_contrast(1.1)_invert(1)]"
 
 // The 4 real milestones of IngSimple, migrated from the previous site.
 const chapters: Chapter[] = [
@@ -209,21 +189,14 @@ export function NosotrosStory() {
 									<p className="text-muted-foreground mt-3 max-w-xl text-base leading-relaxed text-pretty">
 										{chapter.detail}
 									</p>
-									<div
-										className={`border-border relative mt-6 aspect-[16/9] w-full overflow-hidden border ${DUOTONE_CONTAINER}`}
-									>
-										<Image
-											src={chapter.image}
-											alt={chapter.imageAlt}
-											fill
-											sizes="(max-width: 1024px) 100vw, 55vw"
-											className={chapter.lineArt ? LINE_ART_FILTER : RENDER_FILTER}
-											priority={i === 0}
-										/>
-										<div className="absolute inset-0 bg-[#3b76ff] opacity-90 mix-blend-color dark:bg-[#1466ff]" />
-										<div className="absolute inset-0 bg-[#9bc0ff] opacity-30 mix-blend-multiply dark:bg-[#0a235c] dark:opacity-45" />
-										<div className="absolute inset-0 bg-white opacity-15 mix-blend-screen dark:opacity-0" />
-									</div>
+									<IllustrationPlate
+										src={chapter.image}
+										alt={chapter.imageAlt}
+										sizes="(max-width: 1024px) 100vw, 55vw"
+										priority={i === 0}
+										lineArt={chapter.lineArt ?? true}
+										frame="border-border mt-6 aspect-[16/9] border"
+									/>
 								</motion.article>
 							))}
 						</div>
