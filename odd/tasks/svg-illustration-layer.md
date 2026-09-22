@@ -508,11 +508,55 @@ Subjects, each taken from that service's own problem copy:
   oversized stack of identical forms beside them. Gesture: the column of numbers
   leaves the edge of the printed sheet.
 
-Assets will live at `public/img/problemas/<slug>.png`.
+Assets live at `public/img/problemas/<slug>.png`.
 
-Pilot first. Two of the four assets in the first family needed a second generation,
-so this register gets validated on `reportabilidad` before the other three are
-produced.
+### Delivered for `reportabilidad`
+
+Shipped. The asset was generated twice: first as a landscape 1254x1254 composition,
+which the user rejected, then regenerated as a vertical **1024x1536** one. The
+vertical version is built upward instead of sideways, with the leaning stack of
+reports as the vertical mass, and it measured 2.1% top and 0.9% bottom margins, so
+the drawing is near full-bleed inside its canvas.
+
+The section now puts the illustration in the **left column** at its natural 2:3 and
+lets it fill the cell: `frame="aspect-[2/3] lg:aspect-auto lg:h-full"` with the
+column wrapper carrying no padding, so the ground covers the whole cell while the
+drawing stays centred at 2:3 instead of being stretched or cropped. The problem
+text and the audience list stack in the right column. The column ratio settled at
+**`lg:grid-cols-[0.8fr_0.9fr]`**, chosen by the user by eye: it brings the plate's
+natural height close to the text column's so the leftover band of ground is small.
+
+The component branches on `hasImage`, because only one of four services has an
+asset. With no image the section renders exactly as before. **That branch is
+temporary scaffolding**: once the other three assets exist it should collapse to a
+single layout and the old two-column path should be deleted.
+
+Measured cost: 53 KB at 640 and 78 KB from 1080 up, capped there because the source
+is 1024 wide. Also learned: replacing an asset at its existing path does not
+invalidate the optimizer cache, so `rm -rf .next` before judging a regenerated
+image. That is recorded in its own section above.
+
+### Remaining
+
+Three scenes, with the subjects already settled from each service's own problem
+copy. Same three series devices as the first family: identical framing, the shared
+prop kit, and one gesture where a key object escapes its own frame.
+
+- `capacitaciones` — "Pagas por herramientas potentes y usas una fracción": a person
+  kneeling in front of a large open tool case, holding one single tool while every
+  other one sits untouched.
+- `desarrollo-web` — "La operación creció y las herramientas no acompañaron": a
+  person walking with an absurd stack of folders, papers and a phone balanced on
+  top, already tipping over.
+- `automatizaciones` — "Horas de tu equipo en trabajo que una máquina haría mejor":
+  someone copying numbers with a pencil from a printed sheet into a laptop, an
+  oversized stack of identical forms beside them. Gesture: the column of numbers
+  leaves the edge of the printed sheet.
+
+Generate them **vertical 2:3** like the shipped one, not square: the frame is
+`aspect-[2/3]` and a square source would letterbox inside it. Two of the four
+first-family assets needed a second generation, so review each one's register before
+moving to the next.
 
 ## The plate, and a test-config defect it surfaced
 
