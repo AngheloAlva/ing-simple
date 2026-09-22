@@ -482,7 +482,7 @@ same URL returned the identical 47,292 bytes in 0.002 s.
   at 1080 is 107.5 KB. Capping the served width would also have worked, at a
   visible cost in sharpness, and is no longer needed.
 
-## Problem-scene family (second asset family, in progress)
+## Problem-scene family (second asset family, delivered 2026-09-22)
 
 The four illustrations shipped so far depict the company's own milestones, and they
 live in exactly one place: the story timeline on `/sobre-nosotros`, plus the nav
@@ -498,8 +498,9 @@ section says. Cheap and wrong is worse than expensive and right.
 
 So: a second family, one per service page, depicting that service's client problem,
 for the section that opens with the `Kicker` "El problema"
-(`components/servicios/problem.tsx`). That section is two text columns and no image
-today.
+(`components/servicios/problem.tsx`). That section was two text columns and no image
+when this family was decided; it now opens with the plate in the left column on all
+four service pages.
 
 Same three series devices as before: identical framing, the shared prop kit, and one
 gesture where a key object escapes its own frame.
@@ -603,43 +604,12 @@ is 1024 wide. Also learned: replacing an asset at its existing path does not
 invalidate the optimizer cache, so `rm -rf .next` before judging a regenerated
 image. That is recorded in its own section above.
 
-### Remaining
+### All four delivered, 2026-09-22
 
-Three scenes. Same three series devices as the first family: identical framing, the
-shared prop kit, and one gesture where a key object escapes its own frame. Two of the
-three subjects survived contact with the generator unchanged.
-
-- `capacitaciones` — "Pagas por herramientas potentes y usas una fracción": one long
-  table receding from the viewer with five identical workstations, four of them
-  untouched — closed laptops, pushed-in chairs, a mug each — and one person alone at
-  the only open laptop, its screen carrying a report that has barely been started.
-  Gesture: a closed laptop is shoved half past the near front edge of the table, at
-  the level of the viewer and just beyond the person's own open laptop, tipping over
-  the lip with one corner hanging toward the viewer. The remaining closed laptops stay
-  few, large and close, with hinge, lid and tapered edge clearly visible in
-  three-quarter view, and the row of workstations recedes off the far end of the table
-  and out of the frame. Not three identical grey slabs lying flat in a row: that is
-  the banned grid of rounded rectangles, and the first attempt at this scene landed
-  there. The first subject for
-  this scene (a kneeling person and a large open tool case of untouched tools) was
-  generated and rejected on 2026-09-22 for the reason in the attempt log.
-- `automatizaciones` — "Horas de tu equipo en trabajo que una máquina haría mejor":
-  the device is **repetition**. A person copying by hand from one sheet into a laptop,
-  and beside them an enormous but **perfectly even** stack of identical completed
-  forms marching away out of the frame. Gesture: the column of marks on the source
-  sheet continues past the sheet's own edge — **marks, never digits**, because the
-  constraints above ban numbers in the artwork and the approved reportabilidad screen
-  already settled this with dash rows. Regularity is what separates this scene from
-  reportabilidad's chaos; a second chaotic pile would read as the same scene.
-
-Generate it **vertical 2:3** like the shipped ones, not square: the frame is
-`aspect-[2/3]` and a square source would letterbox inside it. Two of the four
-first-family assets needed a second generation, so review its register before
-integration.
-
-### Delivered for `capacitaciones` and `desarrollo-web`
-
-Both shipped on 2026-09-22, one commit pair each (`feat` + `docs`).
+Nothing remains in this family. The four problem scenes shipped one commit pair each
+(`feat` + `docs`), and every page's plate now resolves to its own asset: the build
+gives a clean diagonal, 11 percent-encoded references per route to that route's own
+file and zero to any other.
 
 `capacitaciones` took **two generations**. The first passed every measurable gate —
 1024x1536, real alpha, the prop kit, the tonal range — and still had to be redone, for
@@ -652,21 +622,42 @@ that.
 
 `desarrollo-web` was validated on the first generation. The check that mattered was
 not the gesture but the **empty desk between the three groups**: the scene fails the
-moment anything joins them, because the subject is the disconnection. It is the
-lightest of the three assets and its potted plant reaches closer to the top edge, but
-both are within range and it was integrated as generated.
+moment anything joins them, because the subject is the disconnection.
+
+`automatizaciones` was also validated on the first generation, and on the criterion
+this scene was built around: the column is **boringly regular** — perfectly aligned,
+leaning nowhere, spilling nowhere — which is what separates it from reportabilidad's
+crooked pile. It is the densest of the four (38.3% fully transparent, against 45.4%
+for reportabilidad) and carries the healthiest mid-tone share (34.1%), both of which
+help it survive the duotone stack.
+
+Two practical traps, both found on this family. The asset first landed on disk as
+`automatzaciones.png`, with a `tz`, while the service slug is `automatizaciones`. And
+`capacitaciones` produced three identical grey slabs on its first attempt. A
+misspelling in either a filename or a reference produces a silent 404 that neither
+typecheck nor tests can see, so the referenced-path check is the one that matters most
+for every asset here.
+
+### The four assets, measured
 
 | Asset | mean ink luminance | alpha 0 | tonal dark / mid / light | visible margins L/R/T/B |
 | --- | --- | --- | --- | --- |
 | `reportabilidad` | 108.9 | 45.4% | 45.2 / 27.3 / 27.5 | 2.34 / 2.15 / 0.85 / 0.72 |
 | `capacitaciones` | 100.9 | 44.2% | 46.7 / 30.7 / 22.6 | 0.78 / 0.00 / 0.85 / 0.07 |
 | `desarrollo-web` | 121.4 | 43.0% | 40.9 / 22.1 / 36.9 | 0.98 / 0.78 / 0.07 / 0.72 |
+| `automatizaciones` | 114.9 | 38.3% | 39.6 / 34.1 / 26.4 | 0.39 / 0.20 / 0.00 / 0.26 |
+
+Mean ink luminance spans only 100.9 to 121.4 across the four, so no scene is visibly
+out of family on brightness, and the dark share stays between 39.6% and 46.7%. The
+0.00% margins are the frame escapes and are there by design: `capacitaciones` runs the
+row of workstations off the right edge, `desarrollo-web` runs its potted plant into
+the top, and `automatizaciones` lets the column leave through the top.
 
 Method note for anyone re-measuring: measure the bounding box twice, once at any
-alpha above zero and once at alpha above 64. All three assets have near-zero-alpha
+alpha above zero and once at alpha above 64. All four assets have near-zero-alpha
 pixels touching the canvas edge, including the approved `reportabilidad`, so the
-any-alpha box reports a 0.00% margin that means nothing. Only the alpha-above-64 box
-describes the drawing.
+any-alpha box reports a 0.00% margin on every one of them and means nothing. Only the
+alpha-above-64 box describes the drawing.
 
 ## The plate, and a test-config defect it surfaced
 
