@@ -1,29 +1,24 @@
 import { CornerPlus } from "@/components/corner-plus";
 import { IllustrationPlate } from "@/components/illustration-plate";
-import { EyeOff, Layers, ShieldCheck } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
 type Item = {
-  icon: LucideIcon;
   title: string;
   description: string;
-  /** Ink plate for this item. Optional only while the remaining two are still
-   *  being generated; when all three land the icon branch collapses and this
-   *  becomes required. */
-  image?: string;
-  imageAlt?: string;
+  image: string;
+  imageAlt: string;
 };
 
 const ITEMS: Item[] = [
   {
-    icon: ShieldCheck,
     title: "Confidencialidad primero",
     description:
       "Muchos de estos sistemas son internos y están bajo acuerdo. No exponemos datos, usuarios ni las pantallas productivas reales de nuestros clientes.",
+    image: "/img/cases/confidentiality.png",
+    imageAlt:
+      "Una carpeta sellada con una banda negra y una pila de hojas boca abajo sobre el escritorio",
   },
   {
-    icon: Layers,
     title: "Mockups fieles a lo real",
     description:
       "Reconstruimos a mano la interfaz de cada proyecto, fiel a la estructura, los módulos y los flujos que efectivamente construimos y pusimos en producción.",
@@ -31,10 +26,12 @@ const ITEMS: Item[] = [
     imageAlt: "Una mano completa a lápiz el trazado de una pantalla sobre una hoja",
   },
   {
-    icon: EyeOff,
     title: "Sin datos sensibles",
     description:
       "Lo que ves es representativo: los nombres y números son ilustrativos. La arquitectura y las decisiones técnicas detrás de cada caso, en cambio, son reales.",
+    image: "/img/cases/no-sensitive-data.png",
+    imageAlt:
+      "Una hoja donde los renglones de texto se convierten en bloques vacíos que salen de la página",
   },
 ];
 
@@ -69,7 +66,6 @@ export function CasosConfidentiality(): ReactNode {
           <CornerPlus className="bottom-0 right-0 translate-x-1/2 translate-y-1/2" />
 
           {ITEMS.map((item, i) => {
-            const Icon = item.icon;
             return (
               <div
                 key={item.title}
@@ -94,32 +90,21 @@ export function CasosConfidentiality(): ReactNode {
                     other two families existed because their asset had to survive
                     both a 16/9 frame and a square nav tile, and that reason does
                     not hold here. */}
-                {item.image ? (
-                  <IllustrationPlate
-                    src={item.image}
-                    alt={item.imageAlt ?? ""}
-                    sizes="(min-width: 1024px) 45vw, 92vw"
-                    className="object-cover"
-                    frame={`aspect-[3/2] w-full${i === 0 ? " rounded-t-sm" : ""}`}
-                  />
-                ) : null}
+                <IllustrationPlate
+                  src={item.image}
+                  alt={item.imageAlt}
+                  sizes="(min-width: 1024px) 45vw, 92vw"
+                  className="object-cover"
+                  frame={`aspect-[3/2] w-full${i === 0 ? " rounded-t-sm" : ""}`}
+                />
 
                 <div className="px-6 py-7 sm:px-8 sm:py-8">
-                  <div className="flex items-start gap-4">
-                    {item.image ? null : (
-                      <span className="inline-grid h-10 w-10 shrink-0 place-items-center rounded-sm border border-border text-foreground">
-                        <Icon className="h-5 w-5" aria-hidden="true" />
-                      </span>
-                    )}
-                    <div>
-                      <h3 className="text-lg font-semibold tracking-tight">
-                        {item.title}
-                      </h3>
-                      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
+                  <h3 className="text-lg font-semibold tracking-tight">
+                    {item.title}
+                  </h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                    {item.description}
+                  </p>
                 </div>
               </div>
             );
