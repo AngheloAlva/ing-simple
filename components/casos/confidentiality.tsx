@@ -73,9 +73,7 @@ export function CasosConfidentiality(): ReactNode {
             return (
               <div
                 key={item.title}
-                className={`relative px-6 py-7 sm:px-8 sm:py-8 ${
-                  i > 0 ? "border-t border-border" : ""
-                }`}
+                className={`relative ${i > 0 ? "border-t border-border" : ""}`}
               >
                 {i > 0 && (
                   <>
@@ -83,26 +81,35 @@ export function CasosConfidentiality(): ReactNode {
                     <CornerPlus className="right-0 top-0 translate-x-1/2 -translate-y-1/2" />
                   </>
                 )}
-                <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-6">
-                  {item.image ? (
-                    <IllustrationPlate
-                      src={item.image}
-                      alt={item.imageAlt ?? ""}
-                      sizes="(min-width: 640px) 208px, 92vw"
-                      frame="border-border aspect-[16/9] w-full shrink-0 border sm:aspect-[4/3] sm:w-52"
-                    />
-                  ) : (
-                    <span className="inline-grid h-10 w-10 shrink-0 place-items-center rounded-sm border border-border text-foreground">
-                      <Icon className="h-5 w-5" aria-hidden="true" />
-                    </span>
-                  )}
-                  <div>
-                    <h3 className="text-lg font-semibold tracking-tight">
-                      {item.title}
-                    </h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                      {item.description}
-                    </p>
+
+                {/* The plate runs the full inner width of the panel and carries no
+                    padding of its own: it is the item's image, not an inset
+                    thumbnail. Only the first one needs the panel's top radius,
+                    because every other plate meets a divider line. */}
+                {item.image ? (
+                  <IllustrationPlate
+                    src={item.image}
+                    alt={item.imageAlt ?? ""}
+                    sizes="(min-width: 1024px) 45vw, 92vw"
+                    frame={`aspect-[16/9] w-full${i === 0 ? " rounded-t-sm" : ""}`}
+                  />
+                ) : null}
+
+                <div className="px-6 py-7 sm:px-8 sm:py-8">
+                  <div className="flex items-start gap-4">
+                    {item.image ? null : (
+                      <span className="inline-grid h-10 w-10 shrink-0 place-items-center rounded-sm border border-border text-foreground">
+                        <Icon className="h-5 w-5" aria-hidden="true" />
+                      </span>
+                    )}
+                    <div>
+                      <h3 className="text-lg font-semibold tracking-tight">
+                        {item.title}
+                      </h3>
+                      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                        {item.description}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
