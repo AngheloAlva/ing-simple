@@ -54,10 +54,8 @@ The landing page (`app/page.tsx`) is composed top to bottom from:
 | **Hero** | `hero.tsx`, `hero-waves.tsx` | Serif headline, staggered entrance, animated ASCII wave backdrop |
 | **Product mockup** | `window-mockup.tsx` | Chamfered app-window frame with looping demo video |
 | **Trusted by** | `trusted-by.tsx` | Theme-aware brand wordmarks framed by corner-plus crosshairs |
-| **Coverage grid** | `coverage-grid.tsx`, `duotone.tsx` | Pinned scroll gallery of blue-duotone tiles |
 | **Features** | `features.tsx`, `ascii-icon.tsx` | Chamfered cards with live ASCII security glyphs |
 | **Value prop** | `value-prop.tsx`, `curtain-image.tsx` | WebGL scroll-reveal "curtain" image with duotone treatment |
-| **Testimonials** | `testimonials.tsx`, `ascii-portrait.tsx` | ASCII-rendered portraits, animated quote carousel |
 | **Stats** | `stats.tsx` | Scroll-triggered count-up numbers, corner-plus panel, brand attributions |
 | **Case study** | `case-study.tsx` | Inline brand wordmark in a serif statement + CTA |
 | **Pricing** | `pricing.tsx` | Monthly/yearly toggle with sliding indicator + rolling price digits |
@@ -72,7 +70,7 @@ Reusable building blocks that define the template's look and feel:
 - **`cut-button.tsx`** — the chamfered "cut-corner" button (solid / outline / icon-only / full-width) used for every CTA.
 - **`corner-plus.tsx`** — the blue crosshair `CornerPlus` mark + `Kicker` label that frame panels across the site.
 - **`ascii-icon.tsx`** — canvas ASCII-art icons (`scan`, `shield`, `key`, `bolt`, `plus`, `bars`) rasterized into a coarse glyph mask with a scan-band + twinkle animation; freezes to a static frame under reduced motion.
-- **`ascii-portrait.tsx`** / **`ascii-waves.tsx`** — ASCII rendering for testimonial portraits and the hero's animated wave field.
+- **`ascii-waves.tsx`** — ASCII rendering for the hero's animated wave field.
 - **`curtain-image.tsx`** — self-contained R3F shader that unveils an image with a wavy "curtain" sweep + accent fringe; renders on demand and pauses offscreen.
 - **`duotone.tsx`** — shared blue-duotone recipe (container field + base filter + mix-blend overlays) applied to both the coverage grid and the value-prop image, theme-aware in light and dark.
 - **`window-mockup.tsx`** — chamfered product-window frame.
@@ -93,10 +91,9 @@ Reusable building blocks that define the template's look and feel:
 │   ├── hero.tsx, hero-waves.tsx, ascii-waves.tsx  # Hero + ASCII backdrop
 │   ├── window-mockup.tsx                          # Product mockup
 │   ├── trusted-by.tsx                             # Logo wall
-│   ├── coverage-grid.tsx, duotone.tsx             # Pinned duotone gallery
+│   ├── duotone.tsx                               # Duotone ground for illustrated plates
 │   ├── features.tsx, ascii-icon.tsx              # Feature cards + ASCII glyphs
 │   ├── value-prop.tsx, curtain-image.tsx         # WebGL curtain reveal
-│   ├── testimonials.tsx, ascii-portrait.tsx      # Quote carousel
 │   ├── stats.tsx, case-study.tsx                 # Social proof
 │   ├── pricing.tsx, faq.tsx, final-cta.tsx       # Conversion
 │   ├── footer.tsx                                # Footer

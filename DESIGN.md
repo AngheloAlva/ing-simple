@@ -268,6 +268,16 @@ not from `motion/react`.
 Do not measure scroll-driven animations with `window.scrollTo` (Lenis smooth
 scroll intercepts it), and expect Motion loops to freeze in headless screenshots.
 
+Scroll pins and `useTransform`: the keyframe-array form
+(`useTransform(progress, [0, 1], ["0%", "100%"])`) did not hold its end value in
+the pinned scroll gallery that has since been removed from this codebase. Once the
+pin completed, the whole panel snapped to invisible in a single scroll step,
+because the value is recomputed every frame. The callback form
+(`useTransform(progress, (v) => …)`) held it. Live code still uses the keyframe form
+in `components/case-study/detail-timeline.tsx` and
+`components/diagrams/process/rollout-gantt.tsx`; if either jumps or vanishes at the
+end of its travel, start here.
+
 ## 8. Diagrams and visuals
 
 Shared primitives in `components/diagrams/`:
