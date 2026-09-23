@@ -1,11 +1,19 @@
-import Image from "next/image"
+import { IllustrationPlate } from "@/components/illustration-plate"
 import type { ReactNode } from "react"
 
 /**
- * Full-bleed cover photo under the nav. Framed with the site's chrome
- * (border, `rounded-sm`) inside the page container — never edge-to-edge
- * without a frame, per `DESIGN.md`. Today a photographic frame; the
- * illustration register replaces it (see `odd/tasks/guias-cover-plates.md`).
+ * The cover under the nav, in the illustration register. Framed with the site's
+ * chrome (border, `rounded-sm`) inside the page container — never edge-to-edge
+ * without a frame, per `DESIGN.md`.
+ *
+ * Two things here are load-bearing. There is no height cap: `aspect-video` and the
+ * asset's own 16:9 are the same ratio, so the drawing is never cropped, and a
+ * `max-h` would make the box wider than the drawing and reintroduce exactly the
+ * crop the assets are composed to avoid. And `priority` stays on the plate, which
+ * forwards it, because the cover is the guide's LCP element.
+ *
+ * The credit chip lives outside the plate, in a wrapper that owns the radius: `IllustrationPlate`
+ * renders its own children-free frame and does not take overlay children.
  */
 export function GuiaCover({
 	src,
@@ -18,8 +26,15 @@ export function GuiaCover({
 }): ReactNode {
 	return (
 		<div className="mx-auto max-w-360 px-5 pt-24 sm:px-8 sm:pt-28 lg:px-10">
-			<div className="border-border relative aspect-video max-h-[60vh] w-full overflow-hidden rounded-sm border">
-				<Image src={src} alt={alt} fill priority sizes="100vw" className="object-cover" />
+			<div className="relative overflow-hidden rounded-sm">
+				<IllustrationPlate
+					src={src}
+					alt={alt}
+					priority
+					sizes="100vw"
+					className="object-cover"
+					frame="border-border aspect-video w-full border"
+				/>
 
 				{credito !== undefined ? (
 					<>
