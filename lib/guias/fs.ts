@@ -44,9 +44,6 @@ async function readGuiaFiles(): Promise<Array<{ slug: string; raw: string }>> {
 
 async function assertCoversExist(meta: GuiaMeta): Promise<void> {
 	await assertCoverExists(meta.slug, meta.portada)
-	if (meta.portadaRelieve !== undefined) {
-		await assertCoverExists(meta.slug, meta.portadaRelieve)
-	}
 }
 
 /** All published guides (drafts included outside production), newest first. */

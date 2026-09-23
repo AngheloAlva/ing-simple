@@ -4,7 +4,6 @@ import type { ReactNode } from "react"
 
 import { ArticleHeader } from "@/components/guias/article-header"
 import { GuiaCover } from "@/components/guias/cover"
-import { GuiaCoverRelieve } from "@/components/guias/cover-relief"
 import { GuiasRelated } from "@/components/guias/related"
 import { GuiaToc, GuiaTocMobile } from "@/components/guias/toc"
 import { FinalCta } from "@/components/final-cta"
@@ -74,25 +73,13 @@ export default async function GuiaDetailPage({ params }: PageProps): Promise<Rea
 			<span id="top" className="sr-only" />
 			<Nav />
 			<main id="main-content" className="flex-1">
-				{guia.meta.portadaRelieve !== undefined ? (
-					<GuiaCoverRelieve
-						src={guia.meta.portadaRelieve}
-						stillSrc={guia.meta.portada}
-						alt={guia.meta.portadaAlt}
-						removeBackground={guia.meta.portadaRelieveRecorte}
-						{...(guia.meta.portadaCredito !== undefined
-							? { credito: guia.meta.portadaCredito }
-							: {})}
-					/>
-				) : (
-					<GuiaCover
-						src={guia.meta.portada}
-						alt={guia.meta.portadaAlt}
-						{...(guia.meta.portadaCredito !== undefined
-							? { credito: guia.meta.portadaCredito }
-							: {})}
-					/>
-				)}
+				<GuiaCover
+					src={guia.meta.portada}
+					alt={guia.meta.portadaAlt}
+					{...(guia.meta.portadaCredito !== undefined
+						? { credito: guia.meta.portadaCredito }
+						: {})}
+				/>
 
 				<div className="mx-auto max-w-360 px-5 pt-10 pb-16 sm:px-8 lg:px-10">
 					<div className="mx-auto max-w-prose lg:grid lg:max-w-[calc(65ch+20rem)] lg:grid-cols-[minmax(0,65ch)_16rem] lg:gap-16">

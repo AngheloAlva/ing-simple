@@ -53,25 +53,18 @@ function FilteredEmptyState({ onClear }: { onClear: () => void }): ReactNode {
 }
 
 function GuiaCard({ guia }: { guia: GuiaMeta }): ReactNode {
-	// A relief cover's still is a transparent PNG framed for the 16/9 article
-	// cover: `object-contain` on this 16/10 card avoids cropping the sculpture,
-	// and the themed backdrop behind it reads as an intentional mat, not a gap.
-	const hasRelieve = guia.portadaRelieve !== undefined
-
 	return (
 		<Link
 			href={`/guias/${guia.slug}`}
 			className="group border-border bg-background hover:border-primary focus-visible:outline-primary flex flex-col overflow-hidden rounded-sm border transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2"
 		>
-			<div
-				className={`border-border relative aspect-[16/10] overflow-hidden border-b ${hasRelieve ? "dark:bg-muted bg-[#E0DCD7]" : ""}`}
-			>
+			<div className="border-border relative aspect-[16/10] overflow-hidden border-b">
 				<Image
 					src={guia.portada}
 					alt={guia.portadaAlt}
 					fill
 					sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-					className={`transition-transform duration-300 group-hover:scale-[1.03] ${hasRelieve ? "object-contain" : "object-cover"}`}
+					className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
 				/>
 			</div>
 

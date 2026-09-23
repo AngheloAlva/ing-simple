@@ -4,8 +4,8 @@ import type { ReactNode } from "react"
 /**
  * Full-bleed cover photo under the nav. Framed with the site's chrome
  * (border, `rounded-sm`) inside the page container — never edge-to-edge
- * without a frame, per `DESIGN.md`. No duotone: the photo carries the
- * subject, the frame carries the brand.
+ * without a frame, per `DESIGN.md`. Today a photographic frame; the
+ * illustration register replaces it (see `odd/tasks/guias-cover-plates.md`).
  */
 export function GuiaCover({
 	src,
