@@ -172,9 +172,9 @@ Depth: the near edge of the desk crosses the lower part of the frame. No person
 at all — no figure, no hands, no chair.
 
 Prop kit, kept to two objects: a matte flat mug with its coffee surface filled
-solid black, and one leaf of a long-leaved plant entering the top corner as a
-dense dark mass, not a light sweep. The near edge of the desk is a solid black
-band.
+solid black, and one leaf of a long-leaved plant reaching into
+the top corner, fully inside the canvas, as a dense dark mass, not a light sweep.
+The near edge of the desk is a solid black band.
 
 Wide landscape canvas at 3:2, not a square. Keep the subject centred with at least
 18% empty margin on all four sides, and let no element touch or run off the canvas
@@ -212,8 +212,8 @@ overlaps it. Only a hand and forearm — no face, no head, no body, no chair.
 
 Prop kit, kept to two objects for simplicity: a matte flat mug with its coffee
 surface filled solid black, and a small stack of loose sheets whose near edges are
-solid black. One leaf of a long-leaved plant enters the top corner as a dense dark
-mass, not a light sweep.
+solid black. One leaf of a long-leaved plant reaches into the top corner, fully
+inside the canvas, as a dense dark mass, not a light sweep.
 ```
 
 ### 3. `no-sensitive-data.png` — "Sin datos sensibles"
@@ -249,7 +249,8 @@ overlaps it. No person at all — no figure, no hands, no chair.
 
 Prop kit, kept to three objects: a matte flat mug with its coffee surface filled
 solid black, a black pen resting flat on the desk as a solid black mass, and one
-leaf of a long-leaved plant entering the top corner as a dense dark mass. The near
+leaf of a long-leaved plant reaching into the top corner, fully inside the canvas,
+as a dense dark mass. The near
 edge of the desk is a solid black band.
 
 Wide landscape canvas at 3:2, not a square. Keep the subject centred with at least
