@@ -144,8 +144,11 @@ changes are marked and explained below.
 - [x] Verify the branch: `pnpm typecheck`, scoped lint, focused tests, every
       referenced `/img/cases/` path resolved on disk.
 - [x] Commit as work units on this branch.
-- [ ] **The user's visual check of the three plates in both themes.** Still the
-      open gate; see "Family measurements" for what the numbers cannot see.
+- [x] **The user's visual check of the three plates in both themes: approved**
+      (2026-09-23), on the strength of "Se ve excelente". That closes the open
+      question in "Family measurements": the plates read as duotone images rather
+      than washed panels, so the desk grey does not need darkening and the treatment
+      filters stay exactly as they are.
 - [ ] Measure the served weight of the three assets once the family closes.
 
 ```
@@ -586,6 +589,28 @@ shadow carry more solid black, rather than touching the treatment filters.
   in `next.config.ts`, which is what keeps this weight-neutral.
 - **Optimizer cache.** Replacing an asset at its existing path does not invalidate
   Next's image cache. `rm -rf .next` before judging any regenerated plate.
+
+## Delivered shape
+
+One component, three assets, one new directory, and nothing else moved.
+
+```
+M  components/casos/confidentiality.tsx
+A  public/img/cases/confidentiality.png
+A  public/img/cases/faithful-mockups.png
+A  public/img/cases/no-sensitive-data.png
+A  odd/tasks/casos-confidentiality-plates.md
+```
+
+`confidentiality.tsx` lost its `lucide-react` imports, its `icon` field and its
+icon branch, gained `image`/`imageAlt` as required fields, and swapped a small icon
+square per item for a full-width plate above the text. Its left column gained
+`lg:sticky lg:top-24`.
+
+Two invariants now hold by compiler rather than by convention: an item without a
+plate fails to compile, because `image` is required, and the section cannot render a
+half-illustrated state, because there is no branch left to render it through. That
+is the same shape `problem.tsx` reached when its `hasImage` branch was collapsed.
 
 ## Evidence
 
