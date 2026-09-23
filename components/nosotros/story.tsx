@@ -7,17 +7,29 @@ import { Kicker } from "@/components/corner-plus"
 import GradientText from "@/components/gradient-text"
 import { brandGradient } from "@/lib/gradient"
 import { IllustrationPlate } from "@/components/illustration-plate"
+import type { ServiceSlug } from "@/lib/service-accent"
 
 interface Chapter {
 	year: string
 	title: string
 	detail: string
-	image: string
+	/** The service this milestone is about. It picks the drawing and the accent the
+	 *  plate is tinted with, so the two can never disagree. */
+	service: ServiceSlug
 	imageAlt: string
 	/** Line-art assets carry their own transparent ground and arrive already
 	 *  neutral, so they skip the tonal compression that the near-white 3D
 	 *  renders the other chapters still use. */
 	lineArt?: boolean
+}
+
+/** Each milestone shows its service's own drawing. An exhaustive record, so
+ *  adding a member to `ServiceSlug` fails to compile until its asset is listed. */
+const CHAPTER_IMAGE: Record<ServiceSlug, string> = {
+	reportabilidad: "/img/about/power-bi.png",
+	capacitaciones: "/img/about/training.png",
+	"desarrollo-web": "/img/about/web.png",
+	automatizaciones: "/img/about/power-platform.png",
 }
 
 // The 4 real milestones of IngSimple, migrated from the previous site.
@@ -27,8 +39,8 @@ const chapters: Chapter[] = [
 		title: "Power BI",
 		detail:
 			"Comenzamos transformando datos en decisiones. Nuestros primeros dashboards y reportes en Power BI ayudaron a empresas a visualizar su información de forma clara y accionable.",
-		image: "/img/about/power-bi.png",
 		imageAlt: "Dashboards y reportes en Power BI",
+		service: "reportabilidad",
 		lineArt: true,
 	},
 	{
@@ -36,8 +48,8 @@ const chapters: Chapter[] = [
 		title: "Automatización de procesos",
 		detail:
 			"Escalamos hacia la automatización de procesos con Power Apps, Power Automate y SharePoint. Empezamos a digitalizar formularios, automatizar flujos y reemplazar procesos manuales con soluciones rápidas y escalables.",
-		image: "/img/about/power-platform.png",
 		imageAlt: "Automatización de procesos con Power Platform",
+		service: "automatizaciones",
 		lineArt: true,
 	},
 	{
@@ -45,8 +57,8 @@ const chapters: Chapter[] = [
 		title: "Capacitaciones",
 		detail:
 			"Abrimos nuestra línea de formación. Cursos prácticos de Power BI, Power Apps y Excel avanzado adaptados al nivel de cada equipo, con ejercicios reales y acompañamiento continuo.",
-		image: "/img/about/training.png",
 		imageAlt: "Capacitación de equipos",
+		service: "capacitaciones",
 		lineArt: true,
 	},
 	{
@@ -54,8 +66,8 @@ const chapters: Chapter[] = [
 		title: "Desarrollo web",
 		detail:
 			"Incorporamos el desarrollo de sitios web modernos y funcionales. Landing pages, sitios corporativos y portales enfocados en experiencia de usuario y resultados concretos.",
-		image: "/img/about/web.png",
 		imageAlt: "Desarrollo web moderno",
+		service: "desarrollo-web",
 		lineArt: true,
 	},
 ]
@@ -177,6 +189,7 @@ export function NosotrosStory() {
 								<motion.article
 									key={`${chapter.year}-${chapter.title}`}
 									variants={item}
+									data-service={chapter.service}
 									className="relative pl-10 sm:pl-14"
 								>
 									<span className="bg-foreground ring-background absolute top-0.5 left-0 h-[11px] w-[11px] ring-4" />
@@ -190,7 +203,7 @@ export function NosotrosStory() {
 										{chapter.detail}
 									</p>
 									<IllustrationPlate
-										src={chapter.image}
+										src={CHAPTER_IMAGE[chapter.service]}
 										alt={chapter.imageAlt}
 										sizes="(max-width: 1024px) 100vw, 55vw"
 										priority={i === 0}
