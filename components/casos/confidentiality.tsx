@@ -85,13 +85,22 @@ export function CasosConfidentiality(): ReactNode {
                 {/* The plate runs the full inner width of the panel and carries no
                     padding of its own: it is the item's image, not an inset
                     thumbnail. Only the first one needs the panel's top radius,
-                    because every other plate meets a divider line. */}
+                    because every other plate meets a divider line.
+
+                    `object-cover`, not the component's default `object-contain`:
+                    the assets for this family are generated wide, at the plate's
+                    own 3:2, so there is no letterbox to preserve. See the task
+                    document — the "square or 4:3, never 16:9" constraint of the
+                    other two families existed because their asset had to survive
+                    both a 16/9 frame and a square nav tile, and that reason does
+                    not hold here. */}
                 {item.image ? (
                   <IllustrationPlate
                     src={item.image}
                     alt={item.imageAlt ?? ""}
                     sizes="(min-width: 1024px) 45vw, 92vw"
-                    frame={`aspect-[16/9] w-full${i === 0 ? " rounded-t-sm" : ""}`}
+                    className="object-cover"
+                    frame={`aspect-[3/2] w-full${i === 0 ? " rounded-t-sm" : ""}`}
                   />
                 ) : null}
 
