@@ -79,10 +79,13 @@ The three devices are deliberately different from each other and from the two
 shipped families: none is a person seated at a desk facing a screen. The second
 has only a hand and a forearm as the human subject.
 
-## Constraints (carried from the shipped families, unchanged)
+## Constraints
 
-- Fully transparent background. Non-negotiable: the nav tile and every plate
-  composite the asset over a solid ground.
+Carried from the shipped families except where the premise changed; the two
+changes are marked and explained below.
+
+- Fully transparent background. Non-negotiable: the plate composites the asset
+  over a solid ground.
 - Neutral ink: black contour plus at most two flat mid-grey tones. No colour of
   any kind; the duotone stack supplies the hue and the asset supplies the luminosity.
 - Real tonal range: enough dark, mid and light mass. Near-white artwork collapses
@@ -94,15 +97,24 @@ has only a hand and a forearm as the human subject.
 - Cliché ban: no gears, no lightbulbs, no rockets, no handshakes, no targets with
   arrows, no magnifying glasses over puzzle pieces, no floating icons, no smiling
   figure facing the viewer.
-- Canvas: **wide landscape at the plate's own 3:2**, with at least 18% empty margin
-  on all four sides, and no element touching or running off the canvas edge. The
-  other two families' "square or 4:3, never 16:9" is deliberately **not**
-  inherited: that constraint existed because their asset had to survive two
-  frames, the 16/9 story plate and the near-square nav tile. A plate in this
-  section renders in exactly one frame, so a square asset letterboxes into a
-  floating island and its edge-running composition reads as a crop. See "The canvas
-  was the wrong shape".
-- Under ~250 KB per file after the generator's output is re-encoded.
+- Canvas: **wide landscape at the plate's own 3:2**, and the composition **fills
+  it** — the desk, the objects and the plant extend past all four canvas edges and
+  are cropped by them. Empty transparency is allowed **between** objects, never as
+  a band framing the drawing.
+
+  Both halves of that depart from the shipped families, and both departures come
+  from the same discovery: their rules were written for an asset that
+  `object-cover` crops into a *different* frame. "Square or 4:3, never 16:9" existed
+  because the `about` asset had to survive both a 16/9 story plate and a near-square
+  nav tile. "At least 18% empty margin on all four sides" existed to keep the
+  subject alive through that crop. A plate in this section renders in exactly one
+  frame, at the asset's own ratio, so nothing is ever cropped: a square canvas
+  letterboxes into a floating island, and a margin does nothing except push the
+  drawing away from its own edges, where it reads as padding. See "The canvas was
+  the wrong shape" and "The margin rule was the padding".
+- Under ~250 KB per file after the generator's output is re-encoded. Not met by any
+  asset of this family so far (the shipped one is 1,144 KB); see the served-weight
+  note under Risks, which is the number that actually reaches a visitor.
 
 ## Non-goals
 
@@ -136,14 +148,16 @@ has only a hand and a forearm as the human subject.
 
 ## Briefs
 
-All three are paste-ready. The style block is the one that produced the approved
-families and is repeated verbatim; the paragraph that follows it is the
-**treatment correction** this pilot forced (see "Pilot verification"): the
-validated block says "a few surfaces filled in flat pure black" and the model
-obeyed literally, so the treatment is now requested in the positive and with a
-numeric tonal target.
+Two parts, pasted together: the **shared block**, which is identical for all three
+assets, and one **subject** paragraph per asset. The split is deliberate. The
+previous version repeated the whole prompt three times, and that is how a stale
+instruction survived in two of them while the document said the opposite: the
+canvas block still asked for "at least 18% empty margin on all four sides" after
+the margin rule had been rescoped as inapplicable. One copy, one place to fix.
 
-### 1. `confidentiality.png` — "Confidencialidad primero"
+The style block is the one that produced the approved families, verbatim.
+
+### Shared block
 
 ```
 Flat two-colour editorial illustration, hand-drawn ink style. Confident black
@@ -159,50 +173,57 @@ or airbrushed shadows. No gradient on any surface. Nothing glossy or reflective.
 Target roughly one third of the ink as solid black, one third as flat mid-grey,
 one third open white.
 
-Subject: a closed folder lying flat on a desk seen in three-quarter perspective
-and tilted toward the viewer. The folder is sealed across its width with a wide
-solid black band, and a plain flat disc rests on that band as a seal. Nothing is
-written or drawn on the disc or anywhere on the folder. Beside the folder, a
-small stack of loose sheets lies face down, their blank backs up.
+Wide landscape canvas at 3:2, not a square, and fill it: the desk, the objects and
+the plant extend past all four canvas edges and are cropped by them. There is no
+empty border around the drawing. Transparent areas are allowed only between
+objects, never as a band framing the whole subject.
+
+Strictly avoid: any text, letters, numbers or logos; any user interface presented
+as a grid of bordered panels or rounded rectangles; sliders, toolbars and window
+chrome; soft or blurred shadows; gradients; glossy or reflective surfaces; 3D
+renders; photorealism; gears, lightbulbs, rockets, handshakes, targets, magnifying
+glasses, floating icons; a face or a figure facing the viewer; colour of any kind.
+```
+
+### 1. `confidentiality.png` — subject only
+
+```
+A closed folder lying flat on a desk seen in three-quarter perspective and tilted
+toward the viewer. The folder is sealed across its width with a wide solid black
+band, and a plain flat disc rests on that band as a seal. Nothing is written or
+drawn on the disc or anywhere on the folder. Beside the folder, a small stack of
+loose sheets lies face down, their blank backs up.
 
 Escape gesture: the sheet at the bottom of the folder slips out and hangs past
 the near edge of the desk, its visible corner already beyond the desk lip.
 
-Depth: the near edge of the desk crosses the lower part of the frame. No person
-at all — no figure, no hands, no chair.
+Depth: the near edge of the desk crosses the lower part of the frame. No person at
+all — no figure, no hands, no chair.
 
-Prop kit, kept to two objects: a matte flat mug with its coffee surface filled
-solid black, and one leaf of a long-leaved plant reaching into
-the top corner, fully inside the canvas, as a dense dark mass, not a light sweep.
-The near edge of the desk is a solid black band.
-
-Wide landscape canvas at 3:2, not a square. Keep the subject centred with at least
-18% empty margin on all four sides, and let no element touch or run off the canvas
-edge.
-
-Strictly avoid: any text, letters, numbers or logos; any user interface presented
-as a grid of bordered panels or rounded rectangles; soft or blurred shadows;
-gradients; glossy or reflective surfaces; 3D renders; photorealism; a padlock or
-a shield; gears, lightbulbs, rockets, handshakes, targets, magnifying glasses,
-floating icons; a person; colour of any kind.
+Prop kit: a matte flat mug with its coffee surface filled solid black, and a leaf
+of a long-leaved plant reaching in from the top corner. The near edge of the desk
+is a solid black band.
 ```
 
-### 2. `faithful-mockups.png` — "Mockups fieles a lo real"
+Add to the avoid list for this one: a padlock or a shield.
 
-Superseded twice: the treatment was corrected on the second generation
+### 2. `faithful-mockups.png` — subject only
+
+Superseded three times: the treatment was corrected on the second generation
 ("`a few` surfaces filled in flat pure black" produced a drawing half as dark as
-the family), and the canvas was corrected on the third (a square asset cannot fill
-a 3:2 plate without reading as a crop). Regenerate at the new canvas with the same
-style block and treatment paragraph as the other two, and this subject:
+the family), the canvas on the third (a square asset cannot fill a 3:2 plate), and
+the framing on the fourth (a brief that asks for 18% margins around the subject
+produces a drawing floating inside its own canvas, which reads as padding). The
+shipped file is the third generation, trimmed programmatically to its content box.
 
 ```
-Subject: a drafting sheet lying on a desk seen in three-quarter perspective and
-tilted toward the viewer. On the sheet, a screen layout drawn in ink line work:
-one wide header band across the top filled solid black, a single headline line
-under it, and two columns of short dash rows as body text. The lower rows are
-still unfinished. A single hand and forearm enter from the near lower edge of the
-frame holding a pen, caught mid-stroke, completing the last dash row. The sleeve
-of the forearm is a large solid black mass.
+A drafting sheet lying on a desk seen in three-quarter perspective and tilted
+toward the viewer. On the sheet, a screen layout drawn in ink line work: one wide
+header band across the top filled solid black, a single headline line under it,
+and two columns of short dash rows as body text. The lower rows are still
+unfinished. A single hand and forearm enter from the near lower edge of the frame
+holding a pen, caught mid-stroke, completing the last dash row. The sleeve of the
+forearm is a large solid black mass.
 
 Escape gesture: the row the pen is drawing runs on past the right edge of its own
 sheet and hangs over the near edge of the desk.
@@ -210,58 +231,31 @@ sheet and hangs over the near edge of the desk.
 Depth: the near edge of the desk crosses the lower part of the frame and the sheet
 overlaps it. Only a hand and forearm — no face, no head, no body, no chair.
 
-Prop kit, kept to two objects for simplicity: a matte flat mug with its coffee
-surface filled solid black, and a small stack of loose sheets whose near edges are
-solid black. One leaf of a long-leaved plant reaches into the top corner, fully
-inside the canvas, as a dense dark mass, not a light sweep.
+Prop kit: a matte flat mug with its coffee surface filled solid black, a small
+stack of loose sheets whose near edges are solid black, and a leaf of a
+long-leaved plant reaching in from the top corner.
 ```
 
-### 3. `no-sensitive-data.png` — "Sin datos sensibles"
+### 3. `no-sensitive-data.png` — subject only
 
 ```
-Flat two-colour editorial illustration, hand-drawn ink style. Confident black
-contour lines with a few surfaces filled in flat pure black, plus exactly two
-flat mid-grey tones for shading. No other colours anywhere. No gradients, no
-glow, no glossy or plastic surfaces, no 3D render, no photorealism, no painterly
-texture. Isolated on a fully transparent background.
+A single sheet of paper lying on a desk seen in three-quarter perspective and
+tilted toward the viewer. Across the sheet, rows of short ink dashes stand for
+written text. From the top of the sheet downward the rows change: the first rows
+are full dashes, the middle rows are shorter dashes, and the last rows are small
+empty outlined blocks the size of the words they replaced. Those blocks still sit
+on the ruled rows — they are word-sized holes in the text, never panels, never a
+card grid, never a bordered rectangle larger than a word.
 
-Ink treatment, and this is the part that matters most: large areas of solid flat
-pure black, not small accents. Every shadow, every shaded surface and every
-interior tone is a flat shape with a hard, crisp edge. No soft, blurred, diffused
-or airbrushed shadows. No gradient on any surface. Nothing glossy or reflective.
-Target roughly one third of the ink as solid black, one third as flat mid-grey,
-one third open white.
-
-Subject: a single sheet of paper lying on a desk seen in three-quarter
-perspective and tilted toward the viewer. Across the sheet, rows of short ink
-dashes stand for written text. From the top of the sheet downward the rows
-change: the first rows are full dashes, the middle rows are shorter dashes, and
-the last rows are small empty outlined blocks the size of the words they
-replaced. Those blocks still sit on the ruled rows — they are word-sized holes in
-the text, never panels, never a card grid, never a bordered rectangle larger than
-a word.
-
-Escape gesture: the last row of empty blocks runs past the right edge of the
-sheet and hangs over the near edge of the desk.
+Escape gesture: the last row of empty blocks runs past the right edge of the sheet
+and hangs over the near edge of the desk.
 
 Depth: the near edge of the desk crosses the lower part of the frame and the sheet
 overlaps it. No person at all — no figure, no hands, no chair.
 
-Prop kit, kept to three objects: a matte flat mug with its coffee surface filled
-solid black, a black pen resting flat on the desk as a solid black mass, and one
-leaf of a long-leaved plant reaching into the top corner, fully inside the canvas,
-as a dense dark mass. The near
-edge of the desk is a solid black band.
-
-Wide landscape canvas at 3:2, not a square. Keep the subject centred with at least
-18% empty margin on all four sides, and let no element touch or run off the canvas
-edge.
-
-Strictly avoid: any text, letters, numbers or logos; any user interface presented
-as a grid of bordered panels or rounded rectangles; soft or blurred shadows;
-gradients; glossy or reflective surfaces; 3D renders; photorealism; gears,
-lightbulbs, rockets, handshakes, targets, magnifying glasses, floating icons; a
-person; colour of any kind.
+Prop kit: a matte flat mug with its coffee surface filled solid black, a black pen
+resting flat on the desk as a solid black mass, and a leaf of a long-leaved plant
+reaching in from the top corner. The near edge of the desk is a solid black band.
 ```
 
 ## Pilot verification — `faithful-mockups.png`
@@ -453,6 +447,54 @@ in the browser, not by the table. Served weight is also unmeasured: the source i
 1,376 KB, and the family's measurement showed that line art on transparency is
 WebP's worst case, which is why AVIF was enabled. Measure the served bytes when the
 family closes, the way the `about` family did.
+
+### The margin rule was the padding
+
+Reported by the user after the browser check: "sigue viéndose con un padding...
+puedes hacer que la imagen esté pegada a los bordes".
+
+**The plate was already edge to edge.** The duotone ground reached the panel's
+border on all four sides. What read as padding was the **drawing inset inside its
+own PNG**: a transparent border measuring 11.9% left, 11.8% right, 14.9% top and
+5.8% bottom at alpha > 64, with the drawing occupying only 76% of the canvas width.
+
+**The cause was the brief, and it was mine.** It asked for "at least 18% empty
+margin on all four sides", and the model produced exactly that. Worse: two sections
+above the brief, this same document already said "the 18% margin rule exists to
+protect a subject against a crop into a different aspect; with 1536 x 1024 in a 3:2
+frame there is no crop to protect against". I identified the rule as inapplicable
+and then left the number in the prompt the generator reads. That is the same
+failure twice: a rule carried past its premise, and a document contradicting its own
+brief.
+
+It is the third generation this single carried-over rule has cost. The lesson is
+not "be careful with margins". It is that a constraint has a premise, and when the
+premise is gone the constraint has to be removed from the artifact the generator
+reads, not merely noted as inapplicable somewhere else.
+
+**Fixed in both places.**
+
+1. The briefs no longer mention margins at all. The shared canvas block now asks
+   for the composition to fill the canvas, with the desk, the objects and the plant
+   extending past all four edges, and transparency allowed only between objects.
+   The three prompts were also collapsed into one shared block plus one subject
+   paragraph each, because the old version repeated the whole prompt three times
+   and that is how a stale instruction survived in two of the three.
+2. The shipped asset was **trimmed losslessly to its content box** with a stdlib PNG
+   re-encoder (`/tmp/pngtrim.py`, zlib + struct + a hand-rolled chunk writer):
+   1536 x 1024 -> 1176 x 814, the content box going from L 11.9 / R 11.8 / T 14.9 /
+   B 5.8 to **0.00% on all four sides** at alpha > 0, with the ink pixel count
+   identical (653,997) and the tonal distribution unchanged at dark 33.9 / mid 6.4 /
+   light 59.8. Identical pixel statistics before and after are the evidence that the
+   re-encode changed no pixel value, and the file also dropped from 1,376 KB to
+   1,144 KB.
+
+The trimmed asset's ratio is 1.445 against the frame's 1.5, so `object-cover` now
+crops 1.85% off each side. That is the only crop in the pipeline and it is
+under 2%. The frame stays 3:2 rather than following the trimmed box, because 3:2 is
+the canvas the generator produces: future assets for this family arrive at exactly
+3:2 and will fill it with no crop at all, and bending the frame to a trimmed asset's
+incidental box would then crop *those* by 3.7%.
 
 ## Risks
 
