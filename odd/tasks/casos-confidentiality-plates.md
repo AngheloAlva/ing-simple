@@ -94,8 +94,14 @@ has only a hand and a forearm as the human subject.
 - Cliché ban: no gears, no lightbulbs, no rockets, no handshakes, no targets with
   arrows, no magnifying glasses over puzzle pieces, no floating icons, no smiling
   figure facing the viewer.
-- Canvas square or 4:3, never 16:9 and never portrait, with at least 18% empty
-  margin all round so the subject survives the frame.
+- Canvas: **wide landscape at the plate's own 3:2**, with at least 18% empty margin
+  on all four sides, and no element touching or running off the canvas edge. The
+  other two families' "square or 4:3, never 16:9" is deliberately **not**
+  inherited: that constraint existed because their asset had to survive two
+  frames, the 16/9 story plate and the near-square nav tile. A plate in this
+  section renders in exactly one frame, so a square asset letterboxes into a
+  floating island and its edge-running composition reads as a crop. See "The canvas
+  was the wrong shape".
 - Under ~250 KB per file after the generator's output is re-encoded.
 
 ## Non-goals
@@ -170,8 +176,9 @@ solid black, and one leaf of a long-leaved plant entering the top corner as a
 dense dark mass, not a light sweep. The near edge of the desk is a solid black
 band.
 
-Square 1:1 canvas. Keep the subject centred with at least 18% empty margin on all
-four sides.
+Wide landscape canvas at 3:2, not a square. Keep the subject centred with at least
+18% empty margin on all four sides, and let no element touch or run off the canvas
+edge.
 
 Strictly avoid: any text, letters, numbers or logos; any user interface presented
 as a grid of bordered panels or rounded rectangles; soft or blurred shadows;
@@ -182,14 +189,32 @@ floating icons; a person; colour of any kind.
 
 ### 2. `faithful-mockups.png` — "Mockups fieles a lo real"
 
-Delivered and regenerated. The full brief is the one the user pasted on
-2026-09-23; its content is the same style block, the same treatment correction,
-and the subject: a drafting sheet on a desk carrying a screen layout drawn in ink
-(one wide header band filled solid black, one headline line, two columns of short
-dash rows), with a single hand and forearm entering from the near lower edge
-holding a pen caught mid-stroke, the sleeve a large solid black mass, and the row
-the pen draws running past the sheet's right edge and over the near edge of the
-desk.
+Superseded twice: the treatment was corrected on the second generation
+("`a few` surfaces filled in flat pure black" produced a drawing half as dark as
+the family), and the canvas was corrected on the third (a square asset cannot fill
+a 3:2 plate without reading as a crop). Regenerate at the new canvas with the same
+style block and treatment paragraph as the other two, and this subject:
+
+```
+Subject: a drafting sheet lying on a desk seen in three-quarter perspective and
+tilted toward the viewer. On the sheet, a screen layout drawn in ink line work:
+one wide header band across the top filled solid black, a single headline line
+under it, and two columns of short dash rows as body text. The lower rows are
+still unfinished. A single hand and forearm enter from the near lower edge of the
+frame holding a pen, caught mid-stroke, completing the last dash row. The sleeve
+of the forearm is a large solid black mass.
+
+Escape gesture: the row the pen is drawing runs on past the right edge of its own
+sheet and hangs over the near edge of the desk.
+
+Depth: the near edge of the desk crosses the lower part of the frame and the sheet
+overlaps it. Only a hand and forearm — no face, no head, no body, no chair.
+
+Prop kit, kept to two objects for simplicity: a matte flat mug with its coffee
+surface filled solid black, and a small stack of loose sheets whose near edges are
+solid black. One leaf of a long-leaved plant enters the top corner as a dense dark
+mass, not a light sweep.
+```
 
 ### 3. `no-sensitive-data.png` — "Sin datos sensibles"
 
@@ -227,8 +252,9 @@ solid black, a black pen resting flat on the desk as a solid black mass, and one
 leaf of a long-leaved plant entering the top corner as a dense dark mass. The near
 edge of the desk is a solid black band.
 
-Square 1:1 canvas. Keep the subject centred with at least 18% empty margin on all
-four sides.
+Wide landscape canvas at 3:2, not a square. Keep the subject centred with at least
+18% empty margin on all four sides, and let no element touch or run off the canvas
+edge.
 
 Strictly avoid: any text, letters, numbers or logos; any user interface presented
 as a grid of bordered panels or rounded rectangles; soft or blurred shadows;
@@ -342,6 +368,47 @@ second item of `components/casos/confidentiality.tsx` through `IllustrationPlate
 with the icon branch left in place for the other two items. When their plates land
 the branch collapses and `image` becomes required, exactly as `problem.tsx`'s
 `hasImage` branch was collapsed after its family shipped.
+
+### The canvas was the wrong shape, and I read past the measurement
+
+Seen by the user in the browser on 2026-09-23, in the new full-width layout. Their
+words: the illustration "queda mal porque está cortada en vez de haber generado
+una con las proporciones correctas". They are right, and there are two causes.
+
+**The structural one.** The plate is wide and the asset is square, so
+`object-contain` fits the drawing into the centre and lets the duotone ground fill
+the rest. The result is a square island floating in a wide blue field with a hard
+vertical edge on each side.
+
+**The visible one, and it is the one that reads as a crop.** The composition runs
+off its own canvas: the lower-right plant leaf and the right end of the desk are
+clipped by the asset's right edge, and the sleeve is clipped by its bottom edge.
+At 208px as an inset thumbnail nobody noticed. At full width the letterbox becomes
+the frame and those clipped edges become the subject's frame, so the drawing reads
+as a bad crop of a wider scene.
+
+**The measurement was there and I waved it through.** The content box at
+alpha > 64 measured L 11.2% R 11.2% T 13.8% **B 9.5%** against an 18% requirement,
+and my own verdict in the table above reads "acceptable: `object-contain` on a
+transparent asset makes these non-critical". That sentence was the mistake: I
+excused a violated constraint because the fit mode hid it, when the constraint
+existed precisely to keep the subject off the edges. A margin is not cosmetic. It
+is the only thing standing between a drawing and a crop.
+
+**Fix, applied in two places.** The brief now asks for the canvas at the plate's
+own 3:2, at least 18% empty margin on all four sides, and explicitly forbids any
+element touching or running off the canvas edge. And the integration moved from the
+component's default `object-contain` to `object-cover` on an `aspect-[3/2]` frame,
+so a matching asset fills the plate exactly and a slightly-off one fills it with a
+few percent of crop instead of a band of ground.
+
+**Where the aspect constraint came from, for the record.** "Square or 4:3, never
+16:9 or portrait" was written for the `about` family, whose asset had to survive
+`object-cover` inside both a 16/9 story frame and the near-square nav tile, and was
+inherited verbatim by the `problemas` family without re-deriving it. Neither reason
+survives here: one frame, no nav tile. Re-deriving a constraint when its premise
+changes is part of the job, and this is the second time in this project that a
+carried-over rule cost a generation.
 
 ## Risks
 
