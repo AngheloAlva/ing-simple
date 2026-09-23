@@ -133,8 +133,11 @@ Consequences to accept:
 - [x] `lib/guias/schema.test.ts:87` needed no change after all. It names
       `/img/about/web.png`, which exists again.
 - [ ] Decide the ASCII confluence point, if any: see "The ASCII layer" below.
-- [ ] Visual check of the three new chapters on `/sobre-nosotros` and in the
-      dropdown, both themes.
+- [x] Visual check of the three new chapters on `/sobre-nosotros` and in the
+      dropdown, both themes: done by the user. It passed for the plates and
+      surfaced a defect the measurements could not see — all four timeline
+      illustrations were rendering in the base blue rather than each service's
+      accent. Fixed the same day; see "Timeline accent scoping" below.
 - [ ] Verify: typecheck, scoped lint, focused tests.
 
 ## Risks
@@ -753,7 +756,10 @@ at 48% reproduces the base veil `#9bc0ff` and mixing it with black at 49% reprod
 a delta of 4/255, and the dark veil at `#032260` against `#0a235c`, a delta of 7/255.
 Layer 1, which carries the hue at 90% opacity, is byte-identical because the token's
 base value *is* the same hex. Layer 2 is applied at 30-45% with multiply, so the
-effective shift is one or two units. The timeline does not visibly move.
+effective shift is one or two units. The timeline did not visibly move — that was
+the point at the time, because the timeline carried no `data-service` and so kept
+the base blue. That decision was reversed a day later, on seeing it rendered: see
+"Timeline accent scoping" below.
 
 This needed no per-service block and no test change. `lib/service-accent.test.ts`
 asserts that six named tokens are *present* in each override, not that no others
@@ -773,6 +779,69 @@ implementations had diverged. `DuotoneOverlay` uses `opacity-25` on the white la
 where the plate uses `opacity-15`, and it carries an extra blue screen layer in dark
 mode that the plate does not. They were two versions of one effect and nobody
 noticed, because one of them stopped being rendered.
+
+## Timeline accent scoping
+
+**The defect.** All four illustrations in the history timeline on `/sobre-nosotros`
+rendered in the base blue instead of each service's accent, and it was caught by
+looking rather than by measuring. Every check in this document passed while it was
+broken: the assets were right, the tonal ranges were right, the served weight was
+right, and the build was green.
+
+**The cause.** The plate tints its blend layers from `--illustration-tint` and
+`--illustration-veil`, whose base values are blue, and the `[data-service]` rule
+above is what remaps them to a service accent. `IllustrationPlate` has exactly two
+call sites:
+
+- `components/servicios/problem.tsx` renders inside the `<main data-service>` that
+  `app/servicios/[slug]/page.tsx` stamps, so it was already correct. There was never
+  anything to fix on the service pages.
+- `components/nosotros/story.tsx` stamped nothing, so all four chapters fell through
+  to the base blue. This was the only gap. The nav dropdown tile was already correct
+  too, because `components/nav-visual.tsx` stamps its own.
+
+So the mechanism already existed and was already declared in a comment on the plate
+("any element carrying `data-service` remaps those tokens"). One call site simply
+never opted in.
+
+**The fix.** Each chapter now declares `service: ServiceSlug` and nothing else about
+its art, and a module-level record holds the paths:
+
+```ts
+const CHAPTER_IMAGE: Record<ServiceSlug, string> = {
+	reportabilidad: "/img/about/power-bi.png",
+	capacitaciones: "/img/about/training.png",
+	"desarrollo-web": "/img/about/web.png",
+	automatizaciones: "/img/about/power-platform.png",
+}
+```
+
+The record is what makes this safe rather than merely tidy. Keeping a per-chapter
+`image` field *and* adding a `service` field would have left two fields that must
+agree, and a drift between them renders one service's drawing in another service's
+accent — a defect that looks like a colour bug and is actually a data bug. Deriving
+the asset from the slug removes the possibility, and `Record<ServiceSlug, string>` is
+exhaustively checked, so a fifth service fails to compile until its asset is listed.
+
+`data-service={chapter.service}` goes on each chapter's `<motion.article>`. The
+per-slug CSS blocks remap six tokens besides the two illustration ones
+(`--brand-tint`, `--primary`, `--primary-foreground`, `--brand-blue`,
+`--brand-blue-foreground`, `--ring`), but nothing in a chapter's own markup reads any
+of them — the dot is `bg-foreground` with `ring-background`, the text is
+`muted-foreground`, the frame border is `border-border` — so the only visible change
+is the plate's tint.
+
+**Verified.** Typecheck, lint, 200 tests and a 43/43 build all green. In the
+prerendered `/sobre-nosotros` HTML each of the four `data-service` values appears
+exactly once, inside its own `<article>`, and each article carries the matching
+drawing: reportabilidad to `power-bi`, automatizaciones to `power-platform`,
+capacitaciones to `training`, desarrollo-web to `web`. The four service routes keep
+their own plates on a clean diagonal, unchanged.
+
+**Not verified, and it is the check that matters here.** The structural check proves
+the attribute reaches the DOM and that the pairing is right. It does not prove the
+tint resolves, because that needs a browser to evaluate the custom-property cascade.
+The visual check in both themes is the user's.
 
 ## The optimizer cache trap
 
