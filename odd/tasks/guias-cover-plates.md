@@ -345,12 +345,19 @@ not an object the model can draw, and it produced a vague ribbon.
       not have caught a missing cover, because all three guides are drafts and
       `getAllGuias` filters them out before `assertCoversExist` ever runs — the manual
       resolution check is the only one that can, which is why it is listed separately.
-- [ ] **The user's visual check of the three covers in both themes, in `pnpm dev`.** The
-      open gate, and the only one that can see whether a family at 23-28% black reads
-      as an image or washes out.
-- [ ] Measure the served weight of the three covers.
+- [x] **The user's visual check of the covers and of the grid card, in both themes, in
+      `pnpm dev`: approved** (2026-09-23). Their words after the card fix: "Todo
+      perfecto ahora si". That closes the question the histogram could not answer — a
+      family at 23-28% black reads as an image rather than as a washed panel — and
+      settles the card/cover direction in favour of the plate.
+- [ ] Measure the served weight of the three covers. The only check left open, and the
+      same one the `about` and `/casos` families each closed with an optimizer
+      measurement.
 
 ```
+b01db6a  docs(odd): record the card fix and what the branch verification covers
+27ea463  fix(guias): render the grid card through the same plate as the cover
+ffc830e  docs(odd): record the three covers, the trim and its cost
 45203ff  feat(guias): give the three guides their ink covers
 6a7d4fb  chore(gitignore): ignore the vitest json reporter output
 f9527dc  docs(odd): open the guide covers feature and record the relief removal
