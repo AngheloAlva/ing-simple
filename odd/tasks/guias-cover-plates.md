@@ -350,9 +350,9 @@ not an object the model can draw, and it produced a vague ribbon.
       perfecto ahora si". That closes the question the histogram could not answer — a
       family at 23-28% black reads as an image rather than as a washed panel — and
       settles the card/cover direction in favour of the plate.
-- [ ] Measure the served weight of the three covers. The only check left open, and the
-      same one the `about` and `/casos` families each closed with an optimizer
-      measurement.
+- [x] Measure the served weight of the three covers. Done 2026-09-24; see "Served
+      weight, measured". It is the last check this feature needed, and it came in
+      cheaper than expected.
 
 ```
 b01db6a  docs(odd): record the card fix and what the branch verification covers
@@ -456,6 +456,63 @@ takes no overlay children, so the credit chip moved out of the frame into a wrap
 owns the radius and the clipping. No guide sets `portadaCredito` today, so the chip
 renders for nobody, but the schema field stays and the wrapper keeps the capability
 alive.
+
+## Served weight, measured
+
+Measured 2026-09-24 against a production build (`pnpm build` then `next start` on a free
+port), requesting the optimizer endpoint directly for each asset at each width with
+`Accept: image/webp` and `Accept: image/avif`. The three `/casos` plates were extracted
+from their branch into a temporary directory under `public/` so both families went
+through the same optimizer in the same build; that directory was deleted after the
+measurement. Everything is in KB, webp / avif:
+
+| Asset | 640 | 1080 | 1920 | 3840 |
+| --- | --- | --- | --- | --- |
+| cover `ia-en-procesos` | 39.8 / 21.1 | 77.6 / 37.2 | 116.4 / 51.9 | 116.4 / 51.9 |
+| cover `ley-21719` | 37.7 / 21.6 | 74.0 / 37.5 | 111.6 / 52.2 | 111.6 / 52.2 |
+| cover `por-que-el-informe` | 45.0 / 25.9 | 91.5 / 48.9 | 142.6 / 69.8 | 142.6 / 69.8 |
+| plate `confidentiality` | 33.8 / 16.6 | 66.5 / 28.9 | 99.0 / 38.7 | 99.0 / 38.7 |
+| plate `faithful-mockups` | 41.6 / 21.1 | 82.9 / 35.4 | 88.0 / 34.8 | 88.0 / 34.8 |
+| plate `no-sensitive-data` | 38.5 / 19.8 | 73.2 / 32.5 | 106.3 / 42.6 | 106.3 / 42.6 |
+
+**What the numbers say.**
+
+1. **AVIF is 45-58% of WebP at every asset and every width** (ratios 0.39-0.58). That is
+   the whole reason the format is enabled: high-frequency line art on transparency is
+   WebP's worst case, and it is where the gap is widest.
+2. **3840 costs exactly what 1920 costs, for all six.** The sources are 1536 px wide and
+   Next never upscales, so the served bytes are capped rather than doubled. A retina
+   desktop visitor asking for a full-width cover gets 51.9-69.8 KB, not twice that.
+3. **The realistic page cost.** A guide page loads one cover: at 1920, the size a DPR-2
+   request resolves to for a 1360 CSS px cover, that is 52-70 KB AVIF. The `/casos`
+   problem section loads three plates: 38.7 + 34.8 + 42.6 = **116 KB AVIF for the whole
+   section**.
+4. **The un-negotiated fallback is PNG**, and it is the one place this family is not
+   cheap: 106 KB for a cover at 1080 against 37.2 KB as AVIF. Every current browser
+   negotiates, so this is the floor for a crawler or an old client, and it is recorded
+   rather than assumed away.
+5. **Encode cost is a non-issue.** 0.12 s cold and 0.0011 s warm for the same URL at
+   1200 px, so the first visitor after a deployment pays a one-off tenth of a second per
+   distinct size.
+
+**The honest caveat, which no measurement here can fix.** The cover box reaches about
+1360 CSS px and the sources are 1536 px, so at DPR 2 the browser asks for roughly 2720
+and receives 1536: about 1.8x short, which reads slightly soft on a retina screen. The
+same limit was already recorded for the `/casos` plates. It is an asset-resolution
+ceiling, not a bug, and the lever is regenerating at 2048 px or more if retina sharpness
+ever outweighs the cost of another generation round.
+
+**The near-miss worth keeping, because it nearly produced a page of false numbers.**
+The first measurement attempt started the production server on port 3100, which was
+already occupied by an unrelated application. `next start` failed with `EADDRINUSE` and
+said so in a log file nobody had read yet, while the unrelated app kept answering, so
+every request was aimed at the wrong program: it returned a 43-byte "The requested
+resource isn't a valid image" for all forty-eight of them. What exposed it was the
+implausibility of the number, not the tooling. The retry picked a port confirmed free,
+started the server, and **verified identity before measuring anything** — `/isotipo.svg`
+and a cover returned 200 with byte sizes matching the files on disk. The rule that came
+out of it: a locally started server is not evidence that the server you are talking to
+is yours, and the check that proves it costs two requests.
 
 ## Risks
 
