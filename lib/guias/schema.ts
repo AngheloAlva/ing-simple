@@ -42,10 +42,6 @@ export const guiaFrontmatterSchema = z.object({
 	portada: z.string().startsWith("/img/guias/", "Debe empezar con /img/guias/"),
 	portadaAlt: z.string().min(1).max(160),
 	portadaCredito: z.string().min(1).optional(),
-	/** Optional source photo for the interactive pixel-relief cover; see `components/guias/cover-relief.tsx`. */
-	portadaRelieve: z.string().startsWith("/img/guias/", "Debe empezar con /img/guias/").optional(),
-	/** Whether the relief cover keys out its background; `false` keeps a full-frame photo. See `components/guias/cover-relief.tsx`. */
-	portadaRelieveRecorte: z.boolean().default(true),
 })
 
 export type GuiaFrontmatter = z.infer<typeof guiaFrontmatterSchema>

@@ -1,13 +1,13 @@
 "use client"
 
 import { CutButton } from "@/components/cut-button"
+import { IllustrationPlate } from "@/components/illustration-plate"
 import { filterGuias } from "@/lib/guias/filter"
 import { formatGuiaDate } from "@/lib/guias/format"
 import type { GuiaMeta } from "@/lib/guias/schema"
 import { TEMAS } from "@/lib/guias/temas"
 import { SERVICES } from "@/lib/services"
 import { Search } from "lucide-react"
-import Image from "next/image"
 import Link from "next/link"
 import { useMemo, useState, type ReactNode } from "react"
 
@@ -53,27 +53,23 @@ function FilteredEmptyState({ onClear }: { onClear: () => void }): ReactNode {
 }
 
 function GuiaCard({ guia }: { guia: GuiaMeta }): ReactNode {
-	// A relief cover's still is a transparent PNG framed for the 16/9 article
-	// cover: `object-contain` on this 16/10 card avoids cropping the sculpture,
-	// and the themed backdrop behind it reads as an intentional mat, not a gap.
-	const hasRelieve = guia.portadaRelieve !== undefined
-
 	return (
 		<Link
 			href={`/guias/${guia.slug}`}
 			className="group border-border bg-background hover:border-primary focus-visible:outline-primary flex flex-col overflow-hidden rounded-sm border transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2"
 		>
-			<div
-				className={`border-border relative aspect-[16/10] overflow-hidden border-b ${hasRelieve ? "dark:bg-muted bg-[#E0DCD7]" : ""}`}
-			>
-				<Image
-					src={guia.portada}
-					alt={guia.portadaAlt}
-					fill
-					sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-					className={`transition-transform duration-300 group-hover:scale-[1.03] ${hasRelieve ? "object-contain" : "object-cover"}`}
-				/>
-			</div>
+			{/* The same plate the guide's own cover renders, so the card and the article
+			    agree: the card used to draw the raw asset and the cover duotoned it, which
+			    put a greyscale drawing in the grid and a blue one on the page. The frame is
+			    the assets' own 16:9 — at the former 16/10 the plate would have cropped 10%
+			    of the drawing's width. */}
+			<IllustrationPlate
+				src={guia.portada}
+				alt={guia.portadaAlt}
+				sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+				className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+				frame="border-border aspect-video w-full border-b"
+			/>
 
 			<div className="flex flex-1 flex-col p-6">
 				<span className="text-muted-foreground font-mono text-[11px] tracking-[0.1em] uppercase">

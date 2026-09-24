@@ -9,8 +9,6 @@ draft: true
 portada: /img/guias/nombre-del-archivo.jpg
 portadaAlt: Describe lo que se ve en la foto (1–160 caracteres, obligatorio)
 # portadaCredito: "Foto: nombre o banco de imágenes"
-# portadaRelieve: /img/guias/nombre-del-archivo-relieve.png
-# portadaRelieveRecorte: false
 ---
 
 {/*
@@ -23,11 +21,7 @@ portadaAlt: Describe lo que se ve en la foto (1–160 caracteres, obligatorio)
   - Toda guía necesita una foto de portada real: guárdala en
     public/img/guias/ y apunta "portada" a esa ruta (siempre empieza con
     "/img/guias/"). "portadaAlt" es obligatorio; "portadaCredito" solo si
-    corresponde dar crédito a la fuente de la foto. "portadaRelieve" es
-    opcional: apunta a una foto de fondo plano y sin sombra para renderizarla
-    como relieve interactivo de teselas (ver components/guias/cover-relief.tsx);
-    "portada" debe ser entonces una captura transparente de ese mismo relieve
-    en reposo, no una foto distinta.
+    corresponde dar crédito a la fuente de la foto.
   - Mantén draft: true mientras escribes. Cámbialo a false (o bórralo) solo
     cuando la guía esté lista para publicarse.
   - Reemplaza cada sección de abajo. Los títulos "##" son parte de la
