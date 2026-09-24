@@ -149,7 +149,8 @@ changes are marked and explained below.
       question in "Family measurements": the plates read as duotone images rather
       than washed panels, so the desk grey does not need darkening and the treatment
       filters stay exactly as they are.
-- [ ] Measure the served weight of the three assets once the family closes.
+- [x] Measure the served weight of the three assets once the family closes. Done
+      2026-09-24; see "Served weight, measured".
 
 ```
 9881df4  feat(casos): give the section its three plates and drop the icon branch
@@ -572,6 +573,38 @@ answerable from the histogram. It is answered by looking at the three together, 
 both themes, which is the user's check. If it does wash out, the lever is specific
 and cheap: darken the desk's flat grey toward the mid band and let its near edge and
 shadow carry more solid black, rather than touching the treatment filters.
+
+## Served weight, measured
+
+Measured 2026-09-24 against a production build of the site, requesting the optimizer
+endpoint directly at four widths with `Accept: image/webp` and `Accept: image/avif`. The
+three guide covers were measured in the same build so both illustration families went
+through the same optimizer, side by side. Values in KB, webp / avif:
+
+| Asset | 640 | 1080 | 1920 | 3840 |
+| --- | --- | --- | --- | --- |
+| `confidentiality.png` | 33.8 / 16.6 | 66.5 / 28.9 | 99.0 / 38.7 | 99.0 / 38.7 |
+| `faithful-mockups.png` | 41.6 / 21.1 | 82.9 / 35.4 | 88.0 / 34.8 | 88.0 / 34.8 |
+| `no-sensitive-data.png` | 38.5 / 19.8 | 73.2 / 32.5 | 106.3 / 42.6 | 106.3 / 42.6 |
+
+**AVIF is 39-51% of WebP here**, a slightly wider gap than the guide covers because
+these assets carry more ink coverage (79-81% of the canvas against 75-79%). At 1920 — the
+size a DPR-2 request resolves to for the plate's ~648 CSS px column — the three cost
+38.7 + 34.8 + 42.6 = **116 KB AVIF for the whole section**, and 293 KB if a client
+somehow got WebP for all three.
+
+**3840 costs exactly what 1920 costs**, because the sources are 1536 px wide and Next
+never upscales: the served bytes are capped rather than doubled, so the plate cannot
+grow past its source no matter what the browser asks for.
+
+The retina caveat recorded earlier in this document is unchanged and now quantified:
+the plate column reaches ~648 CSS px and a DPR-2 request wants ~1296, which the 1536 px
+source covers. So unlike the cover, **the plates are adequately sampled**, and the soft
+reading the earlier note worried about does not apply at this width.
+
+The un-negotiated fallback remains PNG — 106 KB for a cover at 1080 against 37.2 KB as
+AVIF — which is the floor for a crawler or an old client, and the reason AVIF is the
+format that decides the real cost.
 
 ## Risks
 
