@@ -4,7 +4,7 @@ import { CutButton } from "@/components/cut-button"
 import { CaseThumbnail } from "@/components/servicios/case-thumbnail"
 import { portfolioProjects, type ProjectData } from "@/lib/portfolio-data"
 import { brandGradientGreen } from "@/lib/gradient"
-import { contactHref, type Service } from "@/lib/services"
+import { type Service } from "@/lib/services"
 import { ArrowUpRight, Lock } from "lucide-react"
 import type { CSSProperties, ReactNode } from "react"
 
@@ -67,8 +67,6 @@ function CaseCard({ project }: { project: ProjectData }): ReactNode {
 }
 
 export function ServicioCases({ service }: { service: Service }): ReactNode {
-	const clip = { borderRadius: PANEL_RADIUS } as CSSProperties
-
 	const related = portfolioProjects
 		.filter(
 			(project) =>
@@ -79,76 +77,40 @@ export function ServicioCases({ service }: { service: Service }): ReactNode {
 		)
 		.slice(0, 3)
 
+	// Three of the four services have no published case in their own category, and an
+	// empty state announcing that reads worse than the section's absence: it turns a
+	// missing case into a message about missing cases, right where the copy should be
+	// about the visitor's problem. A service with nothing to show renders nothing, and
+	// the page keeps its own calls to action as the only ones on it.
+	if (related.length === 0) return null
+
 	return (
 		<section className="mx-auto max-w-[1440px] px-5 pb-24 sm:px-8 sm:pb-32 lg:px-10">
 			<div className="mx-auto mb-12 max-w-2xl text-center sm:mb-16">
-				<Kicker>{related.length > 0 ? "Casos relacionados" : "Casos"}</Kicker>
+				<Kicker>Casos relacionados</Kicker>
 				<h2 className="mt-4 font-serif text-3xl leading-[1.1] font-normal tracking-[-0.01em] text-balance sm:text-4xl lg:text-[2.75rem]">
-					{related.length > 0 ? (
-						<>
-							Esto ya está{" "}
-							<GradientText
-								inline
-								className="font-sans font-semibold tracking-tight"
-								colors={brandGradientGreen}
-								animationSpeed={6}
-							>
-								funcionando en producción
-							</GradientText>
-						</>
-					) : (
-						<>
-							Tu proyecto podría ser{" "}
-							<GradientText
-								inline
-								className="font-sans font-semibold tracking-tight"
-								colors={brandGradientGreen}
-								animationSpeed={6}
-							>
-								el primer caso publicado
-							</GradientText>
-						</>
-					)}
+					Esto ya está{" "}
+					<GradientText
+						inline
+						className="font-sans font-semibold tracking-tight"
+						colors={brandGradientGreen}
+						animationSpeed={6}
+					>
+						funcionando en producción
+					</GradientText>
 				</h2>
 			</div>
 
-			{related.length > 0 ? (
-				<>
-					<div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-						{related.map((project) => (
-							<CaseCard key={project.id} project={project} />
-						))}
-					</div>
-					<div className="mt-10 flex justify-center">
-						<CutButton variant="outline" icon="arrow" href="/casos">
-							Ver todos los casos
-						</CutButton>
-					</div>
-				</>
-			) : (
-				<div className="bg-border p-px" style={clip}>
-					<div
-						className="bg-background flex flex-col items-center px-6 py-14 text-center sm:py-16"
-						style={clip}
-					>
-						<p className="max-w-md text-base font-medium tracking-tight text-balance sm:text-lg">
-							Estamos documentando nuestros casos de {service.shortName.toLowerCase()}.
-						</p>
-						<p className="text-muted-foreground mt-3 max-w-md text-sm leading-relaxed text-balance">
-							Mientras tanto, cuéntanos tu situación: en menos de 24 horas hábiles te decimos qué
-							haríamos en tu caso y con qué alcance.
-						</p>
-						<div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-							<CutButton variant="solid" icon="send" href={contactHref(service.slug)}>
-								Cuéntanos tu caso
-							</CutButton>
-							<CutButton variant="outline" href="/casos">
-								Ver casos de otras áreas
-							</CutButton>
-						</div>
-					</div>
-				</div>
-			)}
+			<div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+				{related.map((project) => (
+					<CaseCard key={project.id} project={project} />
+				))}
+			</div>
+			<div className="mt-10 flex justify-center">
+				<CutButton variant="outline" icon="arrow" href="/casos">
+					Ver todos los casos
+				</CutButton>
+			</div>
 		</section>
 	)
 }
