@@ -428,6 +428,22 @@ scale. That is the same lesson the `capacitaciones` scene taught, and it is reco
 rather than fixed, because the drawing is comprehensible and the user may want to keep
 it.
 
+**A second surface, and a fix the user caught by looking.** The card in the `/guias`
+grid still drew the raw asset while the guide's own cover went through the plate, so the
+same drawing read greyscale in the grid and duotoned on the article: one asset, two
+surfaces, two treatments. Fixed in `27ea463`, which also moves the card's frame from
+`aspect-[16/10]` to `aspect-video`, because at 16/10 the plate would have cropped 10% of
+the drawing's width — the same frame-and-asset mismatch the cover's own frame was
+corrected for. A reader noticed this in the browser; no check in this document, and no
+verifier, was looking at the second surface the same asset renders on.
+
+**Branch verification, and what it covers.** The branch was verified independently at
+`ffc830e`: git inventory, typecheck, scoped lint, 20 files / 183 tests, all three assets
+re-measured from scratch, every real `/img/guias/` reference resolved, zero remaining
+`relieve` strings, clean tree. One gap to keep: that pass inspected `explorer.tsx` only
+through the diffstat, so the card fix in `27ea463` came after it and rests on typecheck,
+eslint, prettier and the suite, plus the user's own look.
+
 **One implementation note.** `IllustrationPlate` renders its own children-free frame and
 takes no overlay children, so the credit chip moved out of the frame into a wrapper that
 owns the radius and the clipping. No guide sets `portadaCredito` today, so the chip
