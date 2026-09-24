@@ -54,9 +54,9 @@ export function Hero(): ReactNode {
 						className="font-sans text-4xl leading-[1.1] font-normal tracking-tight text-balance sm:text-5xl lg:text-[3.5rem]"
 					>
 						<GradientText inline className="font-medium" colors={brandGradient} animationSpeed={6}>
-							Soluciones simples
+							Power BI, automatización
 						</GradientText>{" "}
-						para un mundo digital complejo
+						y desarrollo web para empresas en Chile
 					</motion.h1>
 
 					<motion.p
@@ -64,8 +64,8 @@ export function Hero(): ReactNode {
 						transition={itemTransition}
 						className="text-muted-foreground mt-4 max-w-xl text-[15px] leading-relaxed text-balance sm:text-base"
 					>
-						Dashboards en Power BI, automatizaciones, sistemas web a medida y capacitaciones para
-						empresas que hoy operan con planillas, correos y WhatsApp.
+						Creamos reportes, automatizaciones y sistemas web a medida contigo. Te mostramos avances
+						desde el inicio y también capacitamos a tu equipo.
 					</motion.p>
 
 					<motion.div

@@ -12,12 +12,12 @@ export const HOME_FAQ: HomeFaqItem[] = [
 	{
 		question: "¿Qué tipo de empresas atienden?",
 		answer:
-			"Trabajamos con empresas de todos los tamaños, desde startups hasta organizaciones consolidadas. Nuestras soluciones se adaptan a las necesidades específicas de cada cliente, sin importar su industria o complejidad.",
+			"Trabajamos con empresas en Chile que necesitan reportes en Power BI, automatizar procesos, desarrollar sitios o sistemas web, o capacitar a sus equipos. Conversamos sobre tu necesidad para definir juntos el alcance del trabajo.",
 	},
 	{
 		question: "¿Cuánto tiempo toma implementar una solución?",
 		answer:
-			"Depende del alcance. Un dashboard puede estar listo en 1 a 2 semanas; una automatización que cruza varios sistemas, en 4 a 6 semanas; un sitio corporativo, en pocas semanas, y la primera versión útil de un sistema a medida, en uno a tres meses. Siempre entregamos un cronograma claro antes de comenzar.",
+			"El tiempo depende del alcance de cada proyecto, por eso no damos un plazo único para todas las soluciones. Construimos los reportes y sitios web contigo: puedes participar y ver los avances desde las primeras etapas hasta completar el trabajo.",
 	},
 	{
 		question: "¿Las capacitaciones son presenciales o online?",
