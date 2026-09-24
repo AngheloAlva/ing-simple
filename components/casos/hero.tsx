@@ -62,9 +62,8 @@ export function CasosHero(): ReactNode {
 						transition={itemTransition}
 						className="text-muted-foreground mt-5 max-w-xl text-[15px] leading-relaxed text-balance sm:text-base"
 					>
-						Incluye plataformas en producción y fichas en revisión interna. Estas últimas se
-						identifican claramente mientras validamos datos, resultados y autorización de
-						publicación.
+						Conoce plataformas a medida en producción, sus desafíos y las decisiones detrás de cada
+						solución publicada.
 					</motion.p>
 
 					<motion.div

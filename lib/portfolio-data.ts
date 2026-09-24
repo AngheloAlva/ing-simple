@@ -1,5 +1,3 @@
-import { casesUnderReview } from "@/lib/case-studies-under-review"
-
 export type ProjectCategory =
 	"desarrollo-web" | "power-platform" | "capacitaciones" | "reportabilidad"
 
@@ -2076,5 +2074,4 @@ export const portfolioProjects: ProjectData[] = [
 			],
 		},
 	},
-	...casesUnderReview,
 ]

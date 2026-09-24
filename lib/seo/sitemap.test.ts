@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest"
+import { casesUnderReview } from "@/lib/case-studies-under-review"
+import { portfolioProjects } from "@/lib/portfolio-data"
 import { buildSitemap, CONTENT_UPDATED_AT } from "@/lib/seo/sitemap"
 import type { GuiaMeta } from "@/lib/guias/schema"
 import type { ProjectData } from "@/lib/portfolio-data"
@@ -104,6 +106,20 @@ describe("buildSitemap", () => {
 		expect(urls).toContain(`${BASE}/casos/flagship-with-case`)
 		expect(urls).not.toContain(`${BASE}/casos/flagship-no-case`)
 		expect(urls).not.toContain(`${BASE}/casos/non-flagship`)
+	})
+
+	it("does not include review drafts from the public registry or supplied projects", () => {
+		const draft = casesUnderReview[0]!
+		const publicUrls = buildSitemap(BASE, [], portfolioProjects, CONTENT_UPDATED_AT, []).map(
+			(entry) => entry.url
+		)
+		const suppliedUrls = buildSitemap(BASE, [], [draft], CONTENT_UPDATED_AT, []).map(
+			(entry) => entry.url
+		)
+
+		expect(portfolioProjects.map((project) => project.id)).not.toContain(draft.id)
+		expect(publicUrls).not.toContain(`${BASE}/casos/${draft.id}`)
+		expect(suppliedUrls).not.toContain(`${BASE}/casos/${draft.id}`)
 	})
 
 	it("static pages and services use CONTENT_UPDATED_AT", () => {

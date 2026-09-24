@@ -15,7 +15,7 @@ import type { ReactNode } from "react"
 export const metadata: Metadata = createMetadata({
 	title: "Casos de estudio",
 	description:
-		"Casos de estudio de plataformas a medida, incluyendo proyectos en producción y fichas en revisión interna.",
+		"Casos de estudio publicados de plataformas a medida en producción para empresas reales.",
 	path: "/casos",
 })
 

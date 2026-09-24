@@ -3,6 +3,7 @@
 import { CornerPlus } from "@/components/corner-plus"
 import { getCaseStudyVisuals } from "@/components/case-study/visuals/registry"
 import { CATEGORY_LABELS, portfolioProjects, type ProjectCategory } from "@/lib/portfolio-data"
+import { isPublicCaseStudy } from "@/lib/public-case-studies"
 import { serviceSlugForCategory } from "@/lib/services"
 import { ArrowUpRight, Lock } from "lucide-react"
 import { AnimatePresence, motion, type Variants } from "motion/react"
@@ -11,11 +12,7 @@ import { useMemo, useState, type ReactNode } from "react"
 
 type Filter = "todos" | ProjectCategory
 
-// Every flagship project with a full case study reaches /casos, including the
-// editorial-review drafts. CaseCard marks those with an "En revisión" badge,
-// which takes precedence over the confidentiality label.
-// Matches the /casos/[id] detail-route gating so every card links somewhere real.
-const CASES = portfolioProjects.filter((project) => project.isFlagship && project.caseStudy)
+const CASES = portfolioProjects.filter(isPublicCaseStudy)
 
 // Chip order + labels come straight from the configurable taxonomy.
 const FILTERS = Object.entries(CATEGORY_LABELS) as [Filter, string][]
@@ -38,7 +35,6 @@ function CaseCard({ project }: { project: (typeof CASES)[number] }): ReactNode {
 	const caseStudy = project.caseStudy!
 	const HeroMockup = getCaseStudyVisuals(project.id)?.HeroMockup ?? null
 	const isConfidential = caseStudy.visualPrivacy === "confidential-ui"
-	const isUnderReview = project.isProduction === false
 
 	return (
 		<motion.a
@@ -98,11 +94,7 @@ function CaseCard({ project }: { project: (typeof CASES)[number] }): ReactNode {
 							aria-hidden="true"
 						/>
 					</span>
-					{isUnderReview ? (
-						<span className="text-muted-foreground inline-flex items-center gap-1.5 font-mono text-[10px] tracking-[0.1em] uppercase">
-							En revisión
-						</span>
-					) : isConfidential ? (
+					{isConfidential ? (
 						<span className="text-muted-foreground inline-flex items-center gap-1.5 font-mono text-[10px] tracking-[0.1em] uppercase">
 							<Lock className="h-3 w-3" aria-hidden="true" />
 							Vista confidencial

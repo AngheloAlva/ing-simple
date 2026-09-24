@@ -3,20 +3,16 @@
 import { CornerPlus } from "@/components/corner-plus"
 import { useReducedMotion } from "@/lib/motion"
 import { portfolioProjects } from "@/lib/portfolio-data"
+import { isPublicCaseStudy } from "@/lib/public-case-studies"
 import { animate, useInView } from "motion/react"
 import { useEffect, useRef, useState, type ReactNode } from "react"
 
-const CASES = portfolioProjects.filter((project) => project.isFlagship && project.caseStudy)
+const CASES = portfolioProjects.filter(isPublicCaseStudy)
 
-// Client and year stats only count production cases, so draft placeholders
-// ("Cliente por confirmar") never appear as real client companies.
-const PRODUCTION_CASES = CASES.filter((project) => project.isProduction !== false)
-
-const UNIQUE_CLIENTS = new Set(PRODUCTION_CASES.map((project) => project.caseStudy!.clientName))
-	.size
+const UNIQUE_CLIENTS = new Set(CASES.map((project) => project.caseStudy!.clientName)).size
 
 const FIRST_YEAR = Math.min(
-	...PRODUCTION_CASES.map((project) =>
+	...CASES.map((project) =>
 		Number(/20\d{2}/.exec(project.caseStudy!.inProductionSince)?.[0] ?? Infinity)
 	)
 )

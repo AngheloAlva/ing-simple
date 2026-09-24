@@ -15,6 +15,7 @@ import { Nav } from "@/components/nav"
 import { createMetadata } from "@/lib/metadata"
 import { InView } from "@/lib/motion"
 import { portfolioProjects } from "@/lib/portfolio-data"
+import { isPublicCaseStudy } from "@/lib/public-case-studies"
 import { articleJsonLd, breadcrumbJsonLd } from "@/lib/seo/json-ld"
 import { caseStudyTitle } from "@/lib/seo/titles"
 import { contactHref, serviceSlugForCategory } from "@/lib/services"
@@ -27,16 +28,14 @@ interface PageProps {
 }
 
 export function generateStaticParams(): { id: string }[] {
-	return portfolioProjects
-		.filter((project) => project.isFlagship && project.caseStudy)
-		.map((project) => ({ id: project.id }))
+	return portfolioProjects.filter(isPublicCaseStudy).map((project) => ({ id: project.id }))
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
 	const { id } = await params
 	const project = portfolioProjects.find((p) => p.id === id)
 
-	if (!project || !project.caseStudy) {
+	if (!project || !isPublicCaseStudy(project)) {
 		return createMetadata({
 			title: "Caso no encontrado",
 			path: `/casos/${id}`,
@@ -48,7 +47,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 		title: caseStudyTitle(project),
 		description: project.caseStudy.pitch,
 		path: `/casos/${id}`,
-		noIndex: project.isProduction === false,
 	})
 }
 
@@ -56,7 +54,7 @@ export default async function CaseStudyDetailPage({ params }: PageProps): Promis
 	const { id } = await params
 	const project = portfolioProjects.find((p) => p.id === id)
 
-	if (!project || !project.caseStudy || !project.isFlagship) {
+	if (!project || !isPublicCaseStudy(project)) {
 		notFound()
 	}
 
