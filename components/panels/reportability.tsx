@@ -205,7 +205,7 @@ function Tile({
 }): ReactNode {
 	return (
 		<div
-			className={`border-border/60 bg-background flex min-h-0 flex-col rounded-lg border p-3 ${
+			className={`border-border/60 bg-background flex min-h-0 flex-col overflow-hidden rounded-lg border p-3 ${
 				className ?? ""
 			}`}
 		>
@@ -587,7 +587,7 @@ function AreaTableTile(): ReactNode {
 					return (
 						<li
 							key={row.label}
-							className="border-border/40 grid grid-cols-[1.4fr_0.9fr_0.9fr_1.3fr] items-center gap-x-3 border-b py-[3px] text-[11px] last:border-b-0"
+							className="border-border/40 grid grid-cols-[1.4fr_0.9fr_0.9fr_1.3fr] items-center gap-x-3 border-b py-[2px] text-[11px] leading-tight last:border-b-0"
 						>
 							<span className="flex items-center gap-1.5 truncate">
 								<span
