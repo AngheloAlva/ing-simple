@@ -3,6 +3,7 @@ import { CutButton } from "@/components/cut-button"
 import { ScrollStack } from "@/components/scroll-stack"
 import { SERVICE_VISUALS } from "@/components/service-diagrams"
 import { SERVICES } from "@/lib/services"
+import { NAV_FORWARD } from "@/lib/view-transitions"
 import { Plus } from "lucide-react"
 import type { CSSProperties, ReactNode } from "react"
 
@@ -86,7 +87,12 @@ export function ServicesStack(): ReactNode {
 									</ul>
 
 									<div className="mt-8">
-										<CutButton href={service.href} variant="solid" icon="arrow">
+										<CutButton
+											href={service.href}
+											variant="solid"
+											icon="arrow"
+											transitionTypes={[NAV_FORWARD]}
+										>
 											Ver {service.shortName.toLowerCase()}
 										</CutButton>
 									</div>

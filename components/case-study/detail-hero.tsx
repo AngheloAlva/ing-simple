@@ -6,6 +6,7 @@ import { CutButton } from "@/components/cut-button"
 import { CATEGORY_LABELS, type CaseStudy, type ProjectData } from "@/lib/portfolio-data"
 import { useStaggerEntrance } from "@/lib/motion"
 import { contactHref, serviceSlugForCategory } from "@/lib/services"
+import { NAV_BACK } from "@/lib/view-transitions"
 import { motion, type Variants } from "motion/react"
 import Link from "next/link"
 import type { ReactNode } from "react"
@@ -53,6 +54,7 @@ export function DetailHero({ project, caseStudy }: DetailHeroProps): ReactNode {
 					<motion.div variants={item} transition={itemTransition}>
 						<Link
 							href="/casos"
+							transitionTypes={[NAV_BACK]}
 							className="focus-ring text-muted-foreground hover:text-foreground inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.14em] uppercase transition-colors"
 						>
 							<span aria-hidden="true">←</span> Volver a casos

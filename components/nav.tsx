@@ -8,9 +8,11 @@ import { Logo } from "@/components/logo"
 import { NavVisual } from "@/components/nav-visual"
 import { softEase, useReducedMotion } from "@/lib/motion"
 import { SERVICES, type Service } from "@/lib/services"
-import { SITE_NAV_TRANSITION_NAME } from "@/lib/view-transitions"
+import { SITE_NAV_TRANSITION_NAME, navLinkTransitionTypes } from "@/lib/view-transitions"
 import { ChevronDown } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState, type ReactNode } from "react"
 
 const SIMPLE_LINKS = [
@@ -35,6 +37,19 @@ const SIMPLE_LINKS = [
  */
 let hasPlayedHeaderEntrance = false
 
+/**
+ * The `transitionTypes` prop for one header link, or nothing at all.
+ *
+ * A lateral move has no direction to communicate, and handing the router an empty
+ * array would still be a prop it has to read, so the key is omitted instead.
+ * `exactOptionalPropertyTypes` is why that is spelled out rather than passing
+ * `undefined`.
+ */
+function navLinkProps(href: string, pathname: string): { transitionTypes?: string[] } {
+	const transitionTypes = navLinkTransitionTypes(href, pathname)
+	return transitionTypes.length ? { transitionTypes } : {}
+}
+
 function useScrolled(threshold = 8): boolean {
 	const [scrolled, setScrolled] = useState(false)
 	useEffect(() => {
@@ -56,9 +71,11 @@ function useScrolled(threshold = 8): boolean {
 function ServiceMenuItem({
 	item,
 	onActivate,
+	transitionTypes,
 }: {
 	item: Service
 	onActivate: () => void
+	transitionTypes: string[]
 }): ReactNode {
 	const iconRef = useRef<AnimatedIconHandle>(null)
 	const Icon = SERVICE_ICONS[item.slug as ServiceSlug]
@@ -70,8 +87,9 @@ function ServiceMenuItem({
 	const leave = (): void => iconRef.current?.stopAnimation()
 
 	return (
-		<a
+		<Link
 			href={item.href}
+			{...(transitionTypes.length ? { transitionTypes } : {})}
 			onMouseEnter={enter}
 			onMouseLeave={leave}
 			onFocus={enter}
@@ -85,12 +103,13 @@ function ServiceMenuItem({
 				<span className="text-[13px] font-medium tracking-tight">{item.title}</span>
 				<span className="text-muted-foreground text-xs">{item.desc}</span>
 			</span>
-		</a>
+		</Link>
 	)
 }
 
 export function Nav(): ReactNode {
 	const scrolled = useScrolled()
+	const pathname = usePathname()
 	const prefersReducedMotion = useReducedMotion()
 	// Read once, at mount, and only read: Strict Mode invokes the initializer
 	// twice, so a write here would see its own value on the second invocation and
@@ -183,6 +202,7 @@ export function Nav(): ReactNode {
 													<ServiceMenuItem
 														key={item.href}
 														item={item}
+														transitionTypes={navLinkTransitionTypes(item.href, pathname)}
 														onActivate={() => setActiveItem(i)}
 													/>
 												))}
@@ -235,13 +255,14 @@ export function Nav(): ReactNode {
 						</div>
 
 						{SIMPLE_LINKS.map((link) => (
-							<a
+							<Link
 								key={link.href}
 								href={link.href}
+								{...navLinkProps(link.href, pathname)}
 								className="focus-ring text-foreground/80 hover:text-foreground rounded-md px-3 py-2 text-[13px] font-medium transition-colors"
 							>
 								{link.label}
-							</a>
+							</Link>
 						))}
 					</nav>
 				</div>
@@ -304,9 +325,10 @@ export function Nav(): ReactNode {
 									>
 										<div className="flex flex-col gap-1 pb-2 pl-2">
 											{SERVICES.map((item) => (
-												<a
+												<Link
 													key={item.href}
 													href={item.href}
+													{...navLinkProps(item.href, pathname)}
 													onClick={() => setMobileOpen(false)}
 													className="focus-ring hover:bg-muted flex items-center gap-3 rounded-md p-2.5"
 												>
@@ -317,7 +339,7 @@ export function Nav(): ReactNode {
 														<span className="text-sm font-medium">{item.title}</span>
 														<span className="text-muted-foreground text-xs">{item.desc}</span>
 													</span>
-												</a>
+												</Link>
 											))}
 										</div>
 									</motion.div>
@@ -325,14 +347,15 @@ export function Nav(): ReactNode {
 							</AnimatePresence>
 
 							{SIMPLE_LINKS.map((link) => (
-								<a
+								<Link
 									key={link.href}
 									href={link.href}
+									{...navLinkProps(link.href, pathname)}
 									onClick={() => setMobileOpen(false)}
 									className="focus-ring block rounded-md px-2 py-3 text-sm font-medium"
 								>
 									{link.label}
-								</a>
+								</Link>
 							))}
 
 							<div className="border-border/50 mt-3 border-t pt-4">

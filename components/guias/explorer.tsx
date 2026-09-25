@@ -7,6 +7,7 @@ import { formatGuiaDate } from "@/lib/guias/format"
 import type { GuiaMeta } from "@/lib/guias/schema"
 import { TEMAS } from "@/lib/guias/temas"
 import { SERVICES } from "@/lib/services"
+import { NAV_FORWARD } from "@/lib/view-transitions"
 import { Search } from "lucide-react"
 import Link from "next/link"
 import { useMemo, useState, type ReactNode } from "react"
@@ -56,6 +57,7 @@ function GuiaCard({ guia }: { guia: GuiaMeta }): ReactNode {
 	return (
 		<Link
 			href={`/guias/${guia.slug}`}
+			transitionTypes={[NAV_FORWARD]}
 			className="group border-border bg-background hover:border-primary focus-visible:outline-primary flex flex-col overflow-hidden rounded-sm border transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2"
 		>
 			{/* The same plate the guide's own cover renders, so the card and the article

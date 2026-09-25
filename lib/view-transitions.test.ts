@@ -8,6 +8,7 @@ import {
 	GUIA_COVER_PREFIX,
 	NAV_BACK,
 	NAV_FORWARD,
+	navLinkTransitionTypes,
 	SERVICE_VISUAL_PREFIX,
 	SITE_NAV_TRANSITION_NAME,
 	viewTransitionName,
@@ -16,6 +17,19 @@ import {
 const css = readFileSync(fileURLToPath(new URL("../app/globals.css", import.meta.url)), "utf8")
 
 describe("view-transition contracts", () => {
+	it.each([
+		["/", "/servicios/desarrollo-web", [NAV_FORWARD]],
+		["/casos/otc-360", "/casos", [NAV_BACK]],
+		["/guias", "/guias/example", [NAV_FORWARD]],
+		["/servicios/desarrollo-web", "/servicios/reportabilidad", []],
+		["/casos/otc-360", "/casos/busanc", []],
+		["/", "/casos", []],
+		["/casos", "/guias", []],
+		["/casos", "/casos", [NAV_BACK]],
+	] as const)("types a nav link from %s to %s", (pathname, href, expected) => {
+		expect(navLinkTransitionTypes(href, pathname)).toEqual(expected)
+	})
+
 	it("keeps the CSS recipes for the named elements and directions", () => {
 		for (const selector of [
 			"::view-transition-group(site-nav)",

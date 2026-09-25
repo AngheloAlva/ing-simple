@@ -22,6 +22,19 @@ import type { ViewTransitionClassPerType } from "react"
 export const NAV_FORWARD = "nav-forward"
 export const NAV_BACK = "nav-back"
 
+const DETAIL_ROOTS = ["/servicios/", "/guias/", "/casos/"]
+
+/** Browser back and forward carry no transition type, so this only describes link navigations. */
+export function navLinkTransitionTypes(href: string, pathname: string): string[] {
+	if (pathname === href || pathname.startsWith(`${href}/`)) return [NAV_BACK]
+
+	const currentRoot = DETAIL_ROOTS.find((root) => pathname.startsWith(root))
+	const destinationRoot = DETAIL_ROOTS.find((root) => href.startsWith(root))
+	if (currentRoot && currentRoot === destinationRoot) return []
+	if (destinationRoot) return [NAV_FORWARD]
+	return []
+}
+
 /**
  * `view-transition-name` for the fixed site header. The isolation rules in
  * `app/globals.css` are keyed on this literal, and `lib/view-transitions.test.ts`

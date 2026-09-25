@@ -5,10 +5,14 @@ import { getCaseStudyVisuals } from "@/components/case-study/visuals/registry"
 import { CATEGORY_LABELS, portfolioProjects, type ProjectCategory } from "@/lib/portfolio-data"
 import { isPublicCaseStudy } from "@/lib/public-case-studies"
 import { serviceSlugForCategory } from "@/lib/services"
+import { NAV_FORWARD } from "@/lib/view-transitions"
 import { ArrowUpRight, Lock } from "lucide-react"
 import { AnimatePresence, motion, type Variants } from "motion/react"
 import Image from "next/image"
+import Link from "next/link"
 import { useMemo, useState, type ReactNode } from "react"
+
+const MotionLink = motion.create(Link)
 
 type Filter = "todos" | ProjectCategory
 
@@ -37,9 +41,10 @@ function CaseCard({ project }: { project: (typeof CASES)[number] }): ReactNode {
 	const isConfidential = caseStudy.visualPrivacy === "confidential-ui"
 
 	return (
-		<motion.a
+		<MotionLink
 			variants={cardVariants}
 			href={`/casos/${project.id}`}
+			transitionTypes={[NAV_FORWARD]}
 			className="group border-border bg-background hover:border-primary focus-visible:outline-primary relative flex flex-col overflow-hidden rounded-sm border transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2"
 		>
 			{/* Thumbnail — the polished per-project mockup, non-interactive here */}
@@ -102,7 +107,7 @@ function CaseCard({ project }: { project: (typeof CASES)[number] }): ReactNode {
 					) : null}
 				</div>
 			</div>
-		</motion.a>
+		</MotionLink>
 	)
 }
 
