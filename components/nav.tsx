@@ -8,6 +8,7 @@ import { Logo } from "@/components/logo"
 import { NavVisual } from "@/components/nav-visual"
 import { softEase, useReducedMotion } from "@/lib/motion"
 import { SERVICES, type Service } from "@/lib/services"
+import { SITE_NAV_TRANSITION_NAME } from "@/lib/view-transitions"
 import { ChevronDown } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import { useEffect, useRef, useState, type ReactNode } from "react"
@@ -17,6 +18,22 @@ const SIMPLE_LINKS = [
 	{ label: "Guías", href: "/guias" },
 	{ label: "Sobre nosotros", href: "/sobre-nosotros" },
 ]
+
+/**
+ * The header entrance is a first-load flourish, not a per-navigation one.
+ *
+ * `Nav` is rendered by every page rather than by the root layout, so a
+ * client-side navigation unmounts and remounts it. Replaying `opacity 0 → 1` on
+ * every route change would make the header blink on each one, and it would also
+ * break the view transition: React applies the transition name as the new DOM
+ * commits, so a header sitting at opacity 0 at that moment is not in the incoming
+ * frame at all. Only the first header of the session animates; later ones render
+ * already visible.
+ *
+ * Module scope rather than component state, because the decision has to be made
+ * during the first render, before any effect has had a chance to run.
+ */
+let hasPlayedHeaderEntrance = false
 
 function useScrolled(threshold = 8): boolean {
 	const [scrolled, setScrolled] = useState(false)
@@ -75,6 +92,14 @@ function ServiceMenuItem({
 export function Nav(): ReactNode {
 	const scrolled = useScrolled()
 	const prefersReducedMotion = useReducedMotion()
+	// Read once, at mount, and only read: Strict Mode invokes the initializer
+	// twice, so a write here would see its own value on the second invocation and
+	// skip the animation. The flag is set in the effect below instead, which also
+	// means a hard reload starts it over while a navigation never does.
+	const [playsEntrance] = useState(() => !hasPlayedHeaderEntrance)
+	useEffect(() => {
+		hasPlayedHeaderEntrance = true
+	}, [])
 	const [menuOpen, setMenuOpen] = useState(false)
 	const [activeItem, setActiveItem] = useState(0)
 	const [mobileOpen, setMobileOpen] = useState(false)
@@ -106,9 +131,12 @@ export function Nav(): ReactNode {
 
 	return (
 		<motion.header
-			initial={{ opacity: 0, y: -16 }}
+			initial={playsEntrance ? { opacity: 0, y: -16 } : false}
 			animate={{ opacity: 1, y: 0 }}
 			transition={prefersReducedMotion ? { duration: 0.01 } : { duration: 0.6, ease: softEase }}
+			// The name pairs this header with the isolation rules in `app/globals.css`,
+			// which is what keeps it still while the page slides underneath it.
+			style={{ viewTransitionName: SITE_NAV_TRANSITION_NAME }}
 			className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
 				scrolled || mobileOpen
 					? "border-border/50 bg-background border-b"
