@@ -5,8 +5,10 @@ import { CaseThumbnail } from "@/components/servicios/case-thumbnail"
 import { portfolioProjects, type ProjectData } from "@/lib/portfolio-data"
 import { brandGradientGreen } from "@/lib/gradient"
 import { type Service } from "@/lib/services"
+import { CASE_VISUAL_PREFIX, NAV_FORWARD, viewTransitionName } from "@/lib/view-transitions"
 import { ArrowUpRight, Lock } from "lucide-react"
-import type { CSSProperties, ReactNode } from "react"
+import Link from "next/link"
+import { ViewTransition, type CSSProperties, type ReactNode } from "react"
 
 const PANEL_RADIUS = "4px"
 
@@ -21,22 +23,29 @@ function CaseCard({ project }: { project: ProjectData }): ReactNode {
 	const isConfidential = caseStudy.visualPrivacy === "confidential-ui"
 
 	return (
-		<a
+		<Link
 			href={`/casos/${project.id}`}
+			transitionTypes={[NAV_FORWARD]}
 			className="focus-ring group bg-border hover:bg-brand-blue/40 block p-px transition-colors duration-200"
 			style={clip}
 		>
 			<article className="bg-background flex h-full flex-col overflow-hidden" style={clip}>
-				<div className="border-border/60 bg-muted/40 relative aspect-[16/10] overflow-hidden border-b">
-					<CaseThumbnail projectId={project.id} />
+				<ViewTransition
+					name={viewTransitionName(CASE_VISUAL_PREFIX, project.id)}
+					share="morph"
+					default="none"
+				>
+					<div className="border-border/60 bg-muted/40 relative aspect-[16/10] overflow-hidden border-b">
+						<CaseThumbnail projectId={project.id} />
 
-					{isConfidential ? (
-						<span className="bg-background/85 text-muted-foreground absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 font-mono text-[10px] tracking-[0.1em] uppercase backdrop-blur-sm">
-							<Lock className="h-3 w-3" aria-hidden="true" />
-							Vista reconstruida
-						</span>
-					) : null}
-				</div>
+						{isConfidential ? (
+							<span className="bg-background/85 text-muted-foreground absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 font-mono text-[10px] tracking-[0.1em] uppercase backdrop-blur-sm">
+								<Lock className="h-3 w-3" aria-hidden="true" />
+								Vista reconstruida
+							</span>
+						) : null}
+					</div>
+				</ViewTransition>
 
 				<div className="flex flex-1 flex-col p-6 sm:p-7">
 					<p className="text-primary text-xs font-medium">{caseStudy.clientName}</p>
@@ -62,7 +71,7 @@ function CaseCard({ project }: { project: ProjectData }): ReactNode {
 					</ul>
 				</div>
 			</article>
-		</a>
+		</Link>
 	)
 }
 

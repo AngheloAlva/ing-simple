@@ -8,6 +8,7 @@ import {
 	GUIA_COVER_PREFIX,
 	NAV_BACK,
 	NAV_FORWARD,
+	navLinkProps,
 	navLinkTransitionTypes,
 	SERVICE_VISUAL_PREFIX,
 	SITE_NAV_TRANSITION_NAME,
@@ -28,6 +29,14 @@ describe("view-transition contracts", () => {
 		["/casos", "/casos", [NAV_BACK]],
 	] as const)("types a nav link from %s to %s", (pathname, href, expected) => {
 		expect(navLinkTransitionTypes(href, pathname)).toEqual(expected)
+	})
+
+	it("omits transitionTypes for lateral links", () => {
+		expect(navLinkProps("/servicios/desarrollo-web", "/")).toEqual({
+			transitionTypes: [NAV_FORWARD],
+		})
+		const props = navLinkProps("/casos", "/")
+		expect("transitionTypes" in props).toBe(false)
 	})
 
 	it("starts the incoming fade together with the outgoing one", () => {

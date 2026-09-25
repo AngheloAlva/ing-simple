@@ -8,7 +8,11 @@ import { Logo } from "@/components/logo"
 import { NavVisual } from "@/components/nav-visual"
 import { softEase, useReducedMotion } from "@/lib/motion"
 import { SERVICES, type Service } from "@/lib/services"
-import { SITE_NAV_TRANSITION_NAME, navLinkTransitionTypes } from "@/lib/view-transitions"
+import {
+	SITE_NAV_TRANSITION_NAME,
+	navLinkProps,
+	navLinkTransitionTypes,
+} from "@/lib/view-transitions"
 import { ChevronDown } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import Link from "next/link"
@@ -36,19 +40,6 @@ const SIMPLE_LINKS = [
  * during the first render, before any effect has had a chance to run.
  */
 let hasPlayedHeaderEntrance = false
-
-/**
- * The `transitionTypes` prop for one header link, or nothing at all.
- *
- * A lateral move has no direction to communicate, and handing the router an empty
- * array would still be a prop it has to read, so the key is omitted instead.
- * `exactOptionalPropertyTypes` is why that is spelled out rather than passing
- * `undefined`.
- */
-function navLinkProps(href: string, pathname: string): { transitionTypes?: string[] } {
-	const transitionTypes = navLinkTransitionTypes(href, pathname)
-	return transitionTypes.length ? { transitionTypes } : {}
-}
 
 function useScrolled(threshold = 8): boolean {
 	const [scrolled, setScrolled] = useState(false)

@@ -36,6 +36,19 @@ export function navLinkTransitionTypes(href: string, pathname: string): string[]
 }
 
 /**
+ * The `transitionTypes` prop for one header link, or nothing at all.
+ *
+ * A lateral move has no direction to communicate, and handing the router an empty
+ * array would still be a prop it has to read, so the key is omitted instead.
+ * `exactOptionalPropertyTypes` is why that is spelled out rather than passing
+ * `undefined`.
+ */
+export function navLinkProps(href: string, pathname: string): { transitionTypes?: string[] } {
+	const transitionTypes = navLinkTransitionTypes(href, pathname)
+	return transitionTypes.length ? { transitionTypes } : {}
+}
+
+/**
  * `view-transition-name` for the fixed site header. The isolation rules in
  * `app/globals.css` are keyed on this literal, and `lib/view-transitions.test.ts`
  * fails if the two ever drift apart.
