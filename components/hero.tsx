@@ -37,7 +37,7 @@ export function Hero(): ReactNode {
 					variants={container}
 					initial="hidden"
 					animate="visible"
-					className="relative mx-auto flex max-w-2xl flex-col items-center pt-32 pb-20 text-center sm:pt-40"
+					className="relative mx-auto flex max-w-4xl flex-col items-center pt-32 pb-20 text-center sm:pt-40"
 				>
 					<div
 						aria-hidden="true"
@@ -53,10 +53,10 @@ export function Hero(): ReactNode {
 						transition={itemTransition}
 						className="font-sans text-4xl leading-[1.1] font-normal tracking-tight text-balance sm:text-5xl lg:text-[3.5rem]"
 					>
+						Reportes, automatizaciones y sistemas web{" "}
 						<GradientText inline className="font-medium" colors={brandGradient} animationSpeed={6}>
-							Soluciones simples
-						</GradientText>{" "}
-						para un mundo digital complejo
+							que le devuelven tiempo a tu equipo
+						</GradientText>
 					</motion.h1>
 
 					<motion.p
@@ -64,8 +64,7 @@ export function Hero(): ReactNode {
 						transition={itemTransition}
 						className="text-muted-foreground mt-4 max-w-xl text-[15px] leading-relaxed text-balance sm:text-base"
 					>
-						Creamos reportes, automatizaciones y sistemas web a medida contigo. Te mostramos avances
-						desde el inicio y también capacitamos a tu equipo.
+						Partimos por el diagnóstico y avanzamos contigo, con entregas visibles en cada etapa.
 					</motion.p>
 
 					<motion.div

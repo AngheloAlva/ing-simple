@@ -391,7 +391,10 @@ Service hero: no breadcrumb, no number. `Kicker` = short service name, h1 =
 `outline "Qué incluye"` (`#incluye`), artefact in the 1.1 column.
 
 Home hero is the one exception to the serif/semibold pair: `font-sans` h1 with
-`GradientText className="font-medium"` on "Soluciones Simples".
+`GradientText className="font-medium"` on the outcome half of the sentence ("que le
+devuelven tiempo a tu equipo"). Because that accent is longer than the previous
+four-word phrase, the hero block is `max-w-4xl`: at the 3.5rem display size the
+h1 needs about 896px to resolve in three lines instead of four.
 
 ## 10. Copy and voice
 
