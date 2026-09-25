@@ -413,7 +413,7 @@ function StatCard({ stat }: { stat: Stat }): ReactNode {
 
 function RequestsTable(): ReactNode {
   return (
-    <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-border/60 bg-background">
+    <div className="@container flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-border/60 bg-background">
       {/* Toolbar */}
       <div className="flex shrink-0 flex-wrap items-center gap-2 border-b border-border/60 p-3">
         <h3 className="mr-auto text-[13px] font-semibold tracking-tight">
@@ -437,8 +437,8 @@ function RequestsTable(): ReactNode {
 
       {/* Table — scrolls rather than clipping: the rows were laid out past the
           footer and silently dropped, which also made their rects collide. */}
-      <div className="min-h-0 flex-1 overflow-y-auto">
-        <table className="w-full table-fixed border-collapse">
+      <div className="min-h-0 flex-1 overflow-y-auto" data-lenis-prevent>
+        <table className="hidden w-full table-fixed border-collapse @min-[760px]:table">
           <colgroup>
             <col className="w-[9%]" />
             <col className="w-[16%]" />
@@ -495,6 +495,42 @@ function RequestsTable(): ReactNode {
             ))}
           </tbody>
         </table>
+        <div className="divide-y divide-border/60 @min-[760px]:hidden" aria-label="Listado de Solicitudes">
+          {ROWS.map((r) => (
+            <article key={r.code} className="min-w-0 space-y-3 p-4 text-[13px] leading-snug">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                <span className="font-semibold text-primary">{r.code}</span>
+                <span className="text-muted-foreground">{r.area}</span>
+              </div>
+              <dl className="grid min-w-0 grid-cols-1 gap-x-4 gap-y-2 @min-[520px]:grid-cols-2">
+                <div className="min-w-0">
+                  <dt className="text-xs text-muted-foreground">Nombre del Proyecto</dt>
+                  <dd className="break-words font-medium">{r.project}</dd>
+                </div>
+                <div className="min-w-0">
+                  <dt className="text-xs text-muted-foreground">Cliente</dt>
+                  <dd className="break-words">{r.client}</dd>
+                </div>
+                <div className="min-w-0">
+                  <dt className="text-xs text-muted-foreground">Estado SC</dt>
+                  <dd className="mt-1"><StatusBadge status={r.sc} /></dd>
+                </div>
+                <div className="min-w-0">
+                  <dt className="text-xs text-muted-foreground">Estado Componentes</dt>
+                  <dd className="mt-1"><StatusBadge status={r.components} /></dd>
+                </div>
+                <div className="min-w-0">
+                  <dt className="text-xs text-muted-foreground">Estado del Proyecto</dt>
+                  <dd className="mt-1"><StatusBadge status={r.projectStatus} /></dd>
+                </div>
+                <div className="min-w-0">
+                  <dt className="text-xs text-muted-foreground">Fecha de Entrega</dt>
+                  <dd className="tabular-nums">{r.date}</dd>
+                </div>
+              </dl>
+            </article>
+          ))}
+        </div>
       </div>
 
       {/* Footer / pagination */}
