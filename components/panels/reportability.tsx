@@ -224,14 +224,14 @@ function KpiTile({ kpi }: { kpi: Kpi }): ReactNode {
 	return (
 		<div className="border-border/60 bg-background flex flex-col justify-between rounded-lg border p-3">
 			<span className="text-muted-foreground text-[11px]">{kpi.label}</span>
-			<div className="mt-2 flex items-end justify-between gap-2">
+			<div className="mt-2 flex flex-wrap items-end justify-between gap-2">
 				<span className="text-lg leading-none font-semibold tracking-tight tabular-nums">
 					{kpi.value}
 					{kpi.unit ? (
 						<span className="text-muted-foreground ml-1 text-[11px] font-medium">{kpi.unit}</span>
 					) : null}
 				</span>
-				<span className="flex flex-col items-end gap-1">
+				<span className="ml-auto flex flex-col items-end gap-1">
 					<svg
 						viewBox="0 0 60 20"
 						preserveAspectRatio="none"
@@ -295,8 +295,12 @@ function ExecutionTile(): ReactNode {
 	return (
 		<Tile title="Ejecución mensual" subtitle="Plan vs. gestión" className="lg:col-span-2">
 			<div className="flex shrink-0 flex-wrap items-center gap-x-4 gap-y-1 pb-1">
-				<Legend swatch={<span className="bg-brand-blue/40 h-1.5 w-1.5 rounded-full" />}>Plan</Legend>
-				<Legend swatch={<span className="bg-brand-blue h-1.5 w-1.5 rounded-full" />}>Gestión</Legend>
+				<Legend swatch={<span className="bg-brand-blue/40 h-1.5 w-1.5 rounded-full" />}>
+					Plan
+				</Legend>
+				<Legend swatch={<span className="bg-brand-blue h-1.5 w-1.5 rounded-full" />}>
+					Gestión
+				</Legend>
 				<Legend
 					swatch={<span className="border-muted-foreground/60 h-px w-4 border-t border-dashed" />}
 				>
@@ -624,7 +628,7 @@ export function PanelReportability(): ReactNode {
 		<div className="flex h-full w-full flex-col overflow-hidden">
 			<FilterBar />
 
-			<main className="flex min-h-0 flex-1 flex-col gap-3 p-3 sm:p-4">
+			<div className="flex min-h-0 flex-1 flex-col gap-3 p-3 sm:p-4">
 				{/* KPI row */}
 				<div className="grid shrink-0 grid-cols-2 gap-3 lg:grid-cols-4">
 					{KPIS.map((kpi) => (
@@ -638,7 +642,7 @@ export function PanelReportability(): ReactNode {
 					<WaterfallTile />
 					<AreaTableTile />
 				</div>
-			</main>
+			</div>
 		</div>
 	)
 }

@@ -2,8 +2,13 @@ import type { ReactNode } from "react";
 
 /**
  * Reusable macOS-style window chrome extracted from `window-mockup`.
- * The body is a FIXED height so rotating panels never cause layout jump;
- * children are expected to fill it (`h-full`) and manage their own overflow.
+ *
+ * On desktop the body is a FIXED height so rotating panels never cause a layout
+ * jump, and children are expected to fill it (`h-full`) and manage their own
+ * overflow. Below `lg` the same desktop-density panels need more room than
+ * 560px, and that fixed height silently swallowed the excess — a table region
+ * collapsed to 1px and a course column lost its last row. The narrower values
+ * are measured: below them the panel contents overlap each other.
  */
 export function WindowFrame({
   tabs,
@@ -24,8 +29,8 @@ export function WindowFrame({
         {tabs}
       </div>
 
-      {/* Body — fixed height keeps the frame stable across panel rotation */}
-      <div className="h-[560px] overflow-hidden">{children}</div>
+      {/* Body — a definite height per breakpoint; see the note above */}
+      <div className="h-[960px] overflow-hidden sm:h-[880px] lg:h-[560px]">{children}</div>
     </div>
   );
 }
