@@ -6,24 +6,22 @@ import type { ReactNode } from "react";
  * children are expected to fill it (`h-full`) and manage their own overflow.
  */
 export function WindowFrame({
-  label,
+  tabs,
   children,
 }: {
-  label: string;
+  tabs: ReactNode;
   children: ReactNode;
 }): ReactNode {
   return (
     <div className="mx-auto max-w-[1100px] overflow-hidden rounded-2xl border border-border/60 bg-background shadow-2xl shadow-black/[0.08]">
-      {/* Title bar */}
-      <div className="relative flex h-7 items-center border-b border-border/60 px-2.5">
-        <div className="flex items-center gap-1.5">
+      {/* Window chrome — traffic lights plus the service tabs */}
+      <div className="flex h-10 items-stretch gap-2 border-b border-border/60 pl-2.5">
+        <div className="flex shrink-0 items-center gap-1.5 pr-1">
           <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
           <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
           <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
         </div>
-        <span className="pointer-events-none absolute inset-x-0 text-center text-xs font-normal text-muted-foreground">
-          {label}
-        </span>
+        {tabs}
       </div>
 
       {/* Body — fixed height keeps the frame stable across panel rotation */}

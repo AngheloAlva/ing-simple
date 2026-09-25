@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
+import { Pause, Play } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -15,61 +16,109 @@ import { PanelTraining } from "@/components/panels/training";
 import { PanelWeb } from "@/components/panels/web";
 import { WindowFrame } from "@/components/window-frame";
 import { softEase, useReducedMotion } from "@/lib/motion";
+import { SERVICES } from "@/lib/services";
 
 const CYCLE_MS = 6000;
 
-type ShowcaseItem = {
-  id: string;
-  /** Window title bar label. */
-  label: string;
-  /** Short tab name shown in the indicator row. */
-  service: string;
-  Panel: () => ReactNode;
+export const PANEL_BY_SLUG: Record<string, () => ReactNode> = {
+  automatizaciones: PanelAutomation,
+  "desarrollo-web": PanelWeb,
+  reportabilidad: PanelReportability,
+  capacitaciones: PanelTraining,
 };
 
-const ITEMS: ShowcaseItem[] = [
-  {
-    id: "automation",
-    label: "Flujo automatizado",
-    service: "Automatizaciones",
-    Panel: PanelAutomation,
-  },
-  {
-    id: "web",
-    label: "ERP a medida",
-    service: "Desarrollo web",
-    Panel: PanelWeb,
-  },
-  {
-    id: "reportability",
-    label: "Dashboard operacional",
-    service: "Reportabilidad",
-    Panel: PanelReportability,
-  },
-  {
-    id: "training",
-    label: "Ruta de capacitación",
-    service: "Capacitaciones",
-    Panel: PanelTraining,
-  },
-];
+const ITEMS = SERVICES.map((service) => {
+  const Panel = PANEL_BY_SLUG[service.slug];
+  if (!Panel) throw new Error(`Missing showcase panel for service: ${service.slug}`);
+  return { service, Panel };
+});
+
+/**
+ * One factual sentence per panel, for assistive technology.
+ *
+ * The panels are illustrations built from fabricated records, so their contents
+ * are hidden from the accessibility tree: announcing invented totals, dates and
+ * "1 - 10 de 2.945" counters as real content is worse than saying nothing.
+ * These descriptions replace them.
+ */
+export const PANEL_DESCRIPTION: Record<string, string> = {
+  reportabilidad:
+    "Ejemplo de dashboard operacional: indicadores de plan y gestión, ejecución mensual y desviación por área.",
+  capacitaciones:
+    "Ejemplo de ruta de capacitación: cursos con su avance y el certificado que se emite al completarla.",
+  "desarrollo-web":
+    "Ejemplo de sistema de gestión a medida: listado de solicitudes con estado por componente y por proyecto.",
+  automatizaciones:
+    "Ejemplo de flujo automatizado: una solicitud pasa por validación, condición y aviso al equipo.",
+};
 
 export function HeroShowcase(): ReactNode {
   const prefersReducedMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const [userPaused, setUserPaused] = useState(false);
+  const userPausedRef = useRef(false);
+  const hoveringRef = useRef(false);
+  const tablistRef = useRef<HTMLDivElement | null>(null);
+  const [scrollShadows, setScrollShadows] = useState({ start: false, end: false });
 
   // Progress is driven by a rAF loop that writes the bar width straight to the
   // DOM (no per-frame React state), so the fill stays perfectly smooth and is
-  // never restarted by an unrelated re-render. Pause is a plain ref toggled on
-  // hover only — deliberately NOT on focus, since a mouse click leaves the tab
-  // focused and a focus-pause would freeze the bar until the next blur.
+  // never restarted by an unrelated re-render. The loop reads one ref for
+  // both persistent user pause and temporary hover pause.
   const fillRef = useRef<HTMLSpanElement | null>(null);
   const pausedRef = useRef(false);
 
   const select = useCallback((index: number) => {
     setActiveIndex(((index % ITEMS.length) + ITEMS.length) % ITEMS.length);
   }, []);
+
+  const syncScrollShadows = useCallback(() => {
+    const list = tablistRef.current;
+    if (!list) return;
+    const max = list.scrollWidth - list.clientWidth;
+    setScrollShadows({
+      start: list.scrollLeft > 1,
+      end: max > 1 && list.scrollLeft < max - 1,
+    });
+  }, []);
+
+  // Keep the active tab inside the strip by moving the strip's own scrollLeft,
+  // never the document. The carousel also advances while the reader is far
+  // below the hero, and `scrollIntoView` would drag the page back up to the
+  // showcase on every single cycle.
+  useEffect(() => {
+    const list = tablistRef.current;
+    const tab = tabRefs.current[activeIndex];
+    if (!list || !tab) return;
+
+    const listRect = list.getBoundingClientRect();
+    const tabRect = tab.getBoundingClientRect();
+    const offset = tabRect.left - listRect.left;
+
+    if (offset < 0) list.scrollLeft += offset;
+    else if (offset + tabRect.width > listRect.width) {
+      list.scrollLeft += offset + tabRect.width - listRect.width;
+    }
+    syncScrollShadows();
+  }, [activeIndex, syncScrollShadows]);
+
+  // Edge fades are the only cue that the strip scrolls: without them a narrow
+  // viewport shows two of the four services with no sign that more exist.
+  useEffect(() => {
+    const list = tablistRef.current;
+    if (!list) return;
+
+    syncScrollShadows();
+    list.addEventListener("scroll", syncScrollShadows, { passive: true });
+    const observer = new ResizeObserver(syncScrollShadows);
+    observer.observe(list);
+
+    return () => {
+      list.removeEventListener("scroll", syncScrollShadows);
+      observer.disconnect();
+    };
+  }, [syncScrollShadows]);
 
   // Auto-advance: accumulate elapsed time only while unpaused; when the active
   // panel's fill reaches 100%, move to the next one. Re-runs (and resets) on
@@ -119,7 +168,7 @@ export function HeroShowcase(): ReactNode {
         tabRefs.current[prev]?.focus();
       }
     },
-    [activeIndex, select]
+    [activeIndex, select],
   );
 
   // Short, symmetric crossfade of the inner panel content, composited over
@@ -134,89 +183,127 @@ export function HeroShowcase(): ReactNode {
   const active = ITEMS[activeIndex];
   if (!active) return null;
   const ActivePanel = active.Panel;
+  const id = active.service.slug;
 
   return (
     <div
       onMouseEnter={() => {
+        hoveringRef.current = true;
         pausedRef.current = true;
       }}
       onMouseLeave={() => {
-        pausedRef.current = false;
+        hoveringRef.current = false;
+        pausedRef.current = userPausedRef.current;
       }}
     >
       {/* Persistent window frame: only the inner panel content crossfades,
           layered on the frame's solid background. Because the frame itself
           never fades, the busy hero backdrop can't bleed through mid-
-          transition, and the title label + active tab stay in sync with the
-          incoming panel (no `mode="wait"` lag or rapid-change hang). */}
-      <WindowFrame label={active.label}>
+          transition, and the active tab stays in sync with the incoming panel
+          (no `mode="wait"` lag or rapid-change hang). */}
+      <WindowFrame
+        tabs={
+          <>
+            <div
+              ref={tablistRef}
+              role="tablist"
+              aria-label="Servicios de Ingeniería Simple"
+              className="flex min-w-0 flex-1 items-stretch overflow-x-auto"
+              style={{
+                maskImage: tablistMask(scrollShadows),
+                WebkitMaskImage: tablistMask(scrollShadows),
+              }}
+            >
+              {ITEMS.map((item, index) => {
+                const isActive = index === activeIndex;
+                const tabId = item.service.slug;
+                return (
+                  <button
+                    key={tabId}
+                    ref={(el) => {
+                      tabRefs.current[index] = el;
+                    }}
+                    type="button"
+                    role="tab"
+                    id={`hero-tab-${tabId}`}
+                    aria-selected={isActive}
+                    tabIndex={isActive ? 0 : -1}
+                    onClick={() => select(index)}
+                    onKeyDown={onTabKeyDown}
+                    className={`focus-ring relative shrink-0 px-3 text-[13px] font-medium tracking-tight transition-colors ${isActive ? "bg-foreground/10 text-foreground" : "text-foreground/70 hover:text-foreground"}`}
+                  >
+                    {item.service.shortName}
+                    {isActive && (
+                      <span
+                        ref={fillRef}
+                        className="bg-primary absolute bottom-0 left-0 h-0.5"
+                        style={{ width: prefersReducedMotion ? "100%" : "0%" }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+            {!prefersReducedMotion && (
+              <button
+                type="button"
+                aria-label={
+                  userPaused
+                    ? "Reanudar el recorrido de servicios"
+                    : "Pausar el recorrido de servicios"
+                }
+                aria-pressed={userPaused}
+                onClick={() => {
+                  const next = !userPausedRef.current;
+                  userPausedRef.current = next;
+                  pausedRef.current = next || hoveringRef.current;
+                  setUserPaused(next);
+                }}
+                className="focus-ring border-border/60 text-foreground/70 hover:text-foreground flex w-10 shrink-0 items-center justify-center border-l"
+              >
+                {userPaused ? (
+                  <Play size={14} aria-hidden="true" />
+                ) : (
+                  <Pause size={14} aria-hidden="true" />
+                )}
+              </button>
+            )}
+          </>
+        }
+      >
         <div className="relative h-full">
           <AnimatePresence initial={false}>
             <motion.div
-              key={active.id}
+              key={id}
               role="tabpanel"
-              id={`hero-panel-${active.id}`}
-              aria-labelledby={`hero-tab-${active.id}`}
-              className="absolute inset-0 bg-background"
+              id={`hero-panel-${id}`}
+              aria-labelledby={`hero-tab-${id}`}
+              className="bg-background absolute inset-0"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={fadeTransition}
             >
-              <ActivePanel />
+              <p className="sr-only">
+                {`${active.service.shortName}: ${PANEL_DESCRIPTION[id] ?? "Ejemplo de lo que construimos para tu operación."}`}
+              </p>
+              <div aria-hidden="true" className="h-full">
+                <ActivePanel />
+              </div>
             </motion.div>
           </AnimatePresence>
         </div>
       </WindowFrame>
-
-      {/* Indicators */}
-      <div
-        role="tablist"
-        aria-label="Servicios de Ingeniería Simple"
-        className="mx-auto mt-6 grid max-w-[1100px] grid-cols-2 gap-3 sm:grid-cols-4"
-      >
-        {ITEMS.map((item, index) => {
-          const isActive = index === activeIndex;
-          return (
-            <button
-              key={item.id}
-              ref={(el) => {
-                tabRefs.current[index] = el;
-              }}
-              type="button"
-              role="tab"
-              id={`hero-tab-${item.id}`}
-              aria-selected={isActive}
-              aria-controls={`hero-panel-${item.id}`}
-              tabIndex={isActive ? 0 : -1}
-              onClick={() => select(index)}
-              onKeyDown={onTabKeyDown}
-              className="focus-ring group flex flex-col gap-2 text-left"
-            >
-              <span
-                className={`text-[13px] font-medium tracking-tight transition-colors ${
-                  isActive
-                    ? "text-foreground"
-                    : "text-muted-foreground group-hover:text-foreground"
-                }`}
-              >
-                {item.service}
-              </span>
-
-              {/* Flat rectangular track — sharp corners, no radius. */}
-              <span className="relative block h-1 w-full overflow-hidden bg-border">
-                {isActive ? (
-                  <span
-                    ref={fillRef}
-                    className="absolute inset-y-0 left-0 bg-primary"
-                    style={{ width: prefersReducedMotion ? "100%" : "0%" }}
-                  />
-                ) : null}
-              </span>
-            </button>
-          );
-        })}
-      </div>
     </div>
   );
+}
+
+/**
+ * Edge fades for the tab strip, built as a mask so they never paint over the
+ * tabs. Only the sides that actually hide content are faded.
+ */
+function tablistMask({ start, end }: { start: boolean; end: boolean }): string {
+  const head = start ? "transparent 0, black 16px" : "black 0";
+  const tail = end ? "black calc(100% - 16px), transparent 100%" : "black 100%";
+  return `linear-gradient(to right, ${head}, ${tail})`;
 }
