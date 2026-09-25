@@ -197,6 +197,42 @@ every work unit and once more at the end.
   the two constants to trade: `targetOpacity` and `opacity-80 dark:opacity-70` in
   `components/hero-waves.tsx`.
 
+## Post-review fix: the per-area table escaped its card
+
+The user found, after Fase 1 was reported closed, that the last row of
+"Ejecución por área" painted outside its card. The row ended 8px below the card's
+border at every desktop width from 1180 to 1920, and 10px at 390. Fixed in
+commit `3669e85`.
+
+It was pre-existing: measured against `f89f171` the same row overflowed by the
+same 8px. It still belonged in T2's scope ("stop the panels from losing content
+and overlap") and the audit had missed it.
+
+Why the audit missed it, twice:
+
+1. The overlap sweep only compares text against text. A row escaping a card has
+   no text after it to collide with, so nothing was reported.
+2. A card-overflow check was then written, but it classified `overflow: hidden`
+   as an intentional scroll region and therefore skipped exactly the elements
+   being clipped. The first genuine result it produced was misread as an SVG
+   measurement artifact from an earlier run.
+
+Fix, in two layers: the table rows are `leading-tight` with `py-[2px]` so the six
+rows fit the height the grid grants them (112px against 112px available), and
+`Tile` is `overflow-hidden` so tile content can never paint past its own border
+again. Checked that the guarantee hides nothing: the monthly chart tile reports a
+10px content overflow that lands inside its own 12px of padding, which is why
+`overflow: hidden` does not clip it.
+
+Verified with 40 checks — 10 widths (390, 480, 640, 768, 900, 1023, 1024, 1180,
+1440, 1920) times 4 panels — all clean.
+
+Process cost worth remembering: while comparing HEAD against the base for a
+before/after screenshot, the working file was overwritten with `git checkout HEAD
+-- <file>`, which silently discarded the fix, and the screenshots taken afterwards
+were of the unfixed file. The comparison was redone with `git stash push <file>`
+instead, which is the right tool for that.
+
 ## Known issues left for a later phase
 
 - On mobile the automation panel's fixed 1040 px stage is still cropped
