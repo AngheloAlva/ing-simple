@@ -231,7 +231,7 @@ export function Nav(): ReactNode {
 					<CutButton
 						variant="outline"
 						iconOnly
-						aria-label={mobileOpen ? "Close menu" : "Open menu"}
+						aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
 						onClick={() => setMobileOpen((v) => !v)}
 					>
 						<MenuToggleIcon open={mobileOpen} />

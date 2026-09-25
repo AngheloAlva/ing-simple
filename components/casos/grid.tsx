@@ -195,7 +195,7 @@ export function CasosGrid(): ReactNode {
 							Todavía no hay casos publicados en {CATEGORY_LABELS[filter as ProjectCategory]}
 						</p>
 						<p className="text-muted-foreground mt-3 max-w-sm text-sm leading-relaxed">
-							Estamos trabajando en proyectos de esta línea. Muy pronto vas a verlos aquí.
+							Explora otras categorías para ver los casos publicados.
 						</p>
 					</motion.div>
 				)}

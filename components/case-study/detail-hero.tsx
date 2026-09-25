@@ -114,7 +114,7 @@ export function DetailHero({ project, caseStudy }: DetailHeroProps): ReactNode {
 									variant="outline"
 									href={contactHref(serviceSlugForCategory(project.category))}
 								>
-									Cotizar un sistema similar
+									Hablemos de tu proyecto
 								</CutButton>
 							</motion.div>
 						</div>

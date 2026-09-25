@@ -263,8 +263,7 @@ export function ContactoSection({ initialServicio = "" }: ContactoSectionProps =
 							</span>
 							<p className="mt-6 font-serif text-2xl font-normal tracking-tight">Mensaje enviado</p>
 							<p className="text-muted-foreground mt-3 max-w-xs text-sm leading-relaxed">
-								Te respondemos en menos de 24 horas hábiles. Revisa tu correo: te enviamos una
-								confirmación.
+								Recibimos tu mensaje. Te responderemos por correo en menos de 24 horas hábiles.
 							</p>
 						</div>
 					) : (

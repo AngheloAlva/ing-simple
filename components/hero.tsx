@@ -54,9 +54,9 @@ export function Hero(): ReactNode {
 						className="font-sans text-4xl leading-[1.1] font-normal tracking-tight text-balance sm:text-5xl lg:text-[3.5rem]"
 					>
 						<GradientText inline className="font-medium" colors={brandGradient} animationSpeed={6}>
-							Power BI, automatización
+							Soluciones simples
 						</GradientText>{" "}
-						y desarrollo web para empresas en Chile
+						para un mundo digital complejo
 					</motion.h1>
 
 					<motion.p
@@ -77,7 +77,7 @@ export function Hero(): ReactNode {
 							Explorar servicios
 						</CutButton>
 						<CutButton variant="outline" href="/contacto" className="dark:text-white">
-							Conversemos
+							Hablemos de tu proyecto
 						</CutButton>
 					</motion.div>
 				</motion.div>

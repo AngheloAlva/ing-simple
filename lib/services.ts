@@ -275,8 +275,8 @@ export const SERVICES: Service[] = [
 				},
 				{
 					group: "Cómo lo dictamos",
-					title: "Ejercicios con tus datos",
-					desc: "Los casos prácticos se arman con información de tu propia operación, para que lo aprendido se aplique al día siguiente.",
+					title: "Ejercicios aplicados",
+					desc: "Siempre que sea posible, trabajamos con datos de tu operación para que el equipo practique con situaciones de su trabajo.",
 				},
 				{
 					group: "Cómo lo dictamos",
@@ -325,7 +325,7 @@ export const SERVICES: Service[] = [
 				},
 				{
 					q: "¿Los ejercicios usan datos de mi empresa?",
-					a: "Sí, siempre que sea posible. Trabajar con tus propios datos es lo que hace que la capacitación se traduzca en resultados inmediatos, no en teoría.",
+					a: "Sí, siempre que sea posible. Trabajar con tus datos ayuda al equipo a practicar con situaciones concretas de su operación.",
 				},
 				{
 					q: "¿Qué pasa después del curso?",
@@ -477,11 +477,11 @@ export const SERVICES: Service[] = [
 		page: {
 			seoTitle: "Automatización de procesos para empresas en Chile",
 			seoDescription:
-				"Automatizamos tareas repetitivas y conectamos tus sistemas: aprobaciones, reportes e integraciones sin errores manuales, para empresas en Chile.",
+				"Automatizamos tareas repetitivas y conectamos tus sistemas para agilizar aprobaciones, generar reportes y reducir errores de digitación en Chile.",
 			pageTitle: "Automatización de procesos",
 			pageTitleAccent: "que le devuelve horas a tu equipo",
 			pageSubtitle:
-				"Convertimos tareas repetitivas —copiar datos, pedir aprobaciones, armar documentos— en flujos automáticos que corren solos y sin errores.",
+				"Convertimos tareas repetitivas —copiar datos, pedir aprobaciones, armar documentos— en flujos automáticos que reducen pasos manuales y errores de digitación.",
 			problemTitle: "Horas de tu equipo en trabajo que",
 			problemTitleAccent: "una máquina haría mejor",
 			problem:
