@@ -277,6 +277,39 @@ nav ends up inside the boundary, its isolation CSS is load-bearing rather than o
 The probe routes were deleted afterwards. `pnpm typecheck` and `pnpm test` were rerun after
 the deletion.
 
+### Follow-up fix — the destination page opened mid-scroll
+
+Commit `fa516e0`, after the user reported that any link landed at the scroll
+position they had left. Not caused by the transitions, but made visible by them:
+before this branch almost every link was a full document load that recreated Lenis.
+
+The cause is Lenis's own input handling — `onNativeScroll` only re-syncs while
+`isScrolling` is `false` or `"native"`, so a native scroll arriving mid-animation is
+ignored and the next frame writes the animated value back. Next's reset for a new
+route is therefore undone, and Lenis finishes animating to the position it was
+already heading for. Six runs out of six on `/casos` scrolled to 1800px landed at
+1806px.
+
+React amplifies it: effects are deferred until a view transition finishes, so by
+the time an effect could react, the wrong position is already on screen. The fix is
+`lenis.scrollTo(0, { immediate: true })`, whose immediate path writes the value,
+calls `reset()` and lowers `isScrolling`. `shouldResetScroll` in `lib/scroll.ts`
+excludes an unchanged pathname, a hash destination, and back or forward; it is a
+pure function precisely because the browser behaviour cannot be asserted from a
+node test environment.
+
+Verified against a running build, after 6/6 reproduction before the change:
+
+| Check | Result |
+| --- | --- |
+| `/casos` at 1800px, click a card, six runs | lands at 0 every time |
+| Same, in a production build | lands at 0 every time |
+| Back from the case detail | returns to the 1300px the visitor left |
+| In-page `#incluye` | scrolls to the section |
+| Cold deep link `/servicios/reportabilidad#incluye` | lands on the section |
+| Reload while scrolled | keeps the restored position |
+| Same, under `prefers-reduced-motion` (no Lenis) | lands at 0, unchanged |
+
 ### Task 2 — the vocabulary and the CSS recipes
 
 Commit `9b80ce2`. `lib/view-transitions.ts` (plain data, consumed by server components),

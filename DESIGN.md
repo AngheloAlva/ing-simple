@@ -268,6 +268,16 @@ not from `motion/react`.
 Do not measure scroll-driven animations with `window.scrollTo` (Lenis smooth
 scroll intercepts it), and expect Motion loops to freeze in headless screenshots.
 
+The same interception decides where a new route starts. Lenis writes its own
+animated position every frame and, while it is animating, ignores the native
+scroll events it uses to notice external moves: its `onNativeScroll` only re-syncs
+while `isScrolling` is `false` or `"native"`. A route change therefore has to be
+reset through Lenis (`lenis.scrollTo(0, { immediate: true })`), because Next's own
+reset lands, gets written over on the next frame, and the visitor ends up part-way
+down a page they have never scrolled. `shouldResetScroll` in `lib/scroll.ts`
+carries the three cases that must be left alone: an unchanged pathname, a
+destination with a hash, and back or forward.
+
 Scroll pins and `useTransform`: the keyframe-array form
 (`useTransform(progress, [0, 1], ["0%", "100%"])`) did not hold its end value in
 the pinned scroll gallery that has since been removed from this codebase. Once the
