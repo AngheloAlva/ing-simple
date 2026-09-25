@@ -6,10 +6,10 @@ import { CutButton } from "@/components/cut-button"
 import { CATEGORY_LABELS, type CaseStudy, type ProjectData } from "@/lib/portfolio-data"
 import { useStaggerEntrance } from "@/lib/motion"
 import { contactHref, serviceSlugForCategory } from "@/lib/services"
-import { NAV_BACK } from "@/lib/view-transitions"
+import { CASE_VISUAL_PREFIX, NAV_BACK, viewTransitionName } from "@/lib/view-transitions"
 import { motion, type Variants } from "motion/react"
 import Link from "next/link"
-import type { ReactNode } from "react"
+import { ViewTransition, type ReactNode } from "react"
 
 interface DetailHeroProps {
 	project: ProjectData
@@ -122,15 +122,22 @@ export function DetailHero({ project, caseStudy }: DetailHeroProps): ReactNode {
 						</div>
 
 						{/* Right — hero mockup (guarded) */}
-						<motion.div variants={item} transition={itemTransition}>
+						{/* The morph owns the mockup entrance; fading this block would blank its incoming snapshot. */}
+						<div>
 							{HeroMockup ? (
-								<div className="border-border bg-muted/40 relative rounded-sm border [&>*]:!rounded-none">
-									<CornerPlus className="top-0 left-0 -translate-x-1/2 -translate-y-1/2" />
-									<CornerPlus className="top-0 right-0 translate-x-1/2 -translate-y-1/2" />
-									<CornerPlus className="bottom-0 left-0 -translate-x-1/2 translate-y-1/2" />
-									<CornerPlus className="right-0 bottom-0 translate-x-1/2 translate-y-1/2" />
-									<HeroMockup label={`Vista de ${project.title}`} />
-								</div>
+								<ViewTransition
+									name={viewTransitionName(CASE_VISUAL_PREFIX, project.id)}
+									share="morph"
+									default="none"
+								>
+									<div className="border-border bg-muted/40 relative rounded-sm border [&>*]:!rounded-none">
+										<CornerPlus className="top-0 left-0 -translate-x-1/2 -translate-y-1/2" />
+										<CornerPlus className="top-0 right-0 translate-x-1/2 -translate-y-1/2" />
+										<CornerPlus className="bottom-0 left-0 -translate-x-1/2 translate-y-1/2" />
+										<CornerPlus className="right-0 bottom-0 translate-x-1/2 translate-y-1/2" />
+										<HeroMockup label={`Vista de ${project.title}`} />
+									</div>
+								</ViewTransition>
 							) : (
 								<div className="border-border bg-muted/40 relative aspect-video w-full rounded-sm border">
 									<CornerPlus className="top-0 left-0 -translate-x-1/2 -translate-y-1/2" />
@@ -139,7 +146,7 @@ export function DetailHero({ project, caseStudy }: DetailHeroProps): ReactNode {
 									<CornerPlus className="right-0 bottom-0 translate-x-1/2 translate-y-1/2" />
 								</div>
 							)}
-						</motion.div>
+						</div>
 					</div>
 
 					{/* Meta strip */}

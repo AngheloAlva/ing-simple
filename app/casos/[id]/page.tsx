@@ -19,9 +19,10 @@ import { isPublicCaseStudy } from "@/lib/public-case-studies"
 import { articleJsonLd, breadcrumbJsonLd } from "@/lib/seo/json-ld"
 import { caseStudyTitle } from "@/lib/seo/titles"
 import { contactHref, serviceSlugForCategory } from "@/lib/services"
+import { DIRECTIONAL_CLASSES } from "@/lib/view-transitions"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import type { ReactNode } from "react"
+import { ViewTransition, type ReactNode } from "react"
 
 interface PageProps {
 	params: Promise<{ id: string }>
@@ -61,35 +62,37 @@ export default async function CaseStudyDetailPage({ params }: PageProps): Promis
 	const caseStudy = project.caseStudy
 
 	return (
-		<>
-			<JsonLd
-				data={[
-					breadcrumbJsonLd([
-						{ name: "Inicio", path: "/" },
-						{ name: "Casos", path: "/casos" },
-						{ name: project.title, path: `/casos/${project.id}` },
-					]),
-					articleJsonLd(project),
-				]}
-			/>
-			<span id="top" className="sr-only" />
-			<Nav />
-			<main id="main-content" className="flex-1">
-				<DetailHero project={project} caseStudy={caseStudy} />
-				<DetailContext project={project} caseStudy={caseStudy} />
-				<DetailSolution caseStudy={caseStudy} />
-				<DetailArchitecture project={project} caseStudy={caseStudy} />
-				<DetailTechStack caseStudy={caseStudy} />
-				<DetailFeatures project={project} caseStudy={caseStudy} />
-				<DetailTimeline caseStudy={caseStudy} />
-				<DetailMetrics caseStudy={caseStudy} />
-				<DetailBeforeAfter caseStudy={caseStudy} />
-				<DetailRelated currentId={project.id} />
-				<FinalCta href={contactHref(serviceSlugForCategory(project.category))} />
-			</main>
-			<InView>
-				<Footer />
-			</InView>
-		</>
+		<ViewTransition enter={DIRECTIONAL_CLASSES} exit={DIRECTIONAL_CLASSES} default="none">
+			<>
+				<JsonLd
+					data={[
+						breadcrumbJsonLd([
+							{ name: "Inicio", path: "/" },
+							{ name: "Casos", path: "/casos" },
+							{ name: project.title, path: `/casos/${project.id}` },
+						]),
+						articleJsonLd(project),
+					]}
+				/>
+				<span id="top" className="sr-only" />
+				<Nav />
+				<main id="main-content" className="flex-1">
+					<DetailHero project={project} caseStudy={caseStudy} />
+					<DetailContext project={project} caseStudy={caseStudy} />
+					<DetailSolution caseStudy={caseStudy} />
+					<DetailArchitecture project={project} caseStudy={caseStudy} />
+					<DetailTechStack caseStudy={caseStudy} />
+					<DetailFeatures project={project} caseStudy={caseStudy} />
+					<DetailTimeline caseStudy={caseStudy} />
+					<DetailMetrics caseStudy={caseStudy} />
+					<DetailBeforeAfter caseStudy={caseStudy} />
+					<DetailRelated currentId={project.id} />
+					<FinalCta href={contactHref(serviceSlugForCategory(project.category))} />
+				</main>
+				<InView>
+					<Footer />
+				</InView>
+			</>
+		</ViewTransition>
 	)
 }
