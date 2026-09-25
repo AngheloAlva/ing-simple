@@ -241,18 +241,78 @@ The `morph` recipe's mid-flight blur is what has to carry that.
 
 ## Non-goals / pending follow-up
 
-Deliberately left out of this change, to be picked up as a separate one:
+Still outstanding:
 
-- Nav dropdown, footer, `case-study-feature.tsx` (home featured case),
-  `servicios/related-cases.tsx` and the lateral pages (`/sobre-nosotros`,
-  `/contacto`, `/privacidad`) still navigate with hard anchors.
-- No `loading.tsx` or `<Suspense>` boundary exists anywhere, so there is no Suspense
-  reveal pattern to build yet.
-- The `Nav` and `Footer` remain per-page rather than moving into `app/layout.tsx`.
-- `ThemeSwitch` is fixed and outside the page boundary; it needs its own isolation
-  check once the full site is converted.
+- **Same-route lateral navigation has no animation**: guide → guide through "Sigue
+  leyendo", case → case through "Otros proyectos". The documented `key` + stable
+  `name` + `share` pattern would fix it, and it cannot be combined with the page-level
+  directional boundary, because a named wrapper is excluded from the page snapshot and
+  would stop sliding. Both components render text-only cards, so there is no shared
+  visual to morph either.
+- **Untyped navigations animate nothing.** A link inside a guide body has no direction
+  to claim, so its destination boundary resolves to `default: "none"` and the content
+  swaps instantly. That is the deliberate consequence of a live root; adding a root
+  cross-fade back would reintroduce the frozen snapshot the live root exists to avoid.
+- **`components/case-study-feature.tsx` carries no shared-element name on purpose.**
+  Its left panel is driven by hover state and its geometry is unrelated to the detail
+  hero frame, so a morph would be a large distortion with no meaning.
+- **All three guides are `draft: true`**, so `/guias` renders its empty state and
+  `/guias/[slug]` prerenders no route in a production build. The guide journey is only
+  reachable, and only verifiable, in `pnpm dev`.
+- **No `loading.tsx` or `<Suspense>` boundary exists anywhere**, so there is no
+  Suspense reveal to animate yet.
+- **`Nav` and `Footer` are still rendered by each page** rather than living in
+  `app/layout.tsx`. Both are correct as they stand — the nav is isolated by name and
+  the footer is ordinary page content — but every page still mounts its own copy.
+- **`components/react-bits/` is imported by nothing.** Dead vendored code, a
+  candidate for the same removal `pixel-sculpt` got.
+
+## The anchors that are still anchors
+
+Every internal destination now goes through `next/link`. What remains, and why:
+
+| Location | Nature | Why it stays an anchor |
+| --- | --- | --- |
+| `privacidad/page.tsx` ×4, `contacto-section.tsx`, footer "Contacto" column | `mailto:` | the browser owns the protocol |
+| `privacidad/page.tsx:179` | `https://resend.com` | external |
+| `footer.tsx` LinkedIn | external | external, carries `target` and `rel` |
+| `skip-to-content.tsx` | `#main-content` | in-page; `smooth-scroll.tsx` intercepts `a[href^="#"]` |
+| `guias/toc.tsx` ×2 | `#slug` | in-page heading jump |
+| `guias/mdx-components.tsx` | hash and external branches | in-page hash must not open a new tab |
+| `case-study-feature.tsx` rows | internal, but no shared-element name | soft navigation, hover-driven preview |
+| `logo-loop.tsx` | conditional | its only consumer never passes an `href` |
 
 ## Evidence log
+
+### Closing the anchor gaps
+
+Commits `296ff52` (the footer and the related cases) and `f416c59` (the featured-case
+rows and the duplicated helper). Between them, every internal destination on the site
+now goes through `next/link`; the table above records what is deliberately still an
+anchor and why.
+
+Two decisions worth naming. The footer splits each entry on `isInternalHref`, because one
+of its columns is a `mailto:` — the same rule `CutButton` already used, rather than a
+second exception list. And the guide MDX module had grown its own `isInternalHref` with
+the same name as the shared one and different behaviour; collapsing it needed a third
+branch, since an in-page hash is not an internal path and would otherwise have been given
+`target="_blank"`.
+
+Verified in the browser:
+
+| Check | Result |
+| --- | --- |
+| `/servicios/desarrollo-web` → related case, production | soft, top, morph pair, `-60px` forward |
+| `/casos/otc-360` → footer `Casos`, production | soft, top, `+60px` back |
+| `/` → footer service, production | soft, top, `-60px` forward |
+| Home featured-case row, production | soft, top, `-60px` forward, no morph (by design) |
+| Guide body link → `/servicios/automatizaciones`, dev | soft, top, no slide (untyped by design) |
+| Guide body link → another guide, dev | soft, top |
+| LinkedIn | `target` and `rel` intact |
+| `#incluye` | still an anchor, still scrolls |
+
+Only `/servicios/desarrollo-web` has related cases; the other three services render none,
+so the related-case boundary is exercised on one route rather than four.
 
 ### Pre-implementation probe — where the boundary must sit
 
