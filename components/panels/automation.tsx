@@ -20,8 +20,8 @@ import { useReducedMotion } from "@/lib/motion";
  * n8n-style automation canvas.
  *
  * Everything lives in a FIXED-size design stage (STAGE_W × STAGE_H px) that is
- * centered inside the panel and cropped by the frame's overflow when the
- * viewport is narrower. Because the stage never resizes, node cards (absolute
+ * centered inside the panel when the frame is wide enough. A compact flow
+ * replaces it in narrower frames. Because the stage never resizes, node cards (absolute
  * px) and the SVG connectors (viewBox === stage px) share one 1:1 coordinate
  * system, so wires plug into ports exactly and the traveling pulse stays on the
  * wire regardless of screen width — no aspect-ratio distortion.
@@ -418,8 +418,8 @@ export function PanelAutomation(): ReactNode {
         </span>
       </div>
 
-      {/* Canvas */}
-      <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden">
+      {/* Canvas: the available frame width, not viewport width, selects the layout. */}
+      <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden [container-type:inline-size]">
         {/* Dotted grid background */}
         <div className="pointer-events-none absolute inset-0 bg-muted/20" />
         <div
@@ -430,9 +430,47 @@ export function PanelAutomation(): ReactNode {
           }}
         />
 
+        {/* Compact sequence keeps the branch and both validation inputs visible. */}
+        <div className="relative z-10 w-full max-w-md overflow-y-auto px-4 py-2 text-sm @[1040px]:hidden">
+          <ol className="flex flex-col gap-2">
+            <li className="rounded-lg border border-primary/30 bg-background p-3">
+              <div className="flex items-center gap-3 font-semibold"><Zap className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />Cuando llega una solicitud</div>
+              <p className="ml-7 text-xs text-muted-foreground">Formulario web</p>
+            </li>
+            <li className="rounded-lg border border-border bg-background p-3">
+              <div className="flex items-center gap-3 font-semibold"><ShieldCheck className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />Validar datos</div>
+              <p className="ml-7 text-xs text-muted-foreground">Reglas de negocio</p>
+              <div className="ml-7 mt-2 flex flex-wrap gap-2 border-t border-dashed border-border pt-2 text-xs text-muted-foreground">
+                <span className="inline-flex items-center gap-1"><Database className="h-3 w-3" aria-hidden="true" />Origen de datos</span>
+                <span className="inline-flex items-center gap-1"><FileText className="h-3 w-3" aria-hidden="true" />Plantilla</span>
+              </div>
+            </li>
+            <li className="rounded-lg border border-border bg-background p-3">
+              <div className="flex items-center gap-3 font-semibold"><GitBranch className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />Condición</div>
+              <p className="ml-7 text-xs text-muted-foreground">¿Cumple requisitos?</p>
+            </li>
+          </ol>
+          <div className="ml-6 border-l border-primary/35 pl-4">
+            <div className="mt-3 rounded-lg border border-brand-green/30 bg-background p-3">
+              <span className="text-xs font-semibold text-brand-green-text">Aprobado</span>
+              <div className="mt-1 flex items-center gap-2 font-semibold"><Save className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />Guardar registro</div>
+              <p className="ml-6 text-xs text-muted-foreground">Base de datos</p>
+              <div className="mt-2 border-t border-border pt-2">
+                <div className="flex items-center gap-2 font-semibold"><BellRing className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />Notificar al equipo</div>
+                <p className="ml-6 text-xs text-muted-foreground">Correo · chat</p>
+              </div>
+            </div>
+            <div className="mt-3 rounded-lg border border-border bg-background p-3">
+              <span className="text-xs font-semibold text-muted-foreground">Rechazado</span>
+              <div className="mt-1 flex items-center gap-2 font-semibold"><TriangleAlert className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />Solicitar revisión</div>
+              <p className="ml-6 text-xs text-muted-foreground">Caso manual</p>
+            </div>
+          </div>
+        </div>
+
         {/* Fixed design stage — nodes + SVG share these exact px coordinates */}
         <div
-          className="relative shrink-0"
+          className="relative hidden shrink-0 @[1040px]:block"
           style={{ width: STAGE_W, height: STAGE_H }}
         >
           {/* Connector layer (behind everything else) */}
