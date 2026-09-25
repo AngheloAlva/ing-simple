@@ -17,6 +17,7 @@ import {
 	Pasos,
 	RevealDisabled,
 } from "@/components/guias/mdx-motion"
+import { isInternalHref } from "@/lib/href"
 import { InView } from "@/lib/motion"
 
 /**
@@ -41,10 +42,6 @@ import { InView } from "@/lib/motion"
  * live in `mdx-motion.tsx` and are imported in.
  */
 
-function isInternalHref(href: string): boolean {
-	return href.startsWith("/") || href.startsWith("#")
-}
-
 function MdxLink({ href = "", children, ...props }: ComponentPropsWithoutRef<"a">): ReactNode {
 	const linkClassName = "text-primary underline underline-offset-4 hover:no-underline"
 
@@ -53,6 +50,17 @@ function MdxLink({ href = "", children, ...props }: ComponentPropsWithoutRef<"a"
 			<Link href={href} className={linkClassName}>
 				{children}
 			</Link>
+		)
+	}
+
+	// Three-way split, because the anchors are not the same kind of navigation: a
+	// mailto: or another site needs a browser anchor, while an in-page hash must not
+	// be sent to a new tab.
+	if (href.startsWith("#")) {
+		return (
+			<a href={href} className={linkClassName} {...props}>
+				{children}
+			</a>
 		)
 	}
 
