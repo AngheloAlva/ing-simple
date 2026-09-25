@@ -2,6 +2,7 @@ import { InView, MotionSection } from "@/lib/motion"
 import { createMetadata } from "@/lib/metadata"
 import { faqJsonLd } from "@/lib/seo/json-ld"
 import { HOME_FAQ } from "@/lib/home-faq"
+import { DIRECTIONAL_CLASSES } from "@/lib/view-transitions"
 
 import { ServicesStack } from "@/components/services-stack"
 import { CaseStudy } from "@/components/case-study-feature"
@@ -18,7 +19,7 @@ import { Faq } from "@/components/faq"
 import { Nav } from "@/components/nav"
 
 import type { Metadata } from "next"
-import type { ReactNode } from "react"
+import { ViewTransition, type ReactNode } from "react"
 
 export const metadata: Metadata = createMetadata({
 	absoluteTitle: "Power BI, automatización y desarrollo web en Chile | Ingeniería Simple",
@@ -37,51 +38,53 @@ const RISE_IN = {
 
 export default function HomePage(): ReactNode {
 	return (
-		<>
-			<JsonLd data={faqJsonLd(HOME_FAQ)} />
+		<ViewTransition enter={DIRECTIONAL_CLASSES} exit={DIRECTIONAL_CLASSES} default="none">
+			<>
+				<JsonLd data={faqJsonLd(HOME_FAQ)} />
 
-			<span id="top" className="sr-only" />
+				<span id="top" className="sr-only" />
 
-			<Nav />
-			<main id="main-content" className="flex-1">
-				<div className="relative">
-					<HeroWaves />
-					<Hero />
-					<MotionSection
-						variants={RISE_IN}
-						transition={{ duration: 0.85, delay: 0.55, ease: SOFT_EASE }}
-						className="relative px-5 pb-40 sm:px-8 lg:px-10"
-					>
-						<HeroShowcase />
-					</MotionSection>
-				</div>
+				<Nav />
+				<main id="main-content" className="flex-1">
+					<div className="relative">
+						<HeroWaves />
+						<Hero />
+						<MotionSection
+							variants={RISE_IN}
+							transition={{ duration: 0.85, delay: 0.55, ease: SOFT_EASE }}
+							className="relative px-5 pb-40 sm:px-8 lg:px-10"
+						>
+							<HeroShowcase />
+						</MotionSection>
+					</div>
+
+					<InView>
+						<TrustedBy />
+					</InView>
+
+					<InView viewport={{ once: true, margin: "0px 0px -30% 0px" }}>
+						<Challenge />
+					</InView>
+
+					<ServicesStack />
+
+					<HowItWorks />
+
+					<InView>
+						<CaseStudy />
+					</InView>
+
+					<InView>
+						<Faq />
+					</InView>
+
+					<FinalCta />
+				</main>
 
 				<InView>
-					<TrustedBy />
+					<Footer />
 				</InView>
-
-				<InView viewport={{ once: true, margin: "0px 0px -30% 0px" }}>
-					<Challenge />
-				</InView>
-
-				<ServicesStack />
-
-				<HowItWorks />
-
-				<InView>
-					<CaseStudy />
-				</InView>
-
-				<InView>
-					<Faq />
-				</InView>
-
-				<FinalCta />
-			</main>
-
-			<InView>
-				<Footer />
-			</InView>
-		</>
+			</>
+		</ViewTransition>
 	)
 }

@@ -1,7 +1,13 @@
+"use client"
+
 import { CutButton } from "@/components/cut-button"
 import { Logo } from "@/components/logo"
+import { isInternalHref } from "@/lib/href"
 import { SERVICES } from "@/lib/services"
+import { navLinkProps } from "@/lib/view-transitions"
 import { Linkedin } from "lucide-react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import type { CSSProperties, ReactNode } from "react"
 
 type FooterLink = { label: string; href: string }
@@ -62,6 +68,10 @@ function FooterColumn({
 	links: FooterLink[]
 	children?: ReactNode
 }): ReactNode {
+	// Each link's direction depends on where the visitor already is: "Casos" is a step
+	// forward from the home page and a step back from a case. Same derivation as the
+	// header, and the reason this module is a client component at all.
+	const pathname = usePathname()
 	const divided = index > 0
 	return (
 		<div
@@ -80,12 +90,23 @@ function FooterColumn({
 			<ul className="mt-4 space-y-3">
 				{links.map((link) => (
 					<li key={link.href}>
-						<a
-							href={link.href}
-							className="focus-ring text-muted-foreground hover:text-foreground text-sm transition-colors"
-						>
-							{link.label}
-						</a>
+						{/* Split on isInternalHref: a mailto: needs a browser anchor. */}
+						{isInternalHref(link.href) ? (
+							<Link
+								href={link.href}
+								{...navLinkProps(link.href, pathname)}
+								className="focus-ring text-muted-foreground hover:text-foreground text-sm transition-colors"
+							>
+								{link.label}
+							</Link>
+						) : (
+							<a
+								href={link.href}
+								className="focus-ring text-muted-foreground hover:text-foreground text-sm transition-colors"
+							>
+								{link.label}
+							</a>
+						)}
 					</li>
 				))}
 			</ul>

@@ -1,5 +1,6 @@
 import { IllustrationPlate } from "@/components/illustration-plate"
-import type { ReactNode } from "react"
+import { GUIA_COVER_PREFIX, viewTransitionName } from "@/lib/view-transitions"
+import { ViewTransition, type ReactNode } from "react"
 
 /**
  * The cover under the nav, in the illustration register. Framed with the site's
@@ -18,23 +19,31 @@ import type { ReactNode } from "react"
 export function GuiaCover({
 	src,
 	alt,
+	slug,
 	credito,
 }: {
 	src: string
 	alt: string
+	slug: string
 	credito?: string
 }): ReactNode {
 	return (
 		<div className="mx-auto max-w-360 px-5 pt-24 sm:px-8 sm:pt-28 lg:px-10">
 			<div className="relative overflow-hidden rounded-sm">
-				<IllustrationPlate
-					src={src}
-					alt={alt}
-					priority
-					sizes="100vw"
-					className="object-cover"
-					frame="border-border aspect-video w-full border"
-				/>
+				<ViewTransition
+					name={viewTransitionName(GUIA_COVER_PREFIX, slug)}
+					share="morph"
+					default="none"
+				>
+					<IllustrationPlate
+						src={src}
+						alt={alt}
+						priority
+						sizes="100vw"
+						className="object-cover"
+						frame="border-border aspect-video w-full border"
+					/>
+				</ViewTransition>
 
 				{credito !== undefined ? (
 					<>

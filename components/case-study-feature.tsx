@@ -6,9 +6,13 @@ import { CornerPlus, Kicker } from "@/components/corner-plus"
 import { CutButton } from "@/components/cut-button"
 import { getCaseStudyVisuals } from "@/components/case-study/visuals/registry"
 import { CATEGORY_LABELS, portfolioProjects } from "@/lib/portfolio-data"
+import { NAV_FORWARD } from "@/lib/view-transitions"
 import { ArrowUpRight, Lock } from "lucide-react"
 import { AnimatePresence, motion, type Variants } from "motion/react"
+import Link from "next/link"
 import { useState, type ReactNode } from "react"
+
+const MotionLink = motion.create(Link)
 
 // Derived from the migrated portfolio data — only projects with a full case
 // study, capped for the home showcase. The full set lives on /casos.
@@ -165,10 +169,12 @@ export function CaseStudy(): ReactNode {
 					viewport={{ once: true, margin: "-80px" }}
 					className="border-border -mx-4 border-t px-4"
 				>
+					{/* Client navigation only: the hover-driven preview does not match the detail hero geometry. */}
 					{STUDIES.map((study, index) => (
-						<motion.a
+						<MotionLink
 							key={study.id}
 							href={`/casos/${study.id}`}
+							transitionTypes={[NAV_FORWARD]}
 							variants={rowVariants}
 							whileHover="hover"
 							onMouseEnter={() => setActive(index)}
@@ -210,7 +216,7 @@ export function CaseStudy(): ReactNode {
 									<ArrowUpRight className="h-4 w-4" aria-hidden="true" />
 								</motion.span>
 							</span>
-						</motion.a>
+						</MotionLink>
 					))}
 
 					<div className="pt-8">

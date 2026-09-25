@@ -13,9 +13,10 @@ import { createMetadata } from "@/lib/metadata"
 import { InView } from "@/lib/motion"
 import { breadcrumbJsonLd, serviceJsonLd } from "@/lib/seo/json-ld"
 import { contactHref, getServiceBySlug, SERVICES } from "@/lib/services"
+import { DIRECTIONAL_CLASSES } from "@/lib/view-transitions"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import type { ReactNode } from "react"
+import { ViewTransition, type ReactNode } from "react"
 
 interface PageProps {
 	params: Promise<{ slug: string }>
@@ -56,52 +57,54 @@ export default async function ServicePage({ params }: PageProps): Promise<ReactN
 	const contact = contactHref(service.slug)
 
 	return (
-		<>
-			<JsonLd
-				data={[
-					...serviceJsonLd(service),
-					breadcrumbJsonLd([
-						{ name: "Inicio", path: "/" },
-						{ name: service.title, path: service.href },
-					]),
-				]}
-			/>
-			<span id="top" className="sr-only" />
-			<Nav />
-			<main id="main-content" className="flex-1" data-service={service.slug}>
-				<ServicioHero
-					shortName={service.shortName}
-					slug={service.slug}
-					href={service.href}
-					page={service.page}
+		<ViewTransition enter={DIRECTIONAL_CLASSES} exit={DIRECTIONAL_CLASSES} default="none">
+			<>
+				<JsonLd
+					data={[
+						...serviceJsonLd(service),
+						breadcrumbJsonLd([
+							{ name: "Inicio", path: "/" },
+							{ name: service.title, path: service.href },
+						]),
+					]}
 				/>
-				<ServicioProblem
-					title={service.page.problemTitle}
-					titleAccent={service.page.problemTitleAccent}
-					problem={service.page.problem}
-					image={service.page.problemImage}
-					audience={service.page.audience}
-				/>
-				{Module ? (
+				<span id="top" className="sr-only" />
+				<Nav />
+				<main id="main-content" className="flex-1" data-service={service.slug}>
+					<ServicioHero
+						shortName={service.shortName}
+						slug={service.slug}
+						href={service.href}
+						page={service.page}
+					/>
+					<ServicioProblem
+						title={service.page.problemTitle}
+						titleAccent={service.page.problemTitleAccent}
+						problem={service.page.problem}
+						image={service.page.problemImage}
+						audience={service.page.audience}
+					/>
+					{Module ? (
+						<InView>
+							<Module contactHref={contact} />
+						</InView>
+					) : null}
+					<ServicioIncludes
+						shortName={service.shortName}
+						items={service.page.includes}
+						variant={SERVICE_INCLUDES_VARIANTS[service.slug]}
+					/>
+					<ServicioProcess slug={service.slug} steps={service.page.process} />
 					<InView>
-						<Module contactHref={contact} />
+						<ServicioCases service={service} />
 					</InView>
-				) : null}
-				<ServicioIncludes
-					shortName={service.shortName}
-					items={service.page.includes}
-					variant={SERVICE_INCLUDES_VARIANTS[service.slug]}
-				/>
-				<ServicioProcess slug={service.slug} steps={service.page.process} />
+					<ServicioFaq serviceName={service.shortName} items={service.page.faq} />
+					<FinalCta title={service.page.ctaTitle} body={service.page.ctaBody} href={contact} />
+				</main>
 				<InView>
-					<ServicioCases service={service} />
+					<Footer />
 				</InView>
-				<ServicioFaq serviceName={service.shortName} items={service.page.faq} />
-				<FinalCta title={service.page.ctaTitle} body={service.page.ctaBody} href={contact} />
-			</main>
-			<InView>
-				<Footer />
-			</InView>
-		</>
+			</>
+		</ViewTransition>
 	)
 }

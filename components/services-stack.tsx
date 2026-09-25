@@ -3,8 +3,9 @@ import { CutButton } from "@/components/cut-button"
 import { ScrollStack } from "@/components/scroll-stack"
 import { SERVICE_VISUALS } from "@/components/service-diagrams"
 import { SERVICES } from "@/lib/services"
+import { NAV_FORWARD, SERVICE_VISUAL_PREFIX, viewTransitionName } from "@/lib/view-transitions"
 import { Plus } from "lucide-react"
-import type { CSSProperties, ReactNode } from "react"
+import { ViewTransition, type CSSProperties, type ReactNode } from "react"
 
 /**
  * Home services section: the four service lines as a scroll-driven card
@@ -86,13 +87,28 @@ export function ServicesStack(): ReactNode {
 									</ul>
 
 									<div className="mt-8">
-										<CutButton href={service.href} variant="solid" icon="arrow">
+										<CutButton
+											href={service.href}
+											variant="solid"
+											icon="arrow"
+											transitionTypes={[NAV_FORWARD]}
+										>
 											Ver {service.shortName.toLowerCase()}
 										</CutButton>
 									</div>
 								</div>
 
-								<div className="flex min-w-0 justify-center">{Diagram ? <Diagram /> : null}</div>
+								<div className="flex min-w-0 justify-center">
+									{Diagram ? (
+										<ViewTransition
+											name={viewTransitionName(SERVICE_VISUAL_PREFIX, service.slug)}
+											share="morph"
+											default="none"
+										>
+											<Diagram />
+										</ViewTransition>
+									) : null}
+								</div>
 							</div>
 						</article>
 					)

@@ -9,8 +9,9 @@ import { Nav } from "@/components/nav"
 import { InView } from "@/lib/motion"
 import { createMetadata } from "@/lib/metadata"
 import { breadcrumbJsonLd } from "@/lib/seo/json-ld"
+import { DIRECTIONAL_CLASSES } from "@/lib/view-transitions"
 import type { Metadata } from "next"
-import type { ReactNode } from "react"
+import { ViewTransition, type ReactNode } from "react"
 
 export const metadata: Metadata = createMetadata({
 	title: "Casos de estudio",
@@ -21,31 +22,33 @@ export const metadata: Metadata = createMetadata({
 
 export default function CasosPage(): ReactNode {
 	return (
-		<>
-			<JsonLd
-				data={breadcrumbJsonLd([
-					{ name: "Inicio", path: "/" },
-					{ name: "Casos", path: "/casos" },
-				])}
-			/>
-			<span id="top" className="sr-only" />
-			<Nav />
-			<main id="main-content" className="flex-1">
-				<CasosHero />
+		<ViewTransition enter={DIRECTIONAL_CLASSES} exit={DIRECTIONAL_CLASSES} default="none">
+			<>
+				<JsonLd
+					data={breadcrumbJsonLd([
+						{ name: "Inicio", path: "/" },
+						{ name: "Casos", path: "/casos" },
+					])}
+				/>
+				<span id="top" className="sr-only" />
+				<Nav />
+				<main id="main-content" className="flex-1">
+					<CasosHero />
+					<InView>
+						<CasosStats />
+					</InView>
+					<InView>
+						<CasosGrid />
+					</InView>
+					<InView>
+						<CasosConfidentiality />
+					</InView>
+					<FinalCta />
+				</main>
 				<InView>
-					<CasosStats />
+					<Footer />
 				</InView>
-				<InView>
-					<CasosGrid />
-				</InView>
-				<InView>
-					<CasosConfidentiality />
-				</InView>
-				<FinalCta />
-			</main>
-			<InView>
-				<Footer />
-			</InView>
-		</>
+			</>
+		</ViewTransition>
 	)
 }

@@ -7,9 +7,10 @@ import { formatGuiaDate } from "@/lib/guias/format"
 import type { GuiaMeta } from "@/lib/guias/schema"
 import { TEMAS } from "@/lib/guias/temas"
 import { SERVICES } from "@/lib/services"
+import { GUIA_COVER_PREFIX, NAV_FORWARD, viewTransitionName } from "@/lib/view-transitions"
 import { Search } from "lucide-react"
 import Link from "next/link"
-import { useMemo, useState, type ReactNode } from "react"
+import { ViewTransition, useMemo, useState, type ReactNode } from "react"
 
 /** Shown when there are no guides in the repo at all — never reachable when a search/filter empties the list. */
 function GlobalEmptyState(): ReactNode {
@@ -56,6 +57,7 @@ function GuiaCard({ guia }: { guia: GuiaMeta }): ReactNode {
 	return (
 		<Link
 			href={`/guias/${guia.slug}`}
+			transitionTypes={[NAV_FORWARD]}
 			className="group border-border bg-background hover:border-primary focus-visible:outline-primary flex flex-col overflow-hidden rounded-sm border transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2"
 		>
 			{/* The same plate the guide's own cover renders, so the card and the article
@@ -63,13 +65,19 @@ function GuiaCard({ guia }: { guia: GuiaMeta }): ReactNode {
 			    put a greyscale drawing in the grid and a blue one on the page. The frame is
 			    the assets' own 16:9 — at the former 16/10 the plate would have cropped 10%
 			    of the drawing's width. */}
-			<IllustrationPlate
-				src={guia.portada}
-				alt={guia.portadaAlt}
-				sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-				className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-				frame="border-border aspect-video w-full border-b"
-			/>
+			<ViewTransition
+				name={viewTransitionName(GUIA_COVER_PREFIX, guia.slug)}
+				share="morph"
+				default="none"
+			>
+				<IllustrationPlate
+					src={guia.portada}
+					alt={guia.portadaAlt}
+					sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+					className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+					frame="border-border aspect-video w-full border-b"
+				/>
+			</ViewTransition>
 
 			<div className="flex flex-1 flex-col p-6">
 				<span className="text-muted-foreground font-mono text-[11px] tracking-[0.1em] uppercase">

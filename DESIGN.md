@@ -268,6 +268,16 @@ not from `motion/react`.
 Do not measure scroll-driven animations with `window.scrollTo` (Lenis smooth
 scroll intercepts it), and expect Motion loops to freeze in headless screenshots.
 
+The same interception decides where a new route starts. Lenis writes its own
+animated position every frame and, while it is animating, ignores the native
+scroll events it uses to notice external moves: its `onNativeScroll` only re-syncs
+while `isScrolling` is `false` or `"native"`. A route change therefore has to be
+reset through Lenis (`lenis.scrollTo(0, { immediate: true })`), because Next's own
+reset lands, gets written over on the next frame, and the visitor ends up part-way
+down a page they have never scrolled. `shouldResetScroll` in `lib/scroll.ts`
+carries the three cases that must be left alone: an unchanged pathname, a
+destination with a hash, and back or forward.
+
 Scroll pins and `useTransform`: the keyframe-array form
 (`useTransform(progress, [0, 1], ["0%", "100%"])`) did not hold its end value in
 the pinned scroll gallery that has since been removed from this codebase. Once the
@@ -277,6 +287,54 @@ because the value is recomputed every frame. The callback form
 in `components/case-study/detail-timeline.tsx` and
 `components/diagrams/process/rollout-gantt.tsx`; if either jumps or vanishes at the
 end of its travel, start here.
+
+### View transitions
+
+The three list→detail journeys animate with React's native `<ViewTransition>`: home
+services → `/servicios/[slug]`, `/guias` → `/guias/[slug]`, `/casos` → `/casos/[id]`.
+Each flow morphs its shared visual and slides the page hierarchically.
+
+| Piece | Where |
+| --- | --- |
+| Transition types, class maps, shared-element prefixes | `lib/view-transitions.ts` |
+| The pseudo-element recipes: timing, slides, morph blur, header isolation, live root, reduced motion | the `View transitions` block at the bottom of `app/globals.css` |
+| Which hrefs may use `next/link` | `lib/href.ts` (`isInternalHref`) |
+
+Rules that a new page has to follow:
+
+- **The boundary lives in the page, never in the layout**, and it must be the page's
+  sole root. React fires enter and exit only when the boundary sits at an edge of the
+  inserted subtree; a boundary with a DOM sibling on both sides starts the transition
+  and applies no animation at all, and one wrapped in a `<div>` is not attributed at
+  all. Both were measured, not inferred.
+- **The entering and leaving fades overlap.** The root is live, so the page group is the
+  only thing on screen; a fade delayed until the exit finishes empties the viewport at
+  the handover. They start together and the entering side only outlasts the exit.
+- **`next/link` decides whether there is an animation at all.** A plain `<a>` is a
+  full document load; view transitions only run on client-side navigations.
+  `CutButton` switches on `isInternalHref`, and bare fragments stay anchors so
+  Lenis can keep intercepting `a[href^="#"]`.
+- **Never put a `name` on a content wrapper.** Every element carrying a
+  `view-transition-name` is excluded from its ancestors' snapshots, so naming a
+  wrapper freezes that content while the rest of the page slides. Names belong on
+  the specific shared visual, which is meant to stand still and morph.
+- **A name must be unique among everything mounted at once.** Build it with
+  `viewTransitionName(prefix, id)`; two elements sharing one name make React throw.
+- **Direction is derived, not hardcoded, in the header.** `Casos` is forward from
+  the home page and back from a case, so nav rows call
+  `navLinkTransitionTypes(href, pathname)`; flow CTAs carry `NAV_FORWARD` or
+  `NAV_BACK` directly.
+- **`default: "none"` is mandatory.** Without it every boundary cross-fades on every
+  transition in the app, including background revalidations.
+- **Reduced motion needs its own block.** The clamp at the top of `globals.css`
+  targets `*, *::before, *::after`, which matches no `::view-transition-*`
+  pseudo-element.
+- **Do not read `ref.current` during render to gate a first-load entrance.** Strict
+  Mode calls a `useState` initializer twice, so write the module flag in an effect
+  and only read it in the initializer (see `components/nav.tsx`).
+
+`lib/view-transitions.test.ts` guards the contract between the TypeScript names and
+the CSS selectors.
 
 ## 8. Diagrams and visuals
 
@@ -375,6 +433,14 @@ Don't
 
 ## 12. Known gaps
 
+- Same-route lateral navigation has no animation: guide → guide through "Sigue
+  leyendo", case → case through "Otros proyectos", service → service through the
+  nav dropdown. The documented `key` + stable `name` + `share` pattern is the fix,
+  and it cannot be combined with the page-level directional boundary, because a
+  named wrapper is excluded from the page snapshot and would stop sliding.
+- Guides are all `draft: true`, so `/guias` shows its empty state and
+  `/guias/[slug]` prerenders no route in a production build; the guide flow is only
+  reachable and only verifiable in `pnpm dev`.
 - Icons are still template art (lucide + animated icons); deferred to the SEO pass.
 - Two spellings of the container (`max-w-360` vs `max-w-[1440px]`) and two
   vertical rhythms (home `pb-32 sm:pb-44`, subpages `pb-24 sm:pb-32`) coexist.

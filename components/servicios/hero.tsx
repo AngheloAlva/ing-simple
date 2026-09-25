@@ -7,8 +7,9 @@ import { SERVICE_VISUALS } from "@/components/service-diagrams"
 import { brandGradient } from "@/lib/gradient"
 import { fadeInUp, reducedMotionVariants, softEase, useReducedMotion } from "@/lib/motion"
 import { contactHref, type ServicePage } from "@/lib/services"
+import { SERVICE_VISUAL_PREFIX, viewTransitionName } from "@/lib/view-transitions"
 import { motion, type Variants } from "motion/react"
-import type { ReactNode } from "react"
+import { ViewTransition, type ReactNode } from "react"
 
 const container: Variants = {
 	hidden: {},
@@ -90,18 +91,16 @@ export function ServicioHero(service: ServicioHeroProps): ReactNode {
 					</motion.div>
 
 					{Diagram ? (
-						<motion.div
-							initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={
-								prefersReducedMotion
-									? { duration: 0.01 }
-									: { duration: 0.8, delay: 0.35, ease: softEase }
-							}
-							className="w-full"
-						>
-							<Diagram />
-						</motion.div>
+						<div className="w-full">
+							{/* The morph owns this entrance; an opacity animation would blank its incoming snapshot. */}
+							<ViewTransition
+								name={viewTransitionName(SERVICE_VISUAL_PREFIX, service.slug)}
+								share="morph"
+								default="none"
+							>
+								<Diagram />
+							</ViewTransition>
+						</div>
 					) : null}
 				</div>
 			</div>

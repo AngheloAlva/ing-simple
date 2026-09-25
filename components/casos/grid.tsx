@@ -5,10 +5,14 @@ import { getCaseStudyVisuals } from "@/components/case-study/visuals/registry"
 import { CATEGORY_LABELS, portfolioProjects, type ProjectCategory } from "@/lib/portfolio-data"
 import { isPublicCaseStudy } from "@/lib/public-case-studies"
 import { serviceSlugForCategory } from "@/lib/services"
+import { CASE_VISUAL_PREFIX, NAV_FORWARD, viewTransitionName } from "@/lib/view-transitions"
 import { ArrowUpRight, Lock } from "lucide-react"
 import { AnimatePresence, motion, type Variants } from "motion/react"
 import Image from "next/image"
-import { useMemo, useState, type ReactNode } from "react"
+import Link from "next/link"
+import { ViewTransition, useMemo, useState, type ReactNode } from "react"
+
+const MotionLink = motion.create(Link)
 
 type Filter = "todos" | ProjectCategory
 
@@ -37,28 +41,35 @@ function CaseCard({ project }: { project: (typeof CASES)[number] }): ReactNode {
 	const isConfidential = caseStudy.visualPrivacy === "confidential-ui"
 
 	return (
-		<motion.a
+		<MotionLink
 			variants={cardVariants}
 			href={`/casos/${project.id}`}
+			transitionTypes={[NAV_FORWARD]}
 			className="group border-border bg-background hover:border-primary focus-visible:outline-primary relative flex flex-col overflow-hidden rounded-sm border transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2"
 		>
 			{/* Thumbnail — the polished per-project mockup, non-interactive here */}
-			<div className="border-border bg-muted/40 relative aspect-[16/10] overflow-hidden border-b">
-				{HeroMockup ? (
-					<div className="pointer-events-none absolute inset-0 [&>*]:h-full [&>*]:w-full [&>*]:!rounded-none">
-						<HeroMockup />
-					</div>
-				) : project.imageUrl ? (
-					<Image
-						src={project.imageUrl}
-						alt={project.title}
-						fill
-						sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-						draggable={false}
-						className="object-cover"
-					/>
-				) : null}
-			</div>
+			<ViewTransition
+				name={viewTransitionName(CASE_VISUAL_PREFIX, project.id)}
+				share="morph"
+				default="none"
+			>
+				<div className="border-border bg-muted/40 relative aspect-[16/10] overflow-hidden border-b">
+					{HeroMockup ? (
+						<div className="pointer-events-none absolute inset-0 [&>*]:h-full [&>*]:w-full [&>*]:!rounded-none">
+							<HeroMockup />
+						</div>
+					) : project.imageUrl ? (
+						<Image
+							src={project.imageUrl}
+							alt={project.title}
+							fill
+							sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+							draggable={false}
+							className="object-cover"
+						/>
+					) : null}
+				</div>
+			</ViewTransition>
 
 			{/* Body */}
 			<div className="flex flex-1 flex-col p-5 sm:p-6">
@@ -102,7 +113,7 @@ function CaseCard({ project }: { project: (typeof CASES)[number] }): ReactNode {
 					) : null}
 				</div>
 			</div>
-		</motion.a>
+		</MotionLink>
 	)
 }
 

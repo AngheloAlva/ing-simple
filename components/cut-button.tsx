@@ -1,6 +1,9 @@
 "use client"
 
 import { useCallback, useRef } from "react"
+import Link from "next/link"
+
+import { isInternalHref } from "@/lib/href"
 
 import { ArrowRightIcon } from "@/components/icons/animated/animated-arrow-right"
 import { SendIcon } from "@/components/icons/animated/animated-send"
@@ -53,6 +56,7 @@ type ButtonProps = BaseProps &
 type AnchorProps = BaseProps &
 	Omit<ComponentPropsWithoutRef<"a">, "className" | "children"> & {
 		href: string
+		transitionTypes?: string[]
 	}
 
 type CutButtonProps = ButtonProps | AnchorProps
@@ -148,7 +152,21 @@ export function CutButton({
 	)
 
 	if ("href" in props && props.href !== undefined) {
-		const { href, ...anchorRest } = props as AnchorProps
+		const { href, transitionTypes, ...anchorRest } = props as AnchorProps
+		// Plain anchors load a new document; view transitions need client-side navigation.
+		if (isInternalHref(href)) {
+			return (
+				<Link
+					href={href}
+					className={cls}
+					{...handlers}
+					{...(anchorRest as Omit<ComponentPropsWithoutRef<typeof Link>, "href">)}
+					{...(transitionTypes !== undefined ? { transitionTypes } : {})}
+				>
+					{content}
+				</Link>
+			)
+		}
 		return (
 			<a href={href} className={cls} {...handlers} {...anchorRest}>
 				{content}
