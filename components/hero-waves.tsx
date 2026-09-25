@@ -30,7 +30,7 @@ export function HeroWaves({
 
 	const color = resolvedTheme === "dark" ? "#ffffff" : "#0a0a0a"
 	const isDark = resolvedTheme === "dark"
-	const targetOpacity = isDark ? 1 : 0.85
+	const targetOpacity = isDark ? 1 : 0.95
 
 	return (
 		<motion.div
@@ -51,7 +51,7 @@ export function HeroWaves({
 				waveTension={0.8}
 				videoUrl={videoUrl}
 				characters=" .:-+*=%@#"
-				className="opacity-80 dark:opacity-60"
+				className="opacity-80 dark:opacity-70"
 			/>
 		</motion.div>
 	)

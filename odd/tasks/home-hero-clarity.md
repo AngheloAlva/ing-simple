@@ -16,6 +16,18 @@ The audit that produced this plan was measured in a browser, not inferred from
 code. It is recorded in `odd/tasks/home-hero-clarity-audit.md` and summarised in
 the Engram observation `topic_key: odd/home-hero-clarity/tasks`.
 
+## Result
+
+| Work unit | Commit | Outcome |
+| --- | --- | --- |
+| T1 Service navigation in the chrome | `def7bfb` | Four named tabs at y=504-544, above the fold at 1366x768; pause control; duplicated titles gone |
+| T2 Stop losing panel content | `2668127` | Zero vertical loss, zero text overlaps, one `<main>` at 390 / 768 / 1024 / 1440 px |
+| T3 Hero copy | `51f4d52` | h1 carries the offer and the outcome; 3 lines at desktop |
+| T4 Verification and background opacity | this commit | Background presence raised; text contrast re-measured and unchanged |
+
+Nothing was deferred silently. What is still open is listed under "Known issues
+left for a later phase" at the end of this document.
+
 ## Decisions taken by the user
 
 - **Composition:** the four service tabs become the frame's top chrome (a tab
@@ -109,6 +121,8 @@ Acceptance criteria and result:
 
 ### T2 — Stop losing panel content
 
+Status: **done** — commit `2668127`.
+
 Owner: parent (needs the measurement loop, so it is not delegated).
 Edit surfaces: `components/window-frame.tsx` (body height only),
 `components/panels/*.tsx`.
@@ -135,8 +149,10 @@ compare `scrollWidth` against `clientWidth` as well as `scrollHeight` against
 
 ### T3 — Hero copy
 
+Status: **done** — commit `51f4d52`. The user chose option B.
+
 Owner: parent, after explicit user approval of the exact wording.
-Edit surfaces: `components/hero.tsx`.
+Edit surfaces: `components/hero.tsx`, `DESIGN.md`.
 
 - The h1 gains a subject and an outcome, and carries the page's real search terms.
   Today it carries none of them while the metadata does.
@@ -144,17 +160,42 @@ Edit surfaces: `components/hero.tsx`.
 - The CTA pair stays as it is; the redundancy with the navbar's "Conversemos" is
   recorded but not changed in this iteration.
 
-This task is blocked until the user picks the wording. No h1 is written before that.
+This task is blocked until the user picks the wording. No h1 was written before that.
+
+Outcome and the cost that came with it: at the 3.5rem display size the approved
+headline resolves in four lines inside `max-w-2xl`, which pushed the frame from
+y=503 to y=626 and cut the visible mockup from 265px to 142px at 1366x768,
+handing back most of T1's above-the-fold gain. Widening the hero block to
+`max-w-4xl` resolves it in three lines and keeps the frame at y=565 with 203px
+of mockup visible. The column was widened rather than the type reduced, to keep
+the hero's display size. `DESIGN.md` records the exception.
 
 ### T4 — Measured verification and close
 
-Owner: parent. No source edits.
+Status: **done** — this commit.
 
-- Re-run the audit harness: overlap detector, clipping detector, contrast sampling,
-  above-the-fold measurement, LCP.
-- Report every failed or pending check honestly.
-- The background opacity tweak from the user's decision is applied and measured
-  here, not earlier, so the contrast numbers are taken on the final composition.
+Owner: parent. No source edits beyond the background opacity below.
+
+- Overlap, clipping, above-the-fold, page-jump and `<main>` checks re-run after
+every work unit and once more at the end.
+- Background opacity raised as the user asked: the light wrapper goes 0.85 → 0.95
+  and the dark layer 0.6 → 0.7.
+- Contrast re-measured by sampling real pixels. Raising the pattern's opacity
+  does not cost text legibility, because the vignette keeps the local background
+  behind the headline and the lede at the plain background colour:
+
+  | Region | Light | Dark |
+  | --- | --- | --- |
+  | Pattern, left edge | 6.73:1 | 1.93:1 |
+  | Pattern, right edge | 5.22:1 | 5.75:1 |
+  | Local background behind the lede | `#ffffff` | `#0a0a0a` |
+  | Lede text on that background | 4.74:1 | 7.66:1 |
+
+  Caveat worth knowing: in light mode the decoration now reaches 6.73:1 while the
+  lede sits at 4.74:1, so the background is the more contrasty layer. The lede is
+  still above the 4.5:1 AA floor, but if the hierarchy is ever revisited these are
+  the two constants to trade: `targetOpacity` and `opacity-80 dark:opacity-70` in
+  `components/hero-waves.tsx`.
 
 ## Known issues left for a later phase
 
