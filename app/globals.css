@@ -496,7 +496,12 @@ body {
    A single class covers both snapshots; the old/new selectors pick the side.
    The 60px offset is enough to read direction without asking the eye to track
    an element across the viewport, and the old frame moves the same distance in
-   the opposite direction, so the two do not both travel to the same side. */
+   the opposite direction, so the two do not both travel to the same side.
+
+   The two fades overlap deliberately. The root is live (above), so this group is
+   the only thing on screen for the whole transition: an incoming fade delayed
+   until the outgoing one finishes would leave the viewport empty at the handover.
+   Both start together and the entering side simply lasts longer. */
 ::view-transition-old(.nav-forward) {
 	--vt-slide-offset: -60px;
 	animation:
@@ -506,7 +511,7 @@ body {
 ::view-transition-new(.nav-forward) {
 	--vt-slide-offset: 60px;
 	animation:
-		var(--vt-duration-enter) ease-out var(--vt-duration-exit) both vt-fade,
+		var(--vt-duration-enter) ease-out both vt-fade,
 		var(--vt-duration-move) ease-in-out both vt-slide;
 }
 
@@ -519,7 +524,7 @@ body {
 ::view-transition-new(.nav-back) {
 	--vt-slide-offset: -60px;
 	animation:
-		var(--vt-duration-enter) ease-out var(--vt-duration-exit) both vt-fade,
+		var(--vt-duration-enter) ease-out both vt-fade,
 		var(--vt-duration-move) ease-in-out both vt-slide;
 }
 

@@ -30,6 +30,20 @@ describe("view-transition contracts", () => {
 		expect(navLinkTransitionTypes(href, pathname)).toEqual(expected)
 	})
 
+	it("starts the incoming fade together with the outgoing one", () => {
+		// The root is live, so the page group is the only content on screen for the
+		// whole transition. A fade delayed until the outgoing one finishes leaves the
+		// viewport blank at the handover — measured as a fully white frame around
+		// 150ms, which on a whole page reads as a flash. Each enter rule therefore
+		// fades from t=0 and only outlasts the exit instead of waiting for it.
+		for (const direction of [NAV_FORWARD, NAV_BACK]) {
+			const start = css.indexOf(`::view-transition-new(.${direction})`)
+			const end = css.indexOf("}", start)
+			expect(start, `missing ::view-transition-new(.${direction})`).toBeGreaterThan(-1)
+			expect(css.slice(start, end)).not.toContain("var(--vt-duration-exit)")
+		}
+	})
+
 	it("keeps the CSS recipes for the named elements and directions", () => {
 		for (const selector of [
 			"::view-transition-group(site-nav)",
