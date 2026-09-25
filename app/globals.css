@@ -431,3 +431,149 @@ body {
 		stroke: none;
 	}
 }
+
+/* ---------------------------------------------------------------------------
+   View transitions
+
+   The three list→detail journeys animate through React's `<ViewTransition>`.
+   `lib/view-transitions.ts` owns the class names, the transition types and the
+   shared-element names; each `page.tsx` of the three flows renders its own
+   directional boundary, because a boundary that lives in a layout never mounts
+   or unmounts and therefore never fires its enter or exit.
+   Everything here is a browser view-transition pseudo-element, so it lives
+   outside `@theme inline`: these are not design tokens any component reads, they
+   are the animation the browser runs between two snapshots of the document.
+
+   The durations are asymmetric on purpose. Outgoing content has to clear before
+   incoming content is legible, so the exit is short and the enter is slightly
+   longer and starts only after the exit has finished. `--vt-duration-move`
+   governs distance and morph, not opacity, and is deliberately the longest of
+   the three so a shared plate stays readable while it travels.
+
+   Anything named `site-nav` here is matched by `SITE_NAV_TRANSITION_NAME` in
+   `lib/view-transitions.ts`, and `lib/view-transitions.test.ts` fails if the two
+   ever drift apart.
+   --------------------------------------------------------------------------- */
+:root {
+	--vt-duration-exit: 150ms;
+	--vt-duration-enter: 210ms;
+	--vt-duration-move: 400ms;
+}
+
+/* The browser cross-fades the root on every transition, freezing unnamed content
+   behind a stale snapshot: hover and focus styles stop repainting until the
+   animation settles. Nothing on this site wants an unnamed root animation —
+   every animated surface opts in through a class below — so the root is left
+   live and unnamed content swaps instantly. */
+::view-transition-old(root) {
+	display: none;
+}
+::view-transition-new(root) {
+	animation: none;
+}
+
+/* The outgoing frame plays the same fade reversed, so both directions share one
+   keyframe and `vt-slide` reads its distance from `--vt-slide-offset`. */
+@keyframes vt-fade {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes vt-slide {
+	from {
+		translate: var(--vt-slide-offset);
+	}
+	to {
+		translate: 0;
+	}
+}
+
+/* Hierarchical travel: going deeper slides one way, coming back the other.
+   A single class covers both snapshots; the old/new selectors pick the side.
+   The 60px offset is enough to read direction without asking the eye to track
+   an element across the viewport, and the old frame moves the same distance in
+   the opposite direction, so the two do not both travel to the same side. */
+::view-transition-old(.nav-forward) {
+	--vt-slide-offset: -60px;
+	animation:
+		var(--vt-duration-exit) ease-in both vt-fade reverse,
+		var(--vt-duration-move) ease-in-out both vt-slide reverse;
+}
+::view-transition-new(.nav-forward) {
+	--vt-slide-offset: 60px;
+	animation:
+		var(--vt-duration-enter) ease-out var(--vt-duration-exit) both vt-fade,
+		var(--vt-duration-move) ease-in-out both vt-slide;
+}
+
+::view-transition-old(.nav-back) {
+	--vt-slide-offset: 60px;
+	animation:
+		var(--vt-duration-exit) ease-in both vt-fade reverse,
+		var(--vt-duration-move) ease-in-out both vt-slide reverse;
+}
+::view-transition-new(.nav-back) {
+	--vt-slide-offset: -60px;
+	animation:
+		var(--vt-duration-enter) ease-out var(--vt-duration-exit) both vt-fade,
+		var(--vt-duration-move) ease-in-out both vt-slide;
+}
+
+/* A shared plate changes size between a grid cell and a detail frame, and the two
+   snapshots are scaled rasters: without the blur the eye catches the pixel
+   interpolation at the moment the box passes through the half-way size. Only the
+   image pair blurs — the group, which carries the geometry, stays crisp. */
+::view-transition-group(.morph) {
+	animation-duration: var(--vt-duration-move);
+}
+::view-transition-image-pair(.morph) {
+	animation-name: vt-via-blur;
+}
+@keyframes vt-via-blur {
+	30% {
+		filter: blur(3px);
+	}
+}
+
+/* The header is rendered by every page rather than by the root layout, so it
+   unmounts and remounts on each client-side navigation. Pulling it out under a
+   real name keeps it out of the page snapshot: hiding the old frame prevents the
+   flash of two headers swapping places, and `z-index` keeps it stacked above the
+   sliding content instead of being covered by it. */
+::view-transition-group(site-nav) {
+	animation: none;
+	z-index: 100;
+}
+::view-transition-old(site-nav) {
+	display: none;
+}
+::view-transition-new(site-nav) {
+	animation: none;
+}
+
+/* While a transition runs the overlay swallows pointer events, which on this site
+   would freeze every hover-driven diagram and deaden links for the length of the
+   animation. The trade-off is that a click can land on live content that is still
+   moving underneath a snapshot. Named participants are skipped by hit-testing for
+   the duration regardless of this rule, so nothing interactive is named here. */
+::view-transition {
+	pointer-events: none;
+}
+
+/* The global clamp near the top of this file targets `*, *::before, *::after`,
+   and a `::view-transition-*` pseudo-element matches none of those selectors.
+   Without this block the slides would still play for users who asked for reduced
+   motion. Zeroing the duration rather than the animation keeps the snapshot swap
+   itself instant, which is the browser's no-support behaviour. */
+@media (prefers-reduced-motion: reduce) {
+	::view-transition-old(*),
+	::view-transition-new(*),
+	::view-transition-group(*) {
+		animation-duration: 0s !important;
+		animation-delay: 0s !important;
+	}
+}

@@ -1,0 +1,50 @@
+import { readFileSync } from "node:fs"
+import { fileURLToPath } from "node:url"
+import { describe, expect, it } from "vitest"
+
+import {
+	CASE_VISUAL_PREFIX,
+	DIRECTIONAL_CLASSES,
+	GUIA_COVER_PREFIX,
+	NAV_BACK,
+	NAV_FORWARD,
+	SERVICE_VISUAL_PREFIX,
+	SITE_NAV_TRANSITION_NAME,
+	viewTransitionName,
+} from "@/lib/view-transitions"
+
+const css = readFileSync(fileURLToPath(new URL("../app/globals.css", import.meta.url)), "utf8")
+
+describe("view-transition contracts", () => {
+	it("keeps the CSS recipes for the named elements and directions", () => {
+		for (const selector of [
+			"::view-transition-group(site-nav)",
+			"::view-transition-old(site-nav)",
+			"::view-transition-new(site-nav)",
+			"::view-transition-old(.nav-forward)",
+			"::view-transition-new(.nav-forward)",
+			"::view-transition-old(.nav-back)",
+			"::view-transition-new(.nav-back)",
+			"::view-transition-group(.morph)",
+			"::view-transition-image-pair(.morph)",
+		]) {
+			expect(css).toContain(selector)
+		}
+	})
+
+	it("uses the same persistent nav name in TypeScript and CSS", () => {
+		const name = css.match(/::view-transition-group\((site-nav)\)/)?.[1]
+		expect(name).toBeDefined()
+		expect(SITE_NAV_TRANSITION_NAME).toBe(name)
+	})
+
+	it("opts unrelated transitions out and distinguishes navigation directions", () => {
+		expect(DIRECTIONAL_CLASSES).toHaveProperty("default", "none")
+		expect(NAV_FORWARD).not.toBe(NAV_BACK)
+	})
+
+	it("builds distinct names for each flow", () => {
+		expect(viewTransitionName("guia-cover", "x")).toBe("guia-cover-x")
+		expect(new Set([SERVICE_VISUAL_PREFIX, GUIA_COVER_PREFIX, CASE_VISUAL_PREFIX]).size).toBe(3)
+	})
+})
