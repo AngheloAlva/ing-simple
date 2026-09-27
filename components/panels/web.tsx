@@ -22,7 +22,15 @@ import {
   Users,
   type LucideIcon,
 } from "lucide-react";
+import { motion, type Transition, type Variants } from "motion/react";
 import type { ReactNode } from "react";
+import {
+  fadeIn,
+  fadeInUp,
+  softEase,
+  useReducedMotion,
+  useStaggerEntrance,
+} from "@/lib/motion";
 
 /* --------------------------------------------------------------------------
  * Nexo ERP — fictional bespoke ERP mockup (illustrative, no real names).
@@ -214,6 +222,19 @@ const STATS: Stat[] = [
   },
 ];
 
+/* ---- Entrance ------------------------------------------------------------- */
+
+/** Stagger offset of the stat cards' entrance chain (seconds). */
+export const ENTRANCE_STAGGER = 0.05;
+/** Stagger offset of the request rows, which follow the stat cards. */
+export const ROW_STAGGER = 0.05;
+/** Rows begin once all three stat cards have started (3rd card at 0.10 s);
+ * the last of the ten rows therefore starts at 0.15 + 9 × 0.05 = 0.60 s. */
+export const ROW_BASE_DELAY = 3 * ENTRANCE_STAGGER;
+
+/** Variants + transition handed down from the panel's entrance recipe. */
+type Entrance = { variants: Variants; transition: Transition };
+
 function StatusBadge({ status }: { status: Status }): ReactNode {
   // "No creado" is rendered as plain text, not a pill (matches the reference).
   if (status === "No creado") {
@@ -390,9 +411,19 @@ function Topbar(): ReactNode {
   );
 }
 
-function StatCard({ stat }: { stat: Stat }): ReactNode {
+function StatCard({
+  stat,
+  entrance,
+}: {
+  stat: Stat;
+  entrance: Entrance;
+}): ReactNode {
   return (
-    <div className="flex items-center justify-between gap-3 rounded-xl border border-border/60 bg-background p-4">
+    <motion.div
+      variants={entrance.variants}
+      transition={entrance.transition}
+      className="flex items-center justify-between gap-3 rounded-xl border border-border/60 bg-background p-4"
+    >
       <div className="flex min-w-0 flex-col gap-0.5">
         <span className="text-2xl font-semibold leading-none tracking-tight tabular-nums">
           {stat.value}
@@ -407,11 +438,30 @@ function StatCard({ stat }: { stat: Stat }): ReactNode {
       >
         <stat.icon className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" />
       </span>
-    </div>
+    </motion.div>
   );
 }
 
-function RequestsTable(): ReactNode {
+function RequestsTable({
+  prefersReducedMotion,
+}: {
+  prefersReducedMotion: boolean;
+}): ReactNode {
+  // Staggered reading order for the request rows. Both representations share
+  // the same explicit per-row delays (the automation panel's pattern): the
+  // desktop table is display:none inside the 520px frame, so animating it via
+  // container positions would stretch the chain past the budget for nothing.
+  // Table rows fade in place — transforms are unreliable on <tr> — while the
+  // compact cards use the standard lift.
+  const rowTransition = (index: number): Transition =>
+    prefersReducedMotion
+      ? { duration: 0.01 }
+      : {
+          duration: 0.55,
+          ease: softEase,
+          delay: ROW_BASE_DELAY + index * ROW_STAGGER,
+        };
+
   return (
     <div className="@container flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-border/60 bg-background">
       {/* Toolbar */}
@@ -462,9 +512,13 @@ function RequestsTable(): ReactNode {
             </tr>
           </thead>
           <tbody className="divide-y divide-border/50">
-            {ROWS.map((r) => (
-              <tr
+            {ROWS.map((r, index) => (
+              <motion.tr
                 key={r.code}
+                variants={fadeIn}
+                initial="hidden"
+                animate="visible"
+                transition={rowTransition(index)}
                 className="text-[12px] transition-colors hover:bg-muted/40"
               >
                 <td className="truncate px-3 py-2.5 font-medium text-primary">
@@ -491,13 +545,20 @@ function RequestsTable(): ReactNode {
                     {r.area}
                   </span>
                 </td>
-              </tr>
+              </motion.tr>
             ))}
           </tbody>
         </table>
         <div className="divide-y divide-border/60 @min-[760px]:hidden" aria-label="Listado de Solicitudes">
-          {ROWS.map((r) => (
-            <article key={r.code} className="min-w-0 space-y-3 p-4 text-[13px] leading-snug">
+          {ROWS.map((r, index) => (
+            <motion.article
+              key={r.code}
+              variants={fadeInUp}
+              initial="hidden"
+              animate="visible"
+              transition={rowTransition(index)}
+              className="min-w-0 space-y-3 p-4 text-[13px] leading-snug"
+            >
               <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                 <span className="font-semibold text-primary">{r.code}</span>
                 <span className="text-muted-foreground">{r.area}</span>
@@ -528,7 +589,7 @@ function RequestsTable(): ReactNode {
                   <dd className="tabular-nums">{r.date}</dd>
                 </div>
               </dl>
-            </article>
+            </motion.article>
           ))}
         </div>
       </div>
@@ -565,6 +626,10 @@ function RequestsTable(): ReactNode {
 }
 
 export function PanelWeb(): ReactNode {
+  const prefersReducedMotion = useReducedMotion();
+  const { container, item, itemTransition } = useStaggerEntrance(ENTRANCE_STAGGER);
+  const entrance: Entrance = { variants: item, transition: itemTransition };
+
   return (
     <div className="flex h-full w-full overflow-hidden">
       <Sidebar />
@@ -572,7 +637,15 @@ export function PanelWeb(): ReactNode {
       <section className="flex min-w-0 flex-1 flex-col">
         <Topbar />
 
-        <div className="flex min-h-0 flex-1 flex-col gap-4 p-4 sm:p-5">
+        {/* Mount-based stagger: the heading stays static; the stat cards and
+            request rows enter in reading order. Animation only — layout,
+            truncation and scroll regions untouched. */}
+        <motion.div
+          className="flex min-h-0 flex-1 flex-col gap-4 p-4 sm:p-5"
+          initial="hidden"
+          animate="visible"
+          variants={container}
+        >
           {/* Page heading */}
           <div className="flex shrink-0 flex-wrap items-start justify-between gap-3">
             <div className="flex min-w-0 flex-col gap-1">
@@ -592,13 +665,13 @@ export function PanelWeb(): ReactNode {
           {/* Stat cards */}
           <div className="grid shrink-0 grid-cols-1 gap-3 sm:grid-cols-3">
             {STATS.map((stat) => (
-              <StatCard key={stat.label} stat={stat} />
+              <StatCard key={stat.label} stat={stat} entrance={entrance} />
             ))}
           </div>
 
           {/* Requests table */}
-          <RequestsTable />
-        </div>
+          <RequestsTable prefersReducedMotion={prefersReducedMotion} />
+        </motion.div>
       </section>
     </div>
   );
