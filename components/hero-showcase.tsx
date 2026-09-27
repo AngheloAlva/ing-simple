@@ -45,7 +45,7 @@ export const PANEL_DESCRIPTION: Record<string, string> = {
   reportabilidad:
     "Ejemplo de dashboard operacional: indicadores de plan y gestión, ejecución mensual y desviación por área.",
   capacitaciones:
-    "Ejemplo de ruta de capacitación: cursos con su avance y el certificado que se emite al completarla.",
+    "Ejemplo de una capacitación en Power BI: avance del programa, módulos con su estado y el certificado que se emite al completar todas las lecciones.",
   "desarrollo-web":
     "Ejemplo de sistema de gestión a medida: listado de solicitudes con estado por componente y por proyecto.",
   automatizaciones:
