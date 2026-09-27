@@ -1,5 +1,7 @@
-import { CalendarRange, Layers, SlidersHorizontal, TrendingUp, type LucideIcon } from "lucide-react"
+import { CalendarRange, Layers, SlidersHorizontal, TrendingDown, TrendingUp, type LucideIcon } from "lucide-react"
+import { motion, type Transition, type Variants } from "motion/react"
 import type { ReactNode } from "react"
+import { useStaggerEntrance } from "@/lib/motion"
 
 /* --------------------------------------------------------------------------
  * Budget-execution report (Ejecución presupuestaria).
@@ -19,6 +21,23 @@ import type { ReactNode } from "react"
  * the waterfall. No red.
  * ------------------------------------------------------------------------ */
 
+/* ---- Entrance ------------------------------------------------------------ */
+
+/** Stagger offset between the panel's staggered items (seconds): the four KPI
+ * cards, then the execution chart, the waterfall and the table tile. */
+export const ENTRANCE_STAGGER = 0.06
+/** Tighter offset for the deviation-table rows, which follow their tile. */
+export const ROW_STAGGER = 0.04
+
+/** Variants + transition handed down from the panel's entrance recipe. */
+type Entrance = { variants: Variants; transition: Transition }
+
+/** Container for the deviation-table rows. It carries no `initial`/`animate`
+ * of its own, so it inherits the panel's animated state; motion accumulates
+ * orchestration delays down the tree, so the rows begin when the table tile
+ * (the 7th staggered item) enters and the last row starts at
+ * 6 × ENTRANCE_STAGGER + 5 × ROW_STAGGER = 0.56 s. Reduced motion builds the
+ * same container through the entrance recipe, which returns a static one. */
 type Area = {
 	label: string
 	/** Annual plan, CLP MM. */
@@ -42,7 +61,7 @@ const MONTHS = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "
 const PHASING = [0.07, 0.075, 0.082, 0.088, 0.09, 0.088, 0.085, 0.085, 0.083, 0.085, 0.083, 0.086]
 
 /** Elapsed months in the exercise (Ene..May). */
-const ELAPSED = AREAS[0]?.gestion.length ?? 0
+export const ELAPSED = AREAS[0]?.gestion.length ?? 0
 
 /* ---- Derived figures ---------------------------------------------------- */
 
@@ -52,18 +71,21 @@ const annualPlan = sum(AREAS.map((a) => a.plan))
 const ytdShare = sum(PHASING.slice(0, ELAPSED))
 
 /** Monthly plan for the whole exercise. */
-const planByMonth = PHASING.map((share) => annualPlan * share)
+export const PLAN_BY_MONTH = PHASING.map((share) => annualPlan * share)
 /** Monthly gestión, summed across areas, elapsed months only. */
-const gestionByMonth = Array.from({ length: ELAPSED }, (_, m) =>
+export const GESTION_BY_MONTH = Array.from({ length: ELAPSED }, (_, m) =>
 	sum(AREAS.map((a) => a.gestion[m] ?? 0))
 )
 
-const ytdPlan = sum(planByMonth.slice(0, ELAPSED))
-const ytdGestion = sum(gestionByMonth)
+const ytdPlan = sum(PLAN_BY_MONTH.slice(0, ELAPSED))
+const ytdGestion = sum(GESTION_BY_MONTH)
 const runRate = ytdGestion / ytdPlan
 const deviationPct = (runRate - 1) * 100
 /** Year-end projection: remaining plan executed at the year-to-date run rate. */
-const projectedAnnual = ytdGestion + sum(planByMonth.slice(ELAPSED)) * runRate
+const projectedAnnual = ytdGestion + sum(PLAN_BY_MONTH.slice(ELAPSED)) * runRate
+/** Run-rate projection per future month (Jun..Dic), CLP MM. One dataset: the
+ * remaining plan phased at the observed year-to-date run rate. */
+export const PROJECTED_BY_MONTH = PLAN_BY_MONTH.slice(ELAPSED).map((p) => p * runRate)
 
 type AreaRow = {
 	label: string
@@ -97,62 +119,57 @@ function fmtPct(n: number, signed = false): string {
 	return signed && n > 0 ? `+${abs}%` : `${abs}%`
 }
 
-/** Polyline points on a 0 0 60 20 viewBox from a short series. */
-function sparkline(values: number[]): string {
-	const min = Math.min(...values)
-	const max = Math.max(...values)
-	const span = max - min || 1
-	const step = values.length > 1 ? 60 / (values.length - 1) : 0
-	return values
-		.map((v, i) => `${(i * step).toFixed(1)},${(18 - ((v - min) / span) * 16).toFixed(1)}`)
-		.join(" ")
-}
-
 /* ---- KPIs --------------------------------------------------------------- */
+
+/** One deliberately distinct micro-visual per KPI — never four identical
+ * sparklines. Each treatment encodes how its figure behaves over time. */
+type KpiKind = "cumulative-plan" | "gestion-vs-target" | "deviation" | "projection-vs-plan"
 
 type Kpi = {
 	label: string
 	value: string
 	unit?: string
+	/** Numeric secondary annotation under the micro-visual. */
 	delta?: string
-	spark: string
+	/** Arrow direction for the annotation; deviation reads downward. */
+	trend?: "up" | "down"
+	kind: KpiKind
 }
 
-const cumulative = (values: number[]): number[] => {
-	let running = 0
-	return values.map((v) => (running += v))
-}
+/** Deviation % per elapsed month (negative = under plan). */
+const devByMonth = GESTION_BY_MONTH.map(
+	(g, m) => ((g - (PLAN_BY_MONTH[m] ?? 0)) / (PLAN_BY_MONTH[m] ?? 1)) * 100
+)
+const lastMonthDev = devByMonth[ELAPSED - 1] ?? 0
 
-const KPIS: Kpi[] = [
+export const KPIS: Kpi[] = [
 	{
 		label: "Plan total",
 		value: fmtMM(ytdPlan),
 		unit: "MM",
 		delta: `${fmtPct(ytdShare * 100)} del año`,
-		spark: sparkline(cumulative(planByMonth.slice(0, ELAPSED))),
+		kind: "cumulative-plan",
 	},
 	{
 		label: "Gestión acumulada",
 		value: fmtMM(ytdGestion),
 		unit: "MM",
 		delta: `${fmtPct(runRate * 100)} del plan`,
-		spark: sparkline(cumulative(gestionByMonth)),
+		kind: "gestion-vs-target",
 	},
 	{
 		label: "Desviación vs plan",
 		value: fmtPct(deviationPct),
-		spark: sparkline(
-			gestionByMonth.map((g, m) => ((g - (planByMonth[m] ?? 0)) / (planByMonth[m] ?? 1)) * 100)
-		),
+		delta: `Últ. mes: ${fmtPct(lastMonthDev, true)}`,
+		trend: "down",
+		kind: "deviation",
 	},
 	{
 		label: "Proyección anual",
 		value: fmtMM(projectedAnnual),
 		unit: "MM",
 		delta: `${fmtPct((projectedAnnual / annualPlan) * 100)} del plan`,
-		spark: sparkline(
-			cumulative([...gestionByMonth, ...planByMonth.slice(ELAPSED).map((p) => p * runRate)])
-		),
+		kind: "projection-vs-plan",
 	},
 ]
 
@@ -196,15 +213,19 @@ function Tile({
 	title,
 	subtitle,
 	className,
+	entrance,
 	children,
 }: {
 	title: string
 	subtitle?: string
 	className?: string
+	entrance: Entrance
 	children: ReactNode
 }): ReactNode {
 	return (
-		<div
+		<motion.div
+			variants={entrance.variants}
+			transition={entrance.transition}
 			className={`border-border/60 bg-background flex min-h-0 flex-col overflow-hidden rounded-lg border p-3 ${
 				className ?? ""
 			}`}
@@ -216,13 +237,220 @@ function Tile({
 				) : null}
 			</div>
 			<div className="mt-2 flex min-h-0 flex-1 flex-col">{children}</div>
-		</div>
+		</motion.div>
 	)
 }
 
-function KpiTile({ kpi }: { kpi: Kpi }): ReactNode {
+/* KPI micro-visuals. Every treatment is drawn on a 96 × 32 box and rendered at
+ * exactly that size (h-8 w-24), so no shape is ever distorted by a stretched
+ * viewBox and every shape keeps real amplitude. Each one encodes a different
+ * behaviour, so a scanning reader can tell the cards apart by shape before
+ * reading a single number. */
+
+const KPI_VB_W = 96
+const KPI_VB_H = 32
+
+/** Plan total: the year as twelve discrete month cells, the elapsed ones lit.
+ * Reads as a calendar strip — never as another line. */
+function PlanPacingVisual(): ReactNode {
+	const cells = MONTHS.length
+	const gap = 1.5
+	const cellW = (KPI_VB_W - gap * (cells - 1)) / cells
 	return (
-		<div className="border-border/60 bg-background flex flex-col justify-between rounded-lg border p-3">
+		<svg
+			viewBox={`0 0 ${KPI_VB_W} ${KPI_VB_H}`}
+			data-visual="month-cells"
+			className="text-brand-blue h-8 w-24 shrink-0"
+			aria-hidden="true"
+		>
+			{Array.from({ length: cells }, (_, i) => {
+				const elapsed = i < ELAPSED
+				return (
+					<rect
+						key={i}
+						x={i * (cellW + gap)}
+						y="6"
+						width={cellW}
+						height="20"
+						rx="2"
+						fill="currentColor"
+						fillOpacity={elapsed ? 0.75 : 0.12}
+					/>
+				)
+			})}
+		</svg>
+	)
+}
+
+/** Gestión acumulada: paired plan/gestión mini columns, the same faint/solid
+ * encoding as the monthly execution chart. */
+function GestionVsTargetVisual(): ReactNode {
+	const max = Math.max(...PLAN_BY_MONTH.slice(0, ELAPSED), ...GESTION_BY_MONTH)
+	const slot = KPI_VB_W / ELAPSED
+	const barW = 8
+	const pairW = barW * 2 + 2
+	const baseline = KPI_VB_H - 2
+	const hOf = (v: number): number => (v / max) * 26
+	return (
+		<svg
+			viewBox={`0 0 ${KPI_VB_W} ${KPI_VB_H}`}
+			data-visual="paired-columns"
+			className="text-brand-blue h-8 w-24 shrink-0"
+			aria-hidden="true"
+		>
+			{GESTION_BY_MONTH.map((g, m) => {
+				const p = PLAN_BY_MONTH[m] ?? 0
+				const x0 = m * slot + (slot - pairW) / 2
+				return (
+					<g key={m}>
+						<rect
+							x={x0}
+							y={baseline - hOf(p)}
+							width={barW}
+							height={hOf(p)}
+							rx="1"
+							fill="currentColor"
+							fillOpacity="0.35"
+						/>
+						<rect
+							x={x0 + barW + 2}
+							y={baseline - hOf(g)}
+							width={barW}
+							height={hOf(g)}
+							rx="1"
+							fill="currentColor"
+						/>
+					</g>
+				)
+			})}
+		</svg>
+	)
+}
+
+/** Desviación: zero-centered diverging columns on a FIXED ±10 % domain mapped
+ * to the full half-height (clamped), so small deviations keep visible
+ * amplitude instead of collapsing into dashes. The zero line stays visible. */
+const DEV_DOMAIN_PCT = 10
+const DEV_HALF_H = 13
+
+function DeviationVisual(): ReactNode {
+	const barH = (dev: number): number =>
+		Math.max(Math.min(Math.abs(dev) / DEV_DOMAIN_PCT, 1) * DEV_HALF_H, 2.5)
+	const slot = KPI_VB_W / ELAPSED
+	const barW = 12
+	const zero = KPI_VB_H / 2
+	return (
+		<svg
+			viewBox={`0 0 ${KPI_VB_W} ${KPI_VB_H}`}
+			data-visual="zero-centered-columns"
+			className="text-brand-blue h-8 w-24 shrink-0"
+			aria-hidden="true"
+		>
+			<line
+				x1="0"
+				y1={zero}
+				x2={KPI_VB_W}
+				y2={zero}
+				stroke="currentColor"
+				strokeOpacity="0.25"
+				strokeWidth="1"
+				vectorEffect="non-scaling-stroke"
+			/>
+			{devByMonth.map((dev, m) => {
+				const h = barH(dev)
+				return (
+					<rect
+						key={m}
+						x={m * slot + (slot - barW) / 2}
+						y={dev >= 0 ? zero - h : zero}
+						width={barW}
+						height={h}
+						rx="1"
+						fill="currentColor"
+						fillOpacity={dev >= 0 ? 0.85 : 0.6}
+					/>
+				)
+			})}
+		</svg>
+	)
+}
+
+/** Proyección anual: a bullet chart — the annual plan as the track, gestión
+ * acumulada as the filled bar, the forward projection as a marker and the plan
+ * target as the end tick. It reads as a bar with markers, not as a line. */
+function ProjectionScaleVisual(): ReactNode {
+	const mid = KPI_VB_H / 2
+	const xOf = (v: number): number => Math.min(Math.max(v / annualPlan, 0), 1) * (KPI_VB_W - 2)
+	const barH = 9
+	return (
+		<svg
+			viewBox={`0 0 ${KPI_VB_W} ${KPI_VB_H}`}
+			data-visual="projection-bullet"
+			className="text-brand-blue h-8 w-24 shrink-0"
+			aria-hidden="true"
+		>
+			{/* Track: the annual plan. */}
+			<rect
+				x="0"
+				y={mid - barH / 2}
+				width={KPI_VB_W}
+				height={barH}
+				rx="1"
+				fill="currentColor"
+				fillOpacity="0.12"
+			/>
+			{/* Gestión acumulada: what is already executed. */}
+			<rect
+				x="0"
+				y={mid - barH / 2}
+				width={Math.max(xOf(ytdGestion), 2)}
+				height={barH}
+				rx="1"
+				fill="currentColor"
+				fillOpacity="0.55"
+			/>
+			{/* Forward projection: a marker above and below the track. */}
+			<line
+				x1={xOf(projectedAnnual)}
+				y1={mid - barH / 2 - 6}
+				x2={xOf(projectedAnnual)}
+				y2={mid + barH / 2 + 6}
+				stroke="currentColor"
+				strokeWidth="2"
+				strokeLinecap="round"
+				vectorEffect="non-scaling-stroke"
+			/>
+			{/* Annual plan target: end tick. */}
+			<line
+				x1={KPI_VB_W - 1}
+				y1={mid - barH}
+				x2={KPI_VB_W - 1}
+				y2={mid + barH}
+				stroke="currentColor"
+				strokeOpacity="0.7"
+				strokeWidth="1.5"
+				vectorEffect="non-scaling-stroke"
+			/>
+		</svg>
+	)
+}
+
+const KPI_VISUALS: Record<KpiKind, () => ReactNode> = {
+	"cumulative-plan": PlanPacingVisual,
+	"gestion-vs-target": GestionVsTargetVisual,
+	deviation: DeviationVisual,
+	"projection-vs-plan": ProjectionScaleVisual,
+}
+
+function KpiTile({ kpi, entrance }: { kpi: Kpi; entrance: Entrance }): ReactNode {
+	const Visual = KPI_VISUALS[kpi.kind]
+	return (
+		<motion.div
+			data-kpi={kpi.kind}
+			variants={entrance.variants}
+			transition={entrance.transition}
+			className="border-border/60 bg-background flex flex-col justify-between rounded-lg border p-3"
+		>
 			<span className="text-muted-foreground text-[11px]">{kpi.label}</span>
 			<div className="mt-2 flex flex-wrap items-end justify-between gap-2">
 				<span className="text-lg leading-none font-semibold tracking-tight tabular-nums">
@@ -232,35 +460,37 @@ function KpiTile({ kpi }: { kpi: Kpi }): ReactNode {
 					) : null}
 				</span>
 				<span className="ml-auto flex flex-col items-end gap-1">
-					<svg
-						viewBox="0 0 60 20"
-						preserveAspectRatio="none"
-						className="text-brand-blue h-4 w-14"
-						aria-hidden="true"
-					>
-						<polyline
-							points={kpi.spark}
-							fill="none"
-							stroke="currentColor"
-							strokeWidth="1.5"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							vectorEffect="non-scaling-stroke"
-						/>
-					</svg>
+					<Visual />
 					{kpi.delta ? (
 						<span className="text-primary flex items-center gap-0.5 text-[10px] font-medium whitespace-nowrap tabular-nums">
-							<TrendingUp className="h-2.5 w-2.5" aria-hidden="true" />
+							{kpi.trend === "down" ? (
+								<TrendingDown className="h-2.5 w-2.5" aria-hidden="true" />
+							) : (
+								<TrendingUp className="h-2.5 w-2.5" aria-hidden="true" />
+							)}
 							{kpi.delta}
 						</span>
 					) : null}
 				</span>
 			</div>
-		</div>
+		</motion.div>
 	)
 }
 
 /* ---- Monthly plan vs gestión, with a dashed projection ------------------ */
+
+/** Horizontal geometry of the execution chart (the svg stretches via
+ * preserveAspectRatio="none"); exported so tests can reason about x positions. */
+export const EXEC_GEOMETRY = {
+	w: 600,
+	padLeft: 6,
+	padRight: 6,
+	slot: (600 - 12) / MONTHS.length,
+} as const
+
+/** x of the boundary between the last elapsed month and the first future one:
+ * where the dashed projection leaves the actuals behind. */
+export const PROJECTION_START_X = EXEC_GEOMETRY.padLeft + ELAPSED * EXEC_GEOMETRY.slot
 
 function Legend({ swatch, children }: { swatch: ReactNode; children: ReactNode }): ReactNode {
 	return (
@@ -271,29 +501,33 @@ function Legend({ swatch, children }: { swatch: ReactNode; children: ReactNode }
 	)
 }
 
-function ExecutionTile(): ReactNode {
-	const W = 600
+function ExecutionTile({ entrance }: { entrance: Entrance }): ReactNode {
+	const W = EXEC_GEOMETRY.w
 	const H = 200
-	const pad = { top: 16, bottom: 24, left: 6, right: 6 }
+	// No bottom padding is reserved for labels: the month axis is real HTML
+	// below the chart, so text never lives inside the vertically-scaled SVG
+	// (where `preserveAspectRatio="none"` squashes and clips it).
+	const pad = { top: 16, bottom: 6, left: EXEC_GEOMETRY.padLeft, right: EXEC_GEOMETRY.padRight }
 	const chartH = H - pad.top - pad.bottom
 	const baseline = H - pad.bottom
-	const max = Math.max(...planByMonth) * 1.05
-	const slot = (W - pad.left - pad.right) / MONTHS.length
+	const max = Math.max(...PLAN_BY_MONTH) * 1.05
+	const slot = EXEC_GEOMETRY.slot
 	const barW = 9
 	const gap = 3
 
 	const yOf = (v: number): number => baseline - (v / max) * chartH
 	const centerOf = (i: number): number => pad.left + i * slot + slot / 2
 
-	// Projection rides from the last elapsed month's gestión to year-end at the
-	// year-to-date run rate.
+	// The projection leaves the actuals at the boundary after the last elapsed
+	// month: it anchors there at the last gestión level and then rides the
+	// projected months, so it never reads as a flat line floating mid-chart.
 	const projPoints = [
-		`${centerOf(ELAPSED - 1)},${yOf(gestionByMonth[ELAPSED - 1] ?? 0)}`,
-		...planByMonth.slice(ELAPSED).map((p, i) => `${centerOf(ELAPSED + i)},${yOf(p * runRate)}`),
+		`${PROJECTION_START_X},${yOf(GESTION_BY_MONTH[ELAPSED - 1] ?? 0)}`,
+		...PROJECTED_BY_MONTH.map((p, i) => `${centerOf(ELAPSED + i)},${yOf(p)}`),
 	].join(" ")
 
 	return (
-		<Tile title="Ejecución mensual" subtitle="Plan vs. gestión" className="lg:col-span-2">
+		<Tile title="Ejecución mensual" subtitle="Plan vs. gestión" className="lg:col-span-2" entrance={entrance}>
 			<div className="flex shrink-0 flex-wrap items-center gap-x-4 gap-y-1 pb-1">
 				<Legend swatch={<span className="bg-brand-blue/40 h-1.5 w-1.5 rounded-full" />}>
 					Plan
@@ -302,13 +536,20 @@ function ExecutionTile(): ReactNode {
 					Gestión
 				</Legend>
 				<Legend
+					swatch={
+						<span className="border-brand-blue/60 bg-brand-blue/10 h-2 w-3 rounded-[2px] border border-dashed" />
+					}
+				>
+					Proyectado
+				</Legend>
+				<Legend
 					swatch={<span className="border-muted-foreground/60 h-px w-4 border-t border-dashed" />}
 				>
 					Proyección
 				</Legend>
 			</div>
 
-			<div className="text-brand-blue relative min-h-36 flex-1">
+			<div className="text-brand-blue relative min-h-24 min-w-0 flex-1">
 				<svg
 					viewBox={`0 0 ${W} ${H}`}
 					preserveAspectRatio="none"
@@ -331,9 +572,10 @@ function ExecutionTile(): ReactNode {
 
 					{MONTHS.map((label, i) => {
 						const cx = centerOf(i)
-						const pY = yOf(planByMonth[i] ?? 0)
+						const pY = yOf(PLAN_BY_MONTH[i] ?? 0)
 						const hasGestion = i < ELAPSED
-						const gY = hasGestion ? yOf(gestionByMonth[i] ?? 0) : baseline
+						const gY = hasGestion ? yOf(GESTION_BY_MONTH[i] ?? 0) : baseline
+						const projY = yOf(PROJECTED_BY_MONTH[i - ELAPSED] ?? 0)
 						return (
 							<g key={label}>
 								{/* Plan */}
@@ -346,7 +588,9 @@ function ExecutionTile(): ReactNode {
 									fill="currentColor"
 									fillOpacity="0.4"
 								/>
-								{/* Gestión (elapsed months only) */}
+								{/* Gestión for elapsed months; a distinct projected value (faint
+								    fill + dashed outline) in the gestión slot for future ones, so
+								    every month reads as a paired comparison. */}
 								{hasGestion ? (
 									<rect
 										x={cx + gap / 2}
@@ -356,16 +600,22 @@ function ExecutionTile(): ReactNode {
 										rx="2"
 										fill="currentColor"
 									/>
-								) : null}
-								<text
-									x={cx}
-									y={H - 8}
-									textAnchor="middle"
-									className="fill-muted-foreground"
-									fontSize="9"
-								>
-									{label}
-								</text>
+								) : (
+									<rect
+										x={cx + gap / 2}
+										y={projY}
+										width={barW}
+										height={baseline - projY}
+										rx="2"
+										fill="currentColor"
+										fillOpacity="0.12"
+										stroke="currentColor"
+										strokeOpacity="0.55"
+										strokeDasharray="3 3"
+										strokeWidth="1"
+										vectorEffect="non-scaling-stroke"
+									/>
+								)}
 							</g>
 						)
 					})}
@@ -382,6 +632,29 @@ function ExecutionTile(): ReactNode {
 						vectorEffect="non-scaling-stroke"
 					/>
 				</svg>
+			</div>
+
+			{/* Month axis as real HTML: a 12-column row whose proportional side
+			    padding mirrors the chart's own padding, so every label centers
+			    exactly under its month slot at any rendered width. Elapsed months
+			    read in the foreground; future months stay muted. */}
+			<div
+				className="text-muted-foreground grid shrink-0 grid-cols-12 pt-1 text-[10px] leading-none"
+				style={{
+					paddingLeft: `${(pad.left / W) * 100}%`,
+					paddingRight: `${(pad.right / W) * 100}%`,
+				}}
+			>
+				{MONTHS.map((label, i) => (
+					<span
+						key={label}
+						className={
+							i < ELAPSED ? "text-center text-foreground font-medium" : "text-center"
+						}
+					>
+						{label}
+					</span>
+				))}
 			</div>
 		</Tile>
 	)
@@ -455,7 +728,7 @@ function buildBridge(): BridgeColumn[] {
 
 const BRIDGE = buildBridge()
 
-function WaterfallTile(): ReactNode {
+function WaterfallTile({ entrance }: { entrance: Entrance }): ReactNode {
 	// Panoramic viewBox (wider than the tile) so `meet` fits to width and the
 	// bars span the whole card instead of being letterboxed with side gaps.
 	const W = 360
@@ -485,7 +758,7 @@ function WaterfallTile(): ReactNode {
 	}
 
 	return (
-		<Tile title="Puente plan → gestión" subtitle="YTD · CLP MM">
+		<Tile title="Puente plan → gestión" subtitle="YTD · CLP MM" entrance={entrance}>
 			<div className="flex shrink-0 items-center gap-3 pb-1">
 				<Legend swatch={<span className="bg-brand-green h-1.5 w-1.5 rounded-full" />}>
 					Favorable
@@ -495,7 +768,7 @@ function WaterfallTile(): ReactNode {
 				</Legend>
 			</div>
 
-			<div className="relative h-40 lg:h-auto lg:min-h-32 lg:flex-1">
+			<div className="relative h-40 lg:h-auto lg:min-h-0 lg:flex-1">
 				<svg
 					viewBox={`0 0 ${W} ${H}`}
 					preserveAspectRatio="xMidYMid meet"
@@ -568,11 +841,15 @@ function WaterfallTile(): ReactNode {
 
 /* ---- Per-area deviation table ------------------------------------------ */
 
-function AreaTableTile(): ReactNode {
+function AreaTableTile({ entrance }: { entrance: Entrance }): ReactNode {
 	const maxDev = Math.max(...AREA_ROWS.map((a) => Math.abs(a.dev)))
+	// Reduced motion returns a static container and instant items, so the rows
+	// do not pop in one after another when motion is not wanted.
+	const { container: rowContainer, item: rowItem, itemTransition: rowTransition } =
+		useStaggerEntrance(ROW_STAGGER)
 
 	return (
-		<Tile title="Ejecución por área" subtitle="Plan vs. gestión · YTD" className="lg:col-span-3">
+		<Tile title="Ejecución por área" subtitle="Plan vs. gestión · YTD" className="lg:col-span-3" entrance={entrance}>
 			<div className="text-muted-foreground grid grid-cols-[1.4fr_0.9fr_0.9fr_1.3fr] items-center gap-x-3 pb-1 text-[10px] font-medium tracking-wide uppercase">
 				<span>Área</span>
 				<span className="text-right">Plan</span>
@@ -580,13 +857,15 @@ function AreaTableTile(): ReactNode {
 				<span className="text-right">Desv. %</span>
 			</div>
 
-			<ul className="flex min-h-0 flex-1 flex-col justify-between">
+			<motion.ul className="flex min-h-0 flex-1 flex-col justify-between" variants={rowContainer}>
 				{AREA_ROWS.map((row) => {
 					const intensity = Math.abs(row.dev) / maxDev // 0..1
 					const barW = 20 + intensity * 60 // % width of the deviation bar
 					return (
-						<li
+						<motion.li
 							key={row.label}
+							variants={rowItem}
+							transition={rowTransition}
 							className="border-border/40 grid grid-cols-[1.4fr_0.9fr_0.9fr_1.3fr] items-center gap-x-3 border-b py-[2px] text-[11px] leading-tight last:border-b-0"
 						>
 							<span className="flex items-center gap-1.5 truncate">
@@ -615,34 +894,46 @@ function AreaTableTile(): ReactNode {
 									{fmtPct(row.dev, true)}
 								</span>
 							</span>
-						</li>
+						</motion.li>
 					)
 				})}
-			</ul>
+			</motion.ul>
 		</Tile>
 	)
 }
 
 export function PanelReportability(): ReactNode {
+	const { container, item, itemTransition } = useStaggerEntrance(ENTRANCE_STAGGER)
+	const entrance: Entrance = { variants: item, transition: itemTransition }
+
 	return (
 		<div className="flex h-full w-full flex-col overflow-hidden">
 			<FilterBar />
 
-			<div className="flex min-h-0 flex-1 flex-col gap-3 p-3 sm:p-4">
+			{/* Mount-based stagger: the panel plays when its tab activates, so
+			    there is no scroll trigger inside the frame. Depth-first reading
+			    order: KPI row → execution chart → waterfall → table (whose rows
+			    follow inside the table tile's own tighter stagger). */}
+			<motion.div
+				className="flex min-h-0 flex-1 flex-col gap-3 p-3 sm:p-4"
+				initial="hidden"
+				animate="visible"
+				variants={container}
+			>
 				{/* KPI row */}
 				<div className="grid shrink-0 grid-cols-2 gap-3 lg:grid-cols-4">
 					{KPIS.map((kpi) => (
-						<KpiTile key={kpi.label} kpi={kpi} />
+						<KpiTile key={kpi.label} kpi={kpi} entrance={entrance} />
 					))}
 				</div>
 
 				{/* Visual canvas */}
 				<div className="grid min-h-0 flex-1 grid-cols-1 gap-3 lg:grid-cols-3">
-					<ExecutionTile />
-					<WaterfallTile />
-					<AreaTableTile />
+					<ExecutionTile entrance={entrance} />
+					<WaterfallTile entrance={entrance} />
+					<AreaTableTile entrance={entrance} />
 				</div>
-			</div>
+			</motion.div>
 		</div>
 	)
 }

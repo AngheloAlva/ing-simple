@@ -214,6 +214,9 @@ export function HeroShowcase(): ReactNode {
                 WebkitMaskImage: tablistMask(scrollShadows),
               }}
             >
+              {/* Natural tab width (shrink-0) keeps the strip scrollable below
+                  `lg`; on desktop `lg:flex-1` lets the four tabs divide the
+                  space left of the pause button equally. */}
               {ITEMS.map((item, index) => {
                 const isActive = index === activeIndex;
                 const tabId = item.service.slug;
@@ -230,7 +233,7 @@ export function HeroShowcase(): ReactNode {
                     tabIndex={isActive ? 0 : -1}
                     onClick={() => select(index)}
                     onKeyDown={onTabKeyDown}
-                    className={`focus-ring relative shrink-0 px-3 text-[13px] font-medium tracking-tight transition-colors ${isActive ? "bg-foreground/10 text-foreground" : "text-foreground/70 hover:text-foreground"}`}
+                    className={`focus-ring relative shrink-0 px-3 text-center text-[13px] font-medium tracking-tight transition-colors lg:flex-1 ${isActive ? "bg-foreground/10 text-foreground" : "text-foreground/70 hover:text-foreground"}`}
                   >
                     {item.service.shortName}
                     {isActive && (

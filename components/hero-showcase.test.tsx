@@ -90,6 +90,19 @@ describe("HeroShowcase", () => {
     for (const service of SERVICES) expect(PANEL_BY_SLUG[service.slug]).toBeTypeOf("function")
   })
 
+  it("distributes the four tabs equally across the tab list on desktop", () => {
+    const html = renderToStaticMarkup(<HeroShowcase />)
+    const tabs = html.match(/<button type="button" role="tab"[^>]*>/g) ?? []
+    expect(tabs).toHaveLength(SERVICES.length)
+
+    // Below `lg` the tabs keep their natural width (shrink-0) so the strip
+    // scrolls with edge masks; on desktop they must share the full width.
+    for (const tab of tabs) {
+      expect(tab).toContain("shrink-0")
+      expect(tab).toContain("lg:flex-1")
+    }
+  })
+
   it("omits the pause control under reduced motion", () => {
     const html = renderToStaticMarkup(
       <ReducedMotionProvider>
