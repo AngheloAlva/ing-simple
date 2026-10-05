@@ -331,7 +331,7 @@ function Sidebar(): ReactNode {
           {COMERCIAL_SUB.map((sub) => (
             <span
               key={sub.label}
-              className={`truncate rounded-md px-2.5 py-1.5 text-[12px] transition-colors ${
+              className={`whitespace-normal break-words rounded-md px-2.5 py-1.5 text-[12px] transition-colors ${
                 sub.active
                   ? "bg-primary/10 font-medium text-primary"
                   : "text-muted-foreground hover:text-foreground"
@@ -524,7 +524,7 @@ function RequestsTable({
                 <td className="truncate px-3 py-2.5 font-medium text-primary">
                   {r.code}
                 </td>
-                <td className="truncate px-2 py-2.5">{r.project}</td>
+                <td className="whitespace-normal break-words px-2 py-2.5">{r.project}</td>
                 <td className="truncate px-2 py-2.5 text-muted-foreground">
                   {r.client}
                 </td>

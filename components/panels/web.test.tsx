@@ -3,6 +3,30 @@ import { describe, expect, it } from "vitest";
 import { ENTRANCE_STAGGER, ROW_BASE_DELAY, ROW_STAGGER, PanelWeb } from "./web";
 
 describe("Web requests showcase", () => {
+  it("allows the full sidebar request label to wrap instead of truncating", () => {
+    const html = renderToStaticMarkup(<PanelWeb />);
+    const label = html.match(/<span class="([^"]*)">Solicitudes de Levantamiento<\/span>/);
+
+    expect(label).not.toBeNull();
+    const classes = label?.[1]?.split(/\s+/) ?? [];
+    expect(classes).not.toContain("truncate");
+    expect(classes).toContain("whitespace-normal");
+    expect(classes).toContain("break-words");
+  });
+
+  it("allows the full desktop project value to wrap in its table cell", () => {
+    const html = renderToStaticMarkup(<PanelWeb />);
+    const table = html.match(/<table\b[\s\S]*?<\/table>/)?.[0];
+    const cell = table?.match(/<td class="([^"]*)">Revestimiento de molino<\/td>/);
+
+    expect(cell).toBeDefined();
+    expect(cell).not.toBeNull();
+    const classes = cell?.[1]?.split(/\s+/) ?? [];
+    expect(classes).not.toContain("truncate");
+    expect(classes).toContain("whitespace-normal");
+    expect(classes).toContain("break-words");
+  });
+
   it("keeps the desktop table and compact records in the same scrolling region", () => {
     const html = renderToStaticMarkup(<PanelWeb />);
     const table = html.match(/<table\b[\s\S]*?<\/table>/)?.[0];
