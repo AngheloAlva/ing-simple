@@ -1,7 +1,8 @@
 "use client"
 
-import { motion, useReducedMotion } from "motion/react"
+import { motion } from "motion/react"
 import type { ReactNode } from "react"
+import { useReducedMotion } from "@/lib/motion"
 
 /**
  * Decorative circuit traces — orthogonal runs that elbow at 45° and land on

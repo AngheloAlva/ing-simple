@@ -7,7 +7,8 @@ import { DiagramAuditScan } from "@/components/diagrams/process/audit-scan"
 import { DiagramProposalConvert } from "@/components/diagrams/process/proposal-convert"
 import { DiagramRolloutGantt } from "@/components/diagrams/process/rollout-gantt"
 import { DiagramSupportFeed } from "@/components/diagrams/process/support-feed"
-import { motion, useInView, useReducedMotion, type Variants } from "motion/react"
+import { useReducedMotion } from "@/lib/motion"
+import { motion, useInView, type Variants } from "motion/react"
 import { useRef, type ReactNode } from "react"
 
 /**
@@ -105,7 +106,7 @@ export function HowItWorks(): ReactNode {
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true, margin: "-80px" }}
 					transition={{ duration: 0.6, ease: EASE }}
-					className="max-w-2xl"
+					className="how-it-works-entrance max-w-2xl"
 				>
 					<Kicker>Cómo trabajamos</Kicker>
 					<h2
@@ -141,7 +142,7 @@ export function HowItWorks(): ReactNode {
 							<motion.li
 								key={step.title}
 								variants={item}
-								className="border-border border-t pt-10 first:border-t-0 first:pt-0 lg:border-t-0 lg:pt-0"
+								className="how-it-works-entrance border-border border-t pt-10 first:border-t-0 first:pt-0 lg:border-t-0 lg:pt-0"
 							>
 								<StepVisual visual={step.visual} />
 

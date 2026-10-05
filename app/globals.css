@@ -310,6 +310,10 @@ html.dark {
 }
 
 @media (prefers-reduced-motion: reduce) {
+	.how-it-works-entrance {
+		transform: none !important;
+	}
+
 	*,
 	*::before,
 	*::after {
