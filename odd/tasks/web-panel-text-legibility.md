@@ -33,3 +33,6 @@ User explicitly approved local commits after verified closeout. Commit code, tes
 
 ## Rollback boundary
 Revert this work unit's two wrapping-class substitutions and targeted web tests together; do not affect reduced-motion/hydration changes.
+
+## Work-unit commit evidence
+Committed as `49d36c21de7fb7efb01d0c1c726d2e5ad4ae78bf` on `feat/home-hero-clarity` (63 additions plus deletions including task evidence). Functional checks above were observed before committing; no source change at commit boundary. No push or merge.

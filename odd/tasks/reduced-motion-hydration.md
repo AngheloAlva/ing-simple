@@ -61,3 +61,6 @@ User explicitly approved local commits after verified closeout. Commit code, tes
 
 ## Rollback boundary
 Revert this work unit's CircuitTrace/HowItWorks hook corrections, scoped CSS entrance rule and corresponding tests together; do not affect web panel legibility changes.
+
+## Work-unit commit evidence
+Committed as `5b12adf89f77b5bb162e6dbc848976bb32c38310` on `feat/home-hero-clarity` (238 additions plus deletions including task evidence). Functional checks above were observed before committing; no source change at commit boundary. No push or merge.
