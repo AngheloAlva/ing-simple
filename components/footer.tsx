@@ -75,14 +75,14 @@ function FooterColumn({
 	const divided = index > 0
 	return (
 		<div
-			className={`relative md:px-8 ${divided ? "md:border-border md:border-l" : "md:pl-0"} ${
-				index === 3 ? "md:pr-0" : ""
+			className={`relative lg:px-8 ${divided ? "lg:border-border lg:border-l" : "lg:pl-0"} ${
+				index === 3 ? "col-span-2 lg:col-span-1 lg:pr-0" : ""
 			}`}
 		>
 			{divided && (
 				<>
-					<Plus className="top-0 left-0 hidden -translate-x-1/2 -translate-y-1/2 md:block" />
-					<Plus className="bottom-0 left-0 hidden -translate-x-1/2 translate-y-1/2 md:block" />
+					<Plus className="top-0 left-0 hidden -translate-x-1/2 -translate-y-1/2 lg:block" />
+					<Plus className="bottom-0 left-0 hidden -translate-x-1/2 translate-y-1/2 lg:block" />
 				</>
 			)}
 
@@ -124,7 +124,7 @@ export function Footer(): ReactNode {
 				<div className="bg-background p-8 sm:p-10 lg:p-14" style={clip}>
 					<Logo draw="in-view" />
 
-					<div className="mt-12 grid grid-cols-2 gap-x-8 gap-y-10 md:mt-14 md:grid-cols-4 md:gap-x-0">
+					<div className="mt-12 grid grid-cols-2 gap-x-8 gap-y-10 md:mt-14 lg:grid-cols-4 lg:gap-x-0">
 						{COLUMNS.map((col, i) => (
 							<FooterColumn key={col.title} index={i} title={col.title} links={col.links} />
 						))}
