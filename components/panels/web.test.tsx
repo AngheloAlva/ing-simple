@@ -3,6 +3,18 @@ import { describe, expect, it } from "vitest";
 import { ENTRANCE_STAGGER, ROW_BASE_DELAY, ROW_STAGGER, PanelWeb } from "./web";
 
 describe("Web requests showcase", () => {
+  it("keeps Lenis prevention local to the scrollable sidebar navigation", () => {
+    const html = renderToStaticMarkup(<PanelWeb />);
+    const sidebar = html.match(/<aside\b[^>]*>[\s\S]*?<\/aside>/)?.[0];
+    const nav = sidebar?.match(/<nav\b[^>]*>[\s\S]*?<\/nav>/)?.[0];
+
+    expect(nav).toBeDefined();
+    expect(nav).toContain("Solicitudes de Levantamiento");
+    expect(nav).toContain("overflow-y-auto");
+    expect(nav).toMatch(/^<nav\b[^>]*\bdata-lenis-prevent="true"/);
+    expect(sidebar?.match(/^<aside\b[^>]*>/)?.[0]).not.toContain("data-lenis-prevent");
+  });
+
   it("allows the full sidebar request label to wrap instead of truncating", () => {
     const html = renderToStaticMarkup(<PanelWeb />);
     const label = html.match(/<span class="([^"]*)">Solicitudes de Levantamiento<\/span>/);

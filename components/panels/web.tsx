@@ -315,7 +315,7 @@ function Sidebar(): ReactNode {
       </div>
 
       {/* Nav */}
-      <nav className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto p-3">
+      <nav className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto p-3" data-lenis-prevent>
         <p className="px-2 pb-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">
           Menú
         </p>
