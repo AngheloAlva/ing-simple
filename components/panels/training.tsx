@@ -1,62 +1,15 @@
-import {
-  Award,
-  Check,
-  Circle,
-  CircleDot,
-  Clock,
-  Gauge,
-  GraduationCap,
-  Signal,
-  User,
-  type LucideIcon,
-} from "lucide-react";
+import { Award, Check, Circle, CircleDot, Clock, Gauge, GraduationCap, Signal, User, type LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { motion, type Transition, type Variants } from "motion/react";
 import { useStaggerEntrance } from "@/lib/motion";
 
-/* --------------------------------------------------------------------------
- * Capacitaciones panel: ONE course, ONE learner's journey.
- *
- * The old panel showed four unrelated courses with averaged progress; it had
- * no subject, no modality/duration/level/instructor, and used green twice.
- * This redesign simulates a single concrete program (Power BI, consistent
- * with the `capacitaciones` temario in `lib/services.ts`) partway through:
- *
- *   1. course identity — name + modality / duration / level / instructor,
- *   2. overall progress toward completion (the focal element),
- *   3. module/lesson breakdown with per-item status,
- *   4. the current lesson, highlighted in the timeline,
- *   5. the completion outcome: the certificate, the panel's only green.
- *
- * Everything derives from the single `MODULES` dataset below — lesson counts,
- * overall percent and module status are computed, never hand-typed, so they
- * always agree. No red anywhere; the palette stays quiet so the one green
- * payoff reads as the ending of the story.
- * ------------------------------------------------------------------------ */
-
 type LessonStatus = "completed" | "current" | "pending";
-
-/* ---- Entrance ------------------------------------------------------------- */
-
-/** Stagger offset of the panel's single entrance chain (seconds): header and
- * progress hero first, then the four modules, the certificate strip last. The
- * 7th item (the certificate) starts at 6 × ENTRANCE_STAGGER = 0.30 s. */
-export const ENTRANCE_STAGGER = 0.05;
-
-/** Variants + transition handed down from the panel's entrance recipe. */
+type Lesson = { title: string; duration: string; status: LessonStatus };
+type Module = { title: string; lessons: Lesson[] };
 type Entrance = { variants: Variants; transition: Transition };
 
-type Lesson = {
-  title: string;
-  /** Simulated lesson length, shown right-aligned in tabular-nums. */
-  duration: string;
-  status: LessonStatus;
-};
-
-type Module = {
-  title: string;
-  lessons: Lesson[];
-};
+/** Seven entrance items: header, lesson, progress/certificate, four modules. */
+export const ENTRANCE_STAGGER = 0.05;
 
 const MODULES: Module[] = [
   {
@@ -89,8 +42,6 @@ const MODULES: Module[] = [
   },
 ];
 
-/* ---- Course identity (the learner's context) ----------------------------- */
-
 const COURSE = {
   title: "Power BI de básico a avanzado",
   audience: "Equipo de control de gestión",
@@ -100,259 +51,158 @@ const COURSE = {
   instructor: "Instructor IngSimple",
 } as const;
 
-/* ---- Derived figures (single source: MODULES) ---------------------------- */
-
-const LESSONS = MODULES.flatMap((m) => m.lessons);
+const LESSONS = MODULES.flatMap((module) => module.lessons);
 const TOTAL_LESSONS = LESSONS.length;
-const COMPLETED_LESSONS = LESSONS.filter((l) => l.status === "completed").length;
+const COMPLETED_LESSONS = LESSONS.filter((lesson) => lesson.status === "completed").length;
 const OVERALL = Math.round((COMPLETED_LESSONS / TOTAL_LESSONS) * 100);
+const CURRENT_LESSON = LESSONS.find((lesson) => lesson.status === "current")!;
 
 type ModuleStatus = "completed" | "in-progress" | "pending";
-
 function moduleStatus(module: Module): ModuleStatus {
-  if (module.lessons.every((l) => l.status === "completed")) return "completed";
-  if (module.lessons.some((l) => l.status === "current")) return "in-progress";
+  if (module.lessons.every((lesson) => lesson.status === "completed")) return "completed";
+  if (module.lessons.some((lesson) => lesson.status === "current")) return "in-progress";
   return "pending";
 }
-
 const MODULE_STATUS_LABEL: Record<ModuleStatus, string> = {
-  completed: "Completado",
-  "in-progress": "En curso",
-  pending: "Pendiente",
+  completed: "Completado", "in-progress": "En curso", pending: "Pendiente",
 };
-
-/* ---- Header --------------------------------------------------------------- */
-
-function Header({ entrance }: { entrance: Entrance }): ReactNode {
-  return (
-    <motion.div
-      variants={entrance.variants}
-      transition={entrance.transition}
-      className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border/60 px-4 sm:px-5"
-    >
-      <div className="flex min-w-0 items-center gap-2.5">
-        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-primary/10">
-          <GraduationCap className="h-4 w-4 text-primary" strokeWidth={2} aria-hidden="true" />
-        </span>
-        <div className="flex min-w-0 flex-col">
-          <h2 className="truncate text-sm font-semibold tracking-tight">{COURSE.title}</h2>
-          <p className="hidden text-[11px] text-muted-foreground sm:block">
-            Capacitación a medida · {COURSE.audience}
-          </p>
-        </div>
-      </div>
-      <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-muted/50 px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
-        <Signal className="h-3 w-3" strokeWidth={1.75} aria-hidden="true" />
-        {COURSE.modality}
-      </span>
-    </motion.div>
-  );
-}
-
-/* ---- Focal element: overall progress ------------------------------------- */
-
-type MetaChip = { icon: LucideIcon; label: string };
-
-const META: MetaChip[] = [
+const META: { icon: LucideIcon; label: string }[] = [
+  { icon: Signal, label: COURSE.modality },
   { icon: Clock, label: COURSE.duration },
   { icon: Gauge, label: COURSE.level },
   { icon: User, label: COURSE.instructor },
 ];
 
-function ProgressHero({ entrance }: { entrance: Entrance }): ReactNode {
+// Illustrative totals share a single source for bars, values and calculation.
+const SALES = [{ month: "Abril", amount: 10000 }, { month: "Mayo", amount: 12000 }] as const;
+const PREVIOUS = SALES[0].amount;
+const CURRENT = SALES[1].amount;
+const CHANGE = Math.round(((CURRENT - PREVIOUS) / PREVIOUS) * 100);
+const formatAmount = (amount: number): string => new Intl.NumberFormat("es-CL").format(amount);
+
+function Header({ entrance }: { entrance: Entrance }): ReactNode {
   return (
-    <motion.section
-      aria-label="Avance del programa"
-      variants={entrance.variants}
-      transition={entrance.transition}
-      className="shrink-0"
-    >
-      <div className="flex items-end justify-between gap-3">
-        <div className="flex min-w-0 items-baseline gap-2.5">
-          <span className="text-3xl font-semibold leading-none tracking-tight tabular-nums">
-            {OVERALL}%
-          </span>
-          <span className="truncate text-[12px] text-muted-foreground">
-            {COMPLETED_LESSONS} de {TOTAL_LESSONS} lecciones completadas
-          </span>
-        </div>
-        <span className="hidden shrink-0 text-[11px] uppercase tracking-wide text-muted-foreground sm:block">
-          Avance del programa
+    <motion.div variants={entrance.variants} transition={entrance.transition}
+      className="shrink-0 border-b border-border/60 px-4 py-3 sm:px-5">
+      <div className="flex min-w-0 items-start gap-2.5">
+        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-primary/10">
+          <GraduationCap className="h-4 w-4 text-primary" aria-hidden="true" />
         </span>
+        <div className="min-w-0">
+          <h2 className="text-sm font-semibold leading-snug tracking-tight">{COURSE.title}</h2>
+          <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">{COURSE.audience}</p>
+        </div>
       </div>
-
-      <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-muted">
-        <div className="h-full rounded-full bg-primary" style={{ width: `${OVERALL}%` }} />
-      </div>
-
-      <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1">
+      <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1">
         {META.map(({ icon: Icon, label }) => (
-          <span
-            key={label}
-            className="inline-flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground"
-          >
-            <Icon className="h-3 w-3" strokeWidth={1.75} aria-hidden="true" />
-            {label}
+          <span key={label} className="inline-flex items-center gap-1 text-[10px] leading-snug text-muted-foreground">
+            <Icon className="h-3 w-3 shrink-0" strokeWidth={1.75} aria-hidden="true" />{label}
           </span>
         ))}
+      </div>
+    </motion.div>
+  );
+}
+
+function PracticalLesson({ entrance }: { entrance: Entrance }): ReactNode {
+  return (
+    <motion.section aria-label="Lección actual" variants={entrance.variants} transition={entrance.transition}
+      className="min-w-0 rounded-lg border border-primary/25 bg-primary/5 p-3 sm:p-4 lg:flex lg:min-h-0 lg:flex-col">
+      <div className="flex flex-wrap items-center justify-between gap-1 text-[10px] font-medium text-primary">
+        <span>Lección actual · {LESSONS.indexOf(CURRENT_LESSON) + 1} de {TOTAL_LESSONS}</span>
+        <span>En curso · {CURRENT_LESSON.duration}</span>
+      </div>
+      <h3 className="mt-1 text-xl font-semibold leading-tight tracking-tight">{CURRENT_LESSON.title}</h3>
+      <p className="mt-1 text-[12px] leading-snug text-muted-foreground">Compara las ventas con el mes anterior en Power BI.</p>
+      <figure className="mt-3 rounded-lg border border-border/60 bg-background/80 p-3 lg:flex lg:min-h-0 lg:flex-1 lg:flex-col lg:p-4">
+        <figcaption className="flex flex-wrap justify-between gap-1 text-[10px] text-muted-foreground">
+          <span className="font-medium text-foreground">Ventas mensuales · u.m.</span><span>Datos ficticios</span>
+        </figcaption>
+        <dl className="mt-3 space-y-2 lg:flex lg:flex-1 lg:flex-col lg:justify-center lg:space-y-4">
+          {SALES.map(({ month, amount }) => (
+            <div key={month} className="grid grid-cols-[2.5rem_minmax(0,1fr)_3rem] items-center gap-2 text-[11px]">
+              <dt className="text-muted-foreground">{month}</dt>
+              <div className="h-3 rounded-full bg-muted lg:h-6" aria-hidden="true">
+                <div className={`h-full rounded-full ${amount === CURRENT ? "bg-primary" : "bg-primary/35"}`} style={{ width: `${(amount / CURRENT) * 100}%` }} />
+              </div>
+              <dd className="text-right font-medium tabular-nums">{formatAmount(amount)}</dd>
+            </div>
+          ))}
+        </dl>
+        <div className="mt-3 border-t border-border/60 pt-2">
+          <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+            <span className="text-2xl font-semibold tracking-tight tabular-nums text-primary">+{CHANGE}%</span>
+            <span className="text-[11px] text-muted-foreground">Mayo vs. abril</span>
+          </p>
+          <p className="mt-1 text-[10px] tabular-nums text-muted-foreground">({formatAmount(CURRENT)} − {formatAmount(PREVIOUS)}) / {formatAmount(PREVIOUS)}</p>
+        </div>
+      </figure>
+      <p className="mt-2 text-[11px] leading-snug text-muted-foreground">Aplicación DAX: desplaza el contexto de fechas un mes con DATEADD y compara ambas medidas.</p>
+    </motion.section>
+  );
+}
+
+function ProgressAndCertificate({ entrance }: { entrance: Entrance }): ReactNode {
+  return (
+    <motion.section aria-label="Avance del programa" variants={entrance.variants} transition={entrance.transition}>
+      <div className="flex flex-wrap items-baseline justify-between gap-1 text-[11px]">
+        <span className="text-muted-foreground">{COMPLETED_LESSONS} de {TOTAL_LESSONS} lecciones completadas</span>
+        <span className="font-semibold tabular-nums">{OVERALL}%</span>
+      </div>
+      <div role="progressbar" aria-label="Lecciones completadas" aria-valuemin={0} aria-valuemax={TOTAL_LESSONS} aria-valuenow={COMPLETED_LESSONS}
+        className="mt-2 h-1.5 overflow-hidden rounded-full bg-muted">
+        <div className="h-full rounded-full bg-primary" style={{ width: `${OVERALL}%` }} />
+      </div>
+      <div className="mt-2 flex items-center gap-2 rounded-lg border border-brand-green/30 bg-brand-green/10 p-2">
+        <Award className="h-5 w-5 shrink-0 text-brand-green" aria-hidden="true" />
+        <div className="min-w-0">
+          <p className="text-[12px] font-semibold leading-snug">Certificado IngSimple</p>
+          <p className="text-[10px] leading-snug text-muted-foreground">Al completar las {TOTAL_LESSONS} lecciones · faltan {TOTAL_LESSONS - COMPLETED_LESSONS}</p>
+        </div>
       </div>
     </motion.section>
   );
 }
 
-/* ---- Module timeline ------------------------------------------------------ */
-
-function LessonRow({ lesson }: { lesson: Lesson }): ReactNode {
-  if (lesson.status === "current") {
-    return (
-      <div className="flex items-center justify-between gap-3 rounded-md border border-primary/40 bg-primary/5 px-2 py-1">
-        <span className="flex min-w-0 items-center gap-2">
-          <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" aria-hidden="true" />
-          <span className="truncate text-xs font-medium tracking-tight">{lesson.title}</span>
-        </span>
-        <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wide text-primary">
-          En curso
-        </span>
+function ModuleOverview({ entrance }: { entrance: Entrance }): ReactNode {
+  return (
+    <section aria-label="Módulos del curso" className="min-w-0">
+      <h3 className="mb-1 text-[10px] font-medium uppercase tracking-wide text-muted-foreground lg:mb-2">Temario del programa</h3>
+      <div className="space-y-1 lg:space-y-2">
+        {MODULES.map((module) => {
+          const status = moduleStatus(module);
+          const done = module.lessons.filter((lesson) => lesson.status === "completed").length;
+          const Icon = status === "completed" ? Check : status === "in-progress" ? CircleDot : Circle;
+          return (
+            <motion.div key={module.title} variants={entrance.variants} transition={entrance.transition}
+              className="flex items-start gap-2 border-b border-border/40 pb-1 lg:pb-2 last:border-0 last:pb-0">
+              <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${status === "pending" ? "text-muted-foreground/50" : "text-primary"}`} aria-hidden="true" />
+              <div className="min-w-0">
+                <h4 className="text-[12px] font-medium leading-snug">{module.title}</h4>
+                <p className="mt-0.5 text-[10px] leading-snug text-muted-foreground">{MODULE_STATUS_LABEL[status]} · {done} de {module.lessons.length}</p>
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
-    );
-  }
-
-  const completed = lesson.status === "completed";
-  return (
-    <div className="flex items-center justify-between gap-3 px-2 py-1">
-      <span className="flex min-w-0 items-center gap-2">
-        <Check
-          className={`h-3 w-3 shrink-0 ${completed ? "text-primary" : "text-muted-foreground/40"}`}
-          strokeWidth={2.5}
-          aria-hidden="true"
-        />
-        <span
-          className={`truncate text-xs tracking-tight ${
-            completed ? "text-foreground/80" : "text-muted-foreground"
-          }`}
-        >
-          {lesson.title}
-        </span>
-      </span>
-      <span className="shrink-0 text-[11px] tabular-nums text-muted-foreground">
-        {lesson.duration}
-      </span>
-    </div>
+    </section>
   );
 }
-
-function ModuleTimeline({ entrance }: { entrance: Entrance }): ReactNode {
-  return (
-    <div
-      aria-label="Módulos del curso"
-      className="flex min-h-0 flex-1 flex-col overflow-hidden"
-    >
-      {MODULES.map((module, index) => {
-        const status = moduleStatus(module);
-        const done = module.lessons.filter((l) => l.status === "completed").length;
-        return (
-          <motion.div
-            key={module.title}
-            variants={entrance.variants}
-            transition={entrance.transition}
-            className="flex min-h-0 gap-3"
-          >
-            {/* Rail: status icon on top, connector line filling the rest */}
-            <div className="flex flex-col items-center pt-0.5">
-              {status === "completed" ? (
-                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground">
-                  <Check className="h-3 w-3" strokeWidth={3} aria-hidden="true" />
-                </span>
-              ) : status === "in-progress" ? (
-                <CircleDot
-                  className="h-5 w-5 shrink-0 text-primary"
-                  strokeWidth={2}
-                  aria-hidden="true"
-                />
-              ) : (
-                <Circle
-                  className="h-5 w-5 shrink-0 text-muted-foreground/50"
-                  strokeWidth={2}
-                  aria-hidden="true"
-                />
-              )}
-              {index < MODULES.length - 1 ? (
-                <span className="w-px flex-1 bg-border/60" aria-hidden="true" />
-              ) : null}
-            </div>
-
-            <div className={index < MODULES.length - 1 ? "min-w-0 flex-1 pb-2.5" : "min-w-0 flex-1"}>
-              <div className="flex items-baseline justify-between gap-3 pt-0.5">
-                <h3
-                  className={`truncate text-[13px] font-semibold tracking-tight ${
-                    status === "pending" ? "text-muted-foreground" : ""
-                  }`}
-                >
-                  {module.title}
-                </h3>
-                <span className="shrink-0 text-[11px] text-muted-foreground">
-                  {MODULE_STATUS_LABEL[status]} · {done} de {module.lessons.length}
-                </span>
-              </div>
-              <div className="mt-0.5 flex flex-col gap-0.5">
-                {module.lessons.map((lesson) => (
-                  <LessonRow key={lesson.title} lesson={lesson} />
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        );
-      })}
-    </div>
-  );
-}
-
-/* ---- Completion outcome: the panel's single green accent ------------------ */
-
-function CertificateStrip({ entrance }: { entrance: Entrance }): ReactNode {
-  return (
-    <motion.div
-      variants={entrance.variants}
-      transition={entrance.transition}
-      className="flex shrink-0 items-center gap-3 rounded-lg border border-brand-green/30 bg-brand-green/10 p-3"
-    >
-      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-green text-brand-green-foreground">
-        <Award className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-      </span>
-      <span className="flex min-w-0 flex-col leading-tight">
-        <span className="truncate text-[13px] font-semibold tracking-tight">
-          Certificado IngSimple
-        </span>
-        <span className="truncate text-[11px] text-muted-foreground">
-          Se emite al completar las {TOTAL_LESSONS} lecciones · faltan{" "}
-          {TOTAL_LESSONS - COMPLETED_LESSONS}
-        </span>
-      </span>
-    </motion.div>
-  );
-}
-
-/* ---- Panel ---------------------------------------------------------------- */
 
 export function PanelTraining(): ReactNode {
   const { container, item, itemTransition } = useStaggerEntrance(ENTRANCE_STAGGER);
   const entrance: Entrance = { variants: item, transition: itemTransition };
-
   return (
-    // One coherent chain: header + progress → timeline → certificate (the
-    // payoff enters last). Mount-based, so it plays when the tab activates.
-    <motion.div
-      className="flex h-full flex-col"
-      initial="hidden"
-      animate="visible"
-      variants={container}
-    >
+    // Natural content sizing avoids bottom-pinning the certificate on mobile.
+    // The showcase retains ownership of the illustrative aria-hidden boundary.
+    <motion.div className="flex h-full flex-col" initial="hidden" animate="visible" variants={container}>
       <Header entrance={entrance} />
-
-      <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden p-4 sm:px-5">
-        <ProgressHero entrance={entrance} />
-        <ModuleTimeline entrance={entrance} />
-        <CertificateStrip entrance={entrance} />
+      <div className="grid min-w-0 content-start gap-2 p-3 sm:p-4 lg:min-h-0 lg:flex-1 lg:content-stretch lg:gap-3 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
+        <PracticalLesson entrance={entrance} />
+        <div className="min-w-0 space-y-2 lg:space-y-3">
+          <ProgressAndCertificate entrance={entrance} />
+          <ModuleOverview entrance={entrance} />
+        </div>
       </div>
     </motion.div>
   );
