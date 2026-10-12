@@ -45,11 +45,11 @@ export const PANEL_DESCRIPTION: Record<string, string> = {
   reportabilidad:
     "Ejemplo de dashboard operacional: indicadores de plan y gestión, ejecución mensual y desviación por área.",
   capacitaciones:
-    "Ejemplo de una capacitación en Power BI: avance del programa, módulos con su estado y el certificado que se emite al completar todas las lecciones.",
+    "Ejemplo de una capacitación en Power BI: una lección aplicada compara ventas mensuales, junto al avance del programa, sus módulos y el certificado al completar las lecciones.",
   "desarrollo-web":
     "Ejemplo de sistema de gestión a medida: listado de solicitudes con estado por componente y por proyecto.",
   automatizaciones:
-    "Ejemplo de flujo automatizado: una solicitud pasa por validación, condición y aviso al equipo.",
+    "Ejemplo de flujo automatizado: una solicitud de inspección pasa por validación, se registra y se notifica al equipo; si faltan datos, pasa a revisión manual.",
 };
 
 export function HeroShowcase(): ReactNode {
@@ -202,6 +202,7 @@ export function HeroShowcase(): ReactNode {
           transition, and the active tab stays in sync with the incoming panel
           (no `mode="wait"` lag or rapid-change hang). */}
       <WindowFrame
+        compact={id === "capacitaciones" || id === "automatizaciones"}
         tabs={
           <>
             <div

@@ -8,14 +8,17 @@ import type { ReactNode } from "react";
  * overflow. Below `lg` the same desktop-density panels need more room than
  * 560px, and that fixed height silently swallowed the excess — a table region
  * collapsed to 1px and a course column lost its last row. The narrower values
- * are measured: below them the panel contents overlap each other.
+ * are measured: below them the panel contents overlap each other. Redesigned
+ * lesson/flow demos opt into a shorter body; legacy panels retain their space.
  */
 export function WindowFrame({
   tabs,
   children,
+  compact = false,
 }: {
   tabs: ReactNode;
   children: ReactNode;
+  compact?: boolean;
 }): ReactNode {
   return (
     <div className="mx-auto max-w-[1100px] overflow-hidden rounded-2xl border border-border/60 bg-background shadow-2xl shadow-black/[0.08]">
@@ -30,7 +33,7 @@ export function WindowFrame({
       </div>
 
       {/* Body — a definite height per breakpoint; see the note above */}
-      <div className="h-[960px] overflow-hidden sm:h-[880px] lg:h-[560px]">{children}</div>
+      <div className={`${compact ? "h-[760px]" : "h-[960px] sm:h-[880px]"} overflow-hidden lg:h-[560px]`}>{children}</div>
     </div>
   );
 }
