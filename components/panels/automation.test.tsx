@@ -1,5 +1,9 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+const timeline = vi.hoisted(() => ({ loop: null as { index: number; cycle: number } | null, reduced: false }));
+vi.mock("@/components/diagrams/use-step-loop", () => ({ useStepLoop: () => timeline.loop }));
+vi.mock("@/lib/motion", () => ({ softEase: [0.22, 1, 0.36, 1], useReducedMotion: () => timeline.reduced }));
 import {
   PanelAutomation,
   RUN_STEPS,
@@ -79,6 +83,96 @@ describe("subNodesRevealed (validation inputs)", () => {
 });
 
 describe("PanelAutomation", () => {
+  it("keeps narrow header text readable and compact content top-anchored", () => {
+    const html = renderToStaticMarkup(<PanelAutomation />);
+    const title = html.match(/<h2 class="([^"]+)">Flujo automatizado<\/h2>/)?.[1];
+    expect(title).toContain("leading-5");
+    expect(title).not.toContain("truncate");
+    expect(html).toMatch(/<span class="[^"]*shrink-0[^\"]*whitespace-nowrap[^\"]*">/);
+    expect(html).toContain("flex-1 items-start justify-center");
+    expect(html).toContain("@[1040px]:self-center");
+  });
+
+  it("preserves the complete request ID in concise desktop subtitles", () => {
+    const html = renderToStaticMarkup(<PanelAutomation />);
+    for (const subtitle of ["Web · SOL-024", "BD · SOL-024", "Aviso · SOL-024"]) {
+      expect(html).toContain(`>${subtitle}</span>`);
+    }
+  });
+
+  it("uses a neutral result until the whole request is completed", () => {
+    for (const index of [0, 3]) {
+      timeline.loop = { index, cycle: 0 };
+      try {
+        const html = renderToStaticMarkup(<PanelAutomation />);
+        expect(html).toContain('data-result-state="pending"');
+        expect(html).toMatch(/data-result-state="pending" class="[^"]*border-border/);
+        expect(html).not.toMatch(/data-result-state="pending" class="[^"]*border-brand-green/);
+        expect(html).toMatch(/class="[^"]*text-muted-foreground">(?:Esperando registro y aviso|Registro SOL-024 guardado)<\/p>/);
+      } finally {
+        timeline.loop = null;
+      }
+    }
+    expect(renderToStaticMarkup(<PanelAutomation />)).toContain('data-result-state="done"');
+  });
+
+  it("traces the fictional request into its record and team receipt", () => {
+    const html = renderToStaticMarkup(<PanelAutomation />);
+    expect(html).toContain("SOL-024 · Inspección de equipo");
+    expect(html).toContain("Registro SOL-024 guardado");
+    expect(html).toContain("Equipo de mantenimiento · SOL-024");
+    expect(html).toContain("Finalizado");
+    expect(html).not.toContain("En ejecución");
+    expect(html).toContain("Faltan datos → revisión manual");
+  });
+
+  it("drives compact active and completed steps from the desktop run", () => {
+    timeline.loop = { index: 2, cycle: 0 };
+    try {
+      const html = renderToStaticMarkup(<PanelAutomation />);
+      expect(html).toContain('data-compact-step="validar" data-state="done"');
+      expect(html).toContain('data-compact-step="condicion" data-state="running"');
+      expect(html).toContain('data-compact-step="guardar" data-state="pending"');
+      expect(html).toContain("En ejecución");
+      expect(html).toContain("Esperando registro y aviso");
+      expect(html).not.toContain("Registro SOL-024 guardado");
+      expect(html).toContain('data-edge="e3" data-state="running"');
+    } finally {
+      timeline.loop = null;
+    }
+  });
+
+  it("starts at intake without prematurely publishing a successful result", () => {
+    timeline.loop = { index: 0, cycle: 1 };
+    try {
+      const html = renderToStaticMarkup(<PanelAutomation />);
+      expect(html).toContain('data-compact-step="trigger" data-state="running"');
+      expect(html).toContain('data-compact-step="notificar" data-state="pending"');
+      expect(html).toContain("Origen de datos · Equipo EQ-07");
+      expect(html).toContain("Plantilla · Inspección técnica");
+      expect(html).toContain("Pendiente de evaluación");
+      expect(html).toContain("No se guarda ni se envía el aviso.");
+      expect(html).not.toContain("Registro SOL-024 guardado");
+      expect(html).not.toContain("Equipo de mantenimiento · SOL-024");
+    } finally {
+      timeline.loop = null;
+    }
+  });
+
+  it("keeps reduced motion finished even if a loop frame is available", () => {
+    timeline.reduced = true;
+    timeline.loop = { index: 0, cycle: 0 };
+    try {
+      const html = renderToStaticMarkup(<PanelAutomation />);
+      expect(html).toContain("Finalizado");
+      expect(html).toContain('data-compact-step="notificar" data-state="done"');
+      expect(html).toContain('data-edge="e5" data-state="done"');
+      expect(html).not.toContain("animate-ping");
+    } finally {
+      timeline.reduced = false;
+      timeline.loop = null;
+    }
+  });
   it("presents the same ordered process and branch outcomes in compact and desktop views", () => {
     const html = renderToStaticMarkup(<PanelAutomation />);
     for (const label of [
@@ -120,6 +214,22 @@ describe("PanelAutomation", () => {
     expect(html).not.toContain("data-branch-output");
     // The old floating labels sat at absolute left 592 — no longer rendered.
     expect(html).not.toContain("592");
+  });
+
+  it("keeps both branch diamonds opaque above their wires in pending and completed states", () => {
+    for (const loop of [{ index: 0, cycle: 0 }, null]) {
+      timeline.loop = loop;
+      try {
+        const html = renderToStaticMarkup(<PanelAutomation />);
+        for (const id of ["si", "no"]) {
+          const marker = html.match(new RegExp(`data-branch-marker="${id}"[^>]*>(<span[^>]*>)`));
+          expect(marker?.[1]).toMatch(/\bbg-background\b/);
+          expect(marker?.[1]).not.toContain("bg-brand-green/10");
+        }
+      } finally {
+        timeline.loop = null;
+      }
+    }
   });
 
   it("never renders a dashed connector without its sub-node card", () => {

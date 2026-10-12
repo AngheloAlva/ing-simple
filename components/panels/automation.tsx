@@ -122,7 +122,7 @@ const NODES: FlowNode[] = [
     x: 6,
     y: 205,
     title: "Cuando llega una solicitud",
-    subtitle: "Formulario web",
+    subtitle: "Web · SOL-024",
     icon: Zap,
     variant: "trigger",
   },
@@ -150,7 +150,7 @@ const NODES: FlowNode[] = [
     x: 618,
     y: 116,
     title: "Guardar registro",
-    subtitle: "Base de datos",
+    subtitle: "BD · SOL-024",
     icon: Save,
     variant: "default",
   },
@@ -159,7 +159,7 @@ const NODES: FlowNode[] = [
     x: 822,
     y: 116,
     title: "Notificar al equipo",
-    subtitle: "Correo · chat",
+    subtitle: "Aviso · SOL-024",
     icon: BellRing,
     variant: "default",
   },
@@ -497,6 +497,34 @@ function SubNodeCard({
   );
 }
 
+function RequestSummary(): ReactNode {
+  return (
+    <div className="min-w-0">
+      <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">Solicitud de ejemplo</p>
+      <p className="mt-1 text-sm font-semibold tracking-tight">SOL-024 · Inspección de equipo</p>
+      <p className="mt-1 text-[11px] text-muted-foreground">Equipo EQ-07 · Área de operaciones</p>
+    </div>
+  );
+}
+
+function RunResult({ arrived }: { arrived: number }): ReactNode {
+  const finished = arrived >= RUN_STEPS;
+  return (
+    <div
+      data-result-state={finished ? "done" : "pending"}
+      className={`min-w-0 self-start rounded-lg border bg-background p-3 ${finished ? "border-brand-green/25" : "border-border"}`}
+    >
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Resultado de SOL-024</p>
+      <p className={`mt-1 text-xs font-semibold ${finished ? "text-brand-green-text" : "text-muted-foreground"}`}>
+        {arrived >= 3 ? "Registro SOL-024 guardado" : "Esperando registro y aviso"}
+      </p>
+      <p className="mt-1 text-[11px] leading-4 text-muted-foreground">
+        {arrived >= 4 ? "Equipo de mantenimiento · SOL-024" : arrived >= 3 ? "Aviso al equipo pendiente" : "Validación en curso."}
+      </p>
+    </div>
+  );
+}
+
 export function PanelAutomation(): ReactNode {
   const prefersReducedMotion = useReducedMotion();
   const [hovered, setHovered] = useState<string | null>(null);
@@ -510,7 +538,7 @@ export function PanelAutomation(): ReactNode {
     duration: stepDuration,
     pauseMs: RUN_PAUSE_MS,
   });
-  const runIndex = loop ? loop.index : RUN_STEPS;
+  const runIndex = !prefersReducedMotion && loop ? loop.index : RUN_STEPS;
   const cycle = loop?.cycle ?? 0;
 
   // Inside a step the wire travels first and the arrival rests afterwards: the
@@ -528,6 +556,12 @@ export function PanelAutomation(): ReactNode {
   const travelDone = travelDoneFor === runIndex;
   const arrived = prefersReducedMotion ? RUN_STEPS : arrivedStep(runIndex, travelDone);
   const revealed = subNodesRevealed(arrived);
+  const finished = arrived >= RUN_STEPS;
+  const compactState = (id: string): "done" | "running" | "pending" => {
+    const step = NODE_STEPS[id] ?? RUN_STEPS;
+    if (finished || step < arrived) return "done";
+    return step === arrived ? "running" : "pending";
+  };
 
   const isEdgeActive = (edge: Edge): boolean =>
     hovered !== null && (hovered === edge.a || hovered === edge.b);
@@ -537,11 +571,11 @@ export function PanelAutomation(): ReactNode {
   return (
     <div className="relative flex h-full w-full flex-col overflow-hidden bg-background">
       {/* Header */}
-      <div className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border/60 px-4 sm:px-5">
+      <div className="flex min-h-14 shrink-0 items-center justify-between gap-3 border-b border-border/60 px-4 py-2 sm:px-5">
         <div className="flex min-w-0 items-center gap-2">
-          <Zap className="h-4 w-4 text-primary" strokeWidth={2} aria-hidden="true" />
+          <Zap className="h-4 w-4 shrink-0 text-primary" strokeWidth={2} aria-hidden="true" />
           <div className="flex min-w-0 flex-col">
-            <h2 className="truncate text-sm font-semibold tracking-tight">
+            <h2 className="text-sm font-semibold leading-5 tracking-tight">
               Flujo automatizado
             </h2>
             <p className="hidden text-[11px] text-muted-foreground sm:block">
@@ -549,19 +583,19 @@ export function PanelAutomation(): ReactNode {
             </p>
           </div>
         </div>
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/50 px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
+        <span className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-border bg-muted/50 px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
           <span className="relative flex h-1.5 w-1.5">
-            {prefersReducedMotion ? null : (
+            {prefersReducedMotion || finished ? null : (
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/50" />
             )}
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
           </span>
-          En ejecución
+          {finished ? "Finalizado" : "En ejecución"}
         </span>
       </div>
 
       {/* Canvas: the available frame width, not viewport width, selects the layout. */}
-      <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden [container-type:inline-size]">
+      <div className="relative flex min-h-0 flex-1 items-start justify-center overflow-hidden [container-type:inline-size]">
         {/* Dotted grid background */}
         <div className="pointer-events-none absolute inset-0 bg-muted/20" />
         <div
@@ -572,49 +606,67 @@ export function PanelAutomation(): ReactNode {
           }}
         />
 
-        {/* Compact sequence keeps the branch and both validation inputs visible. */}
-        <div className="relative z-10 w-full max-w-md overflow-y-auto px-4 py-2 text-sm @[1040px]:hidden">
-          <ol className="flex flex-col gap-2">
-            <li className="rounded-lg border border-primary/30 bg-background p-3">
-              <div className="flex items-center gap-3 font-semibold"><Zap className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />Cuando llega una solicitud</div>
-              <p className="ml-7 text-xs text-muted-foreground">Formulario web</p>
-            </li>
-            <li className="rounded-lg border border-border bg-background p-3">
-              <div className="flex items-center gap-3 font-semibold"><ShieldCheck className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />Validar datos</div>
-              <p className="ml-7 text-xs text-muted-foreground">Reglas de negocio</p>
-              <div className="ml-7 mt-2 flex flex-wrap gap-2 border-t border-dashed border-border pt-2 text-xs text-muted-foreground">
-                <span className="inline-flex items-center gap-1"><Database className="h-3 w-3" aria-hidden="true" />Origen de datos</span>
-                <span className="inline-flex items-center gap-1"><FileText className="h-3 w-3" aria-hidden="true" />Plantilla</span>
-              </div>
-            </li>
-            <li className="rounded-lg border border-border bg-background p-3">
-              <div className="flex items-center gap-3 font-semibold"><GitBranch className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />Condición</div>
-              <p className="ml-7 text-xs text-muted-foreground">¿Cumple requisitos?</p>
-            </li>
+        {/* Both layouts read the same arrival state; no separate mobile timer. */}
+        <div className="relative z-10 grid w-full max-w-3xl gap-2 px-4 py-3 @[520px]:grid-cols-2 @[1040px]:hidden">
+          <div className="@[520px]:col-span-2"><RequestSummary /></div>
+          <ol className="flex min-w-0 flex-col gap-1.5 @[520px]:row-span-2">
+            {NODES.filter((node) => node.id !== "solicitar").map((node, index) => {
+              const state = compactState(node.id);
+              const Icon = node.icon;
+              return (
+                <li
+                  key={node.id}
+                  data-compact-step={node.id}
+                  data-state={state}
+                  className={`min-w-0 rounded-lg border bg-background p-2 transition-colors ${
+                    state === "running" ? "border-primary bg-primary/5" :
+                    state === "done" ? "border-brand-green/30" : "border-border"
+                  }`}
+                >
+                  <div className="flex items-start gap-2">
+                    <span className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full text-[10px] font-semibold tabular-nums ${state === "done" ? "bg-brand-green/10 text-brand-green-text" : "bg-primary/10 text-primary"}`}>
+                      {state === "done" ? "✓" : index + 1}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 text-xs font-semibold">
+                        <Icon className="h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
+                        {node.title}
+                      </div>
+                      <p className="mt-1 text-[11px] leading-4 text-muted-foreground">
+                        {node.id === "trigger" ? "Formulario · SOL-024" :
+                         node.id === "guardar" ? "Base de datos · SOL-024" :
+                         node.id === "notificar" ? "Correo · chat · mantenimiento" : node.subtitle}
+                      </p>
+                      {state === "running" ? <p className="mt-1 text-[10px] font-semibold text-primary">Paso actual</p> : null}
+                      {node.id === "validar" ? (
+                        <div className="mt-2 grid gap-1 border-t border-dashed border-border pt-2 text-[10px] leading-4 text-muted-foreground">
+                          <span>Origen de datos · Equipo EQ-07</span>
+                          <span>Plantilla · Inspección técnica</span>
+                        </div>
+                      ) : null}
+                      {node.id === "condicion" ? <p className={`mt-1 text-[10px] ${arrived >= 2 ? "text-brand-green-text" : "text-muted-foreground"}`}>{arrived >= 2 ? "Aprobado" : "Pendiente de evaluación"}</p> : null}
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
           </ol>
-          <div className="ml-6 border-l border-primary/35 pl-4">
-            <div className="mt-3 rounded-lg border border-brand-green/30 bg-background p-3">
-              <span className="text-xs font-semibold text-brand-green-text">Aprobado</span>
-              <div className="mt-1 flex items-center gap-2 font-semibold"><Save className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />Guardar registro</div>
-              <p className="ml-6 text-xs text-muted-foreground">Base de datos</p>
-              <div className="mt-2 border-t border-border pt-2">
-                <div className="flex items-center gap-2 font-semibold"><BellRing className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />Notificar al equipo</div>
-                <p className="ml-6 text-xs text-muted-foreground">Correo · chat</p>
-              </div>
-            </div>
-            <div className="mt-3 rounded-lg border border-border bg-background p-3">
-              <span className="text-xs font-semibold text-muted-foreground">Rechazado</span>
-              <div className="mt-1 flex items-center gap-2 font-semibold"><TriangleAlert className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />Solicitar revisión</div>
-              <p className="ml-6 text-xs text-muted-foreground">Caso manual</p>
-            </div>
+          <RunResult arrived={arrived} />
+          <div className="min-w-0 self-start rounded-lg border border-dashed border-border bg-background/80 p-3">
+            <p className="text-[10px] font-medium text-muted-foreground">Rechazado · ruta alternativa</p>
+            <div className="mt-1 flex items-center gap-2 text-xs font-semibold"><TriangleAlert className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />Solicitar revisión</div>
+            <p className="mt-1 text-[11px] leading-4 text-muted-foreground">Faltan datos → revisión manual</p>
+            <p className="mt-1 text-[10px] leading-4 text-muted-foreground">No se guarda ni se envía el aviso.</p>
           </div>
         </div>
 
         {/* Fixed design stage — nodes + SVG share these exact px coordinates */}
         <div
-          className="relative hidden shrink-0 @[1040px]:block"
+          className="relative hidden shrink-0 @[1040px]:block @[1040px]:self-center"
           style={{ width: STAGE_W, height: STAGE_H }}
         >
+          <div className="absolute left-6 top-4"><RequestSummary /></div>
+          <div className="absolute right-12 bottom-4 w-80"><RunResult arrived={arrived} /></div>
           {/* Connector layer (behind everything else). Segments already
               traversed stay done for the whole cycle; the segment under way
               carries a single traveling packet; the rest stay pending. */}
@@ -737,7 +789,7 @@ export function PanelAutomation(): ReactNode {
                 <span
                   className={`absolute inset-0 rotate-45 rounded-[2px] border transition-colors duration-[250ms] ${
                     emphasized
-                      ? "border-brand-green bg-brand-green/10"
+                      ? "border-brand-green bg-background"
                       : "border-border bg-background"
                   }`}
                 />
