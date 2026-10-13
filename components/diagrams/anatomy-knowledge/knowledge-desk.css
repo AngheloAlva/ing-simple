@@ -1,0 +1,100 @@
+/* Isolated pilot: do not recolour the archived automation figure or siblings. */
+.knowledge-desk {
+	--anatomy-paper: var(--background);
+	--anatomy-top: color-mix(in oklch, var(--background) 98%, var(--foreground));
+	--anatomy-shade-0: color-mix(in oklch, var(--background) 76%, var(--foreground));
+	--anatomy-shade-1: color-mix(in oklch, var(--background) 83%, var(--foreground));
+	--anatomy-shade-2: color-mix(in oklch, var(--background) 90%, var(--foreground));
+	--anatomy-shade-3: color-mix(in oklch, var(--background) 95%, var(--foreground));
+	--anatomy-hi: color-mix(in oklch, var(--foreground) 78%, var(--background));
+	--anatomy-mid: color-mix(in oklch, var(--foreground) 52%, var(--background));
+	--anatomy-lo: color-mix(in oklch, var(--foreground) 34%, var(--background));
+	--anatomy-faint: color-mix(in oklch, var(--foreground) 18%, var(--background));
+}
+.dark .knowledge-desk {
+	--anatomy-top: color-mix(in oklch, var(--background) 80%, var(--foreground));
+	--anatomy-shade-0: color-mix(in oklch, var(--background) 98%, var(--foreground));
+	--anatomy-shade-1: color-mix(in oklch, var(--background) 94%, var(--foreground));
+	--anatomy-shade-2: color-mix(in oklch, var(--background) 89%, var(--foreground));
+	--anatomy-shade-3: color-mix(in oklch, var(--background) 85%, var(--foreground));
+}
+.knowledge-desk .iso-svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+.knowledge-desk .iso-svg path,
+.knowledge-desk .iso-svg circle {
+	vector-effect: non-scaling-stroke;
+}
+.knowledge-desk .iso-fill {
+	fill: var(--anatomy-paper);
+	stroke: none;
+}
+.knowledge-desk .iso-top {
+	fill: var(--anatomy-top);
+	stroke: none;
+}
+.knowledge-desk .iso-shade {
+	stroke: none;
+}
+.knowledge-desk .iso-shade[data-shade="0"] {
+	fill: var(--anatomy-shade-0);
+}
+.knowledge-desk .iso-shade[data-shade="1"] {
+	fill: var(--anatomy-shade-1);
+}
+.knowledge-desk .iso-shade[data-shade="2"] {
+	fill: var(--anatomy-shade-2);
+}
+.knowledge-desk .iso-shade[data-shade="3"] {
+	fill: var(--anatomy-shade-3);
+}
+.knowledge-desk .iso-solid[data-lit] > .iso-top {
+	fill: color-mix(in oklch, var(--primary) 18%, var(--background));
+}
+.knowledge-desk .iso-solid[data-lit] > .iso-edge {
+	stroke: var(--primary);
+	stroke-width: 1;
+}
+.knowledge-desk .iso-line {
+	fill: none;
+	stroke: var(--anatomy-lo);
+	stroke-width: 0.65;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.knowledge-desk .iso-line[data-tone="hi"] {
+	stroke: var(--anatomy-hi);
+}
+.knowledge-desk .iso-line[data-tone="mid"] {
+	stroke: var(--anatomy-mid);
+}
+.knowledge-desk .iso-line[data-tone="faint"] {
+	stroke: var(--anatomy-faint);
+}
+.knowledge-desk .iso-dots circle {
+	fill: var(--anatomy-mid);
+	stroke: none;
+}
+.knowledge-desk .iso-halo {
+	fill: var(--foreground);
+	opacity: 0.07;
+	filter: blur(7px);
+	stroke: none;
+}
+
+.knowledge-desk .iso-face-text {
+	fill: var(--anatomy-mid);
+	font-family: var(--font-sans), sans-serif;
+	letter-spacing: 0.3px;
+}
+.knowledge-desk [data-status="En espera"] {
+	color: var(--foreground);
+	font-weight: 600;
+}
+.knowledge-desk [data-knowledge-stamp] .iso-line {
+	stroke: var(--primary);
+	stroke-width: 1;
+}
