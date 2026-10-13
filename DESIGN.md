@@ -362,6 +362,9 @@ Rules
   opacity tiers (`bg-primary/10`, `border-primary/30`), one green accent at most.
 - Service artefacts are keyed by href in `components/service-diagrams.tsx`
   (`SERVICE_VISUALS`) and shown both in the home stack and the service hero.
+  Automatizaciones uses the original `AutomationFlow`. The Anatomy SVG pilot in
+  `components/diagrams/anatomy-automation/` is retained for future exploration,
+  but is not mounted on the home or service page. See its README for details.
 - Case mockups come from `components/case-study/visuals/registry.ts` and must be
   read from a client module (`components/servicios/case-thumbnail.tsx`); a server
   component gets an opaque reference and renders nothing.
@@ -371,6 +374,43 @@ Rules
   below in a bordered footer (`border-t px-5 py-4`), thumbnails strip radius with
   `[&>*]:!rounded-none`.
 - Diagram frames are `aria-hidden`; they illustrate the copy next to them.
+- The home challenge card "Herramientas que no encajan" pilots a compact Anatomy
+  fit bench (`components/diagrams/anatomy-fit/`). It retains the existing card
+  frame, title and body, with no nested chrome or controls. Shape-keyed labels
+  identify Aprobaciones, Precios por cliente and Turnos. On first hover/focus,
+  the two incompatible processes hit the empty mold's rim and return outside
+  as manual work; only then does Aprobaciones fit. The finite story's positions,
+  captions and counts share one model. Its SVG has an accessible description;
+  reduced motion shows the final outcome. `DiagramGenericTool` remains available
+  for rollback.
+
+- "Conocimiento que no circula" uses a separate Anatomy desk
+  (`components/diagrams/anatomy-knowledge/`). A seated person resolves a request,
+  then leaves an empty chair; three subsequent requests accumulate without a
+  replacement. Presence, folder positions, captions and counts share one model.
+  The first hover/focus starts one complete story, matching the fit bench;
+  leaving does not cancel it. Reduced motion shows the blocked result.
+  No locks, machinery failures or extra
+  controls. Title/body remain unchanged; `DiagramSinglePoint` is kept for rollback.
+
+- "Procesos manuales" uses an Anatomy processing desk
+  (`components/diagrams/anatomy-manual/`). The worker stays present: a 12-unit
+  example is copied as 21, rejected at review, returned for correction and
+  reviewed again before dispatch. A new blank order waits to repeat the work.
+  Values, document/pencil positions and counts share one model; the figures
+  are illustrative, not measured savings. First hover/focus starts a complete
+  finite story, even after leaving; reduced motion shows the final result.
+  The original `DiagramManualSteps`, title/body and other cards are preserved.
+
+- "Datos dispersos" uses three separate Anatomy filing cabinets
+  (`components/diagrams/anatomy-scattered/`). Each drawer reveals one fact about
+  the same example order: requested quantity in a spreadsheet, available stock
+  in a separate system, and payment confirmation in email. The common report
+  stays incomplete: the data exists, but someone must cross-check the sources
+  to decide. Drawer motion, values, captions and counts share one model.
+  First interaction starts the full finite story; leaving does not reset it.
+  Reduced motion shows the separated final state. The original
+  `DiagramScatteredData`, card title/body and other visuals remain unchanged.
 
 ## 9. Page patterns
 

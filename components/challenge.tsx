@@ -1,9 +1,9 @@
 import { brandGradient } from "@/lib/gradient"
 
-import { DiagramScatteredData } from "@/components/diagrams/challenge/scattered-data"
-import { DiagramGenericTool } from "@/components/diagrams/challenge/generic-tool"
-import { DiagramManualSteps } from "@/components/diagrams/challenge/manual-steps"
-import { DiagramSinglePoint } from "@/components/diagrams/challenge/single-point"
+import { DiagramScatteredCabinet } from "@/components/diagrams/anatomy-scattered/scattered-cabinet"
+import { DiagramFitBench } from "@/components/diagrams/anatomy-fit/fit-bench"
+import { DiagramManualDesk } from "@/components/diagrams/anatomy-manual/manual-desk"
+import { DiagramKnowledgeDesk } from "@/components/diagrams/anatomy-knowledge/knowledge-desk"
 import { ChallengeCard } from "@/components/challenge-card"
 import GradientText from "@/components/gradient-text"
 import { Kicker } from "@/components/corner-plus"
@@ -37,28 +37,28 @@ export function Challenge(): ReactNode {
 					title="Datos dispersos"
 					body="La información vive repartida en planillas y sistemas que no se hablan entre sí. Sin una vista clara, las decisiones se toman a ciegas."
 				>
-					<DiagramScatteredData />
+					<DiagramScatteredCabinet />
 				</ChallengeCard>
 
 				<ChallengeCard
 					title="Procesos manuales"
 					body="Tareas repetitivas que consumen horas del equipo y deberían estar automatizadas, escalando errores en lugar de resultados."
 				>
-					<DiagramManualSteps />
+					<DiagramManualDesk />
 				</ChallengeCard>
 
 				<ChallengeCard
 					title="Herramientas que no encajan"
 					body="Pagas por un sistema genérico que cubre una parte y te obliga a adaptar el proceso a la herramienta, en lugar de al revés."
 				>
-					<DiagramGenericTool />
+					<DiagramFitBench />
 				</ChallengeCard>
 
 				<ChallengeCard
 					title="Conocimiento que no circula"
 					body="Todo depende de quien sabe cómo se hace. Si esa persona no está, el proceso se frena y nadie puede retomarlo."
 				>
-					<DiagramSinglePoint />
+					<DiagramKnowledgeDesk />
 				</ChallengeCard>
 			</div>
 		</section>
