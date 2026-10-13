@@ -1,0 +1,35 @@
+{
+  "drawerTravel": 38,
+  "sources": [
+    {
+      "id": "sheet",
+      "name": "Planilla",
+      "fact": "12 pedidas",
+      "value": "12",
+      "caption": "La cantidad pedida está en una planilla",
+      "x": -88,
+      "start": 0.35,
+      "reveal": 1.25
+    },
+    {
+      "id": "system",
+      "name": "Sistema",
+      "fact": "8 en stock",
+      "value": "8",
+      "caption": "El stock disponible está en otro sistema",
+      "x": 0,
+      "start": 2.15,
+      "reveal": 3.05
+    },
+    {
+      "id": "mail",
+      "name": "Correo",
+      "fact": "Pago confirmado",
+      "value": "✓",
+      "caption": "La confirmación del pago quedó en un correo",
+      "x": 88,
+      "start": 3.95,
+      "reveal": 4.85
+    }
+  ]
+}
