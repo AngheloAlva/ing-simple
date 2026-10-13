@@ -1,0 +1,8 @@
+{
+  "sourceQuantity": 12,
+  "mistypedQuantity": 21,
+  "load": { "x": -78, "y": 20, "z": 5 },
+  "review": { "x": 0, "y": 20, "z": 5 },
+  "send": { "x": 80, "y": 20, "z": 6 },
+  "penRest": { "x": -78, "y": 50, "z": 4 }
+}
