@@ -1,0 +1,105 @@
+/* Anatomy shading, scoped to this pilot. Theme values follow the site's tokens. */
+.automation-station {
+	--anatomy-paper: var(--background);
+	--anatomy-top: color-mix(in oklch, var(--background) 98%, var(--foreground));
+	--anatomy-shade-0: color-mix(in oklch, var(--background) 79%, var(--foreground));
+	--anatomy-shade-1: color-mix(in oklch, var(--background) 85%, var(--foreground));
+	--anatomy-shade-2: color-mix(in oklch, var(--background) 91%, var(--foreground));
+	--anatomy-shade-3: color-mix(in oklch, var(--background) 95%, var(--foreground));
+	--anatomy-hi: color-mix(in oklch, var(--foreground) 76%, var(--background));
+	--anatomy-mid: color-mix(in oklch, var(--foreground) 48%, var(--background));
+	--anatomy-lo: color-mix(in oklch, var(--foreground) 28%, var(--background));
+	--anatomy-faint: color-mix(in oklch, var(--foreground) 15%, var(--background));
+	--anatomy-lit: var(--primary);
+}
+.dark .automation-station {
+	--anatomy-top: color-mix(in oklch, var(--background) 82%, var(--foreground));
+	--anatomy-shade-0: color-mix(in oklch, var(--background) 98%, var(--foreground));
+	--anatomy-shade-1: color-mix(in oklch, var(--background) 94%, var(--foreground));
+	--anatomy-shade-2: color-mix(in oklch, var(--background) 90%, var(--foreground));
+	--anatomy-shade-3: color-mix(in oklch, var(--background) 86%, var(--foreground));
+}
+.automation-station .iso-svg {
+	display: block;
+	width: 100%;
+	height: auto;
+	overflow: visible;
+}
+.automation-station .iso-svg path,
+.automation-station .iso-svg circle {
+	vector-effect: non-scaling-stroke;
+}
+.automation-station .iso-fill {
+	fill: var(--anatomy-paper);
+	stroke: none;
+}
+.automation-station .iso-top {
+	fill: var(--anatomy-top);
+	stroke: none;
+}
+.automation-station .iso-shade {
+	stroke: none;
+}
+.automation-station .iso-shade[data-shade="0"] {
+	fill: var(--anatomy-shade-0);
+}
+.automation-station .iso-shade[data-shade="1"] {
+	fill: var(--anatomy-shade-1);
+}
+.automation-station .iso-shade[data-shade="2"] {
+	fill: var(--anatomy-shade-2);
+}
+.automation-station .iso-shade[data-shade="3"] {
+	fill: var(--anatomy-shade-3);
+}
+.automation-station .iso-solid[data-lit] > .iso-top {
+	fill: color-mix(in oklch, var(--primary) 12%, var(--background));
+}
+.automation-station .iso-solid[data-lit] > .iso-edge {
+	stroke: var(--anatomy-lit);
+	stroke-width: 1.1;
+}
+.automation-station .iso-line {
+	fill: none;
+	stroke: var(--anatomy-lo);
+	stroke-width: 0.65;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.automation-station .iso-line[data-tone="hi"] {
+	stroke: var(--anatomy-hi);
+}
+.automation-station .iso-line[data-tone="mid"] {
+	stroke: var(--anatomy-mid);
+}
+.automation-station .iso-line[data-tone="faint"] {
+	stroke: var(--anatomy-faint);
+}
+.automation-station .iso-line[data-tone="lit"] {
+	stroke: var(--anatomy-lit);
+}
+.automation-station .iso-dots circle {
+	fill: var(--anatomy-mid);
+	stroke: none;
+}
+.automation-station .iso-halo {
+	fill: var(--foreground);
+	opacity: 0.06;
+	filter: blur(9px);
+	stroke: none;
+}
+.automation-station .station-choice {
+	color: var(--muted-foreground);
+	border-color: var(--border);
+}
+.automation-station .station-choice[aria-pressed="true"] {
+	color: var(--foreground);
+	border-color: var(--primary);
+	background: color-mix(in oklch, var(--primary) 7%, var(--background));
+}
+.automation-station .station-choice:hover {
+	color: var(--foreground);
+}
+.automation-station[data-completed="true"] .station-readout {
+	color: var(--brand-green-text);
+}
