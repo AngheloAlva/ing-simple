@@ -1,0 +1,9 @@
+{
+  "opening": { "width": 32, "depth": 32, "floor": 8, "rim": 28 },
+  "flight": 40,
+  "homes": {
+    "square": { "x": 0, "y": -60, "z": 4 },
+    "cross": { "x": -90, "y": 0, "z": 4 },
+    "bar": { "x": 90, "y": 0, "z": 4 }
+  }
+}
