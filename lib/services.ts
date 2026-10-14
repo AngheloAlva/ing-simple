@@ -51,8 +51,6 @@ export type ServicePage = {
 	problemTitleAccent: string
 	/** Pain the service solves, framed from the visitor's side. */
 	problem: string
-	/** Illustration of the client problem, filling the left column of the problem section. Every service ships one. */
-	problemImage: string
 	/** Profiles that should recognize themselves in the page. */
 	audience: string[]
 	/** Extended "what's included" items — the bulk of indexable content. */
@@ -127,7 +125,6 @@ export const SERVICES: Service[] = [
 			problemTitleAccent: "la decisión ya se tomó",
 			problem:
 				"Los datos existen, pero viven repartidos en planillas, correos y sistemas que no conversan entre sí. Armar el informe del mes toma días, cada área maneja su propia versión de los números y, cuando por fin llega el reporte, la decisión ya se tomó por intuición. La reportabilidad no es un problema de falta de datos: es un problema de orden, automatización y visibilidad.",
-			problemImage: "/img/problemas/reportabilidad.png",
 			audience: [
 				"Gerencias que necesitan visibilidad del negocio sin pedir informes a cada área",
 				"Equipos de control de gestión que arman los mismos reportes a mano todos los meses",
@@ -245,7 +242,6 @@ export const SERVICES: Service[] = [
 			problemTitleAccent: "usas una fracción",
 			problem:
 				"Tu empresa ya paga por herramientas potentes —Excel, Power BI, Power Apps— pero el equipo las usa a una fracción de su potencial. Los reportes dependen de una sola persona, cada análisis nuevo se externaliza y el conocimiento no queda en la organización. Un curso genérico no arregla eso: se olvida a la semana porque no se conecta con el trabajo real de cada uno.",
-			problemImage: "/img/problemas/capacitaciones.png",
 			audience: [
 				"Equipos que usan Excel o Power BI muy por debajo de su potencial",
 				"Áreas donde los reportes dependen de una sola persona",
@@ -363,7 +359,6 @@ export const SERVICES: Service[] = [
 			problemTitleAccent: "las herramientas no acompañaron",
 			problem:
 				"La operación creció y las herramientas no acompañaron: planillas compartidas, aprobaciones por correo, información en WhatsApp y un software genérico que obliga a torcer el proceso para que calce. El resultado es tiempo perdido, errores difíciles de rastrear y una imagen digital que no refleja lo que la empresa realmente es. Un sistema a medida invierte esa ecuación: la herramienta se adapta a tu proceso, no al revés.",
-			problemImage: "/img/problemas/desarrollo-web.png",
 			audience: [
 				"Empresas que operan con planillas, correo y WhatsApp y ya tocaron techo",
 				"Negocios donde el software genérico no calza con el proceso real",
@@ -486,7 +481,6 @@ export const SERVICES: Service[] = [
 			problemTitleAccent: "una máquina haría mejor",
 			problem:
 				"Cada día tu equipo pierde horas en trabajo que una máquina haría mejor: copiar datos de un sistema a otro, perseguir aprobaciones por correo, armar el mismo documento una y otra vez. Además del tiempo, cada paso manual es una oportunidad de error que después cuesta encontrar y corregir. Ese trabajo repetitivo no escala contratando más gente: escala automatizando el proceso.",
-			problemImage: "/img/problemas/automatizaciones.png",
 			audience: [
 				"Equipos que copian y pegan información entre sistemas todos los días",
 				"Aprobaciones y solicitudes que viven en correos y planillas compartidas",

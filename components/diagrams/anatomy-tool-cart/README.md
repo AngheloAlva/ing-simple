@@ -1,8 +1,8 @@
 # Tool cart
 
 Anatomy figure for the **Capacitaciones** service page, in the left column of
-"El problema". It replaces `/img/problemas/capacitaciones.png`, which stays in
-`lib/services.ts` as the rollback asset.
+"El problema". It replaced `/img/problemas/capacitaciones.png`, removed once all four scenes were
+approved (recoverable from git history).
 
 ## Meaning
 
@@ -52,5 +52,6 @@ pnpm exec vitest run components/diagrams/anatomy-tool-cart components/servicios/
 
 ## Rollback
 
-Remove the `capacitaciones` entry from `PROBLEM_VISUALS` in
-`components/servicios/problem.tsx`; the section falls back to `problemImage`.
+There is no raster fallback any more. To bring the image back, restore
+`public/img/problemas/capacitaciones.png` and the `problemImage` field from git history
+and render it in `components/servicios/problem.tsx`.

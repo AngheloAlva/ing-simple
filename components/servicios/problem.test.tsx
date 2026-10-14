@@ -11,7 +11,6 @@ function render(slug: string) {
 			title={page.problemTitle}
 			titleAccent={page.problemTitleAccent}
 			problem={page.problem}
-			image={page.problemImage}
 			audience={page.audience}
 		/>
 	)
@@ -24,7 +23,7 @@ describe("service problem visuals", () => {
 		expect(html.match(/data-report-desk=""/g)).toHaveLength(1)
 		expect(html.match(/data-slot="tier"/g)).toHaveLength(3)
 		expect(html.match(/data-slot="front"/g)).toHaveLength(3)
-		expect(html).not.toContain(encodeURIComponent(page.problemImage))
+		expect(html).not.toContain("<img")
 		for (const text of [
 			"El problema",
 			page.problemTitle,
@@ -46,7 +45,7 @@ describe("service problem visuals", () => {
 		expect(html.match(/data-tool-cart=""/g)).toHaveLength(1)
 		expect(html.match(/data-cart-drawer="/g)).toHaveLength(3)
 		expect(html).not.toContain("data-report-desk")
-		expect(html).not.toContain(encodeURIComponent(page.problemImage))
+		expect(html).not.toContain("<img")
 		for (const text of [
 			page.problemTitle,
 			page.problemTitleAccent,
@@ -66,7 +65,7 @@ describe("service problem visuals", () => {
 		expect(html.match(/data-sorter=""/g)).toHaveLength(1)
 		expect(html.match(/data-order="/g)).toHaveLength(30)
 		expect(html.match(/data-patch="/g)).toHaveLength(4)
-		expect(html).not.toContain(encodeURIComponent(page.problemImage))
+		expect(html).not.toContain("<img")
 		for (const text of [
 			page.problemTitle,
 			page.problemTitleAccent,
@@ -87,7 +86,7 @@ describe("service problem visuals", () => {
 		expect(html.match(/data-blank="/g)).toHaveLength(10)
 		expect(html.match(/data-copy="/g)).toHaveLength(8)
 		expect(html.match(/data-reject="/g)).toHaveLength(2)
-		expect(html).not.toContain(encodeURIComponent(page.problemImage))
+		expect(html).not.toContain("<img")
 		for (const text of [
 			page.problemTitle,
 			page.problemTitleAccent,
@@ -101,7 +100,21 @@ describe("service problem visuals", () => {
 			expect(html).toContain(text)
 	})
 
-	it("falls back to the raster illustration for a service without a scene", () => {
+	it("gives every service exactly one Anatomy scene and no raster image", () => {
+		const scenes = {
+			reportabilidad: "data-report-desk",
+			capacitaciones: "data-tool-cart",
+			"desarrollo-web": "data-sorter",
+			automatizaciones: "data-duplicator",
+		}
+		for (const [slug, marker] of Object.entries(scenes)) {
+			const html = render(slug)
+			expect(html.match(/data-(report-desk|tool-cart|sorter|duplicator)=""/g)).toEqual([`${marker}=""`])
+			expect(html).not.toContain("<img")
+		}
+	})
+
+	it("renders the copy without a visual for a slug that is not a service", () => {
 		const { page } = getServiceBySlug("reportabilidad")!
 		const html = renderToStaticMarkup(
 			<ServicioProblem
@@ -109,11 +122,11 @@ describe("service problem visuals", () => {
 				title={page.problemTitle}
 				titleAccent={page.problemTitleAccent}
 				problem={page.problem}
-				image={page.problemImage}
 				audience={page.audience}
 			/>
 		)
+		expect(html).toContain(page.problem)
 		expect(html).not.toMatch(/data-(report-desk|tool-cart|sorter|duplicator)=/)
-		expect(html).toContain(encodeURIComponent(page.problemImage))
+		expect(html).not.toContain("<img")
 	})
 })

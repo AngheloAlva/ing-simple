@@ -419,8 +419,9 @@ Rules
   are copied into a binder over six days while a memo is stamped "Decidido" on
   day 2. It starts on first view (there is no card hover), holds the final pose
   for 3 s and loops (all four service scenes and the guide card index do), and shows
-  the final pose under reduced motion. All four services now have a scene; a
-  service without an entry in `PROBLEM_VISUALS` falls back to its `problemImage`.
+  the final pose under reduced motion. All four services have a scene;
+  `PROBLEM_VISUALS` is typed by `ServiceSlug`, so a new service needs its own
+  scene to compile. The old raster problem images were removed.
 - Capacitaciones uses a tool cart (`components/diagrams/anatomy-tool-cart/`):
   one drawer per paid tool, six tools each, the used ones worn and in the accent,
   the rest still tagged. Drawers open one at a time; Excel stays open.

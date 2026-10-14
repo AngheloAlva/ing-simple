@@ -1,8 +1,8 @@
 # Report desk
 
 Anatomy figure for the **Reportabilidad** service page, in the left column of
-"El problema". It replaces `/img/problemas/reportabilidad.png`, which stays in
-`lib/services.ts` as the rollback asset.
+"El problema". It replaced `/img/problemas/reportabilidad.png`, removed once all four scenes were
+approved (recoverable from git history).
 
 ## Meaning
 
@@ -52,5 +52,6 @@ pnpm exec vitest run components/diagrams/anatomy-report-desk components/servicio
 
 ## Rollback
 
-Remove the `reportabilidad` entry from `PROBLEM_VISUALS` in
-`components/servicios/problem.tsx`; the section falls back to `problemImage`.
+There is no raster fallback any more. To bring the image back, restore
+`public/img/problemas/reportabilidad.png` and the `problemImage` field from git history
+and render it in `components/servicios/problem.tsx`.

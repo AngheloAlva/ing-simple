@@ -1,20 +1,20 @@
 "use client"
 
 import { CornerPlus, Kicker, PlusSvg } from "@/components/corner-plus"
-import { IllustrationPlate } from "@/components/illustration-plate"
 import { DiagramReportDesk } from "@/components/diagrams/anatomy-report-desk/report-desk"
 import { DiagramToolCart } from "@/components/diagrams/anatomy-tool-cart/tool-cart"
 import { DiagramSorter } from "@/components/diagrams/anatomy-sorter/sorter"
 import { DiagramDuplicator } from "@/components/diagrams/anatomy-duplicator/duplicator"
 import GradientText from "@/components/gradient-text"
 import { brandGradient } from "@/lib/gradient"
+import { isServiceSlug, type ServiceSlug } from "@/lib/service-accent"
 import { useStaggerEntrance } from "@/lib/motion"
 import { motion } from "motion/react"
 import type { ComponentType, ReactNode } from "react"
 
-// Anatomy scenes replacing the raster problem illustration, one service at a
-// time. A service without an entry keeps its `problemImage`.
-const PROBLEM_VISUALS: Partial<Record<string, ComponentType>> = {
+// One Anatomy scene per service. Typed by `ServiceSlug`, so a new service
+// fails to compile until it has its own scene.
+const PROBLEM_VISUALS: Record<ServiceSlug, ComponentType> = {
 	reportabilidad: DiagramReportDesk,
 	capacitaciones: DiagramToolCart,
 	"desarrollo-web": DiagramSorter,
@@ -26,18 +26,16 @@ export function ServicioProblem({
 	title,
 	titleAccent,
 	problem,
-	image,
 	audience,
 }: {
 	slug: string
 	title: string
 	titleAccent: string
 	problem: string
-	image: string
 	audience: string[]
 }): ReactNode {
 	const { container, item, itemTransition, viewport } = useStaggerEntrance()
-	const Visual = PROBLEM_VISUALS[slug]
+	const Visual = isServiceSlug(slug) ? PROBLEM_VISUALS[slug] : null
 
 	return (
 		<section className="mx-auto max-w-360 px-5 pb-24 sm:px-8 sm:pb-32 lg:px-10">
@@ -82,7 +80,7 @@ export function ServicioProblem({
 					</motion.p>
 				</div>
 
-				{/* Illustration: fills the left column on lg, sits between the two text blocks on small screens */}
+				{/* Anatomy scene: fills the left column on lg, sits between the two text blocks on small screens */}
 				<motion.div
 					variants={item}
 					transition={itemTransition}
@@ -92,14 +90,7 @@ export function ServicioProblem({
 						<div className="aspect-[2/3] lg:aspect-auto lg:h-full">
 							<Visual />
 						</div>
-					) : (
-						<IllustrationPlate
-							src={image}
-							alt=""
-							sizes="(max-width: 1024px) 100vw, 40vw"
-							frame="aspect-[2/3] lg:aspect-auto lg:h-full"
-						/>
-					)}
+					) : null}
 				</motion.div>
 
 				{/* Right: who should recognize themselves here */}
