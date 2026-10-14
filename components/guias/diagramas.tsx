@@ -1,6 +1,7 @@
 import type { ComponentType, ReactNode } from "react"
 
 import { DiagramCardIndex } from "@/components/diagrams/anatomy-card-index/card-index"
+import { DiagramInvoiceGate } from "@/components/diagrams/anatomy-invoice-gate/invoice-gate"
 import { IaPasoQueCambia } from "@/components/guias/diagramas/ia-paso-que-cambia"
 import { IaQueProceso } from "@/components/guias/diagramas/ia-que-proceso"
 import { LeyInventario } from "@/components/guias/diagramas/ley-inventario"
@@ -20,6 +21,7 @@ import { ReporteTresCapas } from "@/components/guias/diagramas/reporte-tres-capa
 export const DIAGRAMAS: Record<string, ComponentType> = {
 	"ia-que-proceso": IaQueProceso,
 	"ia-paso-que-cambia": IaPasoQueCambia,
+	"ia-umbral-de-confianza": DiagramInvoiceGate,
 	"ley-linea-de-tiempo": LeyLineaDeTiempo,
 	"ley-inventario": LeyInventario,
 	"ley-fichero-de-licitud": DiagramCardIndex,

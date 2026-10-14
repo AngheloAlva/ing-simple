@@ -31,4 +31,31 @@ describe("guide diagram registry", () => {
 		expect(names).toEqual(["ley-linea-de-tiempo", "ley-fichero-de-licitud", "ley-inventario"])
 		for (const name of names) expect(DIAGRAMA_NAMES).toContain(name)
 	})
+
+	it("renders the invoice gate for the IA guide with the threshold and both trays", () => {
+		expect(DIAGRAMA_NAMES).toContain("ia-umbral-de-confianza")
+		const html = renderToStaticMarkup(<>{resolveDiagrama("ia-umbral-de-confianza")}</>)
+		expect(html.match(/data-invoice-gate=""/g)).toHaveLength(1)
+		expect(html.match(/data-hopper="/g)).toHaveLength(6)
+		expect(html.match(/data-stack="system"/g)).toHaveLength(5)
+		expect(html.match(/data-stack="review"/g)).toHaveLength(1)
+		for (const text of [
+			"0,85",
+			"SISTEMA",
+			"REVISIÓN",
+			"Al sistema",
+			"A revisión",
+			"Las facturas leídas con confianza sobre el umbral siguen solas al sistema; las demás las revisa una persona.",
+		])
+			expect(html).toContain(text)
+	})
+
+	it("is placed after the confidence paragraph of the IA guide and keeps its two diagrams", () => {
+		const mdx = readFileSync("content/guias/ia-en-procesos-por-donde-empezar.mdx", "utf8")
+		const names = [...mdx.matchAll(/nombre="([^"]+)"/g)].map((match) => match[1])
+		expect(names).toEqual(["ia-que-proceso", "ia-umbral-de-confianza", "ia-paso-que-cambia"])
+		const confidence = mdx.indexOf("caso se enruta a una persona")
+		expect(confidence).toBeGreaterThan(0)
+		expect(mdx.indexOf('nombre="ia-umbral-de-confianza"')).toBeGreaterThan(confidence)
+	})
 })

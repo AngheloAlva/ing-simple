@@ -181,6 +181,7 @@ autoritativa, que puede crecer):
 
 - `ia-que-proceso` — dos preguntas (regla exacta, alguien revisa) que llevan a una de tres salidas.
 - `ia-paso-que-cambia` — el mismo flujo, con el paso que la IA reemplaza y el de revisión.
+- `ia-umbral-de-confianza` — figura Anatomy: facturas bajo un lector; un indicador muestra la confianza frente al umbral 0,85 y una compuerta las manda al sistema o a revisión.
 - `ley-linea-de-tiempo` — los hitos entre la publicación de la ley y el régimen de sanciones.
 - `ley-inventario` — las fuentes de datos dispersas convergiendo en un registro de tratamiento.
 - `ley-fichero-de-licitud` — figura Anatomy: un fichero con una ficha por tratamiento; cada una recibe su base de licitud y la que no tiene base sale a "Justificar o eliminar".
