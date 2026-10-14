@@ -6,5 +6,6 @@
   "turnLength": 0.75,
   "ejectFrom": 0.3,
   "complete": 8.4,
-  "duration": 8.9
+  "duration": 8.9,
+  "loopPause": 3
 }

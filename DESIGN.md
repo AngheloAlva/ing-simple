@@ -417,7 +417,8 @@ Rules
   twice. Reportabilidad pilots a report desk
   (`components/diagrams/anatomy-report-desk/`): three tray versions of one total
   are copied into a binder over six days while a memo is stamped "Decidido" on
-  day 2. It starts on first view (there is no card hover), plays once, and shows
+  day 2. It starts on first view (there is no card hover), holds the final pose
+  for 3 s and loops (all four service scenes and the guide card index do), and shows
   the final pose under reduced motion. All four services now have a scene; a
   service without an entry in `PROBLEM_VISUALS` falls back to its `problemImage`.
 - Capacitaciones uses a tool cart (`components/diagrams/anatomy-tool-cart/`):

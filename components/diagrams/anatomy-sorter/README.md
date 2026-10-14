@@ -22,7 +22,7 @@ Orders and weeks are illustrative, not measured growth.
 ## Story and interaction
 
 - The 7.2 s story starts the first time 45% of the figure is on screen (there is
-  no card hover on the service page), plays once and never resets.
+  no card hover on the service page), holds the final pose for 3 s (`loopPause` in `scene.json`) and starts over; reduced motion never loops.
 - One order every 0.2 s from 0.3 s. Cubby folders slide in from the front;
   everything else drops into place. A patch appears with its first order.
 - Offscreen or hidden pages pause the clock. Reduced motion renders the final pose.

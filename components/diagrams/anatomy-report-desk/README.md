@@ -24,7 +24,7 @@ Totals and days are illustrative, not business data or measured delays.
 ## Story and interaction
 
 - No hover target exists on the service page, so the 7.4 s story starts the
-  first time 45% of the figure is on screen. It plays once and never resets.
+  first time 45% of the figure is on screen. It holds the final pose for 3 s (`loopPause` in `scene.json`) and starts over; reduced motion never loops.
 - Ventas 0.4–1.6 s, stamp down at 2.0 s, Finanzas 2.8–4.0 s, Operaciones
   4.8–6.0 s; the final caption appears at 6.8 s.
 - Offscreen or hidden pages pause the clock. Reduced motion renders the final pose.

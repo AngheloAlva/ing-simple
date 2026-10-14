@@ -1,17 +1,26 @@
 import scene from "./scene.json"
 
 export const duration = scene.duration
+export const loopPause = scene.loopPause
 export const drawers = scene.drawers
 export const drawerTravel = scene.drawerTravel
 
-/** Starts on first view (no card hover exists on the service page). */
+/**
+ * Starts on first view (no card hover exists on the service page) and keeps
+ * running: the story loops through `loopTime`. Reduced motion shows the final pose.
+ */
 export function playbackAt(elapsed: number, active: boolean, reduced: boolean, wasStarted = false) {
 	const started = wasStarted || active
 	return {
 		time: reduced ? duration : started ? elapsed : 0,
-		running: started && !reduced && elapsed < duration,
+		running: started && !reduced,
 		started,
 	}
+}
+
+/** Story time for a running clock: the story, then the final pose held for `loopPause`, again. */
+export function loopTime(elapsed: number) {
+	return Math.min(duration, elapsed % (duration + loopPause))
 }
 
 const smooth = (value: number) => {

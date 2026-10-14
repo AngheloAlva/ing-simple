@@ -18,7 +18,9 @@ S7. Automatizaciones, user choice "Copiadora a manivela": a hand-cranked duplica
 
 S4. Preserve the section title, body copy, audience list and layout; other services keep their current image until their own scene is approved. Light/dark, reduced motion (final state), accessible description, readable at 390px. Rollback path to the raster image documented.
 
-Assumption (A1): with no card hover target on the service page, the story plays once when the figure first enters the viewport; leaving does not reset it.
+Assumption (A1): with no card hover target on the service page, the story starts when the figure first enters the viewport. Superseded by S8 (loop).
+
+S8. User correction (2026-10-13): "Si me gustaria el mismo ciclo en las escenas de los servicios" — same loop as the guide card index: hold the final pose ~3 s, then restart; reduced motion keeps the final pose without looping.
 
 ## Tasks
 
@@ -38,3 +40,4 @@ L6 (2026-10-13) User: "Me gusta igualmente, vamos con desarrollo web". Chose the
 L7 (2026-10-13) User: "Si, vamos con esa". Chose the duplicator (S7). Numbers reduced to 16 copies · 4 h · 2 errors so each crank turn stays readable (40 turns in 6 s ≈ 7 turns/s); reported to the user. Review fixes: drum lowered and feed tray raised so the blanks are visible, crank 11→19, paper layers 0.6→0.35, nameplate moved clear of the output tray. Verified desktop light final and error-sheet moment, mobile 390 dark, no horizontal scroll.
 L8 (2026-10-13) User correction: "haria que la manilla vaya mas lento porque va muy rapido". Turn length 0.375 s → 0.75 s; copies 16 → 10 (errors at copies 4 and 8) so the story stays ~8.9 s; readout "10 copias · 2,5 h de manivela · 2 con error". Model tests rewritten RED first (4 failing), then GREEN.
 L9 (2026-10-13) User: "podriamos arreglar el numero que se ve por encima del cuadro". Counter digits overflowed the window top (baseline z 83.9, window 81.2–84.8) and used the paper colour, unreadable in dark. Baseline 82.1, size 2.8, fill foreground; verified inside the window in both themes.
+L10 (2026-10-13) S8 applied to the four scenes. RED: 4 loop tests failing; GREEN: full suite 349/349. Browser timing (complete → restart): report desk 7.5 → 10.5 s, tool cart 7.1 → 10.1 s, sorter 7.3 → 10.2 s, duplicator 9.0 → 12.0 s (counter back to 000). Lint: 8 pre-existing set-state-in-effect errors in other diagrams (challenge/*, interactive-diagram, use-step-loop, audit-scan), none in changed files.

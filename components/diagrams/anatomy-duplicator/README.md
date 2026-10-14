@@ -26,7 +26,7 @@ now makes 10 turns of 0.75 s and the story lasts about 8.9 s.
 ## Story and interaction
 
 - The 8.9 s story starts the first time 45% of the figure is on screen (there is
-  no card hover on the service page), plays once and never resets.
+  no card hover on the service page), holds the final pose for 3 s (`loopPause` in `scene.json`) and starts over; reduced motion never loops.
 - Ten turns of 0.75 s from 0.4 s. Each sheet leaves the drum after 30% of
   its turn and lands on the output stack, or in the reject bin.
 - Offscreen or hidden pages pause the clock. Reduced motion renders the final pose.

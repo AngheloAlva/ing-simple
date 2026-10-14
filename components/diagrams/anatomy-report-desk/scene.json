@@ -9,6 +9,7 @@
   "stamp": { "lift": 16, "down": 1.5, "contact": 2.0, "release": 2.2, "up": 2.7 },
   "complete": 6.8,
   "duration": 7.4,
+  "loopPause": 3,
   "rack": { "x": -58, "y": -34 },
   "binder": { "x": 32, "y": 25, "z": 1.2, "sheet": 0.65 },
   "trays": [

@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react"
 import { useReducedMotion } from "@/lib/motion"
-import { duration, metric, playbackAt, stateAt, trays } from "./model"
+import { duration, metric, loopTime, playbackAt, stateAt, trays } from "./model"
 import art from "./art.json"
 import "./report-desk.css"
 
@@ -48,7 +48,7 @@ export function DiagramReportDesk() {
 	const started = useRef(false)
 
 	// No hover target on the service page: the story starts the first time
-	// most of the figure is on screen, and never resets.
+	// most of the figure is on screen, then loops with a pause on the final pose.
 	useEffect(() => {
 		const element = root.current
 		if (!element || active) return
@@ -66,7 +66,8 @@ export function DiagramReportDesk() {
 		const element = root.current
 		if (!element) return
 		const draw = () => {
-			const state = stateAt(clock.current)
+			const time = reduced ? duration : loopTime(clock.current)
+			const state = stateAt(time)
 			state.sheets.forEach((sheet, i) => {
 				const transform = move(sheet.offset)
 				for (const [slot, shown] of [
@@ -84,8 +85,7 @@ export function DiagramReportDesk() {
 			imprint.current?.setAttribute("opacity", state.decided ? "1" : "0")
 			if (caption.current) caption.current.textContent = state.caption
 			if (summary.current) summary.current.textContent = state.summary
-			element.dataset.stage =
-				clock.current >= duration ? "complete" : started.current ? "running" : "ready"
+			element.dataset.stage = time >= duration ? "complete" : started.current ? "running" : "ready"
 			element.dataset.phase = state.phase
 			element.dataset.day = String(state.day)
 			element.dataset.gathered = String(state.gathered)
@@ -106,16 +106,13 @@ export function DiagramReportDesk() {
 		}
 		const tick = (now: number) => {
 			frame = 0
-			clock.current = Math.min(
-				duration,
-				clock.current + (last ? Math.min((now - last) / 1000, 1 / 30) : 0)
-			)
+			clock.current += last ? Math.min((now - last) / 1000, 1 / 30) : 0
 			last = now
 			draw()
-			if (clock.current < duration) frame = requestAnimationFrame(tick)
+			frame = requestAnimationFrame(tick)
 		}
 		const run = () => {
-			if (visible && document.visibilityState === "visible" && !frame && clock.current < duration) {
+			if (visible && document.visibilityState === "visible" && !frame) {
 				last = 0
 				frame = requestAnimationFrame(tick)
 			}

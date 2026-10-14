@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { drawers, duration, playbackAt, stateAt } from "./model"
+import { drawers, duration, loopPause, loopTime, playbackAt, stateAt } from "./model"
 
 describe("paid tools used at a fraction", () => {
 	it("starts with three closed drawers, one per paid tool", () => {
@@ -52,10 +52,28 @@ describe("paid tools used at a fraction", () => {
 		expect(stateAt(duration + 3)).toEqual(final)
 	})
 
-	it("plays once on first view and jumps to the end when reduced", () => {
+	it("starts on first view, holds the final pose for 3 s, then starts over", () => {
+		expect(loopPause).toBe(3)
+		expect(loopTime(0)).toBe(0)
+		expect(loopTime(2)).toBe(2)
+		expect(loopTime(duration + 1)).toBe(duration)
+		expect(loopTime(duration + 2.9)).toBe(duration)
+		expect(loopTime(duration + 3)).toBe(0)
+		expect(loopTime(duration + 3 + 2)).toBeCloseTo(2)
+		expect(loopTime(2 * (duration + 3) + 1)).toBeCloseTo(1)
+		expect(stateAt(loopTime(duration + 3)).phase).toBe("ready")
 		expect(playbackAt(0, false, false)).toEqual({ time: 0, running: false, started: false })
 		expect(playbackAt(0, true, false)).toEqual({ time: 0, running: true, started: true })
-		expect(playbackAt(4, false, false, true)).toEqual({ time: 4, running: true, started: true })
+		// Keeps running past the end so the loop can restart.
+		expect(playbackAt(duration + 1, false, false, true)).toEqual({
+			time: duration + 1,
+			running: true,
+			started: true,
+		})
+	})
+
+	it("stays on the final pose without looping when motion is reduced", () => {
 		expect(playbackAt(0, false, true)).toEqual({ time: duration, running: false, started: false })
+		expect(playbackAt(0, true, true)).toEqual({ time: duration, running: false, started: true })
 	})
 })

@@ -3,6 +3,7 @@
   "drawerTravel": 44,
   "complete": 6.6,
   "duration": 7.0,
+  "loopPause": 3,
   "drawers": [
     {
       "id": "apps",

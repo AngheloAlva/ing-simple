@@ -22,7 +22,7 @@ The tools stand in for features. Counts are illustrative, not a usage measuremen
 ## Story and interaction
 
 - The 7 s story starts the first time 45% of the figure is on screen (there is
-  no card hover on the service page), plays once and never resets.
+  no card hover on the service page), holds the final pose for 3 s (`loopPause` in `scene.json`) and starts over; reduced motion never loops.
 - Drawers open one at a time, bottom to top: Power Apps 0.3–2.6 s, Power BI
   2.8–5.1 s, Excel from 5.3 s. Excel stays open in the final pose.
 - Only one drawer is ever open: an open drawer physically covers the ones below

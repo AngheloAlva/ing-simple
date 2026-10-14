@@ -5,6 +5,7 @@
   "weekLength": 1.0,
   "complete": 6.8,
   "duration": 7.2,
+  "loopPause": 3,
   "destinations": [
     { "id": "cubby", "name": "Casillero", "count": 12, "caption": "Cada pedido tiene su casilla" },
     { "id": "sheet", "name": "Planilla", "count": 6, "patch": true, "caption": "Lleno: los pedidos pasan a una planilla compartida" },
