@@ -1,0 +1,15 @@
+{
+  "arrivalStart": 0.3,
+  "arrivalStep": 0.2,
+  "drop": 0.3,
+  "weekLength": 1.0,
+  "complete": 6.8,
+  "duration": 7.2,
+  "destinations": [
+    { "id": "cubby", "name": "Casillero", "count": 12, "caption": "Cada pedido tiene su casilla" },
+    { "id": "sheet", "name": "Planilla", "count": 6, "patch": true, "caption": "Lleno: los pedidos pasan a una planilla compartida" },
+    { "id": "mail", "name": "Correo", "count": 6, "patch": true, "caption": "Las aprobaciones se van al correo" },
+    { "id": "chat", "name": "WhatsApp", "count": 3, "patch": true, "caption": "Y la información, a WhatsApp" },
+    { "id": "pile", "name": "Encima", "count": 3, "caption": "Lo que no cabe, se apila encima" }
+  ]
+}

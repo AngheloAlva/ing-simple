@@ -1,0 +1,93 @@
+/* Isolated service-page figure: tokens stay local to the sorter. */
+.sorter {
+	--anatomy-paper: var(--background);
+	--anatomy-top: color-mix(in oklch, var(--background) 98%, var(--foreground));
+	--anatomy-shade-0: color-mix(in oklch, var(--background) 76%, var(--foreground));
+	--anatomy-shade-1: color-mix(in oklch, var(--background) 83%, var(--foreground));
+	--anatomy-shade-2: color-mix(in oklch, var(--background) 90%, var(--foreground));
+	--anatomy-shade-3: color-mix(in oklch, var(--background) 95%, var(--foreground));
+	--anatomy-hi: color-mix(in oklch, var(--foreground) 78%, var(--background));
+	--anatomy-mid: color-mix(in oklch, var(--foreground) 52%, var(--background));
+	--anatomy-lo: color-mix(in oklch, var(--foreground) 34%, var(--background));
+	--anatomy-faint: color-mix(in oklch, var(--foreground) 18%, var(--background));
+}
+.dark .sorter {
+	--anatomy-top: color-mix(in oklch, var(--background) 80%, var(--foreground));
+	--anatomy-shade-0: color-mix(in oklch, var(--background) 98%, var(--foreground));
+	--anatomy-shade-1: color-mix(in oklch, var(--background) 94%, var(--foreground));
+	--anatomy-shade-2: color-mix(in oklch, var(--background) 89%, var(--foreground));
+	--anatomy-shade-3: color-mix(in oklch, var(--background) 85%, var(--foreground));
+}
+.sorter .iso-svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+.sorter .iso-svg path,
+.sorter .iso-svg circle {
+	vector-effect: non-scaling-stroke;
+}
+.sorter .iso-fill {
+	fill: var(--anatomy-paper);
+	stroke: none;
+}
+.sorter .iso-top {
+	fill: var(--anatomy-top);
+	stroke: none;
+}
+.sorter .iso-shade {
+	stroke: none;
+}
+.sorter .iso-shade[data-shade="0"] {
+	fill: var(--anatomy-shade-0);
+}
+.sorter .iso-shade[data-shade="1"] {
+	fill: var(--anatomy-shade-1);
+}
+.sorter .iso-shade[data-shade="2"] {
+	fill: var(--anatomy-shade-2);
+}
+.sorter .iso-shade[data-shade="3"] {
+	fill: var(--anatomy-shade-3);
+}
+.sorter .iso-solid[data-lit] > .iso-top {
+	fill: color-mix(in oklch, var(--primary) 18%, var(--background));
+}
+.sorter .iso-solid[data-lit] > .iso-edge {
+	stroke: var(--primary);
+	stroke-width: 1;
+}
+.sorter .iso-line {
+	fill: none;
+	stroke: var(--anatomy-lo);
+	stroke-width: 0.65;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.sorter .iso-line[data-tone="hi"] {
+	stroke: var(--anatomy-hi);
+}
+.sorter .iso-line[data-tone="mid"] {
+	stroke: var(--anatomy-mid);
+}
+.sorter .iso-line[data-tone="faint"] {
+	stroke: var(--anatomy-faint);
+}
+.sorter .iso-dots circle {
+	fill: var(--anatomy-mid);
+	stroke: none;
+}
+.sorter .iso-halo {
+	fill: var(--foreground);
+	opacity: 0.07;
+	filter: blur(7px);
+	stroke: none;
+}
+
+.sorter .iso-face-text {
+	fill: var(--anatomy-mid);
+	font-family: var(--font-sans), sans-serif;
+	letter-spacing: 0.3px;
+}
+

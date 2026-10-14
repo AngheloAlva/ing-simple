@@ -60,10 +60,30 @@ describe("service problem visuals", () => {
 			expect(html).toContain(text)
 	})
 
+	it("replaces the desarrollo-web illustration with the sorter and keeps the copy", () => {
+		const html = render("desarrollo-web")
+		const { page } = getServiceBySlug("desarrollo-web")!
+		expect(html.match(/data-sorter=""/g)).toHaveLength(1)
+		expect(html.match(/data-order="/g)).toHaveLength(30)
+		expect(html.match(/data-patch="/g)).toHaveLength(4)
+		expect(html).not.toContain(encodeURIComponent(page.problemImage))
+		for (const text of [
+			page.problemTitle,
+			page.problemTitleAccent,
+			page.problem,
+			...page.audience,
+			"La operación creció y el casillero pensado para ella quedó chico.",
+			"Planilla",
+			"Correo",
+			"WhatsApp",
+		])
+			expect(html).toContain(text)
+	})
+
 	it("keeps the raster illustration for services without an approved scene", () => {
-		for (const slug of ["desarrollo-web", "automatizaciones"]) {
+		for (const slug of ["automatizaciones"]) {
 			const html = render(slug)
-			expect(html).not.toMatch(/data-(report-desk|tool-cart)=/)
+			expect(html).not.toMatch(/data-(report-desk|tool-cart|sorter)=/)
 			expect(html).toContain(encodeURIComponent(getServiceBySlug(slug)!.page.problemImage))
 		}
 	})

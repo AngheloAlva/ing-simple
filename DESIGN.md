@@ -423,6 +423,9 @@ Rules
 - Capacitaciones uses a tool cart (`components/diagrams/anatomy-tool-cart/`):
   one drawer per paid tool, six tools each, the used ones worn and in the accent,
   the rest still tagged. Drawers open one at a time; Excel stays open.
+- Desarrollo web uses a sorter (`components/diagrams/anatomy-sorter/`): thirty
+  orders fill twelve cubbies, then spill into three patches in the accent
+  (Planilla, Correo, WhatsApp) and a pile on top.
 
 ## 9. Page patterns
 
