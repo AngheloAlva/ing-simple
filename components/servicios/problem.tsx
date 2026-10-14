@@ -2,19 +2,28 @@
 
 import { CornerPlus, Kicker, PlusSvg } from "@/components/corner-plus"
 import { IllustrationPlate } from "@/components/illustration-plate"
+import { DiagramReportDesk } from "@/components/diagrams/anatomy-report-desk/report-desk"
 import GradientText from "@/components/gradient-text"
 import { brandGradient } from "@/lib/gradient"
 import { useStaggerEntrance } from "@/lib/motion"
 import { motion } from "motion/react"
-import type { ReactNode } from "react"
+import type { ComponentType, ReactNode } from "react"
+
+// Anatomy scenes replacing the raster problem illustration, one service at a
+// time. A service without an entry keeps its `problemImage`.
+const PROBLEM_VISUALS: Partial<Record<string, ComponentType>> = {
+	reportabilidad: DiagramReportDesk,
+}
 
 export function ServicioProblem({
+	slug,
 	title,
 	titleAccent,
 	problem,
 	image,
 	audience,
 }: {
+	slug: string
 	title: string
 	titleAccent: string
 	problem: string
@@ -22,6 +31,7 @@ export function ServicioProblem({
 	audience: string[]
 }): ReactNode {
 	const { container, item, itemTransition, viewport } = useStaggerEntrance()
+	const Visual = PROBLEM_VISUALS[slug]
 
 	return (
 		<section className="mx-auto max-w-360 px-5 pb-24 sm:px-8 sm:pb-32 lg:px-10">
@@ -72,12 +82,18 @@ export function ServicioProblem({
 					transition={itemTransition}
 					className="border-border lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:border-r"
 				>
-					<IllustrationPlate
-						src={image}
-						alt=""
-						sizes="(max-width: 1024px) 100vw, 40vw"
-						frame="aspect-[2/3] lg:aspect-auto lg:h-full"
-					/>
+					{Visual ? (
+						<div className="aspect-[2/3] lg:aspect-auto lg:h-full">
+							<Visual />
+						</div>
+					) : (
+						<IllustrationPlate
+							src={image}
+							alt=""
+							sizes="(max-width: 1024px) 100vw, 40vw"
+							frame="aspect-[2/3] lg:aspect-auto lg:h-full"
+						/>
+					)}
 				</motion.div>
 
 				{/* Right: who should recognize themselves here */}

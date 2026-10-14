@@ -1,0 +1,19 @@
+{
+  "metric": "Total del mes",
+  "days": 6,
+  "dayLength": 1.2,
+  "decisionDay": 2,
+  "lift": 34,
+  "slideOut": 40,
+  "slideShare": 0.35,
+  "stamp": { "lift": 16, "down": 1.5, "contact": 2.0, "release": 2.2, "up": 2.7 },
+  "complete": 6.8,
+  "duration": 7.4,
+  "rack": { "x": -58, "y": -34 },
+  "binder": { "x": 32, "y": 25, "z": 1.2, "sheet": 0.65 },
+  "trays": [
+    { "id": "sales", "name": "Ventas", "value": "124", "tier": 2, "z": 35.45, "start": 0.4, "land": 1.6 },
+    { "id": "finance", "name": "Finanzas", "value": "118", "tier": 1, "z": 19.45, "start": 2.8, "land": 4.0 },
+    { "id": "operations", "name": "Operaciones", "value": "131", "tier": 0, "z": 3.45, "start": 4.8, "land": 6.0 }
+  ]
+}

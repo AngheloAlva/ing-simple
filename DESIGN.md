@@ -412,6 +412,15 @@ Rules
   Reduced motion shows the separated final state. The original
   `DiagramScatteredData`, card title/body and other visuals remain unchanged.
 
+- Service problem sections get their own Anatomy scenes, never the home challenge
+  scenes, because the visitor arriving from the home would see the same story
+  twice. Reportabilidad pilots a report desk
+  (`components/diagrams/anatomy-report-desk/`): three tray versions of one total
+  are copied into a binder over six days while a memo is stamped "Decidido" on
+  day 2. It starts on first view (there is no card hover), plays once, and shows
+  the final pose under reduced motion. Services without an approved scene keep
+  their `problemImage`.
+
 ## 9. Page patterns
 
 Every page: `<span id="top" className="sr-only" />`, `<Nav />`,

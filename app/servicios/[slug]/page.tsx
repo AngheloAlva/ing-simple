@@ -78,6 +78,7 @@ export default async function ServicePage({ params }: PageProps): Promise<ReactN
 						page={service.page}
 					/>
 					<ServicioProblem
+						slug={service.slug}
 						title={service.page.problemTitle}
 						titleAccent={service.page.problemTitleAccent}
 						problem={service.page.problem}
