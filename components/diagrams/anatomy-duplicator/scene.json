@@ -1,10 +1,10 @@
 {
-  "copies": 16,
-  "errors": [4, 9],
+  "copies": 10,
+  "errors": [3, 7],
   "minutesPerCopy": 15,
   "turnStart": 0.4,
-  "turnLength": 0.375,
+  "turnLength": 0.75,
   "ejectFrom": 0.3,
-  "complete": 6.9,
-  "duration": 7.4
+  "complete": 8.4,
+  "duration": 8.9
 }

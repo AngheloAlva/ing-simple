@@ -7,8 +7,8 @@ import * as k from "./vendor/iso-kit.mjs"
 //
 // Parts: stand (four feet, cabinet, two door pulls, hour-meter bezel), reject
 // bin (back, floor, two sides, front), base plate, feed (two posts, tray,
-// sixteen blanks), two side frames, drum cover, crank hub, copy counter,
-// output tray (bracket, tray) and fourteen printed copies. The crank arm, its
+// one blank per copy), two side frames, drum cover, crank hub, copy counter,
+// output tray (bracket, tray) and one printed copy per good copy. The crank arm, its
 // knob, the moving sheet and the hour-meter needle are drawn by the page.
 const scene = JSON.parse(
 	readFileSync(new URL("../../components/diagrams/anatomy-duplicator/scene.json", import.meta.url), "utf8")
@@ -111,12 +111,13 @@ machineFront.push(solid("counter-window", plan(31.5, 2, 7, 0.5, 0.2), 81.2, 3.6,
 machineFront.push(solid("output-bracket", plan(-22, 13, 44, 4, 0.6), 54, 3, "lo"))
 machineFront.push(solid("output-tray", plan(-24, 16, 48, 22, 0.8), 56, 1.5))
 const outputBase = 57.5
+const outputTop = outputBase + (scene.copies - scene.errors.length) * 0.35
 const output = Array.from({ length: scene.copies - scene.errors.length }, (_, i) =>
 	[
 		solid(`copy-${i}`, plan(-20, 18, 40, 17, 0.2), outputBase + i * 0.35, 0.35, "hi", { crease: "none" }),
 		...(i === scene.copies - scene.errors.length - 1
 			? [-13, -9, -5].map((y) =>
-					line(segment([-15, y + 36, outputBase + 4.9], [8, y + 36, outputBase + 4.9]), "faint", { free: true })
+					line(segment([-15, y + 36, outputTop], [8, y + 36, outputTop]), "faint", { free: true })
 				)
 			: []),
 	].join("")

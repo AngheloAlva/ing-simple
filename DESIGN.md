@@ -427,8 +427,8 @@ Rules
   orders fill twelve cubbies, then spill into three patches in the accent
   (Planilla, Correo, WhatsApp) and a pile on top.
 - Automatizaciones uses a hand-cranked duplicator
-  (`components/diagrams/anatomy-duplicator/`): sixteen turns, one copy and
-  fifteen minutes each, two copies to the reject bin. The crank is the accent.
+  (`components/diagrams/anatomy-duplicator/`): ten slow turns (0.75 s), one copy
+  and fifteen minutes each, two copies to the reject bin. The crank is the accent.
 
 ## 9. Page patterns
 

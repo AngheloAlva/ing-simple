@@ -184,8 +184,8 @@ export function DiagramDuplicator() {
 				</title>
 				<desc id={`${id}-description`}>
 					Cada vuelta de la manivela toma una hoja en blanco, imprime el mismo documento y suma
-					quince minutos al horómetro. Dos de las dieciséis copias salen con error y caen a la bandeja
-					de rechazo. Al final: dieciséis copias, cuatro horas de manivela y dos copias para rehacer.
+					quince minutos al horómetro. Dos de las diez copias salen con error y caen a la bandeja de
+					rechazo. Al final: diez copias, dos horas y media de manivela y dos copias para rehacer.
 				</desc>
 				<g dangerouslySetInnerHTML={{ __html: art.stand }} />
 				<g transform={art.dialMatrix} className="duplicator-dial">

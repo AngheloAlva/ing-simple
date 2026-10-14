@@ -84,8 +84,8 @@ describe("service problem visuals", () => {
 		const html = render("automatizaciones")
 		const { page } = getServiceBySlug("automatizaciones")!
 		expect(html.match(/data-duplicator=""/g)).toHaveLength(1)
-		expect(html.match(/data-blank="/g)).toHaveLength(16)
-		expect(html.match(/data-copy="/g)).toHaveLength(14)
+		expect(html.match(/data-blank="/g)).toHaveLength(10)
+		expect(html.match(/data-copy="/g)).toHaveLength(8)
 		expect(html.match(/data-reject="/g)).toHaveLength(2)
 		expect(html).not.toContain(encodeURIComponent(page.problemImage))
 		for (const text of [
