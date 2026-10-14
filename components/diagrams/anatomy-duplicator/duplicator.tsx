@@ -224,7 +224,7 @@ export function DiagramDuplicator() {
 					data-copy-counter=""
 					className="duplicator-digits"
 					transform={art.counterMatrix}
-					fontSize="3.2"
+					fontSize="2.8"
 					textAnchor="middle"
 				>
 					000

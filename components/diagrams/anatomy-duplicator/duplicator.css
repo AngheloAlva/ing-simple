@@ -120,8 +120,9 @@
 .duplicator .duplicator-pin {
 	fill: var(--foreground);
 }
+/* Digits sit inside the counter window, readable on both themes. */
 .duplicator .duplicator-digits {
-	fill: var(--anatomy-paper);
+	fill: var(--foreground);
 	font-family: var(--font-mono), monospace;
 	font-weight: 600;
 }

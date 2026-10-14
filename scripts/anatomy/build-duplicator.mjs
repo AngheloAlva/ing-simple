@@ -156,7 +156,7 @@ const content =
 		binFront,
 		hub: k.iso(hub, P).map((n) => Number(n.toFixed(2))),
 		crankLength,
-		counterMatrix: k.sideMatrix([35, 2.55], 83.9, P, "left"),
+		counterMatrix: k.sideMatrix([35, 2.55], 82.1, P, "left"),
 		dialMatrix: k.sideMatrix([22, 30.85], 23, P, "left"),
 	}) + "\n"
 const target = new URL("../../components/diagrams/anatomy-duplicator/art.json", import.meta.url)
