@@ -80,11 +80,40 @@ describe("service problem visuals", () => {
 			expect(html).toContain(text)
 	})
 
-	it("keeps the raster illustration for services without an approved scene", () => {
-		for (const slug of ["automatizaciones"]) {
-			const html = render(slug)
-			expect(html).not.toMatch(/data-(report-desk|tool-cart|sorter)=/)
-			expect(html).toContain(encodeURIComponent(getServiceBySlug(slug)!.page.problemImage))
-		}
+	it("replaces the automatizaciones illustration with the duplicator and keeps the copy", () => {
+		const html = render("automatizaciones")
+		const { page } = getServiceBySlug("automatizaciones")!
+		expect(html.match(/data-duplicator=""/g)).toHaveLength(1)
+		expect(html.match(/data-blank="/g)).toHaveLength(16)
+		expect(html.match(/data-copy="/g)).toHaveLength(14)
+		expect(html.match(/data-reject="/g)).toHaveLength(2)
+		expect(html).not.toContain(encodeURIComponent(page.problemImage))
+		for (const text of [
+			page.problemTitle,
+			page.problemTitleAccent,
+			page.problem,
+			...page.audience,
+			"Una copiadora que funciona a manivela: cada copia del mismo documento cuesta tiempo de una persona.",
+			"Copias",
+			"Manivela",
+			"Con error",
+		])
+			expect(html).toContain(text)
+	})
+
+	it("falls back to the raster illustration for a service without a scene", () => {
+		const { page } = getServiceBySlug("reportabilidad")!
+		const html = renderToStaticMarkup(
+			<ServicioProblem
+				slug="servicio-sin-escena"
+				title={page.problemTitle}
+				titleAccent={page.problemTitleAccent}
+				problem={page.problem}
+				image={page.problemImage}
+				audience={page.audience}
+			/>
+		)
+		expect(html).not.toMatch(/data-(report-desk|tool-cart|sorter|duplicator)=/)
+		expect(html).toContain(encodeURIComponent(page.problemImage))
 	})
 })

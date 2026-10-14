@@ -1,0 +1,10 @@
+{
+  "copies": 16,
+  "errors": [4, 9],
+  "minutesPerCopy": 15,
+  "turnStart": 0.4,
+  "turnLength": 0.375,
+  "ejectFrom": 0.3,
+  "complete": 6.9,
+  "duration": 7.4
+}

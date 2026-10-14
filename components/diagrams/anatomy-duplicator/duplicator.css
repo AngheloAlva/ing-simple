@@ -1,0 +1,137 @@
+/* Isolated service-page figure: tokens stay local to the duplicator. */
+.duplicator {
+	--anatomy-paper: var(--background);
+	--anatomy-top: color-mix(in oklch, var(--background) 98%, var(--foreground));
+	--anatomy-shade-0: color-mix(in oklch, var(--background) 76%, var(--foreground));
+	--anatomy-shade-1: color-mix(in oklch, var(--background) 83%, var(--foreground));
+	--anatomy-shade-2: color-mix(in oklch, var(--background) 90%, var(--foreground));
+	--anatomy-shade-3: color-mix(in oklch, var(--background) 95%, var(--foreground));
+	--anatomy-hi: color-mix(in oklch, var(--foreground) 78%, var(--background));
+	--anatomy-mid: color-mix(in oklch, var(--foreground) 52%, var(--background));
+	--anatomy-lo: color-mix(in oklch, var(--foreground) 34%, var(--background));
+	--anatomy-faint: color-mix(in oklch, var(--foreground) 18%, var(--background));
+}
+.dark .duplicator {
+	--anatomy-top: color-mix(in oklch, var(--background) 80%, var(--foreground));
+	--anatomy-shade-0: color-mix(in oklch, var(--background) 98%, var(--foreground));
+	--anatomy-shade-1: color-mix(in oklch, var(--background) 94%, var(--foreground));
+	--anatomy-shade-2: color-mix(in oklch, var(--background) 89%, var(--foreground));
+	--anatomy-shade-3: color-mix(in oklch, var(--background) 85%, var(--foreground));
+}
+.duplicator .iso-svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+.duplicator .iso-svg path,
+.duplicator .iso-svg circle {
+	vector-effect: non-scaling-stroke;
+}
+.duplicator .iso-fill {
+	fill: var(--anatomy-paper);
+	stroke: none;
+}
+.duplicator .iso-top {
+	fill: var(--anatomy-top);
+	stroke: none;
+}
+.duplicator .iso-shade {
+	stroke: none;
+}
+.duplicator .iso-shade[data-shade="0"] {
+	fill: var(--anatomy-shade-0);
+}
+.duplicator .iso-shade[data-shade="1"] {
+	fill: var(--anatomy-shade-1);
+}
+.duplicator .iso-shade[data-shade="2"] {
+	fill: var(--anatomy-shade-2);
+}
+.duplicator .iso-shade[data-shade="3"] {
+	fill: var(--anatomy-shade-3);
+}
+.duplicator .iso-solid[data-lit] > .iso-top {
+	fill: color-mix(in oklch, var(--primary) 18%, var(--background));
+}
+.duplicator .iso-solid[data-lit] > .iso-edge {
+	stroke: var(--primary);
+	stroke-width: 1;
+}
+.duplicator .iso-line {
+	fill: none;
+	stroke: var(--anatomy-lo);
+	stroke-width: 0.65;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.duplicator .iso-line[data-tone="hi"] {
+	stroke: var(--anatomy-hi);
+}
+.duplicator .iso-line[data-tone="mid"] {
+	stroke: var(--anatomy-mid);
+}
+.duplicator .iso-line[data-tone="faint"] {
+	stroke: var(--anatomy-faint);
+}
+.duplicator .iso-dots circle {
+	fill: var(--anatomy-mid);
+	stroke: none;
+}
+.duplicator .iso-halo {
+	fill: var(--foreground);
+	opacity: 0.07;
+	filter: blur(7px);
+	stroke: none;
+}
+
+.duplicator .iso-face-text {
+	fill: var(--anatomy-mid);
+	font-family: var(--font-sans), sans-serif;
+	letter-spacing: 0.3px;
+}
+
+/* The single accent: the crank the machine still depends on. */
+.duplicator .duplicator-crank line {
+	stroke: var(--primary);
+	stroke-width: 2.4;
+	stroke-linecap: round;
+}
+.duplicator .duplicator-crank .duplicator-knob {
+	stroke-width: 4.2;
+}
+.duplicator .duplicator-crank circle {
+	fill: var(--primary);
+}
+.duplicator .duplicator-dial circle:first-child {
+	fill: var(--anatomy-paper);
+	stroke: var(--anatomy-mid);
+	stroke-width: 0.5;
+}
+.duplicator .duplicator-dial line {
+	stroke: var(--anatomy-mid);
+	stroke-width: 0.5;
+	stroke-linecap: round;
+}
+.duplicator .duplicator-dial .duplicator-needle {
+	stroke: var(--foreground);
+	stroke-width: 0.7;
+}
+.duplicator .duplicator-pin {
+	fill: var(--foreground);
+}
+.duplicator .duplicator-digits {
+	fill: var(--anatomy-paper);
+	font-family: var(--font-mono), monospace;
+	font-weight: 600;
+}
+.duplicator [data-moving-sheet][data-error="false"] .duplicator-smudge-layer {
+	display: none;
+}
+.duplicator .duplicator-smudge {
+	fill: none;
+	stroke: var(--foreground);
+	stroke-width: 2.2;
+	stroke-linecap: round;
+	opacity: 0.55;
+}

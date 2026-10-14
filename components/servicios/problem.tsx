@@ -5,6 +5,7 @@ import { IllustrationPlate } from "@/components/illustration-plate"
 import { DiagramReportDesk } from "@/components/diagrams/anatomy-report-desk/report-desk"
 import { DiagramToolCart } from "@/components/diagrams/anatomy-tool-cart/tool-cart"
 import { DiagramSorter } from "@/components/diagrams/anatomy-sorter/sorter"
+import { DiagramDuplicator } from "@/components/diagrams/anatomy-duplicator/duplicator"
 import GradientText from "@/components/gradient-text"
 import { brandGradient } from "@/lib/gradient"
 import { useStaggerEntrance } from "@/lib/motion"
@@ -17,6 +18,7 @@ const PROBLEM_VISUALS: Partial<Record<string, ComponentType>> = {
 	reportabilidad: DiagramReportDesk,
 	capacitaciones: DiagramToolCart,
 	"desarrollo-web": DiagramSorter,
+	automatizaciones: DiagramDuplicator,
 }
 
 export function ServicioProblem({

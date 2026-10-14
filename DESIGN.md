@@ -418,14 +418,17 @@ Rules
   (`components/diagrams/anatomy-report-desk/`): three tray versions of one total
   are copied into a binder over six days while a memo is stamped "Decidido" on
   day 2. It starts on first view (there is no card hover), plays once, and shows
-  the final pose under reduced motion. Services without an approved scene keep
-  their `problemImage`.
+  the final pose under reduced motion. All four services now have a scene; a
+  service without an entry in `PROBLEM_VISUALS` falls back to its `problemImage`.
 - Capacitaciones uses a tool cart (`components/diagrams/anatomy-tool-cart/`):
   one drawer per paid tool, six tools each, the used ones worn and in the accent,
   the rest still tagged. Drawers open one at a time; Excel stays open.
 - Desarrollo web uses a sorter (`components/diagrams/anatomy-sorter/`): thirty
   orders fill twelve cubbies, then spill into three patches in the accent
   (Planilla, Correo, WhatsApp) and a pile on top.
+- Automatizaciones uses a hand-cranked duplicator
+  (`components/diagrams/anatomy-duplicator/`): sixteen turns, one copy and
+  fifteen minutes each, two copies to the reject bin. The crank is the accent.
 
 ## 9. Page patterns
 

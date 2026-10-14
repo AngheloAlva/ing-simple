@@ -14,6 +14,8 @@ S5. Capacitaciones, user choice "Cajón de herramientas": a tool cart with three
 
 S6. Desarrollo web, user choice "Casillero desbordado": a 12-cubby sorter; orders keep arriving week after week; once full, patches appear beside it: a "Planilla" box, a "Correo" tray and a phone with WhatsApp, and orders pile on top. Live readout: "Capacidad 12 · pedidos 30 · 3 parches".
 
+S7. Automatizaciones, user choice "Copiadora a manivela": a hand-cranked duplicator; each turn produces the same document, a copy counter and an hour meter advance, and now and then a copy comes out wrong and drops into the reject bin. Option text readout: "40 copias · 5 h de manivela · 3 con error" (illustrative; implemented as 16 · 4 h · 2, see L7).
+
 S4. Preserve the section title, body copy, audience list and layout; other services keep their current image until their own scene is approved. Light/dark, reduced motion (final state), accessible description, readable at 390px. Rollback path to the raster image documented.
 
 Assumption (A1): with no card hover target on the service page, the story plays once when the figure first enters the viewport; leaving does not reset it.
@@ -23,7 +25,7 @@ Assumption (A1): with no card hover target on the service page, the story plays 
 - T1 (S1–S4) Reportabilidad pilot: scene, model + tests, builder, component, integration via `PROBLEM_VISUALS` keyed by slug; route inline (no writer trigger). Status: done, awaiting user approval. RED: model module missing; GREEN: 5 model + 2 integration tests, full suite 320/320.
 - T2 (S2, S5) Capacitaciones tool cart; route inline. Status: done, awaiting user review. RED: model module missing; GREEN: 4 model tests + integration test.
 - T3 (S2, S6) Desarrollo web sorter; route inline. Status: done, awaiting user review. RED: model module missing; GREEN: 5 model tests + integration test (one test timing bug fixed: +0.31 s overlapped the next arrival).
-- T4 (S2) Automatizaciones scene — blocked on pilot approval.
+- T4 (S2, S7) Automatizaciones duplicator; route inline. Status: done, awaiting user review. RED: model module missing; GREEN: 5 model tests + integration test; fallback test now uses a slug without a scene.
 
 ## Log
 
@@ -33,3 +35,4 @@ L3 (2026-10-13) Composition change within S3: three trays stacked as a letter ra
 L4 (2026-10-13) User approved the pilot: "Me gusta como se ve, vamos con el siguiente nomas". Chose the tool cart for Capacitaciones (S5).
 L5 (2026-10-13) Tool cart review fixes: tall drawer fronts hid the tools at 34°, so drawers became short with thick foam, a storage cabinet fills the lower half and the camera rose to 40°; fit box limited the drawer reach to drawer height. One drawer open at a time because an open drawer covers the ones below. Verified desktop light (final and Power Apps open), mobile 390 dark, no horizontal scroll.
 L6 (2026-10-13) User: "Me gusta igualmente, vamos con desarrollo web". Chose the overflowing sorter (S6). Readout wording follows the model ("Capacidad 12 · 30 pedidos · 3 parches"). Verified desktop light final and mid-story (first patch), mobile 390 dark, no horizontal scroll.
+L7 (2026-10-13) User: "Si, vamos con esa". Chose the duplicator (S7). Numbers reduced to 16 copies · 4 h · 2 errors so each crank turn stays readable (40 turns in 6 s ≈ 7 turns/s); reported to the user. Review fixes: drum lowered and feed tray raised so the blanks are visible, crank 11→19, paper layers 0.6→0.35, nameplate moved clear of the output tray. Verified desktop light final and error-sheet moment, mobile 390 dark, no horizontal scroll.
