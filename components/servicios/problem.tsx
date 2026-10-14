@@ -3,6 +3,7 @@
 import { CornerPlus, Kicker, PlusSvg } from "@/components/corner-plus"
 import { IllustrationPlate } from "@/components/illustration-plate"
 import { DiagramReportDesk } from "@/components/diagrams/anatomy-report-desk/report-desk"
+import { DiagramToolCart } from "@/components/diagrams/anatomy-tool-cart/tool-cart"
 import GradientText from "@/components/gradient-text"
 import { brandGradient } from "@/lib/gradient"
 import { useStaggerEntrance } from "@/lib/motion"
@@ -13,6 +14,7 @@ import type { ComponentType, ReactNode } from "react"
 // time. A service without an entry keeps its `problemImage`.
 const PROBLEM_VISUALS: Partial<Record<string, ComponentType>> = {
 	reportabilidad: DiagramReportDesk,
+	capacitaciones: DiagramToolCart,
 }
 
 export function ServicioProblem({

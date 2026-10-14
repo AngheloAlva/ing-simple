@@ -1,0 +1,38 @@
+{
+  "licenses": 3,
+  "drawerTravel": 44,
+  "complete": 6.6,
+  "duration": 7.0,
+  "drawers": [
+    {
+      "id": "apps",
+      "name": "Power Apps",
+      "level": 0,
+      "tools": 6,
+      "used": [],
+      "open": [0.3, 1.1],
+      "close": [2.0, 2.6],
+      "caption": "Power Apps: ninguna herramienta estrenada"
+    },
+    {
+      "id": "bi",
+      "name": "Power BI",
+      "level": 1,
+      "tools": 6,
+      "used": [2],
+      "open": [2.8, 3.6],
+      "close": [4.5, 5.1],
+      "caption": "Power BI: se usa una, el resto sigue con etiqueta"
+    },
+    {
+      "id": "excel",
+      "name": "Excel",
+      "level": 2,
+      "tools": 6,
+      "used": [0],
+      "open": [5.3, 6.1],
+      "close": null,
+      "caption": "Excel: siempre la misma herramienta"
+    }
+  ]
+}

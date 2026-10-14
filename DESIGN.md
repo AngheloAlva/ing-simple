@@ -420,6 +420,9 @@ Rules
   day 2. It starts on first view (there is no card hover), plays once, and shows
   the final pose under reduced motion. Services without an approved scene keep
   their `problemImage`.
+- Capacitaciones uses a tool cart (`components/diagrams/anatomy-tool-cart/`):
+  one drawer per paid tool, six tools each, the used ones worn and in the accent,
+  the rest still tagged. Drawers open one at a time; Excel stays open.
 
 ## 9. Page patterns
 

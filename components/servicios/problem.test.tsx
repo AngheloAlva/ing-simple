@@ -40,10 +40,30 @@ describe("service problem visuals", () => {
 			expect(html).toContain(text)
 	})
 
+	it("replaces the capacitaciones illustration with the tool cart and keeps the copy", () => {
+		const html = render("capacitaciones")
+		const { page } = getServiceBySlug("capacitaciones")!
+		expect(html.match(/data-tool-cart=""/g)).toHaveLength(1)
+		expect(html.match(/data-cart-drawer="/g)).toHaveLength(3)
+		expect(html).not.toContain("data-report-desk")
+		expect(html).not.toContain(encodeURIComponent(page.problemImage))
+		for (const text of [
+			page.problemTitle,
+			page.problemTitleAccent,
+			page.problem,
+			...page.audience,
+			"La empresa paga por tres herramientas y el equipo usa una fracción de cada una.",
+			"Power Apps",
+			"Power BI",
+			"Excel",
+		])
+			expect(html).toContain(text)
+	})
+
 	it("keeps the raster illustration for services without an approved scene", () => {
-		for (const slug of ["capacitaciones", "desarrollo-web", "automatizaciones"]) {
+		for (const slug of ["desarrollo-web", "automatizaciones"]) {
 			const html = render(slug)
-			expect(html).not.toContain("data-report-desk")
+			expect(html).not.toMatch(/data-(report-desk|tool-cart)=/)
 			expect(html).toContain(encodeURIComponent(getServiceBySlug(slug)!.page.problemImage))
 		}
 	})
