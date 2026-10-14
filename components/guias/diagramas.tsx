@@ -2,6 +2,7 @@ import type { ComponentType, ReactNode } from "react"
 
 import { DiagramCardIndex } from "@/components/diagrams/anatomy-card-index/card-index"
 import { DiagramInvoiceGate } from "@/components/diagrams/anatomy-invoice-gate/invoice-gate"
+import { DiagramRefreshPress } from "@/components/diagrams/anatomy-refresh-press/refresh-press"
 import { IaPasoQueCambia } from "@/components/guias/diagramas/ia-paso-que-cambia"
 import { IaQueProceso } from "@/components/guias/diagramas/ia-que-proceso"
 import { LeyInventario } from "@/components/guias/diagramas/ley-inventario"
@@ -26,6 +27,7 @@ export const DIAGRAMAS: Record<string, ComponentType> = {
 	"ley-inventario": LeyInventario,
 	"ley-fichero-de-licitud": DiagramCardIndex,
 	"reporte-tres-capas": ReporteTresCapas,
+	"reporte-una-definicion": DiagramRefreshPress,
 }
 
 export const DIAGRAMA_NAMES = Object.keys(DIAGRAMAS)

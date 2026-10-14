@@ -1,0 +1,133 @@
+/* Isolated guide figure: tokens stay local to the refresh press. */
+.refresh-press {
+	--anatomy-paper: var(--background);
+	--anatomy-top: color-mix(in oklch, var(--background) 98%, var(--foreground));
+	--anatomy-shade-0: color-mix(in oklch, var(--background) 76%, var(--foreground));
+	--anatomy-shade-1: color-mix(in oklch, var(--background) 83%, var(--foreground));
+	--anatomy-shade-2: color-mix(in oklch, var(--background) 90%, var(--foreground));
+	--anatomy-shade-3: color-mix(in oklch, var(--background) 95%, var(--foreground));
+	--anatomy-hi: color-mix(in oklch, var(--foreground) 78%, var(--background));
+	--anatomy-mid: color-mix(in oklch, var(--foreground) 52%, var(--background));
+	--anatomy-lo: color-mix(in oklch, var(--foreground) 34%, var(--background));
+	--anatomy-faint: color-mix(in oklch, var(--foreground) 18%, var(--background));
+}
+.dark .refresh-press {
+	--anatomy-top: color-mix(in oklch, var(--background) 80%, var(--foreground));
+	--anatomy-shade-0: color-mix(in oklch, var(--background) 98%, var(--foreground));
+	--anatomy-shade-1: color-mix(in oklch, var(--background) 94%, var(--foreground));
+	--anatomy-shade-2: color-mix(in oklch, var(--background) 89%, var(--foreground));
+	--anatomy-shade-3: color-mix(in oklch, var(--background) 85%, var(--foreground));
+}
+.refresh-press .iso-svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+.refresh-press .iso-svg path,
+.refresh-press .iso-svg circle {
+	vector-effect: non-scaling-stroke;
+}
+.refresh-press .iso-fill {
+	fill: var(--anatomy-paper);
+	stroke: none;
+}
+.refresh-press .iso-top {
+	fill: var(--anatomy-top);
+	stroke: none;
+}
+.refresh-press .iso-shade {
+	stroke: none;
+}
+.refresh-press .iso-shade[data-shade="0"] {
+	fill: var(--anatomy-shade-0);
+}
+.refresh-press .iso-shade[data-shade="1"] {
+	fill: var(--anatomy-shade-1);
+}
+.refresh-press .iso-shade[data-shade="2"] {
+	fill: var(--anatomy-shade-2);
+}
+.refresh-press .iso-shade[data-shade="3"] {
+	fill: var(--anatomy-shade-3);
+}
+.refresh-press .iso-solid[data-lit] > .iso-top {
+	fill: color-mix(in oklch, var(--primary) 18%, var(--background));
+}
+.refresh-press .iso-solid[data-lit] > .iso-edge {
+	stroke: var(--primary);
+	stroke-width: 1;
+}
+.refresh-press .iso-line {
+	fill: none;
+	stroke: var(--anatomy-lo);
+	stroke-width: 0.65;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.refresh-press .iso-line[data-tone="hi"] {
+	stroke: var(--anatomy-hi);
+}
+.refresh-press .iso-line[data-tone="mid"] {
+	stroke: var(--anatomy-mid);
+}
+.refresh-press .iso-line[data-tone="faint"] {
+	stroke: var(--anatomy-faint);
+}
+.refresh-press .iso-dots circle {
+	fill: var(--anatomy-mid);
+	stroke: none;
+}
+.refresh-press .iso-halo {
+	fill: var(--foreground);
+	opacity: 0.07;
+	filter: blur(7px);
+	stroke: none;
+}
+
+.refresh-press .iso-face-text {
+	fill: var(--anatomy-mid);
+	font-family: var(--font-sans), sans-serif;
+	letter-spacing: 0.3px;
+}
+
+/* The single accent: the one number every area receives, and the trigger. */
+.refresh-press .press-number {
+	fill: var(--primary);
+	font-family: var(--font-sans), sans-serif;
+	font-weight: 700;
+}
+.refresh-press .press-light {
+	fill: var(--anatomy-shade-0);
+	stroke: var(--anatomy-mid);
+	stroke-width: 0.5;
+}
+.refresh-press .press-light[data-on="true"] {
+	fill: var(--primary);
+	stroke: var(--primary);
+}
+.refresh-press .press-clock > circle:first-child {
+	fill: var(--anatomy-paper);
+	stroke: var(--anatomy-mid);
+	stroke-width: 0.5;
+}
+.refresh-press .press-clock line {
+	stroke: var(--anatomy-mid);
+	stroke-width: 0.4;
+	stroke-linecap: round;
+}
+.refresh-press .press-clock .press-hour {
+	stroke: var(--foreground);
+	stroke-width: 0.9;
+}
+.refresh-press .press-clock .press-minute {
+	stroke: var(--foreground);
+	stroke-width: 0.6;
+}
+.refresh-press .press-pin {
+	fill: var(--foreground);
+}
+.refresh-press[data-stamped="true"] [data-area-value] {
+	color: var(--primary);
+	font-weight: 600;
+}

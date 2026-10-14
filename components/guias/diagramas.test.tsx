@@ -58,4 +58,30 @@ describe("guide diagram registry", () => {
 		expect(confidence).toBeGreaterThan(0)
 		expect(mdx.indexOf('nombre="ia-umbral-de-confianza"')).toBeGreaterThan(confidence)
 	})
+
+	it("renders the refresh press for the monthly-report guide with one definition and one number", () => {
+		expect(DIAGRAMA_NAMES).toContain("reporte-una-definicion")
+		const html = renderToStaticMarkup(<>{resolveDiagrama("reporte-una-definicion")}</>)
+		expect(html.match(/data-refresh-press=""/g)).toHaveLength(1)
+		expect(html.match(/data-sheet="/g)).toHaveLength(3)
+		expect(html.match(/data-area-value="/g)).toHaveLength(3)
+		expect(html.match(/>118</g)).toHaveLength(3)
+		for (const text of [
+			"Ventas netas = facturado − notas de crédito",
+			"Ventas",
+			"Finanzas",
+			"Operaciones",
+			"A las 06:00 el modelo estampa la misma cifra, desde una sola definición, en el informe de cada área.",
+		])
+			expect(html).toContain(text)
+	})
+
+	it("is placed after the refresh paragraph and before the checklist of the monthly-report guide", () => {
+		const mdx = readFileSync("content/guias/por-que-el-informe-del-mes-se-arma-a-mano.mdx", "utf8")
+		const names = [...mdx.matchAll(/nombre="([^"]+)"/g)].map((match) => match[1])
+		expect(names).toEqual(["reporte-tres-capas", "reporte-una-definicion"])
+		const figure = mdx.indexOf('nombre="reporte-una-definicion"')
+		expect(figure).toBeGreaterThan(mdx.indexOf("El refresco se programa"))
+		expect(figure).toBeLessThan(mdx.indexOf("<Checklist>"))
+	})
 })

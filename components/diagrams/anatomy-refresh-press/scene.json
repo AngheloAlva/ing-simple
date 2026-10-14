@@ -1,0 +1,15 @@
+{
+  "definition": "Ventas netas = facturado − notas de crédito",
+  "value": "118",
+  "clock": { "from": 300, "to": 360, "start": 0.4, "end": 3.0 },
+  "ram": { "down": [3.3, 3.8], "contact": 3.85, "up": [4.1, 4.7] },
+  "stroke": 23.5,
+  "complete": 5.4,
+  "duration": 5.8,
+  "loopPause": 3,
+  "areas": [
+    { "id": "sales", "name": "Ventas", "x": -25 },
+    { "id": "finance", "name": "Finanzas", "x": 0 },
+    { "id": "operations", "name": "Operaciones", "x": 25 }
+  ]
+}

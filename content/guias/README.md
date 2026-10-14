@@ -186,6 +186,7 @@ autoritativa, que puede crecer):
 - `ley-inventario` — las fuentes de datos dispersas convergiendo en un registro de tratamiento.
 - `ley-fichero-de-licitud` — figura Anatomy: un fichero con una ficha por tratamiento; cada una recibe su base de licitud y la que no tiene base sale a "Justificar o eliminar".
 - `reporte-tres-capas` — un archivo mezclado versus fuentes, modelo y presentación separados.
+- `reporte-una-definicion` — figura Anatomy: un reloj dispara a las 06:00 una prensa con una sola placa (la definición) que estampa el mismo número en las hojas de tres áreas.
 
 Si escribes un nombre que no existe, en `pnpm dev` ves una advertencia en la
 página; en producción esa guía simplemente no muestra nada ahí, así que
