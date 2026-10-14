@@ -183,6 +183,7 @@ autoritativa, que puede crecer):
 - `ia-paso-que-cambia` — el mismo flujo, con el paso que la IA reemplaza y el de revisión.
 - `ley-linea-de-tiempo` — los hitos entre la publicación de la ley y el régimen de sanciones.
 - `ley-inventario` — las fuentes de datos dispersas convergiendo en un registro de tratamiento.
+- `ley-fichero-de-licitud` — figura Anatomy: un fichero con una ficha por tratamiento; cada una recibe su base de licitud y la que no tiene base sale a "Justificar o eliminar".
 - `reporte-tres-capas` — un archivo mezclado versus fuentes, modelo y presentación separados.
 
 Si escribes un nombre que no existe, en `pnpm dev` ves una advertencia en la
