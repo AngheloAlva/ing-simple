@@ -23,8 +23,10 @@ Illustrative examples; the guide's "no reemplaza una asesoría legal" note appli
 
 ## Story and interaction
 
-- The 9 s story starts the first time 45% of the figure is on screen, plays once
-  and never resets. Reduced motion renders the final pose.
+- The 9 s story starts the first time 45% of the figure is on screen, holds the
+  final pose for 3 s (`loopPause` in `scene.json`) and starts over; `loopTime`
+  maps the running clock to story time. Offscreen or hidden pages pause the
+  loop. Reduced motion renders the final pose and never loops.
 - Each card: rise 0.4 s, tab at 0.5 s, back down 0.9–1.3 s. The card without a
   basis moves sideways over the right wall, then down into the stand.
 - An HTML list under the drawing repeats each card and its live status, so the

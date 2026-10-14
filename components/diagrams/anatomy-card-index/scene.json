@@ -4,6 +4,7 @@
   "trayDrop": 43,
   "complete": 8.6,
   "duration": 9.0,
+  "loopPause": 3,
   "cards": [
     { "id": "quotes", "purpose": "Responder cotizaciones", "source": "Formulario del sitio", "basis": "Interés legítimo", "y": 40, "tab": 0, "start": 0.4 },
     { "id": "billing", "purpose": "Facturar y despachar", "source": "Sistema de facturación", "basis": "Contrato", "y": 20, "tab": 1, "start": 1.8 },

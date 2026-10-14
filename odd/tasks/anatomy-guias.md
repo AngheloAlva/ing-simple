@@ -10,6 +10,8 @@ S2. Pilot, Ley 21.719 guide, user choice "Agregar como figura nueva": a card ind
 
 S3. Bases must match the existing `ley-inventario` table (cotizaciones → Interés legítimo, facturar y despachar → Contrato, sueldos → Obligación legal). Examples are illustrative, not legal advice (the guide already carries that note).
 
+S5. User correction: "agregaria que despues de unos 3 segundos la animacion se reinicie". The card index holds the final pose ~3 s and restarts; reduced motion keeps the final pose without looping. Scope: this figure only.
+
 S4. Light/dark, reduced motion (final pose), accessible description, readable at 390px, registered in `components/guias/diagramas.tsx` and used through `<Diagrama nombre="..." />`.
 
 Assumption (A1): placement is right after the "cuatro cosas" paragraph in "Lo que hay que saber", because a `Diagrama` inside `<Pasos>` would be numbered as a step.
@@ -24,3 +26,4 @@ Assumption (A1): placement is right after the "cuatro cosas" paragraph in "Lo qu
 
 L1 (2026-10-13) User: "Vamos con las guias primero a ver como quedan". Chose to add the card index as a new figure (S2). Placement adjusted from "after step 2" to the "cuatro cosas" paragraph (A1).
 L2 (2026-10-13) Review fixes: tab labels overflowed (uppercase at 2.1 in 22-wide tabs) → sentence case, 26-wide tabs, verified each label inside its tab in the browser; card text unreadable at 390 px → HTML list with each card's live status. Verified desktop light final and the no-basis card asking, mobile 390 dark, no horizontal scroll. One test instant moved off a float boundary (1.7 → 1.75 s).
+L3 (2026-10-13) User approved the card index and asked for the loop (S5). RED: loop test failing (loopTime missing); GREEN: 6 model tests. Browser timing: complete 9.1 s → restart 12.1 s, second cycle 21.1 s → 24.1 s. The restart snaps the parked card back into the drawer (no reverse animation).

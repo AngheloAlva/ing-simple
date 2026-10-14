@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react"
 import { useReducedMotion } from "@/lib/motion"
-import { cards, duration, lift, playbackAt, stateAt, toTray, trayDrop } from "./model"
+import { cards, duration, lift, loopTime, playbackAt, stateAt, toTray, trayDrop } from "./model"
 import art from "./art.json"
 import "./card-index.css"
 
@@ -36,7 +36,7 @@ export function DiagramCardIndex() {
 	const started = useRef(false)
 
 	// No hover target inside a guide: the story starts the first time most of
-	// the figure is on screen, and never resets.
+	// the figure is on screen, then loops with a pause on the final pose.
 	useEffect(() => {
 		const element = root.current
 		if (!element || active) return
@@ -54,7 +54,8 @@ export function DiagramCardIndex() {
 		const element = root.current
 		if (!element) return
 		const draw = () => {
-			const state = stateAt(clock.current)
+			const time = reduced ? duration : loopTime(clock.current)
+			const state = stateAt(time)
 			state.cards.forEach((card, i) => {
 				const slot = inSlot.current[i]
 				if (card.id === art.parked.id) {
@@ -71,8 +72,7 @@ export function DiagramCardIndex() {
 			})
 			if (caption.current) caption.current.textContent = state.caption
 			if (summary.current) summary.current.textContent = state.summary
-			element.dataset.stage =
-				clock.current >= duration ? "complete" : started.current ? "running" : "ready"
+			element.dataset.stage = time >= duration ? "complete" : started.current ? "running" : "ready"
 			element.dataset.phase = state.phase
 			element.dataset.checked = String(state.checked)
 		}
@@ -91,16 +91,13 @@ export function DiagramCardIndex() {
 		}
 		const tick = (now: number) => {
 			frame = 0
-			clock.current = Math.min(
-				duration,
-				clock.current + (last ? Math.min((now - last) / 1000, 1 / 30) : 0)
-			)
+			clock.current += last ? Math.min((now - last) / 1000, 1 / 30) : 0
 			last = now
 			draw()
-			if (clock.current < duration) frame = requestAnimationFrame(tick)
+			frame = requestAnimationFrame(tick)
 		}
 		const run = () => {
-			if (visible && document.visibilityState === "visible" && !frame && clock.current < duration) {
+			if (visible && document.visibilityState === "visible" && !frame) {
 				last = 0
 				frame = requestAnimationFrame(tick)
 			}
