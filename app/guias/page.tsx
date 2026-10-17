@@ -14,7 +14,7 @@ import { breadcrumbJsonLd } from "@/lib/seo/json-ld"
 import { DIRECTIONAL_CLASSES } from "@/lib/view-transitions"
 
 export const metadata: Metadata = createMetadata({
-	title: "Guías",
+	title: "Guías de IA, datos y automatización para pymes",
 	description:
 		"Guías prácticas de IA, cumplimiento, reportabilidad y automatización para pymes: por dónde empezar, sin humo.",
 	path: "/guias",

@@ -10,9 +10,9 @@ import type { Metadata } from "next"
 import type { ReactNode } from "react"
 
 export const metadata: Metadata = createMetadata({
-	title: "Contacto",
+	title: "Contacto y diagnóstico gratis",
 	description:
-		"Cuéntanos tu situación y en menos de 24 horas hábiles te respondemos con un diagnóstico y por dónde empezar. Reportabilidad, automatización, desarrollo web y capacitaciones.",
+		"Cuéntanos tu situación y en menos de 24 horas hábiles te respondemos con un diagnóstico y por dónde empezar. Reportabilidad, capacitaciones, desarrollo web y automatización.",
 	path: "/contacto",
 })
 

@@ -116,7 +116,7 @@ export const SERVICES: Service[] = [
 		page: {
 			seoTitle: "Dashboards y reportabilidad con Power BI en Chile",
 			seoDescription:
-				"Dashboards en Power BI y reportes automatizados para empresas en Chile. Centraliza tus datos y toma decisiones con información siempre al día.",
+				"Dashboards en Power BI y reportes automatizados para pymes en Chile. Centraliza tus datos y toma decisiones con información siempre al día.",
 			pageTitle: "Reportabilidad y dashboards en Power BI",
 			pageTitleAccent: "para decidir con datos, no con intuición",
 			pageSubtitle:
@@ -233,7 +233,7 @@ export const SERVICES: Service[] = [
 		page: {
 			seoTitle: "Capacitaciones en Power BI y Excel en Chile",
 			seoDescription:
-				"Capacitación práctica en Power BI, Power Apps y Excel avanzado para equipos en Chile, online o presencial. Programas a medida con datos reales.",
+				"Capacitación práctica en Power BI, Power Apps y Excel avanzado para equipos de pymes en Chile, online o presencial. Programas a medida con datos reales.",
 			pageTitle: "Capacitaciones en Power BI y Excel",
 			pageTitleAccent: "que hacen a tu equipo autónomo",
 			pageSubtitle:
@@ -348,9 +348,9 @@ export const SERVICES: Service[] = [
 			"Enfoque en experiencia de usuario y performance",
 		],
 		page: {
-			seoTitle: "Desarrollo web a medida en Chile",
+			seoTitle: "Desarrollo web a medida para pymes en Chile",
 			seoDescription:
-				"Desarrollo web a medida en Chile: sitios corporativos, portales y sistemas de gestión modernos, rápidos y diseñados para tus procesos reales.",
+				"Desarrollo web a medida para pymes en Chile: sitios corporativos, portales y sistemas de gestión modernos, rápidos y diseñados para tus procesos reales.",
 			pageTitle: "Desarrollo web a medida",
 			pageTitleAccent: "para tus procesos reales",
 			pageSubtitle:
@@ -470,9 +470,9 @@ export const SERVICES: Service[] = [
 			"Menos errores y más tiempo para tu equipo",
 		],
 		page: {
-			seoTitle: "Automatización de procesos para empresas en Chile",
+			seoTitle: "Automatización de procesos para pymes en Chile",
 			seoDescription:
-				"Automatizamos tareas repetitivas y conectamos tus sistemas para agilizar aprobaciones, generar reportes y reducir errores de digitación en Chile.",
+				"Automatizamos las tareas repetitivas de tu pyme y conectamos tus sistemas para agilizar aprobaciones, generar reportes y reducir errores de digitación.",
 			pageTitle: "Automatización de procesos",
 			pageTitleAccent: "que le devuelve horas a tu equipo",
 			pageSubtitle:

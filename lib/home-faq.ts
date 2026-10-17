@@ -12,7 +12,7 @@ export const HOME_FAQ: HomeFaqItem[] = [
 	{
 		question: "¿Qué tipo de empresas atienden?",
 		answer:
-			"Trabajamos con empresas en Chile que necesitan reportes en Power BI, automatizar procesos, desarrollar sitios o sistemas web, o capacitar a sus equipos. Conversamos sobre tu necesidad para definir juntos el alcance del trabajo.",
+			"Trabajamos con pequeñas y medianas empresas que necesitan reportes en Power BI, capacitar a sus equipos, desarrollar sitios o sistemas web, o automatizar procesos. Conversamos sobre tu necesidad para definir juntos el alcance del trabajo.",
 	},
 	{
 		question: "¿Cuánto tiempo toma implementar una solución?",

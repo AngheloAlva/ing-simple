@@ -5,7 +5,7 @@ import { getServiceBySlug, SERVICES } from "@/lib/services";
 import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
 
-export const alt = "Ingeniería Simple — Soluciones simples para un mundo digital complejo";
+export const alt = "Ingeniería Simple — Servicio para pymes";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

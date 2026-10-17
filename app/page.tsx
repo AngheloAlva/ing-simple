@@ -22,9 +22,9 @@ import type { Metadata } from "next"
 import { ViewTransition, type ReactNode } from "react"
 
 export const metadata: Metadata = createMetadata({
-	absoluteTitle: "Power BI, automatización y desarrollo web en Chile | Ingeniería Simple",
+	absoluteTitle: "Power BI, automatización y desarrollo web para pymes | Ingeniería Simple",
 	description:
-		"Ingeniería Simple ofrece reportes, automatización de procesos, sistemas web a medida y capacitaciones en Chile. Trabajamos contigo y compartimos avances desde el inicio.",
+		"Transformación digital aterrizada para pymes: reportes en Power BI, capacitaciones, desarrollo web y automatización. Partimos con un diagnóstico gratis.",
 	path: "/",
 })
 

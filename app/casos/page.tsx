@@ -14,9 +14,9 @@ import type { Metadata } from "next"
 import { ViewTransition, type ReactNode } from "react"
 
 export const metadata: Metadata = createMetadata({
-	title: "Casos de estudio",
+	title: "Casos de éxito: proyectos a medida en producción",
 	description:
-		"Casos de estudio publicados de plataformas a medida en producción para empresas reales.",
+		"Proyectos a medida en producción para empresas como OTC, Busanc, AIEP y Grupo CAEMP: el problema de partida, la solución y los resultados de cada uno.",
 	path: "/casos",
 })
 

@@ -19,7 +19,7 @@ const pillars: Pillar[] = [
 	{
 		label: "Visión",
 		title: "Potencia sin complejidad",
-		body: "Que las empresas medianas en Chile tengan sus datos, sus automatizaciones y sus sistemas propios, sin proyectos eternos ni dependencia de terceros.",
+		body: "Que las pequeñas y medianas empresas tengan sus datos, sus automatizaciones y sus sistemas propios, sin proyectos eternos ni dependencia de terceros.",
 	},
 ]
 

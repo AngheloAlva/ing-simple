@@ -9,7 +9,7 @@ import type { MetadataRoute } from "next"
  * casos index, sobre-nosotros, contacto, privacidad or a service page's
  * content is edited — it is not derived automatically.
  */
-export const CONTENT_UPDATED_AT = "2026-09-24"
+export const CONTENT_UPDATED_AT = "2026-10-17"
 
 /** Latest milestone date that can be parsed unambiguously, or `undefined`. */
 function latestParsableMilestoneDate(project: ProjectData): string | undefined {

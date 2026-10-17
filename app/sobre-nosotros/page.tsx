@@ -13,7 +13,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = createMetadata({
-  title: "Sobre nosotros",
+  title: "Sobre nosotros: datos y software para pymes",
   description:
     "Cada servicio de Ingeniería Simple nació de un problema real de un cliente. Nuestra historia, misión, valores y las herramientas con las que construimos.",
   path: "/sobre-nosotros",

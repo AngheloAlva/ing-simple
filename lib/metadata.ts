@@ -31,7 +31,8 @@ export const isIndexable =
 export const siteConfig = {
   name: "Ingeniería Simple",
   shortName: "IngSimple",
-  description: "Soluciones simples para un mundo digital complejo",
+  description:
+    "Reportes en Power BI, capacitaciones, desarrollo web y automatización de procesos para pymes. Partimos con un diagnóstico gratis.",
   url: resolveSiteUrl(),
   creator: "@ingsimple",
   authors: [
