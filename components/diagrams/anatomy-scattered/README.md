@@ -34,13 +34,17 @@ arrival milestones. `model.ts` drives drawer motion, fact visibility, captions a
 counts. `scattered-cabinet.tsx` updates SVG refs without per-frame React renders.
 
 The builder uses the existing vendored iso-kit; no geometry library ships at
-runtime. Its 68 solids comprise:
+runtime. Its 83 solids comprise:
 
-- Three cabinets, 21 solids each: four feet, plinth, back, two side walls, lid,
-  two guide rails, drawer bottom/back/sides/front, two handle mounts, grip,
+- Three cabinets, 26 solids each: four feet, plinth, back, two side walls, lid,
+  two closed lower drawer fronts with grips, divider, two guide rails, drawer bottom/back/sides/front, two handle mounts, grip,
   record and tab.
 - Five report parts: clipboard, sheet, two clip feet and clip bar. Three ruled
   unknown fields and face fasteners are surface details, not extra solids.
+
+The cabinets are filing-cabinet height, taller than the desks in the sibling cards.
+All four home challenge scenes share one camera and world scale from
+`scripts/anatomy/home-camera.mjs`; the builder fails if a scene no longer fits.
 
 For each cabinet, back/carcass layers paint first, followed by the translated
 drawer and record, then its front lip/handle and the fixed right casing/lid.

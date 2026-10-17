@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync } from "node:fs"
 import * as k from "./vendor/iso-kit.mjs"
+import { homeProjection } from "./home-camera.mjs"
 
 // A fixed die: incompatible processes hit its rim and return to manual work.
 // The admitted specimen waits in a rear loading pocket until both attempts end.
@@ -7,9 +8,11 @@ const scene = JSON.parse(
 	readFileSync(new URL("../../components/diagrams/anatomy-fit/scene.json", import.meta.url), "utf8")
 )
 const width = 480,
-	height = 220
+	// Taller than the desks: this card's legend is one row shorter, so its SVG box is
+	// taller and the extra viewBox height keeps the shared on-screen scale.
+	height = 288
 const bed = { x: -130, y: -86, w: 260, d: 150, r: 6 }
-const P = k.fitProjection(
+const P = homeProjection(
 	[
 		...k.boxCorners(bed, -12, 0),
 		[-111, -21, 52],
@@ -20,8 +23,7 @@ const P = k.fitProjection(
 		[14, -46, 60],
 	],
 	width,
-	height,
-	{ pad: 10, azimuth: 52, elevation: 36 }
+	height
 )
 const layers = { base: [], rear: [], fitting: [], cross: [], bar: [], front: [] }
 const plan = (x, y, w, d, r = 1) => ({ x, y, w, d, r })

@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync } from "node:fs"
 import * as k from "./vendor/iso-kit.mjs"
+import { homeProjection } from "./home-camera.mjs"
 
 // One person's desk: a resolved folder leaves; without the person, work piles up.
 // Parts: desk (feet, legs, aprons, stretchers, top, mat); chair (feet, legs,
@@ -10,11 +11,10 @@ const width = 480,
 	height = 240
 const plan = (x, y, w, d, r = 0.6) => ({ x, y, w, d, r })
 const desk = plan(-125, -30, 250, 95, 3)
-const P = k.fitProjection(
+const P = homeProjection(
 	[...k.boxCorners(desk, -48, 4), [-20, -85, -48], [20, -85, 40]],
 	width,
-	height,
-	{ pad: 9, azimuth: 65, elevation: 26 }
+	height
 )
 const layers = { chair: [], person: [], desk: [], paper: [], stamp: [] }
 let parts = 0
