@@ -45,7 +45,7 @@ export function CasosHero(): ReactNode {
 						transition={itemTransition}
 						className="text-muted-foreground text-sm font-medium"
 					>
-						Casos de estudio
+						Casos de éxito
 					</motion.p>
 
 					<motion.h1
@@ -53,7 +53,7 @@ export function CasosHero(): ReactNode {
 						transition={itemTransition}
 						className="mt-5 font-serif text-4xl leading-[1.1] font-normal tracking-[-0.01em] text-balance sm:text-5xl lg:text-[3.5rem]"
 					>
-						Software que ya corre en{" "}
+						Proyectos que ya funcionan en{" "}
 						<span className="font-sans font-semibold tracking-tight">empresas reales</span>
 					</motion.h1>
 
@@ -62,8 +62,8 @@ export function CasosHero(): ReactNode {
 						transition={itemTransition}
 						className="text-muted-foreground mt-5 max-w-xl text-[15px] leading-relaxed text-balance sm:text-base"
 					>
-						Conoce plataformas a medida en producción, sus desafíos y las decisiones detrás de cada
-						solución publicada.
+						Conoce proyectos en producción, el desafío de cada cliente y las decisiones detrás de
+						cada solución.
 					</motion.p>
 
 					<motion.div

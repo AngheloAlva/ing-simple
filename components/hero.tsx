@@ -53,9 +53,9 @@ export function Hero(): ReactNode {
 						transition={itemTransition}
 						className="font-sans text-4xl leading-[1.1] font-normal tracking-tight text-balance sm:text-5xl lg:text-[3.5rem]"
 					>
-						Reportes, automatizaciones y sistemas web{" "}
-						<GradientText inline className="font-medium" colors={brandGradient} animationSpeed={6}>
-							que le devuelven tiempo a tu equipo
+						Reportes, automatizaciones y&nbsp;sistemas que&nbsp;te{" "}
+						<GradientText inline className="font-medium whitespace-nowrap" colors={brandGradient} animationSpeed={6}>
+							devuelven tiempo
 						</GradientText>
 					</motion.h1>
 
@@ -64,7 +64,7 @@ export function Hero(): ReactNode {
 						transition={itemTransition}
 						className="text-muted-foreground mt-4 max-w-xl text-[15px] leading-relaxed text-balance sm:text-base"
 					>
-						Partimos por el diagnóstico y avanzamos contigo, con entregas visibles en cada etapa.
+						Para pequeñas y medianas empresas: partimos por el diagnóstico y avanzamos contigo, con entregas visibles en cada etapa.
 					</motion.p>
 
 					<motion.div

@@ -26,7 +26,7 @@ type Stat = {
 }
 
 const STATS: Stat[] = [
-	{ value: CASES.length, label: "Casos de estudio" },
+	{ value: CASES.length, label: "Casos de éxito" },
 	{ value: UNIQUE_CLIENTS, label: "Empresas cliente" },
 	{ value: FIRST_YEAR, from: FIRST_YEAR - 12, label: "En producción desde" },
 ]

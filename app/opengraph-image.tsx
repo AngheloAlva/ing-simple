@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
-export const alt = "Ingeniería Simple — Soluciones simples para un mundo digital complejo";
+export const alt = "Ingeniería Simple — Reportes, automatizaciones y sistemas web para pymes";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -53,7 +53,7 @@ export default function OpengraphImage() {
               maxWidth: 980,
             }}
           >
-            Soluciones simples para un mundo digital complejo
+            Reportes, automatizaciones y sistemas que te devuelven tiempo
           </div>
         </div>
 
@@ -64,7 +64,7 @@ export default function OpengraphImage() {
             color: "#4b5563",
           }}
         >
-          ingenieriasimple.cl · Reportabilidad · Automatizaciones · Desarrollo web · Capacitaciones
+          ingenieriasimple.cl · Reportabilidad · Capacitaciones · Desarrollo web · Automatizaciones
         </div>
       </div>
     ),
