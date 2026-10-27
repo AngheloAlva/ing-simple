@@ -82,12 +82,12 @@ export function NosotrosStory() {
 
 	const container: Variants = {
 		hidden: {},
-		visible: { transition: { staggerChildren: 0.1 } },
+		visible: { transition: { staggerChildren: 0.08 } },
 	}
 
 	const timeline: Variants = {
 		hidden: {},
-		visible: { transition: { staggerChildren: 0.14 } },
+		visible: { transition: { staggerChildren: 0.08 } },
 	}
 
 	const item: Variants = {
@@ -95,7 +95,7 @@ export function NosotrosStory() {
 		visible: {
 			opacity: 1,
 			y: 0,
-			transition: { duration: 0.65, ease: softEase },
+			transition: { duration: 0.5, ease: softEase },
 		},
 	}
 

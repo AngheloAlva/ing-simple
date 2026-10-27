@@ -69,7 +69,7 @@ describe("Web requests showcase", () => {
     // mount hidden: the compact cards with the recipe's lift, the desktop
     // table rows fading in place (transforms are unreliable on <tr>).
     expect((html.match(/flex items-center justify-between gap-3 rounded-xl/g) ?? []).length).toBe(3);
-    expect(html.match(/opacity:0;transform:translateY\(20px\)/g) ?? []).toHaveLength(13);
+    expect(html.match(/opacity:0;transform:translateY\(12px\)/g) ?? []).toHaveLength(13);
     const trs = html.match(/<tr\b[^>]*>/g) ?? [];
     expect(trs.filter((tr) => tr.includes('style="opacity:0"'))).toHaveLength(10);
 

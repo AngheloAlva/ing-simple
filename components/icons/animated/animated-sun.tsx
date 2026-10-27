@@ -20,7 +20,7 @@ const PATH_VARIANTS: Variants = {
 	normal: { opacity: 1 },
 	animate: (i: number) => ({
 		opacity: [0, 1],
-		transition: { delay: i * 0.1, duration: 0.3 },
+		transition: { delay: i * 0.04, duration: 0.3 },
 	}),
 }
 

@@ -74,7 +74,7 @@ function Block({
 			className={className}
 			initial={reduced ? false : { opacity: 0, y: 6 }}
 			animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
-			transition={{ duration: reduced ? 0 : 0.35, ease: EASE, delay: reduced ? 0 : index * 0.08 }}
+			transition={{ duration: reduced ? 0 : 0.35, ease: EASE, delay: reduced ? 0 : index * 0.04 }}
 		>
 			{children}
 		</motion.div>
@@ -263,7 +263,7 @@ function ScoreRing({
 			className="flex flex-col items-center"
 			initial={reduced ? false : { opacity: 0, y: 6 }}
 			animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
-			transition={{ duration: reduced ? 0 : 0.35, ease: EASE, delay: reduced ? 0 : index * 0.08 }}
+			transition={{ duration: reduced ? 0 : 0.35, ease: EASE, delay: reduced ? 0 : index * 0.04 }}
 		>
 			<div className="relative h-10 w-10 shrink-0">
 				<svg viewBox="0 0 40 40" className="h-full w-full -rotate-90" aria-hidden="true">
@@ -283,7 +283,7 @@ function ScoreRing({
 						transition={{
 							...DATA_TRANSITION,
 							duration: reduced ? 0 : 0.9,
-							delay: reduced ? 0 : 0.1 + index * 0.08,
+							delay: reduced ? 0 : 0.1 + index * 0.04,
 						}}
 					/>
 				</svg>
@@ -463,7 +463,7 @@ export function WebSolution(): ReactNode {
 									transition={{
 										duration: reduced ? 0 : 0.35,
 										ease: EASE,
-										delay: reduced ? 0 : 0.4 + i * 0.08,
+										delay: reduced ? 0 : 0.4 + i * 0.04,
 									}}
 								>
 									<p className="text-muted-foreground text-[9px]">{vital.name}</p>

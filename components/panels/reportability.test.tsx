@@ -130,7 +130,7 @@ describe("Reportability panel", () => {
 
 		// Every staggered item mounts hidden with the recipe's lift: 4 KPI
 		// cards, 3 chart/table tiles and 6 deviation-table rows.
-		expect(html.match(/opacity:0;transform:translateY\(20px\)/g) ?? []).toHaveLength(13)
+		expect(html.match(/opacity:0;transform:translateY\(12px\)/g) ?? []).toHaveLength(13)
 
 		// The staggered items exist in depth-first reading order: 4 KPI cards,
 		// then execution chart → waterfall → table, whose 6 rows carry their

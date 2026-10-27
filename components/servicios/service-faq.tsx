@@ -40,7 +40,7 @@ function FaqItem({
 					<span className="text-base font-medium tracking-tight sm:text-lg">{item.q}</span>
 					<motion.span
 						animate={{ rotate: isOpen ? 180 : 0 }}
-						transition={{ duration: 0.3, ease: softEase }}
+						transition={{ duration: 0.25, ease: softEase }}
 						className="text-muted-foreground group-hover:text-foreground shrink-0 transition-colors duration-200"
 					>
 						<ChevronDown className="h-5 w-5" aria-hidden="true" />
@@ -58,7 +58,7 @@ function FaqItem({
 						initial={{ height: 0, opacity: 0 }}
 						animate={{ height: "auto", opacity: 1 }}
 						exit={{ height: 0, opacity: 0 }}
-						transition={{ duration: 0.4, ease: softEase }}
+						transition={{ duration: 0.25, ease: softEase }}
 						className="overflow-hidden"
 					>
 						<p className="text-muted-foreground max-w-xl pr-6 pb-6 text-sm leading-relaxed lg:pl-12">

@@ -33,7 +33,7 @@ export function NosotrosValues() {
 
 	const container: Variants = {
 		hidden: {},
-		visible: { transition: { staggerChildren: 0.1 } },
+		visible: { transition: { staggerChildren: 0.08 } },
 	}
 
 	const item: Variants = {

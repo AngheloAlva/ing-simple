@@ -9,7 +9,7 @@ import type { ReactNode } from "react"
 const container: Variants = {
 	hidden: {},
 	visible: {
-		transition: { staggerChildren: 0.12, delayChildren: 0.35 },
+		transition: { staggerChildren: 0.08, delayChildren: 0.35 },
 	},
 }
 
@@ -18,7 +18,7 @@ export function CasosHero(): ReactNode {
 	const item = prefersReducedMotion ? reducedMotionVariants : fadeInUp
 	const itemTransition = prefersReducedMotion
 		? { duration: 0.01 }
-		: { duration: 0.7, ease: softEase }
+		: { duration: 0.5, ease: softEase }
 
 	return (
 		<section className="relative overflow-hidden">

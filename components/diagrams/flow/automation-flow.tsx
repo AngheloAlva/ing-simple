@@ -192,7 +192,7 @@ function StepNode({
 				className="group relative min-w-0 flex-1"
 				initial={reduced ? false : { opacity: 0, y: 6 }}
 				animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
-				transition={{ duration: reduced ? 0 : 0.35, ease: EASE, delay: reduced ? 0 : index * 0.08 }}
+				transition={{ duration: reduced ? 0 : 0.35, ease: EASE, delay: reduced ? 0 : index * 0.04 }}
 			>
 				<button
 					type="button"

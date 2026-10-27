@@ -171,7 +171,7 @@ export function Nav(): ReactNode {
 							>
 								Servicios
 								<ChevronDown
-									className={`h-4 w-4 transition-transform duration-300 ${
+									className={`h-4 w-4 transition-transform duration-250 ease-in-out ${
 										menuOpen ? "rotate-180" : ""
 									}`}
 									aria-hidden="true"
@@ -182,9 +182,8 @@ export function Nav(): ReactNode {
 								{menuOpen && (
 									<motion.div
 										initial={{ opacity: 0, y: 8 }}
-										animate={{ opacity: 1, y: 0 }}
-										exit={{ opacity: 0, y: 8 }}
-										transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+										animate={{ opacity: 1, y: 0, transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] } }}
+										exit={{ opacity: 0, transition: { duration: 0.15, ease: [0.22, 1, 0.36, 1] } }}
 										className="absolute top-full left-3 pt-3"
 									>
 										<div className="border-border bg-background flex w-[600px] overflow-hidden rounded-md border shadow-2xl shadow-black/10">
@@ -203,13 +202,13 @@ export function Nav(): ReactNode {
 
 											<div className="flex flex-1 flex-col p-3">
 												<div className="relative min-h-0 w-full flex-1 overflow-hidden rounded">
-													<AnimatePresence mode="wait">
+													<AnimatePresence initial={false}>
 														<motion.div
 															key={active.slug}
 															initial={{ opacity: 0 }}
 															animate={{ opacity: 1 }}
 															exit={{ opacity: 0 }}
-															transition={{ duration: 0.2 }}
+															transition={{ duration: 0.15, ease: "easeInOut" }}
 															className="absolute inset-0"
 														>
 															<NavVisual
@@ -224,10 +223,10 @@ export function Nav(): ReactNode {
 													<AnimatePresence mode="wait">
 														<motion.div
 															key={active.title}
-															initial={{ opacity: 0, y: 6 }}
-															animate={{ opacity: 1, y: 0 }}
-															exit={{ opacity: 0, y: -6 }}
-															transition={{ duration: 0.2 }}
+															initial={{ opacity: 0, y: 4, filter: "blur(2px)" }}
+															animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+															exit={{ opacity: 0, y: -4, filter: "blur(2px)" }}
+															transition={{ duration: 0.15, ease: "easeInOut" }}
 														>
 															<p className="text-[13px] font-semibold tracking-tight">
 																{active.featureTitle}
@@ -284,9 +283,12 @@ export function Nav(): ReactNode {
 				{mobileOpen && (
 					<motion.div
 						initial={{ opacity: 0, height: 0 }}
-						animate={{ opacity: 1, height: "auto" }}
-						exit={{ opacity: 0, height: 0 }}
-						transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+						animate={{
+							opacity: 1,
+							height: "auto",
+							transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] },
+						}}
+						exit={{ opacity: 0, height: 0, transition: { duration: 0.15, ease: [0.22, 1, 0.36, 1] } }}
 						className="border-border/50 overflow-hidden border-t lg:hidden"
 					>
 						<div className="mx-auto max-w-[1440px] px-5 py-4 sm:px-8">
@@ -298,7 +300,7 @@ export function Nav(): ReactNode {
 							>
 								Servicios
 								<ChevronDown
-									className={`h-4 w-4 transition-transform duration-300 ${
+									className={`h-4 w-4 transition-transform duration-250 ease-in-out ${
 										mobileServicesOpen ? "rotate-180" : ""
 									}`}
 									aria-hidden="true"
@@ -311,7 +313,7 @@ export function Nav(): ReactNode {
 										initial={{ opacity: 0, height: 0 }}
 										animate={{ opacity: 1, height: "auto" }}
 										exit={{ opacity: 0, height: 0 }}
-										transition={{ duration: 0.22 }}
+										transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
 										className="overflow-hidden"
 									>
 										<div className="flex flex-col gap-1 pb-2 pl-2">

@@ -43,7 +43,7 @@ function FaqItem({
 					<span className="text-base font-medium tracking-tight sm:text-lg">{item.question}</span>
 					<motion.span
 						animate={{ rotate: isOpen ? 180 : 0 }}
-						transition={{ duration: 0.3, ease: EASE }}
+						transition={{ duration: 0.25, ease: EASE }}
 						className="text-muted-foreground shrink-0"
 					>
 						<ChevronDown className="h-5 w-5" aria-hidden="true" />
@@ -61,7 +61,7 @@ function FaqItem({
 						initial={{ height: 0, opacity: 0 }}
 						animate={{ height: "auto", opacity: 1 }}
 						exit={{ height: 0, opacity: 0 }}
-						transition={{ duration: 0.4, ease: EASE }}
+						transition={{ duration: 0.25, ease: EASE }}
 						className="overflow-hidden"
 					>
 						<p className="text-muted-foreground max-w-xl pr-6 pb-6 text-sm leading-relaxed lg:pl-12">

@@ -23,7 +23,7 @@ const FILTERS = Object.entries(CATEGORY_LABELS) as [Filter, string][]
 
 const gridVariants: Variants = {
 	hidden: {},
-	visible: { transition: { staggerChildren: 0.06 } },
+	visible: { transition: { staggerChildren: 0.04 } },
 }
 
 const cardVariants: Variants = {

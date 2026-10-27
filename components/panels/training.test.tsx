@@ -84,7 +84,7 @@ describe("PanelTraining", () => {
   });
 
   it("preserves the shared stagger entrance recipe", () => {
-    expect(html.match(/opacity:0;transform:translateY\(20px\)/g) ?? []).toHaveLength(7);
+    expect(html.match(/opacity:0;transform:translateY\(12px\)/g) ?? []).toHaveLength(7);
     expect(ENTRANCE_STAGGER).toBeGreaterThanOrEqual(0.05);
     expect(ENTRANCE_STAGGER).toBeLessThanOrEqual(0.08);
     expect(6 * ENTRANCE_STAGGER).toBeLessThanOrEqual(0.6);

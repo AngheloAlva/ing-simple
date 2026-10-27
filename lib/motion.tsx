@@ -48,12 +48,12 @@ export const fadeIn: Variants = {
 }
 
 export const fadeInUp: Variants = {
-	hidden: { opacity: 0, y: 20 },
+	hidden: { opacity: 0, y: 12 },
 	visible: { opacity: 1, y: 0 },
 }
 
 export const fadeInDown: Variants = {
-	hidden: { opacity: 0, y: -20 },
+	hidden: { opacity: 0, y: -12 },
 	visible: { opacity: 1, y: 0 },
 }
 
@@ -79,7 +79,7 @@ export const reducedMotionVariants: Variants = {
 
 export const defaultTransition = {
 	duration: 0.3,
-	ease: [0.4, 0, 0.2, 1] as const,
+	ease: [0.22, 1, 0.36, 1] as const,
 }
 
 /** Soft "ease-out-quint" curve for entrance animations. */
@@ -207,7 +207,7 @@ export function InView({
 	const activeVariants = prefersReducedMotion ? reducedMotionVariants : variants
 	const activeTransition = prefersReducedMotion
 		? { duration: 0.01 }
-		: (transition ?? { duration: 0.7, ease: softEase })
+		: (transition ?? { duration: 0.5, ease: softEase })
 
 	return (
 		<motion.div
@@ -274,7 +274,7 @@ export function useStaggerEntrance(stagger = 0.08): StaggerEntrance {
 				visible: { transition: { staggerChildren: stagger } },
 			},
 			item: fadeInUp,
-			itemTransition: { duration: 0.6, ease: softEase },
+			itemTransition: { duration: 0.5, ease: softEase },
 			viewport: inViewViewport,
 		}
 	}, [prefersReducedMotion, stagger])
