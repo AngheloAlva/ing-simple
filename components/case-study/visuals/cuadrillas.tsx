@@ -38,8 +38,24 @@ import {
 } from "lucide-react"
 
 import Logo from "@/components/case-study/logo"
+import { useReducedMotion } from "@/lib/motion"
 
 import type { CaseStudyVisuals } from "./registry"
+
+/**
+ * Blinking "live" status dot. MotionConfig's reduced motion only stops
+ * transforms, so the opacity loop is switched off here explicitly.
+ */
+function LiveDot({ duration, className }: { duration: number; className: string }) {
+	const reduced = useReducedMotion()
+	return (
+		<motion.span
+			animate={reduced ? { opacity: 1 } : { opacity: [1, 0.2, 1] }}
+			transition={reduced ? { duration: 0 } : { duration, repeat: Infinity }}
+			className={className}
+		/>
+	)
+}
 
 // ── Hero mockup ──────────────────────────────────────────────────────────
 
@@ -906,11 +922,7 @@ function TiempoRealMockup() {
 					</span>
 				</div>
 				<div className="flex items-center gap-1 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[8px] font-medium text-emerald-400">
-					<motion.span
-						animate={{ opacity: [1, 0.2, 1] }}
-						transition={{ duration: 1.4, repeat: Infinity }}
-						className="h-1.5 w-1.5 rounded-full bg-emerald-400"
-					/>
+					<LiveDot duration={1.4} className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
 					En vivo
 				</div>
 			</div>
@@ -1033,11 +1045,7 @@ function TiempoRealMockup() {
 			{/* Footer band */}
 			<div className="mt-3 flex items-center justify-between border-t border-black/6 pt-2 text-[8px] text-zinc-500 dark:border-white/6">
 				<div className="flex items-center gap-1">
-					<motion.span
-						animate={{ opacity: [1, 0.2, 1] }}
-						transition={{ duration: 2, repeat: Infinity }}
-						className="h-1.5 w-1.5 rounded-full bg-teal-500"
-					/>
+					<LiveDot duration={2} className="h-1.5 w-1.5 rounded-full bg-teal-500" />
 					Conectado · ably-realtime
 				</div>
 				<span>Latencia &lt;100ms · ~60 usuarios activos</span>

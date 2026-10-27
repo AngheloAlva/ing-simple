@@ -5,11 +5,9 @@ import { animate, motion } from "motion/react";
 import {
   useCallback,
   useEffect,
-  useRef,
   useState,
   type Ref,
   type ReactNode,
-  type RefObject,
 } from "react";
 
 /* --------------------------------------------------------------------------
@@ -33,55 +31,6 @@ export function useBuild(): {
   }, []);
   const reset = useCallback((): void => setBuilt(new Set()), []);
   return { built, build, reset, anyBuilt: built.size > 0 };
-}
-
-/**
- * Auto-builds the given zone keys in sequence the first time the returned ref
- * enters the viewport, so the diagram assembles itself even without hover
- * (e.g. on mobile). Hover / tap / reset still work afterwards. Pass a stable
- * `keys` array (module constant) to avoid re-running the effect each render.
- */
-export function useAutoBuild(
-  build: (key: string) => void,
-  keys: string[],
-  opts?: { staggerMs?: number; startDelayMs?: number },
-): RefObject<HTMLDivElement | null> {
-  const ref = useRef<HTMLDivElement>(null);
-  const startedRef = useRef(false);
-  const stagger = opts?.staggerMs ?? 600;
-  const startDelay = opts?.startDelayMs ?? 250;
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || startedRef.current) return;
-
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    const timers: number[] = [];
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (!entry?.isIntersecting || startedRef.current) return;
-        startedRef.current = true;
-        observer.disconnect();
-        keys.forEach((key, i) => {
-          const delay = prefersReduced ? 0 : startDelay + i * stagger;
-          timers.push(window.setTimeout(() => build(key), delay));
-        });
-      },
-      { threshold: 0.35 },
-    );
-    observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-      timers.forEach((id) => window.clearTimeout(id));
-    };
-  }, [build, keys, stagger, startDelay]);
-
-  return ref;
 }
 
 /**
@@ -237,7 +186,7 @@ export function MockFrame({
   anyBuilt: boolean;
   onReset: () => void;
   viewportClassName?: string;
-  /** Attached to the outer container — used by `useAutoBuild` for in-view detection. */
+  /** Attached to the outer container. */
   containerRef?: Ref<HTMLDivElement>;
   children: ReactNode;
 }): ReactNode {
