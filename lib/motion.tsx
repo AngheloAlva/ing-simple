@@ -1,6 +1,6 @@
 "use client"
 
-import { motion, type MotionProps, type Transition, type Variants } from "motion/react"
+import { motion, MotionConfig, type MotionProps, type Transition, type Variants } from "motion/react"
 import { createContext, useContext, useMemo, useSyncExternalStore, type ReactNode } from "react"
 
 function subscribeToReducedMotion(callback: () => void): () => void {
@@ -32,7 +32,12 @@ export function ReducedMotionProvider({ children }: { children: ReactNode }): Re
 
 	return (
 		<ReducedMotionContext.Provider value={prefersReducedMotion}>
-			{children}
+			{/* Covers every raw `motion.*` that never asks `useReducedMotion`: Motion then
+			    skips transform and layout animation. The CSS rule in globals.css only
+			    reaches CSS transitions, not Motion's JS-driven ones. */}
+			<MotionConfig reducedMotion={prefersReducedMotion ? "always" : "never"}>
+				{children}
+			</MotionConfig>
 		</ReducedMotionContext.Provider>
 	)
 }

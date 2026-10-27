@@ -81,10 +81,10 @@ export function InputCard({
 
 			<span className="bg-border relative h-7 w-px" aria-hidden="true">
 				<motion.span
-					className="absolute inset-x-0 top-0"
+					className="absolute inset-0 origin-top"
 					style={{ background: GREEN }}
-					initial={{ height: 0 }}
-					animate={{ height: connected ? "100%" : 0 }}
+					initial={{ scaleY: 0 }}
+					animate={{ scaleY: connected ? 1 : 0 }}
 					transition={{ duration: reduced ? 0 : 0.35, ease: EASE }}
 				/>
 			</span>

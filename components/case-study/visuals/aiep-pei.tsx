@@ -192,11 +192,11 @@ function AdminMockup() {
 				{[40, 25, 88, 60].map((h, i) => (
 					<motion.div
 						key={i}
-						initial={{ height: 0 }}
-						whileInView={{ height: `${h}%` }}
+						initial={{ scaleY: 0 }}
+						whileInView={{ scaleY: 1 }}
 						transition={{ duration: 0.6, delay: i * 0.1 }}
-						className="flex-1 rounded-sm"
-						style={{ backgroundColor: i === 2 ? ACCENT : `${ACCENT}55` }}
+						className="flex-1 origin-bottom rounded-sm"
+						style={{ height: `${h}%`, backgroundColor: i === 2 ? ACCENT : `${ACCENT}55` }}
 						aria-hidden
 					/>
 				))}
@@ -317,11 +317,11 @@ function SedeRankingMockup() {
 						<span className="text-foreground w-24 truncate">{s.name}</span>
 						<div className="bg-muted/60 relative h-2 flex-1 overflow-hidden rounded-full">
 							<motion.div
-								initial={{ width: 0 }}
-								whileInView={{ width: `${s.pct}%` }}
+								initial={{ scaleX: 0 }}
+								whileInView={{ scaleX: 1 }}
 								transition={{ duration: 0.6, delay: i * 0.08 }}
-								className="absolute inset-y-0 left-0 rounded-full"
-								style={{ backgroundColor: i === 0 ? ACCENT : `${ACCENT}88` }}
+								className="absolute inset-y-0 left-0 origin-left rounded-full"
+								style={{ width: `${s.pct}%`, backgroundColor: i === 0 ? ACCENT : `${ACCENT}88` }}
 							/>
 						</div>
 						<span className="text-foreground w-7 text-right font-mono font-semibold">{s.pct}%</span>

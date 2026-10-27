@@ -531,15 +531,16 @@ function IndicadoresMockup() {
 					return (
 						<motion.div
 							key={i}
-							initial={{ height: 0 }}
-							whileInView={{ height: `${h}%` }}
+							initial={{ scaleY: 0 }}
+							whileInView={{ scaleY: 1 }}
 							viewport={{ once: true, amount: 0.4 }}
 							transition={{ duration: 0.6, delay: 0.1 + i * 0.05, ease: [0.22, 1, 0.36, 1] }}
 							onHoverStart={() => setHovered(i)}
 							onHoverEnd={() => setHovered(null)}
-							className={`flex-1 rounded-sm transition-colors ${
+							className={`flex-1 origin-bottom rounded-sm transition-colors ${
 								isActive ? "bg-accent" : "bg-accent/40"
 							}`}
+							style={{ height: `${h}%` }}
 						/>
 					)
 				})}

@@ -162,7 +162,7 @@ export function DiagramGenericTool(): ReactNode {
 							<Reveal key={piece.label}>
 								<span
 									className={cn(
-										"bg-background flex h-6 items-center gap-1.5 rounded-sm border px-2 text-[10px] leading-none whitespace-nowrap transition-all duration-300",
+										"bg-background flex h-6 items-center gap-1.5 rounded-sm border px-2 text-[10px] leading-none whitespace-nowrap transition-[color,background-color,border-color,opacity] duration-300",
 										state === "idle" && "border-border text-muted-foreground",
 										state === "gone" && "border-border/50 border-dashed text-transparent",
 										state === "inside" && "border-brand-blue/50 text-foreground",

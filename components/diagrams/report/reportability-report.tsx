@@ -113,8 +113,10 @@ function MonthGroup({
 	reduced: boolean
 }): ReactNode {
 	const pct = differencePct(point.plan, point.gestion)
-	const bar = (value: number, visible: boolean) =>
-		`${visible && show ? (value / CHART_MAX) * 100 : 0}%`
+	// Bars fill the column and scale down to their value: animating `scaleY` keeps
+	// layout out of every frame, unlike animating `height`.
+	const bar = (value: number, visible: boolean): number =>
+		visible && show ? value / CHART_MAX : 0
 	const barTransition = {
 		...DATA_TRANSITION,
 		duration: reduced ? 0 : 0.7,
@@ -135,42 +137,44 @@ function MonthGroup({
 			aria-label={`${point.label}: plan ${formatAmount(point.plan, unit)}, gestión ${formatAmount(point.gestion, unit)}, diferencia ${formatPct(pct)}`}
 		>
 			<motion.div
-				className="bg-brand-blue/40 w-3 rounded-t-xs"
-				initial={{ height: 0 }}
-				animate={{ height: bar(point.plan, showPlan) }}
+				className="bg-brand-blue/40 h-full w-3 origin-bottom rounded-t-xs"
+				initial={{ scaleY: 0 }}
+				animate={{ scaleY: bar(point.plan, showPlan) }}
 				transition={barTransition}
 			/>
 			<motion.div
-				className="bg-brand-blue w-3 rounded-t-xs"
-				initial={{ height: 0 }}
-				animate={{ height: bar(point.gestion, showGestion) }}
+				className="bg-brand-blue h-full w-3 origin-bottom rounded-t-xs"
+				initial={{ scaleY: 0 }}
+				animate={{ scaleY: bar(point.gestion, showGestion) }}
 				transition={barTransition}
 			/>
 
-			{/* Difference marker and its label: move with the line, on the same clock. */}
-			<motion.span
-				className="border-background bg-foreground pointer-events-none absolute left-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full border"
-				initial={{ opacity: 0 }}
-				animate={{ opacity: show ? 1 : 0, top: `${difY(pct)}%` }}
-				transition={{
-					top: { ...DATA_TRANSITION, duration: reduced ? 0 : 0.7 },
-					opacity: { duration: reduced ? 0 : 0.3, delay: reduced ? 0 : 0.5 + index * 0.06 },
-				}}
-			/>
-			<motion.span
-				className="bg-background/90 text-muted-foreground pointer-events-none absolute left-1/2 -translate-x-1/2 -translate-y-[calc(100%+5px)] rounded-[2px] px-1 text-[9px] font-medium whitespace-nowrap tabular-nums"
-				initial={{ opacity: 0 }}
-				animate={{ opacity: show && !hovered ? 1 : 0, top: `${difY(pct)}%` }}
-				transition={{
-					top: { ...DATA_TRANSITION, duration: reduced ? 0 : 0.7 },
-					opacity: {
+			{/* Difference marker and its label: move with the line, on the same clock.
+			    The wrapper is as tall as the column, so a `y` percentage of itself is a
+			    percentage of the plot height, the same axis the line uses. */}
+			<motion.div
+				className="pointer-events-none absolute inset-0"
+				animate={{ y: `${difY(pct)}%` }}
+				transition={{ ...DATA_TRANSITION, duration: reduced ? 0 : 0.7 }}
+			>
+				<motion.span
+					className="border-background bg-foreground absolute top-0 left-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full border"
+					initial={{ opacity: 0 }}
+					animate={{ opacity: show ? 1 : 0 }}
+					transition={{ duration: reduced ? 0 : 0.3, delay: reduced ? 0 : 0.5 + index * 0.06 }}
+				/>
+				<motion.span
+					className="bg-background/90 text-muted-foreground absolute top-0 left-1/2 -translate-x-1/2 -translate-y-[calc(100%+5px)] rounded-[2px] px-1 text-[9px] font-medium whitespace-nowrap tabular-nums"
+					initial={{ opacity: 0 }}
+					animate={{ opacity: show && !hovered ? 1 : 0 }}
+					transition={{
 						duration: reduced ? 0 : 0.3,
 						delay: reduced || hovered ? 0 : 0.5 + index * 0.06,
-					},
-				}}
-			>
-				{formatPct(pct)}
-			</motion.span>
+					}}
+				>
+					{formatPct(pct)}
+				</motion.span>
+			</motion.div>
 
 			{hovered && show && (
 				<motion.div

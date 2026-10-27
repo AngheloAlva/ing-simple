@@ -585,11 +585,11 @@ function CargaMasivaMockup() {
 					<div className="flex flex-1 flex-col gap-0.5">
 						<div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800">
 							<motion.div
-								initial={{ width: 0 }}
-								whileInView={{ width: "96%" }}
+								initial={{ scaleX: 0 }}
+								whileInView={{ scaleX: 1 }}
 								viewport={{ once: true }}
 								transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-								className="h-full rounded-full bg-linear-to-r from-teal-500 to-emerald-500"
+								className="h-full w-[96%] origin-left rounded-full bg-linear-to-r from-teal-500 to-emerald-500"
 							/>
 						</div>
 						<span className="text-[7px] text-zinc-500">81 de 84 importadas</span>

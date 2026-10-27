@@ -508,16 +508,16 @@ function ComponenteCentricoMockup() {
 						</div>
 						<div className="bg-muted relative mt-1 h-1 overflow-hidden rounded-full">
 							<motion.div
-								initial={{ width: 0 }}
-								whileInView={{ width: `${c.progress * 100}%` }}
+								initial={{ scaleX: 0 }}
+								whileInView={{ scaleX: 1 }}
 								viewport={{ once: true, amount: 0.3 }}
 								transition={{
 									duration: 0.8,
 									delay: 0.2 + i * 0.08,
 									ease: [0.22, 1, 0.36, 1],
 								}}
-								className="absolute inset-y-0 left-0 rounded-full"
-								style={{ backgroundColor: stages[c.stage]?.color }}
+								className="absolute inset-y-0 left-0 origin-left rounded-full"
+								style={{ width: `${c.progress * 100}%`, backgroundColor: stages[c.stage]?.color }}
 							/>
 						</div>
 					</motion.div>

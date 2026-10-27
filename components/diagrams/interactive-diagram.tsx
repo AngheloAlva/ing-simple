@@ -196,20 +196,20 @@ export function Connector({
       } ${className ?? ""}`}
     >
       <motion.div
-        className={`absolute bg-primary ${
-          vertical ? "inset-x-0 top-0" : "inset-y-0 left-0"
+        className={`absolute inset-0 bg-primary ${
+          vertical ? "origin-top" : "origin-left"
         }`}
         initial={
           prefersReduced
             ? false
             : vertical
-              ? { height: 0 }
-              : { width: 0 }
+              ? { scaleY: 0 }
+              : { scaleX: 0 }
         }
         animate={
           vertical
-            ? { height: active ? "100%" : 0 }
-            : { width: active ? "100%" : 0 }
+            ? { scaleY: active ? 1 : 0 }
+            : { scaleX: active ? 1 : 0 }
         }
         transition={{ duration: prefersReduced ? 0 : 0.5, ease: EASE }}
       />
